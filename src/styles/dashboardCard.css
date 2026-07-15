@@ -1,0 +1,217 @@
+/* ================= DASHBOARD CARD ================= */
+
+.dashboard-card{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+    padding:25px;
+
+    border-radius:18px;
+
+    color:#fff;
+
+    min-height:140px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+
+    transition:.3s;
+
+    cursor:pointer;
+
+    overflow:hidden;
+
+    position:relative;
+
+}
+
+/* Hover Effect */
+
+.dashboard-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 15px 35px rgba(0,0,0,.22);
+
+}
+
+/* Background Circle */
+
+.dashboard-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:170px;
+
+    height:170px;
+
+    background:rgba(255,255,255,.12);
+
+    border-radius:50%;
+
+    top:-60px;
+
+    right:-60px;
+
+}
+
+/* ================= ICON ================= */
+
+.dashboard-card-icon{
+
+    width:75px;
+
+    height:75px;
+
+    min-width:75px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:40px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.18);
+
+    backdrop-filter:blur(5px);
+
+}
+
+/* ================= CONTENT ================= */
+
+.dashboard-card-content{
+
+    flex:1;
+
+}
+
+.dashboard-card-content h3{
+
+    margin:0;
+
+    font-size:17px;
+
+    font-weight:500;
+
+    color:#fff;
+
+    opacity:.95;
+
+}
+
+.dashboard-card-content h2{
+
+    margin-top:10px;
+
+    font-size:32px;
+
+    font-weight:700;
+
+    color:#fff;
+
+    word-break:break-word;
+
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:992px){
+
+.dashboard-card{
+
+min-height:120px;
+
+padding:20px;
+
+}
+
+.dashboard-card-icon{
+
+width:65px;
+
+height:65px;
+
+font-size:34px;
+
+}
+
+.dashboard-card-content h2{
+
+font-size:28px;
+
+}
+
+}
+
+@media(max-width:768px){
+
+.dashboard-card{
+
+padding:18px;
+
+gap:15px;
+
+min-height:110px;
+
+}
+
+.dashboard-card-icon{
+
+width:60px;
+
+height:60px;
+
+font-size:30px;
+
+}
+
+.dashboard-card-content h3{
+
+font-size:15px;
+
+}
+
+.dashboard-card-content h2{
+
+font-size:24px;
+
+}
+
+}
+
+@media(max-width:480px){
+
+.dashboard-card{
+
+flex-direction:column;
+
+text-align:center;
+
+padding:20px;
+
+min-height:auto;
+
+}
+
+.dashboard-card-icon{
+
+margin-bottom:10px;
+
+}
+
+.dashboard-card-content h2{
+
+font-size:22px;
+
+}
+
+}

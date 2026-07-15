@@ -1,0 +1,100 @@
+.committee-section{
+
+    margin:90px auto;
+
+}
+
+.member-card{
+
+    background:white;
+
+    border-radius:25px;
+
+    padding:35px;
+
+    text-align:center;
+
+    box-shadow:0 20px 40px rgba(0,0,0,.10);
+
+    transition:.4s;
+
+    margin-bottom:60px;
+
+}
+
+.member-card:hover{
+
+    transform:translateY(-15px) scale(1.03);
+
+}
+
+.member-card img{
+
+    width:150px;
+
+    height:150px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    margin:auto;
+
+    border:6px solid #ff6b00;
+
+    transition:.5s;
+
+}
+
+.member-card:hover img{
+
+    transform:rotate(8deg) scale(1.08);
+
+}
+
+.member-card h3{
+
+    margin-top:20px;
+
+    color:#ff6b00;
+
+    font-size:24px;
+
+}
+
+.member-card span{
+
+    display:block;
+
+    margin:10px 0;
+
+    color:#666;
+
+    font-weight:600;
+
+}
+
+.member-card p{
+
+    color:#444;
+
+}
+
+.swiper-button-next,
+.swiper-button-prev{
+
+    color:#ff6b00;
+
+}
+
+.swiper-pagination-bullet{
+
+    background:#ff6b00 !important;
+
+}
+
+.swiper{
+
+    padding:20px 10px 60px;
+
+}

@@ -1,0 +1,301 @@
+/* ================= SECTION ================= */
+
+.aarti-section{
+
+    padding:70px 0;
+
+    background:#fff7ef;
+
+}
+
+.aarti-section .title{
+
+    text-align:center;
+
+    color:#ff6b00;
+
+    font-size:34px;
+
+    margin-bottom:40px;
+
+    font-weight:700;
+
+}
+
+/* ================= WRAPPER ================= */
+
+.aarti-wrapper{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+/* ================= CARD ================= */
+
+.aarti-card{
+
+    width:100%;
+
+    max-width:650px;
+
+    background:#fff;
+
+    border-radius:20px;
+
+    padding:35px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.10);
+
+    text-align:center;
+
+    transition:.3s;
+
+    border-top:6px solid #ff6b00;
+
+}
+
+.aarti-card:hover{
+
+    transform:translateY(-6px);
+
+}
+
+/* ================= ICON ================= */
+
+.aarti-icon{
+
+    width:80px;
+
+    height:80px;
+
+    margin:auto;
+
+    margin-bottom:20px;
+
+    border-radius:50%;
+
+    background:#fff2e6;
+
+    color:#ff6b00;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:42px;
+
+    box-shadow:0 4px 15px rgba(255,107,0,.2);
+
+}
+
+/* ================= TITLE ================= */
+
+.aarti-card h3{
+
+    color:#ff6b00;
+
+    font-size:28px;
+
+    margin-bottom:25px;
+
+    font-weight:700;
+
+}
+
+/* ================= DETAILS ================= */
+
+.aarti-card p{
+
+    margin:14px 0;
+
+    font-size:17px;
+
+    color:#444;
+
+    text-align:left;
+
+    line-height:1.8;
+
+}
+
+.aarti-card strong{
+
+    color:#ff6b00;
+
+}
+
+/* ================= PROGRESS ================= */
+
+.progress-bar{
+
+    width:100%;
+
+    height:8px;
+
+    margin-top:30px;
+
+    background:#f1f1f1;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+}
+
+.progress-fill{
+
+    width:100%;
+
+    height:100%;
+
+    background:linear-gradient(90deg,#ff6b00,#ffb347);
+
+    animation:progress 6s linear infinite;
+
+}
+
+@keyframes progress{
+
+    from{
+
+        width:0%;
+
+    }
+
+    to{
+
+        width:100%;
+
+    }
+
+}
+
+/* ================= EMPTY CARD ================= */
+
+.aarti-card h3:only-child{
+
+    color:#666;
+
+    margin:30px 0;
+
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:992px){
+
+.aarti-section{
+
+padding:50px 20px;
+
+}
+
+.aarti-card{
+
+max-width:100%;
+
+padding:30px;
+
+}
+
+}
+
+@media(max-width:768px){
+
+.aarti-section .title{
+
+font-size:28px;
+
+margin-bottom:30px;
+
+}
+
+.aarti-card{
+
+padding:25px;
+
+}
+
+.aarti-icon{
+
+width:70px;
+
+height:70px;
+
+font-size:36px;
+
+}
+
+.aarti-card h3{
+
+font-size:24px;
+
+}
+
+.aarti-card p{
+
+font-size:16px;
+
+}
+
+}
+
+@media(max-width:480px){
+
+.aarti-section{
+
+padding:40px 15px;
+
+}
+
+.aarti-section .title{
+
+font-size:24px;
+
+}
+
+.aarti-card{
+
+padding:20px;
+
+border-radius:15px;
+
+}
+
+.aarti-icon{
+
+width:60px;
+
+height:60px;
+
+font-size:30px;
+
+}
+
+.aarti-card h3{
+
+font-size:21px;
+
+}
+
+.aarti-card p{
+
+font-size:15px;
+
+line-height:1.6;
+
+}
+
+.progress-bar{
+
+height:6px;
+
+}
+
+}

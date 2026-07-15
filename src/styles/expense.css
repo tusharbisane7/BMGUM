@@ -1,0 +1,23 @@
+@import "./donation.css";
+
+/* Change top card colors */
+
+.top-card:nth-child(1) h2{
+    color:#e53935;
+}
+
+.top-card:nth-child(2) h2{
+    color:#ff9800;
+}
+
+.top-card:nth-child(3) h2{
+    color:#1976d2;
+}
+
+.receipt-btn{
+    background:#e53935;
+}
+
+.receipt-btn:hover{
+    background:#c62828;
+}
