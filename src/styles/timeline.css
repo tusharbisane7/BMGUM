@@ -1,16 +1,34 @@
+/* ================= TIMELINE ================= */
+
 .timeline-section{
 
-    margin:100px auto;
+    padding:80px 0;
+
+    background:#fffaf5;
 
 }
+
+.timeline-section .title{
+
+    font-family:"Asar",serif;
+
+    color:#ff6b00;
+
+    margin-bottom:60px;
+
+}
+
+/* ================= TIMELINE ================= */
 
 .timeline{
 
     position:relative;
 
+    width:90%;
+
     max-width:900px;
 
-    margin:50px auto;
+    margin:auto;
 
 }
 
@@ -20,87 +38,95 @@
 
     position:absolute;
 
-    left:40px;
+    left:35px;
 
     top:0;
 
-    width:5px;
+    width:4px;
 
     height:100%;
 
-    background:linear-gradient(
-    to bottom,
-    #ff6b00,
-    #ffb703
-    );
+    background:#ffb74d;
+
+    border-radius:10px;
 
 }
+
+/* ================= ITEM ================= */
 
 .timeline-item{
 
     display:flex;
 
-    align-items:flex-start;
+    gap:25px;
 
-    margin-bottom:50px;
+    margin-bottom:45px;
 
     position:relative;
 
 }
 
+/* ================= ICON ================= */
+
 .timeline-icon{
 
-    width:80px;
+    width:70px;
 
-    height:80px;
-
-    border-radius:50%;
+    height:70px;
 
     background:#ff6b00;
 
-    color:white;
+    color:#fff;
 
-    font-size:35px;
+    border-radius:50%;
 
     display:flex;
 
+    align-items:center;
+
     justify-content:center;
 
-    align-items:center;
+    font-size:32px;
+
+    flex-shrink:0;
+
+    box-shadow:0 8px 20px rgba(255,107,0,.25);
 
     z-index:2;
 
-    box-shadow:0 10px 25px rgba(255,107,0,.4);
-
 }
+
+/* ================= CONTENT ================= */
 
 .timeline-content{
 
-    margin-left:35px;
+    flex:1;
 
-    background:white;
+    background:#fff;
 
-    padding:25px;
+    padding:22px;
 
     border-radius:18px;
 
-    box-shadow:0 15px 35px rgba(0,0,0,.08);
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
 
-    flex:1;
-
-    transition:.3s;
+    transition:.35s;
 
 }
 
 .timeline-content:hover{
 
-    transform:translateY(-8px);
+    transform:translateY(-5px);
 
 }
 
 .timeline-content span{
 
+    font-family:"Poppins",sans-serif;
+
     color:#ff6b00;
+
+    font-size:14px;
 
     font-weight:600;
 
@@ -108,39 +134,75 @@
 
 .timeline-content h3{
 
-    margin:10px 0;
+    margin:12px 0;
+
+    font-family:"Asar",serif;
+
+    color:#222;
+
+    font-size:28px;
 
 }
 
 .timeline-content p{
 
-    color:#666;
+    font-family:"Nunito",sans-serif;
+
+    color:#555;
 
     line-height:1.7;
 
+    font-size:17px;
+
 }
+
+/* ================= MOBILE ================= */
 
 @media(max-width:768px){
 
+.timeline{
+
+    width:100%;
+
+}
+
 .timeline::before{
 
-left:30px;
+    left:25px;
+
+}
+
+.timeline-item{
+
+    gap:15px;
 
 }
 
 .timeline-icon{
 
-width:60px;
+    width:50px;
 
-height:60px;
+    height:50px;
 
-font-size:25px;
+    font-size:24px;
 
 }
 
 .timeline-content{
 
-margin-left:20px;
+    padding:16px;
+
+}
+
+.timeline-content h3{
+
+    font-size:22px;
+
+}
+
+.timeline-content p{
+
+    font-size:15px;
 
 }
 

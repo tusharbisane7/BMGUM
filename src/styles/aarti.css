@@ -2,23 +2,19 @@
 
 .aarti-section{
 
-    padding:70px 0;
+    padding:80px 0;
 
-    background:#fff7ef;
+    background:#fff3e0;
 
 }
 
 .aarti-section .title{
 
-    text-align:center;
+    font-family:"Asar",serif;
 
     color:#ff6b00;
 
-    font-size:34px;
-
-    margin-bottom:40px;
-
-    font-weight:700;
+    margin-bottom:45px;
 
 }
 
@@ -30,8 +26,6 @@
 
     justify-content:center;
 
-    align-items:center;
-
 }
 
 /* ================= CARD ================= */
@@ -40,27 +34,21 @@
 
     width:100%;
 
-    max-width:650px;
+    max-width:520px;
 
     background:#fff;
 
-    border-radius:20px;
+    border-radius:22px;
 
     padding:35px;
 
-    box-shadow:0 10px 30px rgba(0,0,0,.10);
-
     text-align:center;
 
-    transition:.3s;
+    box-shadow:0 15px 40px rgba(0,0,0,.08);
 
-    border-top:6px solid #ff6b00;
+    position:relative;
 
-}
-
-.aarti-card:hover{
-
-    transform:translateY(-6px);
+    overflow:hidden;
 
 }
 
@@ -68,19 +56,17 @@
 
 .aarti-icon{
 
-    width:80px;
+    width:85px;
 
-    height:80px;
+    height:85px;
 
     margin:auto;
 
-    margin-bottom:20px;
-
     border-radius:50%;
 
-    background:#fff2e6;
+    background:#ff6b00;
 
-    color:#ff6b00;
+    color:#fff;
 
     display:flex;
 
@@ -90,21 +76,45 @@
 
     font-size:42px;
 
-    box-shadow:0 4px 15px rgba(255,107,0,.2);
+    margin-bottom:20px;
 
 }
 
-/* ================= TITLE ================= */
+/* ================= BADGE ================= */
+
+.today-badge{
+
+    position:absolute;
+
+    top:18px;
+
+    right:18px;
+
+    background:#ff6b00;
+
+    color:#fff;
+
+    padding:6px 14px;
+
+    border-radius:30px;
+
+    font-size:14px;
+
+    font-family:"Poppins",sans-serif;
+
+}
+
+/* ================= DAY ================= */
 
 .aarti-card h3{
 
+    font-family:"Asar",serif;
+
     color:#ff6b00;
 
-    font-size:28px;
+    font-size:32px;
 
-    margin-bottom:25px;
-
-    font-weight:700;
+    margin-bottom:15px;
 
 }
 
@@ -112,21 +122,19 @@
 
 .aarti-card p{
 
-    margin:14px 0;
+    font-family:"Nunito",sans-serif;
 
-    font-size:17px;
+    font-size:18px;
 
-    color:#444;
+    color:#555;
 
-    text-align:left;
-
-    line-height:1.8;
+    margin:12px 0;
 
 }
 
 .aarti-card strong{
 
-    color:#ff6b00;
+    color:#222;
 
 }
 
@@ -138,11 +146,11 @@
 
     height:8px;
 
-    margin-top:30px;
+    margin-top:28px;
 
-    background:#f1f1f1;
+    background:#ffe0b2;
 
-    border-radius:20px;
+    border-radius:30px;
 
     overflow:hidden;
 
@@ -150,11 +158,11 @@
 
 .progress-fill{
 
-    width:100%;
-
     height:100%;
 
-    background:linear-gradient(90deg,#ff6b00,#ffb347);
+    width:100%;
+
+    background:#ff6b00;
 
     animation:progress 6s linear infinite;
 
@@ -176,125 +184,35 @@
 
 }
 
-/* ================= EMPTY CARD ================= */
-
-.aarti-card h3:only-child{
-
-    color:#666;
-
-    margin:30px 0;
-
-}
-
 /* ================= MOBILE ================= */
-
-@media(max-width:992px){
-
-.aarti-section{
-
-padding:50px 20px;
-
-}
-
-.aarti-card{
-
-max-width:100%;
-
-padding:30px;
-
-}
-
-}
 
 @media(max-width:768px){
 
-.aarti-section .title{
-
-font-size:28px;
-
-margin-bottom:30px;
-
-}
-
 .aarti-card{
 
-padding:25px;
+    padding:22px;
 
 }
 
 .aarti-icon{
 
-width:70px;
+    width:70px;
 
-height:70px;
+    height:70px;
 
-font-size:36px;
-
-}
-
-.aarti-card h3{
-
-font-size:24px;
-
-}
-
-.aarti-card p{
-
-font-size:16px;
-
-}
-
-}
-
-@media(max-width:480px){
-
-.aarti-section{
-
-padding:40px 15px;
-
-}
-
-.aarti-section .title{
-
-font-size:24px;
-
-}
-
-.aarti-card{
-
-padding:20px;
-
-border-radius:15px;
-
-}
-
-.aarti-icon{
-
-width:60px;
-
-height:60px;
-
-font-size:30px;
+    font-size:34px;
 
 }
 
 .aarti-card h3{
 
-font-size:21px;
+    font-size:25px;
 
 }
 
 .aarti-card p{
 
-font-size:15px;
-
-line-height:1.6;
-
-}
-
-.progress-bar{
-
-height:6px;
+    font-size:16px;
 
 }
 

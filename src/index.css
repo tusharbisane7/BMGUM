@@ -1,24 +1,62 @@
+/* ================= GOOGLE FONTS ================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Asar&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sahitya:wght@400;700&display=swap');
+
+/* ================= ROOT ================= */
+
+:root{
+
+    --primary:#ff6b00;
+    --secondary:#ff9800;
+    --dark:#222;
+    --text:#555;
+    --white:#ffffff;
+    --background:#f8f8f8;
+
+    /* Fonts */
+
+    --mandal-font:"Sahitya",serif;
+    --heading-font:"Asar",serif;
+    --body-font:"Poppins",sans-serif;
+    --marathi-font:"Nunito",sans-serif;
+
+}
+
+/* ================= RESET ================= */
+
 *{
+
     margin:0;
     padding:0;
     box-sizing:border-box;
+
 }
 
 html{
+
     scroll-behavior:smooth;
+
 }
 
 body{
 
-    font-family:"Poppins",sans-serif;
+    font-family:var(--body-font);
 
-    background:#f8f8f8;
+    background:var(--background);
 
-    color:#333;
+    color:var(--text);
 
     overflow-x:hidden;
 
+    line-height:1.6;
+
+    -webkit-font-smoothing:antialiased;
+
+    -moz-osx-font-smoothing:grayscale;
+
 }
+
+/* ================= ROOT APP ================= */
 
 #root{
 
@@ -28,13 +66,19 @@ body{
 
 }
 
+/* ================= LINKS ================= */
+
 a{
 
     text-decoration:none;
 
     color:inherit;
 
+    transition:.3s;
+
 }
+
+/* ================= LIST ================= */
 
 ul{
 
@@ -42,13 +86,23 @@ ul{
 
 }
 
+/* ================= BUTTON ================= */
+
 button{
 
     cursor:pointer;
 
-    font-family:inherit;
+    border:none;
+
+    outline:none;
+
+    font-family:var(--body-font);
+
+    transition:.3s;
 
 }
+
+/* ================= IMAGE ================= */
 
 img{
 
@@ -58,15 +112,19 @@ img{
 
 }
 
+/* ================= FORM ================= */
+
 input,
 textarea,
 select{
 
-    font-family:inherit;
+    font-family:var(--body-font);
 
     outline:none;
 
 }
+
+/* ================= CONTAINER ================= */
 
 .container{
 
@@ -78,32 +136,163 @@ select{
 
 }
 
+/* ================= PAGE TITLES ================= */
+
 .title{
 
     text-align:center;
 
-    margin:30px 0;
+    margin:35px 0;
 
-    color:#ff6b00;
+    color:var(--primary);
 
-    font-size:34px;
+    font-size:40px;
 
-    font-weight:bold;
+    font-family:var(--heading-font);
+
+    font-weight:400;
 
 }
+
+/* ================= HEADINGS ================= */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6{
+
+    font-family:var(--heading-font);
+
+    color:var(--dark);
+
+    font-weight:400;
+
+}
+
+/* ================= PARAGRAPH ================= */
+
+p{
+
+    font-family:var(--marathi-font);
+
+    font-size:16px;
+
+    color:var(--text);
+
+    line-height:1.8;
+
+}
+
+/* ================= TABLE ================= */
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    font-family:var(--body-font);
+
+}
+
+/* ================= LABEL ================= */
+
+label{
+
+    font-family:var(--body-font);
+
+    font-weight:500;
+
+}
+
+/* ================= INPUT ================= */
+
+input,
+textarea,
+select{
+
+    border:1px solid #ddd;
+
+    border-radius:8px;
+
+    padding:12px;
+
+    font-size:15px;
+
+}
+
+/* ================= BUTTON DEFAULT ================= */
+
+button{
+
+    font-size:15px;
+
+    font-weight:600;
+
+}
+
+/* ================= SCROLLBAR ================= */
+
+::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#f5f5f5;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#ff6b00;
+
+    border-radius:20px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:#e65c00;
+
+}
+
+/* ================= SELECTION ================= */
+
+::selection{
+
+    background:#ff6b00;
+
+    color:#fff;
+
+}
+
+/* ================= MOBILE ================= */
 
 @media(max-width:768px){
 
-.title{
+    .container{
 
-font-size:26px;
+        width:96%;
 
-}
+    }
 
-.container{
+    .title{
 
-width:96%;
+        font-size:30px;
 
-}
+        margin:25px 0;
+
+    }
+
+    p{
+
+        font-size:15px;
+
+    }
 
 }
