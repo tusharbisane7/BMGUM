@@ -74,9 +74,9 @@ const addAarti = (req, res) => {
 
         ],
 
-        function(err){
+        function (err) {
 
-            if(err){
+            if (err) {
 
                 console.log(err);
 
@@ -86,11 +86,90 @@ const addAarti = (req, res) => {
 
             res.json({
 
-                success:true,
+                success: true,
 
-                message:"Aarti Added",
+                message: "Aarti Added",
 
-                id:this.lastID
+                id: this.lastID
+
+            });
+
+        }
+
+    );
+
+};
+
+// ================= UPDATE AARTI =================
+
+const updateAarti = (req, res) => {
+
+    const {
+
+        name,
+
+        day,
+
+        date,
+
+        time,
+
+        performedBy,
+
+        type,
+
+        status
+
+    } = req.body;
+
+    db.run(
+
+        `UPDATE aarti
+        SET
+        name=?,
+        day=?,
+        date=?,
+        time=?,
+        performedBy=?,
+        type=?,
+        status=?
+        WHERE id=?`,
+
+        [
+
+            name,
+
+            day,
+
+            date,
+
+            time,
+
+            performedBy,
+
+            type,
+
+            status,
+
+            req.params.id
+
+        ],
+
+        function (err) {
+
+            if (err) {
+
+                console.log(err);
+
+                return res.status(500).json(err);
+
+            }
+
+            res.json({
+
+                success: true,
+
+                message: "Aarti Updated"
 
             });
 
@@ -102,7 +181,7 @@ const addAarti = (req, res) => {
 
 // ================= DELETE =================
 
-const deleteAarti = (req,res)=>{
+const deleteAarti = (req, res) => {
 
     db.run(
 
@@ -110,9 +189,9 @@ const deleteAarti = (req,res)=>{
 
         [req.params.id],
 
-        function(err){
+        function (err) {
 
-            if(err){
+            if (err) {
 
                 return res.status(500).json(err);
 
@@ -120,9 +199,9 @@ const deleteAarti = (req,res)=>{
 
             res.json({
 
-                success:true,
+                success: true,
 
-                message:"Aarti Deleted"
+                message: "Aarti Deleted"
 
             });
 
@@ -132,11 +211,13 @@ const deleteAarti = (req,res)=>{
 
 };
 
-module.exports={
+module.exports = {
 
     getAarti,
 
     addAarti,
+
+    updateAarti,
 
     deleteAarti
 

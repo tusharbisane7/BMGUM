@@ -8,13 +8,19 @@ const {
 
     addAarti,
 
+    updateAarti,
+
     deleteAarti
 
 } = require("../controllers/aartiController");
 
+// ================= ROUTES =================
+
 router.get("/", getAarti);
 
 router.post("/", addAarti);
+
+router.put("/:id", updateAarti);
 
 router.delete("/:id", deleteAarti);
 
