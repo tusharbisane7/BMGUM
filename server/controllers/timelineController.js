@@ -10,7 +10,6 @@ const getTimeline = async (req, res) => {
             SELECT
                 id,
                 title,
-                icon,
                 eventdate AS "eventDate",
                 description
             FROM timeline
@@ -46,11 +45,7 @@ const addTimeline = async (req, res) => {
         const {
 
             title,
-
-            icon,
-
             eventDate,
-
             description
 
         } = req.body;
@@ -60,21 +55,16 @@ const addTimeline = async (req, res) => {
             `INSERT INTO timeline
             (
                 title,
-                icon,
                 eventdate,
                 description
             )
-            VALUES($1,$2,$3,$4)
+            VALUES($1,$2,$3)
             RETURNING id`,
 
             [
 
                 title,
-
-                icon,
-
                 eventDate,
-
                 description
 
             ]
@@ -118,11 +108,7 @@ const updateTimeline = async (req, res) => {
         const {
 
             title,
-
-            icon,
-
             eventDate,
-
             description
 
         } = req.body;
@@ -132,21 +118,15 @@ const updateTimeline = async (req, res) => {
             `UPDATE timeline
              SET
                 title=$1,
-                icon=$2,
-                eventdate=$3,
-                description=$4
-             WHERE id=$5`,
+                eventdate=$2,
+                description=$3
+             WHERE id=$4`,
 
             [
 
                 title,
-
-                icon,
-
                 eventDate,
-
                 description,
-
                 req.params.id
 
             ]
@@ -187,7 +167,8 @@ const deleteTimeline = async (req, res) => {
 
         await pool.query(
 
-            "DELETE FROM timeline WHERE id=$1",
+            `DELETE FROM timeline
+             WHERE id=$1`,
 
             [
 
@@ -226,11 +207,8 @@ const deleteTimeline = async (req, res) => {
 module.exports = {
 
     getTimeline,
-
     addTimeline,
-
     updateTimeline,
-
     deleteTimeline
 
 };

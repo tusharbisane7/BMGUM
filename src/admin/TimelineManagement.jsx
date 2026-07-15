@@ -6,7 +6,9 @@ import {
   FaPlus,
   FaEdit,
   FaTrash,
-  FaSearch
+  FaSearch,
+  FaSave,
+  FaUndo
 } from "react-icons/fa";
 
 import "../styles/admin/timelinemanagement.css";
@@ -16,28 +18,58 @@ const API = "https://bmgum.onrender.com";
 function TimelineManagement() {
 
   const [timeline, setTimeline] = useState([]);
+
+  const [loading, setLoading] = useState(false);
+
   const [search, setSearch] = useState("");
+
   const [editingId, setEditingId] = useState(null);
 
   const [form, setForm] = useState({
+
     title: "",
+
     eventDate: "",
+
     description: ""
+
   });
 
-  // ================= FETCH =================
+  // ================= LOAD TIMELINE =================
 
   const fetchTimeline = async () => {
 
     try {
 
-      const res = await axios.get(`${API}/api/timeline`);
+      setLoading(true);
 
-      setTimeline(res.data);
+      const res = await axios.get(
 
-    } catch (err) {
+        `${API}/api/timeline`
+
+      );
+
+      setTimeline(
+
+        Array.isArray(res.data)
+
+          ? res.data
+
+          : []
+
+      );
+
+    }
+
+    catch (err) {
 
       console.log(err);
+
+    }
+
+    finally {
+
+      setLoading(false);
 
     }
 
@@ -49,7 +81,7 @@ function TimelineManagement() {
 
   }, []);
 
-  // ================= INPUT =================
+  // ================= HANDLE INPUT =================
 
   const handleChange = (e) => {
 
@@ -63,7 +95,24 @@ function TimelineManagement() {
 
   };
 
-  // ================= SAVE =================
+  // ================= RESET FORM =================
+
+  const clearForm = () => {
+
+    setEditingId(null);
+
+    setForm({
+
+      title: "",
+
+      eventDate: "",
+
+      description: ""
+
+    });
+
+  };
+    // ================= SAVE =================
 
   const handleSubmit = async (e) => {
 
@@ -77,19 +126,37 @@ function TimelineManagement() {
 
           `${API}/api/timeline/${editingId}`,
 
-          form
+          {
+
+            title: form.title,
+
+            eventDate: form.eventDate,
+
+            description: form.description
+
+          }
 
         );
 
         alert("कार्यक्रम अपडेट झाला.");
 
-      } else {
+      }
+
+      else {
 
         await axios.post(
 
           `${API}/api/timeline`,
 
-          form
+          {
+
+            title: form.title,
+
+            eventDate: form.eventDate,
+
+            description: form.description
+
+          }
 
         );
 
@@ -97,23 +164,23 @@ function TimelineManagement() {
 
       }
 
-      setForm({
-
-        title: "",
-        eventDate: "",
-        description: ""
-
-      });
-
-      setEditingId(null);
+      clearForm();
 
       fetchTimeline();
 
-    } catch (err) {
+    }
+
+    catch (err) {
 
       console.log(err);
 
-      alert("डेटा सेव्ह करण्यात त्रुटी आली.");
+      alert(
+
+        err.response?.data?.message ||
+
+        "डेटा सेव्ह करण्यात त्रुटी आली."
+
+      );
 
     }
 
@@ -123,39 +190,51 @@ function TimelineManagement() {
 
   const handleEdit = (item) => {
 
-  setEditingId(item.id);
+    setEditingId(item.id);
 
-  setForm({
+    setForm({
 
-    title: item.title || "",
+      title: item.title || "",
 
-    eventDate: item.eventdate
-      ? item.eventdate.substring(0,10)
-      : item.eventDate
-      ? item.eventDate.substring(0,10)
-      : "",
+      eventDate:
+item.eventDate
+? new Date(item.eventDate)
 
-    description: item.description || ""
+              .toISOString()
 
-  });
+              .split("T")[0]
 
-  window.scrollTo({
+          : "",
 
-    top:0,
+      description: item.description || ""
 
-    behavior:"smooth"
+    });
 
-  });
+    window.scrollTo({
 
-};
+      top: 0,
+
+      behavior: "smooth"
+
+    });
+
+  };
 
   // ================= DELETE =================
 
   const handleDelete = async (id) => {
 
-    const ok = window.confirm("हा कार्यक्रम हटवायचा आहे का?");
+    if (
 
-    if (!ok) return;
+      !window.confirm(
+
+        "हा कार्यक्रम हटवायचा आहे का?"
+
+      )
+
+    )
+
+      return;
 
     try {
 
@@ -169,7 +248,9 @@ function TimelineManagement() {
 
       fetchTimeline();
 
-    } catch (err) {
+    }
+
+    catch (err) {
 
       console.log(err);
 
@@ -181,33 +262,45 @@ function TimelineManagement() {
 
   // ================= SEARCH =================
 
-const filteredTimeline = timeline.filter(
+  const filteredTimeline = timeline.filter(
 
-  (item)=>
+    (item) =>
 
-    (item.title || "")
+      (item.title || "")
 
-      .toLowerCase()
+        .toLowerCase()
 
-      .includes(search.toLowerCase())
+        .includes(search.toLowerCase())
 
-);
+  );
 
   return (
 
-    <div className="timeline-page">
+    <div className="timeline-page">      {/* ================= HEADER ================= */}
 
-      <h1>📅 कार्यक्रम व्यवस्थापन</h1>
+      <div className="page-title">
 
-      {/* Summary */}
+        <FaCalendarAlt className="title-icon" />
 
-      <div className="summary-grid">
+        <div>
 
-        <div className="summary-card">
+          <h1>कार्यक्रम व्यवस्थापन</h1>
 
-          <FaCalendarAlt />
+          <p>Add, Edit & Manage Timeline Events</p>
 
-          <h3>एकूण कार्यक्रम</h3>
+        </div>
+
+      </div>
+
+      {/* ================= SUMMARY ================= */}
+
+      <div className="summary-card">
+
+        <div className="summary-box">
+
+          <FaCalendarAlt className="summary-icon" />
+
+          <h3>Total Events</h3>
 
           <h2>{timeline.length}</h2>
 
@@ -215,93 +308,163 @@ const filteredTimeline = timeline.filter(
 
       </div>
 
-      {/* Form */}
+      {/* ================= FORM ================= */}
 
-      <form
-        className="timeline-form"
-        onSubmit={handleSubmit}
-      >
+      <div className="timeline-card">
 
-        <h2>
+        <form
 
-          {editingId
+          className="timeline-form"
 
-            ? "✏️ कार्यक्रम अपडेट करा"
+          onSubmit={handleSubmit}
 
-            : "➕ नवीन कार्यक्रम जोडा"}
-
-        </h2>
-
-        <div className="form-grid">
-
-          <input
-
-            type="text"
-
-            name="title"
-
-            placeholder="कार्यक्रमाचे नाव"
-
-            value={form.title}
-
-            onChange={handleChange}
-
-            required
-
-          />
-
-          <input
-
-            type="date"
-
-            name="eventDate"
-
-            value={form.eventDate}
-
-            onChange={handleChange}
-
-            required
-
-          />
-
-          <textarea
-
-            name="description"
-
-            placeholder="कार्यक्रमाचे वर्णन"
-
-            rows="4"
-
-            value={form.description}
-
-            onChange={handleChange}
-
-            required
-
-          />
-
-        </div>
-
-        <button
-          type="submit"
-          className="save-btn"
         >
 
-          <FaPlus />
+          <h2>
 
-          {editingId
+            {
 
-            ? " अपडेट करा"
+              editingId
 
-            : " कार्यक्रम जोडा"}
+              ?
 
-        </button>
+              "✏️ कार्यक्रम अपडेट करा"
 
-      </form>
+              :
 
-      {/* Search */}
+              "➕ नवीन कार्यक्रम जोडा"
 
-      <div className="search-bar">
+            }
+
+          </h2>
+
+          <div className="form-grid">
+
+            {/* Title */}
+
+            <div className="form-group">
+
+              <label>कार्यक्रमाचे नाव</label>
+
+              <input
+
+                type="text"
+
+                name="title"
+
+                placeholder="कार्यक्रमाचे नाव"
+
+                value={form.title}
+
+                onChange={handleChange}
+
+                required
+
+              />
+
+            </div>
+
+            {/* Date */}
+
+            <div className="form-group">
+
+              <label>कार्यक्रमाची तारीख</label>
+
+              <input
+
+                type="date"
+
+                name="eventDate"
+
+                value={form.eventDate}
+
+                onChange={handleChange}
+
+                required
+
+              />
+
+            </div>
+
+            {/* Description */}
+
+            <div className="form-group full">
+
+              <label>वर्णन</label>
+
+              <textarea
+
+                rows="5"
+
+                name="description"
+
+                placeholder="कार्यक्रमाचे वर्णन"
+
+                value={form.description}
+
+                onChange={handleChange}
+
+                required
+
+              />
+
+            </div>
+
+          </div>
+
+          <div className="button-group">
+
+            <button
+
+              type="submit"
+
+              className="save-btn"
+
+            >
+
+              <FaSave />
+
+              {
+
+                editingId
+
+                ?
+
+                " Update Event"
+
+                :
+
+                " Save Event"
+
+              }
+
+            </button>
+
+            <button
+
+              type="button"
+
+              className="clear-btn"
+
+              onClick={clearForm}
+
+            >
+
+              <FaUndo />
+
+              Clear
+
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+      {/* ================= SEARCH ================= */}
+
+      <div className="search-box">
 
         <FaSearch />
 
@@ -309,153 +472,199 @@ const filteredTimeline = timeline.filter(
 
           type="text"
 
-          placeholder="कार्यक्रम शोधा..."
+          placeholder="Search Event..."
 
           value={search}
 
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e)=>
+
+            setSearch(e.target.value)
+
+          }
 
         />
 
-      </div>
+      </div>      {/* ================= TABLE ================= */}
 
-      {/* Table */}
+      <div className="table-card">
 
-      <div className="table-container">
+        <div className="table-header">
 
-        <table className="timeline-table">
+          <h2>Timeline Records</h2>
 
-          <thead>
+        </div>
 
-            <tr>
+        {
 
-              <th>क्र.</th>
+          loading
 
-              <th>कार्यक्रम</th>
+          ?
 
-              <th>तारीख</th>
+          (
 
-              <th>वर्णन</th>
+            <div className="loading">
 
-              <th>क्रिया</th>
+              Loading Timeline...
 
-            </tr>
+            </div>
 
-          </thead>
+          )
 
-          <tbody>
+          :
 
-{
+          (
 
-filteredTimeline.length>0 ?
+            <table className="timeline-table">
 
-(
+              <thead>
 
-filteredTimeline.map((item)=>(
+                <tr>
 
-<tr key={item.id}>
+                  <th>ID</th>
 
-<td>{item.id}</td>
+                  <th>कार्यक्रम</th>
 
-<td>{item.title}</td>
+                  <th>तारीख</th>
 
-<td>
+                  <th>वर्णन</th>
 
-{
+                  <th>Action</th>
 
-item.eventdate
+                </tr>
 
+              </thead>
+
+              <tbody>
+
+                {
+
+                  filteredTimeline.length === 0
+
+                  ?
+
+                  (
+
+                    <tr>
+
+                      <td
+
+                        colSpan="5"
+
+                        className="no-data"
+
+                      >
+
+                        कोणताही कार्यक्रम उपलब्ध नाही.
+
+                      </td>
+
+                    </tr>
+
+                  )
+
+                  :
+
+                  (
+
+                    filteredTimeline.map((item)=>(
+
+                      <tr key={item.id}>
+
+                        <td>
+
+                          {item.id}
+
+                        </td>
+
+                        <td>
+
+                          {item.title}
+
+                        </td>
+
+                        <td>
+
+                          {
+
+                            item.eventDate
 ?
-
-new Date(item.eventdate)
-
-.toLocaleDateString("en-GB")
-
-:
-
-item.eventDate
-
-?
-
 new Date(item.eventDate)
 
-.toLocaleDateString("en-GB")
+                              .toLocaleDateString("en-GB")
 
-:
+                            :
 
-"-"
+                            "-"
 
-}
+                          }
 
-</td>
+                        </td>
 
-<td>{item.description}</td>
+                        <td>
 
-<td>
+                          {item.description}
 
-<button
+                        </td>
 
-type="button"
+                        <td>
 
-className="edit-btn"
+                          <div className="action-buttons">
 
-onClick={()=>handleEdit(item)}
+                            <button
 
->
+                              type="button"
 
-<FaEdit/>
+                              className="edit-btn"
 
-</button>
+                              onClick={()=>
 
-<button
+                                handleEdit(item)
 
-type="button"
+                              }
 
-className="delete-btn"
+                            >
 
-onClick={()=>handleDelete(item.id)}
+                              <FaEdit />
 
->
+                            </button>
 
-<FaTrash/>
+                            <button
 
-</button>
+                              type="button"
 
-</td>
+                              className="delete-btn"
 
-</tr>
+                              onClick={()=>
 
-))
+                                handleDelete(item.id)
 
-)
+                              }
 
-:
+                            >
 
-(
+                              <FaTrash />
 
-<tr>
+                            </button>
 
-<td
+                          </div>
 
-colSpan="5"
+                        </td>
 
-className="no-data"
+                      </tr>
 
->
+                    ))
 
-कोणताही कार्यक्रम उपलब्ध नाही.
+                  )
 
-</td>
+                }
 
-</tr>
+              </tbody>
 
-)
+            </table>
 
-}
+          )
 
-</tbody>
-
-        </table>
+        }
 
       </div>
 
