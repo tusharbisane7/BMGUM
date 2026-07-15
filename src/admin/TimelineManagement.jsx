@@ -11,6 +11,8 @@ import {
 
 import "../styles/admin/timelinemanagement.css";
 
+const API = "https://bmgum.onrender.com";
+
 function TimelineManagement() {
 
   const [timeline, setTimeline] = useState([]);
@@ -23,21 +25,17 @@ function TimelineManagement() {
     description: ""
   });
 
-  // ================= FETCH TIMELINE =================
+  // ================= FETCH =================
 
   const fetchTimeline = async () => {
 
     try {
 
-      const res = await axios.get(
-        "https://bmgum.onrender.com/api/timeline"
-      );
+      const res = await axios.get(`${API}/api/timeline`);
 
       setTimeline(res.data);
 
-    }
-
-    catch (err) {
+    } catch (err) {
 
       console.log(err);
 
@@ -77,7 +75,7 @@ function TimelineManagement() {
 
         await axios.put(
 
-          `http://localhost:5000/api/timeline/${editingId}`,
+          `${API}/api/timeline/${editingId}`,
 
           form
 
@@ -85,13 +83,11 @@ function TimelineManagement() {
 
         alert("कार्यक्रम अपडेट झाला.");
 
-      }
-
-      else {
+      } else {
 
         await axios.post(
 
-          "https://bmgum.onrender.com/api/timeline",
+          `${API}/api/timeline`,
 
           form
 
@@ -113,9 +109,7 @@ function TimelineManagement() {
 
       fetchTimeline();
 
-    }
-
-    catch (err) {
+    } catch (err) {
 
       console.log(err);
 
@@ -153,9 +147,7 @@ function TimelineManagement() {
 
   const handleDelete = async (id) => {
 
-    const ok = window.confirm(
-      "हा कार्यक्रम हटवायचा आहे का?"
-    );
+    const ok = window.confirm("हा कार्यक्रम हटवायचा आहे का?");
 
     if (!ok) return;
 
@@ -163,17 +155,19 @@ function TimelineManagement() {
 
       await axios.delete(
 
-        `http://localhost:5000/api/timeline/${id}`
+        `${API}/api/timeline/${id}`
 
       );
 
+      alert("कार्यक्रम हटविण्यात आला.");
+
       fetchTimeline();
 
-    }
-
-    catch (err) {
+    } catch (err) {
 
       console.log(err);
+
+      alert("Delete Failed");
 
     }
 
@@ -183,9 +177,7 @@ function TimelineManagement() {
 
   const filteredTimeline = timeline.filter((item) =>
 
-    item.title
-      .toLowerCase()
-      .includes(search.toLowerCase())
+    item.title.toLowerCase().includes(search.toLowerCase())
 
   );
 
@@ -193,13 +185,9 @@ function TimelineManagement() {
 
     <div className="timeline-page">
 
-      <h1>
+      <h1>📅 कार्यक्रम व्यवस्थापन</h1>
 
-        📅 कार्यक्रम व्यवस्थापन
-
-      </h1>
-
-      {/* Dashboard Cards */}
+      {/* Summary */}
 
       <div className="summary-grid">
 
@@ -214,7 +202,8 @@ function TimelineManagement() {
         </div>
 
       </div>
-            {/* ================= FORM ================= */}
+
+      {/* Form */}
 
       <form
         className="timeline-form"
@@ -224,7 +213,9 @@ function TimelineManagement() {
         <h2>
 
           {editingId
+
             ? "✏️ कार्यक्रम अपडेट करा"
+
             : "➕ नवीन कार्यक्रम जोडा"}
 
         </h2>
@@ -232,29 +223,49 @@ function TimelineManagement() {
         <div className="form-grid">
 
           <input
+
             type="text"
+
             name="title"
+
             placeholder="कार्यक्रमाचे नाव"
+
             value={form.title}
+
             onChange={handleChange}
+
             required
+
           />
 
           <input
+
             type="date"
+
             name="eventDate"
+
             value={form.eventDate}
+
             onChange={handleChange}
+
             required
+
           />
 
           <textarea
+
             name="description"
+
             placeholder="कार्यक्रमाचे वर्णन"
+
             rows="4"
+
             value={form.description}
+
             onChange={handleChange}
+
             required
+
           />
 
         </div>
@@ -267,118 +278,132 @@ function TimelineManagement() {
           <FaPlus />
 
           {editingId
+
             ? " अपडेट करा"
+
             : " कार्यक्रम जोडा"}
 
         </button>
 
       </form>
 
-      {/* ================= SEARCH ================= */}
+      {/* Search */}
 
       <div className="search-bar">
 
         <FaSearch />
 
         <input
+
           type="text"
+
           placeholder="कार्यक्रम शोधा..."
+
           value={search}
+
           onChange={(e) => setSearch(e.target.value)}
+
         />
 
       </div>
 
-      {/* ================= TABLE ================= */}
+      {/* Table */}
 
       <div className="table-container">
 
         <table className="timeline-table">
 
-         <thead>
+          <thead>
 
-  <tr>
+            <tr>
 
-    <th>क्र.</th>
+              <th>क्र.</th>
 
-    <th>कार्यक्रम</th>
+              <th>कार्यक्रम</th>
 
-    <th>तारीख</th>
+              <th>तारीख</th>
 
-    <th>वर्णन</th>
+              <th>वर्णन</th>
 
-    <th>क्रिया</th>
+              <th>क्रिया</th>
 
-  </tr>
+            </tr>
 
-</thead>
+          </thead>
 
-<tbody>
+          <tbody>
 
-  {filteredTimeline.length > 0 ? (
+            {filteredTimeline.length > 0 ? (
 
-    filteredTimeline.map((item) => (
+              filteredTimeline.map((item) => (
 
-      <tr key={item.id}>
+                <tr key={item.id}>
 
-        <td>{item.id}</td>
+                  <td>{item.id}</td>
 
-        <td>{item.title}</td>
+                  <td>{item.title}</td>
 
-        <td>
-          {new Date(item.eventDate).toLocaleDateString("en-GB")}
-        </td>
+                  <td>
 
-        <td>{item.description}</td>
+                    {new Date(item.eventDate).toLocaleDateString("en-GB")}
 
-        <td>
+                  </td>
 
-          <button
-            type="button"
-            className="edit-btn"
-            onClick={() => handleEdit(item)}
-          >
+                  <td>{item.description}</td>
 
-            <FaEdit />
+                  <td>
 
-          </button>
+                    <button
 
-          <button
-            type="button"
-            className="delete-btn"
-            onClick={() => handleDelete(item.id)}
-          >
+                      type="button"
 
-            <FaTrash />
+                      className="edit-btn"
 
-          </button>
+                      onClick={() => handleEdit(item)}
 
-        </td>
+                    >
 
-      </tr>
+                      <FaEdit />
 
-    ))
+                    </button>
 
-  ) : (
+                    <button
 
-    <tr>
+                      type="button"
 
-      <td
-        colSpan="5"
-        className="no-data"
-      >
+                      className="delete-btn"
 
-        कोणताही कार्यक्रम उपलब्ध नाही.
+                      onClick={() => handleDelete(item.id)}
 
-      </td>
+                    >
 
-    </tr>
+                      <FaTrash />
 
-  )}
+                    </button>
 
-</tbody>
+                  </td>
 
-</table>
+                </tr>
+
+              ))
+
+            ) : (
+
+              <tr>
+
+                <td colSpan="5" className="no-data">
+
+                  कोणताही कार्यक्रम उपलब्ध नाही.
+
+                </td>
+
+              </tr>
+
+            )}
+
+          </tbody>
+
+        </table>
 
       </div>
 
