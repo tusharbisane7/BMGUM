@@ -6,7 +6,7 @@ import { Autoplay, EffectFade } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/effect-fade";
 
-import PranayImg from "../assets/images/pranay.png";
+import PranayImg from "../assets/images/pranay.jpg";
 import DarshanImg from "../assets/images/darshan.png";
 import ManishImg from "../assets/images/manish.JPG";
 import TusharImg from "../assets/images/tushar.jpg";
@@ -17,9 +17,9 @@ const members = [
 
   {
     id: 1,
-    name: "प्रणय जावंजाळ",
+    name: "प्रणय जवंजाळ",
     position: "अध्यक्ष",
-    phone: "9876543210",
+    phone: "8261874483",
     image: PranayImg,
   },
 
@@ -27,7 +27,7 @@ const members = [
     id: 2,
     name: "दर्शन भागवत",
     position: "उपाध्यक्ष",
-    phone: "9876543211",
+    phone: "9604887614",
     image: DarshanImg,
   },
 
@@ -35,7 +35,7 @@ const members = [
     id: 3,
     name: "मनीष लव्हाळे",
     position: "सचिव",
-    phone: "9876543212",
+    phone: "9067975438",
     image: ManishImg,
   },
 
@@ -43,15 +43,15 @@ const members = [
     id: 4,
     name: "तुषार बिसने",
     position: "कोषाध्यक्ष",
-    phone: "9876543213",
+    phone: "9673279153",
     image: TusharImg,
   },
 
   {
     id: 5,
     name: "वेदान्त गाडगे",
-    position: "सहसचिव",
-    phone: "9876543214",
+    position: "कोषाध्यक्ष",
+    phone: "9356713339",
     image: VedantImg,
   },
 
@@ -59,7 +59,7 @@ const members = [
     id: 6,
     name: "गोपाल घोडे",
     position: "व्यवस्थापक",
-    phone: "9876543215",
+    phone: "8999873184",
     image: GopalImg,
   },
 

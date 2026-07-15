@@ -1,179 +1,180 @@
-const db = require("../config/db");
+const pool = require("../config/neon");
 
-const getDashboard = (req, res) => {
+// ================= DASHBOARD =================
 
-    const dashboard = {
+const getDashboard = async (req, res) => {
 
-        totalDonation: 0,
+    try {
 
-        totalExpense: 0,
+        const dashboard = {
 
-        balance: 0,
+            totalDonation: 0,
+            totalExpense: 0,
+            balance: 0,
+            totalDonors: 0,
+            activeNotices: 0,
+            recentDonations: [],
+            recentExpenses: [],
+            notices: []
 
-        totalDonors: 0,
+        };
 
-        activeNotices: 0,
+        // ================= DONATION =================
 
-        recentDonations: [],
+        const donation = await pool.query(
 
-        recentExpenses: [],
+            `SELECT
 
-        notices: []
+                COALESCE(SUM(amount),0) AS totalDonation,
 
-    };
+                COUNT(*) AS totalDonors
 
-    // Total Donation
-    db.get(
-        "SELECT IFNULL(SUM(amount),0) AS totalDonation, COUNT(*) AS totalDonors FROM donations",
-        [],
-        (err, donation) => {
+             FROM donations`
 
-            if (err) {
+        );
 
-                console.log(err);
+        dashboard.totalDonation = Number(
 
-                return res.status(500).json(err);
+            donation.rows[0].totaldonation
 
-            }
+        );
 
-            dashboard.totalDonation = donation.totalDonation || 0;
-            dashboard.totalDonors = donation.totalDonors || 0;
+        dashboard.totalDonors = Number(
 
-            // Total Expense
-            db.get(
-                "SELECT IFNULL(SUM(amount),0) AS totalExpense FROM expenses",
-                [],
-                (err, expense) => {
+            donation.rows[0].totaldonors
 
-                    if (err) {
+        );
 
-                        console.log(err);
+        // ================= EXPENSE =================
 
-                        return res.status(500).json(err);
+        const expense = await pool.query(
 
-                    }
+            `SELECT
 
-                    dashboard.totalExpense = expense.totalExpense || 0;
+                COALESCE(SUM(amount),0) AS totalExpense
 
-                    dashboard.balance =
-                        dashboard.totalDonation -
-                        dashboard.totalExpense;
+             FROM expenses`
 
-                    // Notice Count
-                    db.get(
-                        "SELECT COUNT(*) AS activeNotices FROM notices",
-                        [],
-                        (err, noticeCount) => {
+        );
 
-                            if (err) {
+        dashboard.totalExpense = Number(
 
-                                console.log(err);
+            expense.rows[0].totalexpense
 
-                                return res.status(500).json(err);
+        );
 
-                            }
+        dashboard.balance =
 
-                            dashboard.activeNotices =
-                                noticeCount.activeNotices || 0;
+            dashboard.totalDonation -
 
-                            // Recent Donations
-                            db.all(
-                                `SELECT
-                                    id,
-                                    donorName,
-                                    amount,
-                                    pendingAmount,
-                                    date,
-                                    time,
-                                    receipt
-                                 FROM donations
-                                 ORDER BY id DESC
-                                 LIMIT 5`,
-                                [],
-                                (err, donations) => {
+            dashboard.totalExpense;
 
-                                    if (err) {
+        // ================= NOTICES COUNT =================
 
-                                        console.log(err);
+        const noticeCount = await pool.query(
 
-                                        return res.status(500).json(err);
+            `SELECT COUNT(*) AS activeNotices
 
-                                    }
+             FROM notices`
 
-                                    dashboard.recentDonations = donations;
+        );
 
-                                    // Recent Expenses
-                                    db.all(
-                                        `SELECT
-                                            id,
-                                            title,
-                                            amount,
-                                            category,
-                                            date,
-                                            time,
-                                            bill
-                                         FROM expenses
-                                         ORDER BY id DESC
-                                         LIMIT 5`,
-                                        [],
-                                        (err, expenses) => {
+        dashboard.activeNotices = Number(
 
-                                            if (err) {
+            noticeCount.rows[0].activenotices
 
-                                                console.log(err);
+        );
 
-                                                return res.status(500).json(err);
+        // ================= RECENT DONATIONS =================
 
-                                            }
+        const donations = await pool.query(
 
-                                            dashboard.recentExpenses = expenses;
+            `SELECT
 
-                                            // Notices
-                                            db.all(
-                                                `SELECT
-                                                    id,
-                                                    title,
-                                                    type,
-                                                    description,
-                                                    startDate,
-                                                    endDate,
-                                                    pinned,
-                                                    status
-                                                 FROM notices
-                                                 ORDER BY id DESC
-                                                 LIMIT 5`,
-                                                [],
-                                                (err, notices) => {
+                id,
+                donorName,
+                amount,
+                pendingAmount,
+                date,
+                time,
+                receipt
 
-                                                    if (err) {
+             FROM donations
 
-                                                        console.log(err);
+             ORDER BY id DESC
 
-                                                        return res.status(500).json(err);
+             LIMIT 5`
 
-                                                    }
+        );
 
-                                                    dashboard.notices = notices;
+        dashboard.recentDonations = donations.rows;
 
-                                                    res.json(dashboard);
+        // ================= RECENT EXPENSES =================
 
-                                                }
-                                            );
+        const expenses = await pool.query(
 
-                                        }
-                                    );
+            `SELECT
 
-                                }
-                            );
+                id,
+                title,
+                amount,
+                category,
+                date,
+                time,
+                bill
 
-                        }
-                    );
+             FROM expenses
 
-                }
-            );
+             ORDER BY id DESC
 
-        }
-    );
+             LIMIT 5`
+
+        );
+
+        dashboard.recentExpenses = expenses.rows;
+
+        // ================= RECENT NOTICES =================
+
+        const notices = await pool.query(
+
+            `SELECT
+
+                id,
+                title,
+                type,
+                description,
+                startDate,
+                endDate,
+                pinned,
+                status
+
+             FROM notices
+
+             ORDER BY id DESC
+
+             LIMIT 5`
+
+        );
+
+        dashboard.notices = notices.rows;
+
+        res.json(dashboard);
+
+    }
+
+    catch (err) {
+
+        console.log(err);
+
+        res.status(500).json({
+
+            success: false,
+
+            message: err.message
+
+        });
+
+    }
 
 };
 

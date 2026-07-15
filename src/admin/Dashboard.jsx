@@ -533,7 +533,7 @@ function Dashboard() {
           {item.receipt ? (
 
             <a
-              href={`http://localhost:5000/uploads/receipts/${item.receipt}`}
+              href={`https://bmgum.onrender.com/uploads/receipts/${item.receipt}`}
               target="_blank"
               rel="noreferrer"
             >
@@ -635,7 +635,7 @@ function Dashboard() {
           {item.bill ? (
 
             <a
-              href={`http://localhost:5000/uploads/bills/${item.bill}`}
+              href={`https://bmgum.onrender.com/uploads/bills/${item.bill}`}
               target="_blank"
               rel="noreferrer"
             >

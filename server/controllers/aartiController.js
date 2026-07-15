@@ -1,213 +1,195 @@
-const db = require("../config/db");
+const pool = require("../config/neon");
 
 // ================= GET ALL AARTI =================
 
-const getAarti = (req, res) => {
+const getAarti = async (req, res) => {
 
-    db.all(
+    try {
 
-        "SELECT * FROM aarti ORDER BY date ASC",
+        const result = await pool.query(
 
-        [],
+            `SELECT * FROM aarti
+             ORDER BY date ASC`
 
-        (err, rows) => {
+        );
 
-            if (err) {
+        res.json(result.rows);
 
-                console.log(err);
+    }
 
-                return res.status(500).json(err);
+    catch (err) {
 
-            }
+        console.log(err);
 
-            res.json(rows);
+        res.status(500).json(err);
 
-        }
-
-    );
+    }
 
 };
 
 // ================= ADD AARTI =================
 
-const addAarti = (req, res) => {
+const addAarti = async (req, res) => {
 
-    const {
+    try {
 
-        name,
-
-        day,
-
-        date,
-
-        time,
-
-        performedBy,
-
-        type,
-
-        status
-
-    } = req.body;
-
-    db.run(
-
-        `INSERT INTO aarti
-        (name,day,date,time,performedBy,type,status)
-        VALUES(?,?,?,?,?,?,?)`,
-
-        [
+        const {
 
             name,
-
             day,
-
             date,
-
             time,
-
             performedBy,
-
             type,
-
             status
 
-        ],
+        } = req.body;
 
-        function (err) {
+        const result = await pool.query(
 
-            if (err) {
+            `INSERT INTO aarti
+            (name, day, date, time, performedBy, type, status)
+            VALUES ($1,$2,$3,$4,$5,$6,$7)
+            RETURNING id`,
 
-                console.log(err);
+            [
 
-                return res.status(500).json(err);
+                name,
+                day,
+                date,
+                time,
+                performedBy,
+                type,
+                status
 
-            }
+            ]
 
-            res.json({
+        );
 
-                success: true,
+        res.json({
 
-                message: "Aarti Added",
+            success: true,
 
-                id: this.lastID
+            message: "Aarti Added",
 
-            });
+            id: result.rows[0].id
 
-        }
+        });
 
-    );
+    }
+
+    catch (err) {
+
+        console.log(err);
+
+        res.status(500).json(err);
+
+    }
 
 };
 
 // ================= UPDATE AARTI =================
 
-const updateAarti = (req, res) => {
+const updateAarti = async (req, res) => {
 
-    const {
+    try {
 
-        name,
-
-        day,
-
-        date,
-
-        time,
-
-        performedBy,
-
-        type,
-
-        status
-
-    } = req.body;
-
-    db.run(
-
-        `UPDATE aarti
-        SET
-        name=?,
-        day=?,
-        date=?,
-        time=?,
-        performedBy=?,
-        type=?,
-        status=?
-        WHERE id=?`,
-
-        [
+        const {
 
             name,
-
             day,
-
             date,
-
             time,
-
             performedBy,
-
             type,
+            status
 
-            status,
+        } = req.body;
 
-            req.params.id
+        await pool.query(
 
-        ],
+            `UPDATE aarti
+             SET
+                name=$1,
+                day=$2,
+                date=$3,
+                time=$4,
+                performedBy=$5,
+                type=$6,
+                status=$7
+             WHERE id=$8`,
 
-        function (err) {
+            [
 
-            if (err) {
+                name,
+                day,
+                date,
+                time,
+                performedBy,
+                type,
+                status,
+                req.params.id
 
-                console.log(err);
+            ]
 
-                return res.status(500).json(err);
+        );
 
-            }
+        res.json({
 
-            res.json({
+            success: true,
 
-                success: true,
+            message: "Aarti Updated"
 
-                message: "Aarti Updated"
+        });
 
-            });
+    }
 
-        }
+    catch (err) {
 
-    );
+        console.log(err);
+
+        res.status(500).json(err);
+
+    }
 
 };
 
 // ================= DELETE =================
 
-const deleteAarti = (req, res) => {
+const deleteAarti = async (req, res) => {
 
-    db.run(
+    try {
 
-        "DELETE FROM aarti WHERE id=?",
+        await pool.query(
 
-        [req.params.id],
+            `DELETE FROM aarti
+             WHERE id=$1`,
 
-        function (err) {
+            [
 
-            if (err) {
+                req.params.id
 
-                return res.status(500).json(err);
+            ]
 
-            }
+        );
 
-            res.json({
+        res.json({
 
-                success: true,
+            success: true,
 
-                message: "Aarti Deleted"
+            message: "Aarti Deleted"
 
-            });
+        });
 
-        }
+    }
 
-    );
+    catch (err) {
+
+        console.log(err);
+
+        res.status(500).json(err);
+
+    }
 
 };
 

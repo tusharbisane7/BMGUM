@@ -1,188 +1,168 @@
-const db = require("../config/db");
+const pool = require("../config/neon");
 
-const getHomeData = (req, res) => {
+// ================= HOME DATA =================
 
-    const homeData = {
+const getHomeData = async (req, res) => {
 
-        totalDonation: 0,
+    try {
 
-        totalExpense: 0,
+        const homeData = {
 
-        balance: 0,
+            totalDonation: 0,
 
-        totalDonors: 0,
+            totalExpense: 0,
 
-        recentDonations: [],
+            balance: 0,
 
-        recentExpenses: [],
+            totalDonors: 0,
 
-        notices: []
+            recentDonations: [],
 
-    };
+            recentExpenses: [],
 
-    // ================= TOTAL DONATION & DONORS =================
+            notices: []
 
-    db.get(
+        };
 
-        `SELECT
-            IFNULL(SUM(amount),0) AS totalDonation,
-            COUNT(*) AS totalDonors
-         FROM donations`,
+        // ================= TOTAL DONATION =================
 
-        [],
+        const donation = await pool.query(
 
-        (err, donation) => {
+            `SELECT
 
-            if (err) {
+                COALESCE(SUM(amount),0) AS totalDonation,
 
-                console.log(err);
+                COUNT(*) AS totalDonors
 
-                return res.status(500).json({
-                    message: "Database Error"
-                });
+             FROM donations`
 
-            }
+        );
 
-            homeData.totalDonation = donation.totalDonation || 0;
+        homeData.totalDonation = Number(
 
-            homeData.totalDonors = donation.totalDonors || 0;
+            donation.rows[0].totaldonation
 
-            // ================= TOTAL EXPENSE =================
+        );
 
-            db.get(
+        homeData.totalDonors = Number(
 
-                `SELECT
-                    IFNULL(SUM(amount),0) AS totalExpense
-                 FROM expenses`,
+            donation.rows[0].totaldonors
 
-                [],
+        );
 
-                (err, expense) => {
+        // ================= TOTAL EXPENSE =================
 
-                    if (err) {
+        const expense = await pool.query(
 
-                        console.log(err);
+            `SELECT
 
-                        return res.status(500).json({
-                            message: "Database Error"
-                        });
+                COALESCE(SUM(amount),0) AS totalExpense
 
-                    }
+             FROM expenses`
 
-                    homeData.totalExpense = expense.totalExpense || 0;
+        );
 
-                    homeData.balance =
-                        homeData.totalDonation -
-                        homeData.totalExpense;
+        homeData.totalExpense = Number(
 
-                    // ================= ACTIVE NOTICES =================
+            expense.rows[0].totalexpense
 
-                    db.all(
+        );
 
-                        `SELECT
-                            id,
-                            title,
-                            description,
-                            startDate,
-                            endDate
-                         FROM notices
-                         WHERE status='Active'
-                         ORDER BY id DESC
-                         LIMIT 5`,
+        homeData.balance =
 
-                        [],
+            homeData.totalDonation -
 
-                        (err, notices) => {
+            homeData.totalExpense;
 
-                            if (err) {
+        // ================= ACTIVE NOTICES =================
 
-                                console.log(err);
+        const notices = await pool.query(
 
-                                return res.status(500).json({
-                                    message: "Database Error"
-                                });
+            `SELECT
 
-                            }
+                id,
 
-                            homeData.notices = notices;
+                title,
 
-                            // ================= RECENT DONATIONS =================
+                description,
 
-                            db.all(
+                startDate,
 
-                                `SELECT
-                                    donorName,
-                                    amount,
-                                    date
-                                 FROM donations
-                                 ORDER BY id DESC
-                                 LIMIT 5`,
+                endDate
 
-                                [],
+             FROM notices
 
-                                (err, donations) => {
+             WHERE status='Active'
 
-                                    if (err) {
+             ORDER BY id DESC
 
-                                        console.log(err);
+             LIMIT 5`
 
-                                        return res.status(500).json({
-                                            message: "Database Error"
-                                        });
+        );
 
-                                    }
+        homeData.notices = notices.rows;
 
-                                    homeData.recentDonations = donations;
+        // ================= RECENT DONATIONS =================
 
-                                    // ================= RECENT EXPENSES =================
+        const donations = await pool.query(
 
-                                    db.all(
+            `SELECT
 
-                                        `SELECT
-                                            title,
-                                            amount,
-                                            date
-                                         FROM expenses
-                                         ORDER BY id DESC
-                                         LIMIT 5`,
+                donorName,
 
-                                        [],
+                amount,
 
-                                        (err, expenses) => {
+                date
 
-                                            if (err) {
+             FROM donations
 
-                                                console.log(err);
+             ORDER BY id DESC
 
-                                                return res.status(500).json({
-                                                    message: "Database Error"
-                                                });
+             LIMIT 5`
 
-                                            }
+        );
 
-                                            homeData.recentExpenses = expenses;
+        homeData.recentDonations = donations.rows;
 
-                                            res.json(homeData);
+        // ================= RECENT EXPENSES =================
 
-                                        }
+        const expenses = await pool.query(
 
-                                    );
+            `SELECT
 
-                                }
+                title,
 
-                            );
+                amount,
 
-                        }
+                date
 
-                    );
+             FROM expenses
 
-                }
+             ORDER BY id DESC
 
-            );
+             LIMIT 5`
 
-        }
+        );
 
-    );
+        homeData.recentExpenses = expenses.rows;
+
+        res.json(homeData);
+
+    }
+
+    catch (err) {
+
+        console.log(err);
+
+        res.status(500).json({
+
+            success: false,
+
+            message: err.message
+
+        });
+
+    }
 
 };
 

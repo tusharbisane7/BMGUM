@@ -264,7 +264,7 @@ function ExpenseTable() {
 
                   <img
 
-                    src={`http://localhost:5000/uploads/bills/${selected.bill}`}
+                    src={`https://bmgum.onrender.com/uploads/bills/${selected.bill}`}
 
                     alt="Bill"
 

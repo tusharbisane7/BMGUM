@@ -1,32 +1,31 @@
-const db = require("../config/db");
+const pool = require("../config/neon");
 
 /* ===============================
         Get Notices
 ================================ */
 
-const getNotices = (req, res) => {
+const getNotices = async (req, res) => {
 
-    db.all(
+    try {
 
-        "SELECT * FROM notices ORDER BY id DESC",
+        const result = await pool.query(
 
-        [],
+            `SELECT * FROM notices
+             ORDER BY id DESC`
 
-        (err, rows) => {
+        );
 
-            if (err) {
+        res.json(result.rows);
 
-                console.log(err);
+    }
 
-                return res.status(500).json(err);
+    catch (err) {
 
-            }
+        console.log(err);
 
-            res.json(rows);
+        res.status(500).json(err);
 
-        }
-
-    );
+    }
 
 };
 
@@ -34,73 +33,62 @@ const getNotices = (req, res) => {
         Add Notice
 ================================ */
 
-const addNotice = (req, res) => {
+const addNotice = async (req, res) => {
 
-    const {
+    try {
 
-        title,
-
-        type,
-
-        description,
-
-        startDate,
-
-        endDate,
-
-        pinned,
-
-        status
-
-    } = req.body;
-
-    db.run(
-
-        `INSERT INTO notices
-        (title,type,description,startDate,endDate,pinned,status)
-        VALUES(?,?,?,?,?,?,?)`,
-
-        [
+        const {
 
             title,
-
             type,
-
             description,
-
             startDate,
-
             endDate,
-
-            pinned ? 1 : 0,
-
+            pinned,
             status
 
-        ],
+        } = req.body;
 
-        function (err) {
+        const result = await pool.query(
 
-            if (err) {
+            `INSERT INTO notices
+            (title,type,description,startDate,endDate,pinned,status)
+            VALUES($1,$2,$3,$4,$5,$6,$7)
+            RETURNING id`,
 
-                console.log(err);
+            [
 
-                return res.status(500).json(err);
+                title,
+                type,
+                description,
+                startDate,
+                endDate,
+                pinned,
+                status
 
-            }
+            ]
 
-            res.json({
+        );
 
-                success: true,
+        res.json({
 
-                message: "Notice Added",
+            success: true,
 
-                id: this.lastID
+            message: "Notice Added",
 
-            });
+            id: result.rows[0].id
 
-        }
+        });
 
-    );
+    }
+
+    catch (err) {
+
+        console.log(err);
+
+        res.status(500).json(err);
+
+    }
 
 };
 
@@ -108,80 +96,67 @@ const addNotice = (req, res) => {
         Update Notice
 ================================ */
 
-const updateNotice = (req, res) => {
+const updateNotice = async (req, res) => {
 
-    const {
+    try {
 
-        title,
-
-        type,
-
-        description,
-
-        startDate,
-
-        endDate,
-
-        pinned,
-
-        status
-
-    } = req.body;
-
-    db.run(
-
-        `UPDATE notices
-        SET
-        title=?,
-        type=?,
-        description=?,
-        startDate=?,
-        endDate=?,
-        pinned=?,
-        status=?
-        WHERE id=?`,
-
-        [
+        const {
 
             title,
-
             type,
-
             description,
-
             startDate,
-
             endDate,
+            pinned,
+            status
 
-            pinned ? 1 : 0,
+        } = req.body;
 
-            status,
+        await pool.query(
 
-            req.params.id
+            `UPDATE notices
+             SET
+                title=$1,
+                type=$2,
+                description=$3,
+                startDate=$4,
+                endDate=$5,
+                pinned=$6,
+                status=$7
+             WHERE id=$8`,
 
-        ],
+            [
 
-        function (err) {
+                title,
+                type,
+                description,
+                startDate,
+                endDate,
+                pinned,
+                status,
+                req.params.id
 
-            if (err) {
+            ]
 
-                console.log(err);
+        );
 
-                return res.status(500).json(err);
+        res.json({
 
-            }
+            success: true,
 
-            res.json({
+            message: "Notice Updated"
 
-                success: true,
+        });
 
-                message: "Notice Updated"
+    }
 
-            });
+    catch (err) {
 
-        }
+        console.log(err);
 
-    );
+        res.status(500).json(err);
+
+    }
 
 };
 
@@ -189,35 +164,40 @@ const updateNotice = (req, res) => {
         Delete Notice
 ================================ */
 
-const deleteNotice = (req, res) => {
+const deleteNotice = async (req, res) => {
 
-    db.run(
+    try {
 
-        "DELETE FROM notices WHERE id=?",
+        await pool.query(
 
-        [req.params.id],
+            `DELETE FROM notices
+             WHERE id=$1`,
 
-        function (err) {
+            [
 
-            if (err) {
+                req.params.id
 
-                console.log(err);
+            ]
 
-                return res.status(500).json(err);
+        );
 
-            }
+        res.json({
 
-            res.json({
+            success: true,
 
-                success: true,
+            message: "Notice Deleted"
 
-                message: "Notice Deleted"
+        });
 
-            });
+    }
 
-        }
+    catch (err) {
 
-    );
+        console.log(err);
+
+        res.status(500).json(err);
+
+    }
 
 };
 

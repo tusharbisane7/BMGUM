@@ -276,7 +276,7 @@ function DonationTable() {
 
                   <img
 
-                    src={`http://localhost:5000/uploads/receipts/${selected.receipt}`}
+                    src={`https://bmgum.onrender.com/uploads/receipts/${selected.receipt}`}
 
                     alt="Receipt"
 

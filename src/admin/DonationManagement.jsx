@@ -221,13 +221,10 @@ function DonationManagement() {
 
       if (editingId) {
 
-        await axios.put(
-
-          `http://localhost:5000/api/donations/${editingId}`,
-
-          data
-
-        );
+     await axios.put(
+`https://bmgum.onrender.com/api/donations/${editingId}`,
+data
+);
 
         alert("Donation Updated Successfully");
 
@@ -281,11 +278,11 @@ function DonationManagement() {
 
     try {
 
-      await axios.delete(
+     await axios.delete(
 
-        `http://localhost:5000/api/donations/${id}`
+`https://bmgum.onrender.com/api/donations/${id}`
 
-      );
+);
 
       alert("Donation Deleted");
 
@@ -329,7 +326,7 @@ function DonationManagement() {
 
       setPreview(
 
-        `http://localhost:5000/uploads/receipts/${donation.receipt}`
+        `https://bmgum.onrender.com/uploads/receipts/${donation.receipt}`
 
       );
 
@@ -715,7 +712,7 @@ function DonationManagement() {
 
                     <a
 
-                      href={`http://localhost:5000/uploads/receipts/${donation.receipt}`}
+                      href={`https://bmgum.onrender.com/uploads/receipts/${donation.receipt}`}
 
                       target="_blank"
 

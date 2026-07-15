@@ -131,11 +131,11 @@ function NoticeManagement() {
 
         await axios.put(
 
-          `http://localhost:5000/api/notices/${editingId}`,
+`https://bmgum.onrender.com/api/notices/${editingId}`,
 
-          formData
+formData
 
-        );
+);
 
         alert("Notice Updated");
 
@@ -627,11 +627,11 @@ function NoticeManagement() {
 
                       if(!window.confirm("Delete Notice?")) return;
 
-                      await axios.delete(
+                     await axios.delete(
 
-                        `http://localhost:5000/api/notices/${notice.id}`
+`https://bmgum.onrender.com/api/notices/${notice.id}`
 
-                      );
+);
 
                       loadNotices();
 

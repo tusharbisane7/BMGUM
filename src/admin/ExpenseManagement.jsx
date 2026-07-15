@@ -161,13 +161,10 @@ function ExpenseManagement() {
 
       if (editingId) {
 
-        await axios.put(
-
-          `http://localhost:5000/api/expenses/${editingId}`,
-
-          data
-
-        );
+       await axios.put(
+  `https://bmgum.onrender.com/api/expenses/${editingId}`,
+  data
+);
 
         alert("Expense Updated");
 
@@ -607,7 +604,7 @@ function ExpenseManagement() {
 
                       <a
 
-                        href={`http://localhost:5000/uploads/bills/${expense.bill}`}
+                        href={`https://bmgum.onrender.com/uploads/bills/${expense.bill}`}
 
                         target="_blank"
 
@@ -661,7 +658,7 @@ function ExpenseManagement() {
 
                             setPreview(
 
-                              `http://localhost:5000/uploads/bills/${expense.bill}`
+                              `https://bmgum.onrender.com/uploads/bills/${expense.bill}`
 
                             );
 
@@ -705,7 +702,7 @@ function ExpenseManagement() {
 
                             await axios.delete(
 
-                              `http://localhost:5000/api/expenses/${expense.id}`
+                              `https://bmgum.onrender.com/api/expenses/${expense.id}`
 
                             );
 

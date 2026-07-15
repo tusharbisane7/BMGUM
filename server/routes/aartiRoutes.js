@@ -5,16 +5,11 @@ const router = express.Router();
 const {
 
     getAarti,
-
     addAarti,
-
     updateAarti,
-
     deleteAarti
 
 } = require("../controllers/aartiController");
-
-// ================= ROUTES =================
 
 router.get("/", getAarti);
 

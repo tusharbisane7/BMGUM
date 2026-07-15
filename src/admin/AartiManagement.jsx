@@ -136,13 +136,13 @@ function AartiManagement() {
 
       if(editingId){
 
-        await axios.put(
+       await axios.put(
 
-          `http://localhost:5000/api/aarti/${editingId}`,
+`https://bmgum.onrender.com/api/aarti/${editingId}`,
 
-          formData
+formData
 
-        );
+);
 
         alert("आरती अपडेट झाली.");
 
@@ -649,11 +649,11 @@ function AartiManagement() {
 
                         try{
 
-                          await axios.delete(
+                         await axios.delete(
 
-                            `http://localhost:5000/api/aarti/${item.id}`
+`https://bmgum.onrender.com/api/aarti/${item.id}`
 
-                          );
+);
 
                           loadAarti();
 

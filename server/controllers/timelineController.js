@@ -1,170 +1,175 @@
-const db = require("../config/db");
+const pool = require("../config/neon");
 
 // ================= GET ALL TIMELINE =================
 
-const getTimeline = (req, res) => {
+const getTimeline = async (req, res) => {
 
-    db.all(
+    try {
 
-        "SELECT * FROM timeline ORDER BY eventDate ASC",
+        const result = await pool.query(
 
-        [],
+            `SELECT * FROM timeline
+             ORDER BY eventDate ASC`
 
-        (err, rows) => {
+        );
 
-            if (err) {
+        res.json(result.rows);
 
-                console.log(err);
+    }
 
-                return res.status(500).json(err);
+    catch (err) {
 
-            }
+        console.log(err);
 
-            res.json(rows);
+        res.status(500).json(err);
 
-        }
-
-    );
+    }
 
 };
 
 // ================= ADD TIMELINE =================
 
-const addTimeline = (req, res) => {
+const addTimeline = async (req, res) => {
 
-    const {
+    try {
 
-        title,
-        eventDate,
-        description
-
-    } = req.body;
-
-    db.run(
-
-        `INSERT INTO timeline
-        (title, eventDate, description)
-        VALUES (?,?,?)`,
-
-        [
+        const {
 
             title,
             eventDate,
             description
 
-        ],
+        } = req.body;
 
-        function (err) {
+        const result = await pool.query(
 
-            if (err) {
+            `INSERT INTO timeline
+            (title, eventDate, description)
+            VALUES ($1,$2,$3)
+            RETURNING id`,
 
-                console.log(err);
+            [
 
-                return res.status(500).json(err);
+                title,
+                eventDate,
+                description
 
-            }
+            ]
 
-            res.json({
+        );
 
-                success: true,
+        res.json({
 
-                message: "Timeline Added Successfully",
+            success: true,
 
-                id: this.lastID
+            message: "Timeline Added Successfully",
 
-            });
+            id: result.rows[0].id
 
-        }
+        });
 
-    );
+    }
+
+    catch (err) {
+
+        console.log(err);
+
+        res.status(500).json(err);
+
+    }
 
 };
 
 // ================= UPDATE TIMELINE =================
 
-const updateTimeline = (req, res) => {
+const updateTimeline = async (req, res) => {
 
-    const {
+    try {
 
-        title,
-        eventDate,
-        description
-
-    } = req.body;
-
-    db.run(
-
-        `UPDATE timeline
-        SET
-            title=?,
-            eventDate=?,
-            description=?
-        WHERE id=?`,
-
-        [
+        const {
 
             title,
             eventDate,
-            description,
-            req.params.id
+            description
 
-        ],
+        } = req.body;
 
-        function (err) {
+        await pool.query(
 
-            if (err) {
+            `UPDATE timeline
+             SET
+                title=$1,
+                eventDate=$2,
+                description=$3
+             WHERE id=$4`,
 
-                console.log(err);
+            [
 
-                return res.status(500).json(err);
+                title,
+                eventDate,
+                description,
+                req.params.id
 
-            }
+            ]
 
-            res.json({
+        );
 
-                success: true,
+        res.json({
 
-                message: "Timeline Updated Successfully"
+            success: true,
 
-            });
+            message: "Timeline Updated Successfully"
 
-        }
+        });
 
-    );
+    }
+
+    catch (err) {
+
+        console.log(err);
+
+        res.status(500).json(err);
+
+    }
 
 };
 
 // ================= DELETE TIMELINE =================
 
-const deleteTimeline = (req, res) => {
+const deleteTimeline = async (req, res) => {
 
-    db.run(
+    try {
 
-        "DELETE FROM timeline WHERE id=?",
+        await pool.query(
 
-        [req.params.id],
+            `DELETE FROM timeline
+             WHERE id=$1`,
 
-        function (err) {
+            [
 
-            if (err) {
+                req.params.id
 
-                console.log(err);
+            ]
 
-                return res.status(500).json(err);
+        );
 
-            }
+        res.json({
 
-            res.json({
+            success: true,
 
-                success: true,
+            message: "Timeline Deleted Successfully"
 
-                message: "Timeline Deleted Successfully"
+        });
 
-            });
+    }
 
-        }
+    catch (err) {
 
-    );
+        console.log(err);
+
+        res.status(500).json(err);
+
+    }
 
 };
 
