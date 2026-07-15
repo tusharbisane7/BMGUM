@@ -6,12 +6,20 @@ const getExpenses = async (req, res) => {
 
     try {
 
-        const result = await pool.query(
-
-            `SELECT * FROM expenses
-             ORDER BY id DESC`
-
-        );
+        const result = await pool.query(`
+            SELECT
+                id,
+                title,
+                amount,
+                category,
+                description,
+                date,
+                time,
+                bill,
+                createdat AS "createdAt"
+            FROM expenses
+            ORDER BY id DESC
+        `);
 
         res.json(result.rows);
 
@@ -39,67 +47,43 @@ const getExpenseSummary = async (req, res) => {
 
     try {
 
-        const total = await pool.query(
-
-            `SELECT
-
-                COALESCE(SUM(amount),0) AS totalExpense,
-
-                COUNT(*) AS totalEntries
-
-             FROM expenses`
-
-        );
+        const total = await pool.query(`
+            SELECT
+                COALESCE(SUM(amount),0) AS "totalExpense",
+                COUNT(*) AS "totalEntries"
+            FROM expenses
+        `);
 
         const today = new Date().toISOString().split("T")[0];
 
-        const todayData = await pool.query(
-
-            `SELECT
-
-                COALESCE(SUM(amount),0) AS todayExpense
-
-             FROM expenses
-
-             WHERE date=$1`,
-
-            [today]
-
-        );
+        const todayData = await pool.query(`
+            SELECT
+                COALESCE(SUM(amount),0) AS "todayExpense"
+            FROM expenses
+            WHERE date=$1
+        `,[today]);
 
         res.json({
 
-            totalExpense: Number(
+            totalExpense:Number(total.rows[0].totalExpense),
 
-                total.rows[0].totalexpense
+            totalEntries:Number(total.rows[0].totalEntries),
 
-            ),
-
-            totalEntries: Number(
-
-                total.rows[0].totalentries
-
-            ),
-
-            todayExpense: Number(
-
-                todayData.rows[0].todayexpense
-
-            )
+            todayExpense:Number(todayData.rows[0].todayExpense)
 
         });
 
     }
 
-    catch (err) {
+    catch(err){
 
         console.log(err);
 
         res.status(500).json({
 
-            success: false,
+            success:false,
 
-            message: err.message
+            message:err.message
 
         });
 
@@ -109,252 +93,221 @@ const getExpenseSummary = async (req, res) => {
 
 // ================= ADD EXPENSE =================
 
-const addExpense = async (req, res) => {
+const addExpense = async (req,res)=>{
 
-    try {
+try{
 
-        const {
+const{
 
-            title,
-            amount,
-            category,
-            description,
-            date,
-            time
+title,
 
-        } = req.body;
+amount,
 
-        const bill = req.file ? req.file.filename : null;
+category,
 
-        const result = await pool.query(
+description,
 
-            `INSERT INTO expenses
+date,
 
-            (
+time
 
-                title,
+}=req.body;
 
-                amount,
+const bill=req.file?req.file.filename:null;
 
-                category,
+const result=await pool.query(
 
-                description,
+`INSERT INTO expenses
+(
+title,
+amount,
+category,
+description,
+date,
+time,
+bill
+)
+VALUES($1,$2,$3,$4,$5,$6,$7)
+RETURNING id`,
 
-                date,
+[
+title,
+Number(amount),
+category,
+description,
+date,
+time,
+bill
+]
 
-                time,
+);
 
-                bill
+res.json({
 
-            )
+success:true,
 
-            VALUES($1,$2,$3,$4,$5,$6,$7)
+message:"Expense Added Successfully",
 
-            RETURNING id`,
+id:result.rows[0].id
 
-            [
+});
 
-                title,
-                amount,
-                category,
-                description,
-                date,
-                time,
-                bill
+}
 
-            ]
+catch(err){
 
-        );
+console.log(err);
 
-        res.json({
+res.status(500).json({
 
-            success: true,
+success:false,
 
-            message: "Expense Added",
+message:err.message
 
-            id: result.rows[0].id
+});
 
-        });
-
-    }
-
-    catch (err) {
-
-        console.log(err);
-
-        res.status(500).json({
-
-            success: false,
-
-            message: err.message
-
-        });
-
-    }
+}
 
 };
 
 // ================= UPDATE EXPENSE =================
 
-const updateExpense = async (req, res) => {
+const updateExpense = async(req,res)=>{
 
-    try {
+try{
 
-        const {
+const{
 
-            title,
-            amount,
-            category,
-            description,
-            date,
-            time
+title,
 
-        } = req.body;
+amount,
 
-        let bill = null;
+category,
 
-        const oldData = await pool.query(
+description,
 
-            "SELECT bill FROM expenses WHERE id=$1",
+date,
 
-            [
+time
 
-                req.params.id
+}=req.body;
 
-            ]
+const old=await pool.query(
 
-        );
+"SELECT bill FROM expenses WHERE id=$1",
 
-        if (req.file) {
+[req.params.id]
 
-            bill = req.file.filename;
+);
 
-        }
+const bill=req.file
 
-        else {
+?req.file.filename
 
-            bill = oldData.rows[0]?.bill || null;
+:(old.rows.length>0?old.rows[0].bill:null);
 
-        }
+await pool.query(
 
-        await pool.query(
+`UPDATE expenses
+SET
+title=$1,
+amount=$2,
+category=$3,
+description=$4,
+date=$5,
+time=$6,
+bill=$7
+WHERE id=$8`,
 
-            `UPDATE expenses
+[
+title,
+Number(amount),
+category,
+description,
+date,
+time,
+bill,
+req.params.id
+]
 
-             SET
+);
 
-                title=$1,
+res.json({
 
-                amount=$2,
+success:true,
 
-                category=$3,
+message:"Expense Updated Successfully"
 
-                description=$4,
+});
 
-                date=$5,
+}
 
-                time=$6,
+catch(err){
 
-                bill=$7
+console.log(err);
 
-             WHERE id=$8`,
+res.status(500).json({
 
-            [
+success:false,
 
-                title,
-                amount,
-                category,
-                description,
-                date,
-                time,
-                bill,
-                req.params.id
+message:err.message
 
-            ]
+});
 
-        );
-
-        res.json({
-
-            success: true,
-
-            message: "Expense Updated Successfully"
-
-        });
-
-    }
-
-    catch (err) {
-
-        console.log(err);
-
-        res.status(500).json({
-
-            success: false,
-
-            message: err.message
-
-        });
-
-    }
+}
 
 };
 
 // ================= DELETE EXPENSE =================
 
-const deleteExpense = async (req, res) => {
+const deleteExpense=async(req,res)=>{
 
-    try {
+try{
 
-        await pool.query(
+await pool.query(
 
-            `DELETE FROM expenses
-             WHERE id=$1`,
+"DELETE FROM expenses WHERE id=$1",
 
-            [
+[req.params.id]
 
-                req.params.id
+);
 
-            ]
+res.json({
 
-        );
+success:true,
 
-        res.json({
+message:"Expense Deleted Successfully"
 
-            success: true,
+});
 
-            message: "Expense Deleted Successfully"
+}
 
-        });
+catch(err){
 
-    }
+console.log(err);
 
-    catch (err) {
+res.status(500).json({
 
-        console.log(err);
+success:false,
 
-        res.status(500).json({
+message:err.message
 
-            success: false,
+});
 
-            message: err.message
-
-        });
-
-    }
+}
 
 };
 
-module.exports = {
+module.exports={
 
-    getExpenses,
+getExpenses,
 
-    getExpenseSummary,
+getExpenseSummary,
 
-    addExpense,
+addExpense,
 
-    updateExpense,
+updateExpense,
 
-    deleteExpense
+deleteExpense
 
 };

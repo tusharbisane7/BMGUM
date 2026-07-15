@@ -112,45 +112,48 @@ function Timeline() {
 
           :
 
-          events.map((event)=>(
+          events.map((event) => (
 
-            <div
+  <div
+    className="timeline-item"
+    key={event.id}
+  >
 
-              className="timeline-item"
+    <div className="timeline-icon">
+      {event.icon || "📅"}
+    </div>
 
-              key={event.id}
+    <div className="timeline-content">
 
-            >
+      <span>
 
-              <div className="timeline-icon">
+        {
+          event.eventDate
+            ? new Date(event.eventDate).toLocaleDateString("en-GB")
+            : event.eventdate
+            ? new Date(event.eventdate).toLocaleDateString("en-GB")
+            : "-"
+        }
 
-                {event.icon || "📅"}
+      </span>
 
-              </div>
+      <h3>
 
-              <div className="timeline-content">
+        {event.title || ""}
 
-                <span>
+      </h3>
 
-                  {event.eventDate}
+      <p>
 
-                </span>
+        {event.description || ""}
 
-                <h3>
+      </p>
 
-                  {event.title}
+    </div>
 
-                </h3>
+  </div>
 
-                <p>
 
-                  {event.description}
-
-                </p>
-
-              </div>
-
-            </div>
 
           ))
 

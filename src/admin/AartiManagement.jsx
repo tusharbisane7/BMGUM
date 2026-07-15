@@ -56,25 +56,27 @@ function AartiManagement() {
 
   const loadAarti = async () => {
 
-    try {
+  try {
 
-      const res = await axios.get(
+    const res = await axios.get(
+      "https://bmgum.onrender.com/api/aarti"
+    );
 
-        "https://bmgum.onrender.com/api/aarti"
+    setAartiList(
+      Array.isArray(res.data) ? res.data : []
+    );
 
-      );
+  }
 
-      setAartiList(res.data);
+  catch (err) {
 
-    }
+    console.log(err);
 
-    catch(err){
+    setAartiList([]);
 
-      console.log(err);
+  }
 
-    }
-
-  };
+};
 
   useEffect(() => {
 
@@ -84,33 +86,33 @@ function AartiManagement() {
 
   // ================= SUMMARY =================
 
-  useEffect(() => {
+ useEffect(() => {
 
-    setSummary({
+  setSummary({
 
-      total: aartiList.length,
+    total: aartiList.length,
 
-      today: aartiList.filter(
+    today: aartiList.filter(
 
-        a => a.status === "आज"
+      a => (a.status || "") === "आज"
 
-      ).length,
+    ).length,
 
-      special: aartiList.filter(
+    special: aartiList.filter(
 
-        a => a.type === "विशेष"
+      a => (a.type || "") === "विशेष"
 
-      ).length,
+    ).length,
 
-      upcoming: aartiList.filter(
+    upcoming: aartiList.filter(
 
-        a => a.status === "आगामी"
+      a => (a.status || "") === "आगामी"
 
-      ).length
+    ).length
 
-    });
+  });
 
-  }, [aartiList]);
+}, [aartiList]);
 
   // ================= HANDLE CHANGE =================
 
@@ -498,16 +500,13 @@ formData
             {
 
               aartiList
+.filter((item)=>
 
-              .filter((item)=>
+(item.name || "")
+.toLowerCase()
+.includes(search.toLowerCase())
 
-                item.name
-
-                .toLowerCase()
-
-                .includes(search.toLowerCase())
-
-              )
+)
 
               .map((item,index)=>(
 
@@ -533,9 +532,23 @@ formData
 
                   <td>
 
-                    {item.date}
+{
 
-                  </td>
+item.date
+
+?
+
+new Date(item.date)
+
+.toLocaleDateString("en-GB")
+
+:
+
+"-"
+
+}
+
+</td>
 
                   <td>
 
@@ -545,9 +558,17 @@ formData
 
                   <td>
 
-                    {item.performedBy}
+{
 
-                  </td>
+item.performedBy ??
+
+item.performedby ??
+
+"-"
+
+}
+
+</td>
 
                   <td>
 
@@ -597,21 +618,27 @@ formData
 
                         setFormData({
 
-                          name:item.name,
+  name: item.name || "",
 
-                          day:item.day,
+  day: item.day || "",
 
-                          date:item.date,
+  date:
+    item.date
+      ? item.date.substring(0,10)
+      : "",
 
-                          time:item.time,
+  time: item.time || "",
 
-                          performedBy:item.performedBy,
+  performedBy:
+    item.performedBy ??
+    item.performedby ??
+    "",
 
-                          type:item.type,
+  type: item.type || "दैनिक",
 
-                          status:item.status
+  status: item.status || "आगामी"
 
-                        });
+});
 
                         window.scrollTo({
 

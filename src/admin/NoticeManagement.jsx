@@ -13,6 +13,8 @@ import {
 
 import "../styles/admin/notice.css";
 
+const API = "https://bmgum.onrender.com";
+
 function NoticeManagement() {
 
   const [notices, setNotices] = useState([]);
@@ -41,6 +43,8 @@ function NoticeManagement() {
 
   });
 
+  // ================= LOAD NOTICES =================
+
   const loadNotices = async () => {
 
     try {
@@ -49,7 +53,7 @@ function NoticeManagement() {
 
       const res = await axios.get(
 
-        "https://bmgum.onrender.com/api/notices"
+        `${API}/api/notices`
 
       );
 
@@ -57,13 +61,13 @@ function NoticeManagement() {
 
     }
 
-    catch(err){
+    catch (err) {
 
       console.log(err);
 
     }
 
-    finally{
+    finally {
 
       setLoading(false);
 
@@ -71,15 +75,27 @@ function NoticeManagement() {
 
   };
 
-  useEffect(()=>{
+  useEffect(() => {
 
     loadNotices();
 
-  },[]);
+  }, []);
 
-  const handleChange=(e)=>{
+  // ================= HANDLE CHANGE =================
 
-    const {name,value,type,checked}=e.target;
+  const handleChange = (e) => {
+
+    const {
+
+      name,
+
+      value,
+
+      type,
+
+      checked
+
+    } = e.target;
 
     setFormData({
 
@@ -87,71 +103,75 @@ function NoticeManagement() {
 
       [name]:
 
-      type==="checkbox"
+        type === "checkbox"
 
-      ? checked
+          ? checked
 
-      : value
+          : value,
 
     });
 
   };
 
-  const clearForm=()=>{
+  // ================= CLEAR FORM =================
+
+  const clearForm = () => {
 
     setEditingId(null);
 
     setFormData({
 
-      title:"",
+      title: "",
 
-      type:"Information",
+      type: "Information",
 
-      description:"",
+      description: "",
 
-      startDate:"",
+      startDate: "",
 
-      endDate:"",
+      endDate: "",
 
-      pinned:false,
+      pinned: false,
 
-      status:"Active"
+      status: "Active",
 
     });
 
   };
 
-  const handleSubmit=async(e)=>{
+  // ================= SAVE NOTICE =================
+
+  const handleSubmit = async (e) => {
 
     e.preventDefault();
 
-    try{
+    try {
 
-      if(editingId){
+      if (editingId) {
 
         await axios.put(
 
-`https://bmgum.onrender.com/api/notices/${editingId}`,
-
-formData
-
-);
-
-        alert("Notice Updated");
-
-      }
-
-      else{
-
-        await axios.post(
-
-          "https://bmgum.onrender.com/api/notices",
+          `${API}/api/notices/${editingId}`,
 
           formData
 
         );
 
-        alert("Notice Added");
+        alert("Notice Updated Successfully");
+
+      }
+
+      else {
+
+        await axios.post(
+
+          `${API}/api/notices`,
+
+          formData
+
+        );
+
+        alert("Notice Added Successfully");
 
       }
 
@@ -161,24 +181,124 @@ formData
 
     }
 
-    catch(err){
+    catch (err) {
 
       console.log(err);
 
-      alert("Error Saving Notice");
+      alert(
+
+        err.response?.data?.message ||
+
+        "Error Saving Notice"
+
+      );
+
+    }
+
+  };
+    // ================= DELETE =================
+
+  const deleteNotice = async (id) => {
+
+    if (!window.confirm("Delete this notice?")) return;
+
+    try {
+
+      await axios.delete(
+
+        `${API}/api/notices/${id}`
+
+      );
+
+      alert("Notice Deleted Successfully");
+
+      loadNotices();
+
+    }
+
+    catch (err) {
+
+      console.log(err);
+
+      alert("Delete Failed");
 
     }
 
   };
 
-  return(
-    <div className="notice-page">
+  // ================= EDIT =================
+
+  const editNotice = (notice) => {
+
+    setEditingId(notice.id);
+
+    setFormData({
+
+      title: notice.title || "",
+
+      type: notice.type || "Information",
+
+      description: notice.description || "",
+
+      startDate: notice.startdate
+
+        ? new Date(notice.startdate)
+
+            .toISOString()
+
+            .split("T")[0]
+
+        : "",
+
+      endDate: notice.enddate
+
+        ? new Date(notice.enddate)
+
+            .toISOString()
+
+            .split("T")[0]
+
+        : "",
+
+      pinned: notice.pinned || false,
+
+      status: notice.status || "Active",
+
+    });
+
+    window.scrollTo({
+
+      top: 0,
+
+      behavior: "smooth",
+
+    });
+
+  };
+
+  // ================= SEARCH =================
+
+  const filteredNotices = notices.filter(
+
+    (item) =>
+
+      (item.title || "")
+
+        .toLowerCase()
+
+        .includes(search.toLowerCase())
+
+  );
+
+  return (
+
+<div className="notice-page">
 
   {/* ================= TITLE ================= */}
 
   <div className="page-title">
 
-    <FaBullhorn className="title-icon"/>
+    <FaBullhorn className="title-icon" />
 
     <div>
 
@@ -195,8 +315,11 @@ formData
   <div className="notice-card">
 
     <form
+
       className="notice-form"
+
       onSubmit={handleSubmit}
+
     >
 
       <div className="form-group">
@@ -209,11 +332,11 @@ formData
 
           name="title"
 
-          placeholder="Enter Notice Title"
-
           value={formData.title}
 
           onChange={handleChange}
+
+          placeholder="Enter Notice Title"
 
           required
 
@@ -359,13 +482,17 @@ formData
 
         >
 
-          <FaSave/>
+          <FaSave />
 
-          {editingId
+          {
 
-            ? "Update Notice"
+            editingId
 
-            : "Save Notice"}
+              ? " Update Notice"
+
+              : " Save Notice"
+
+          }
 
         </button>
 
@@ -379,7 +506,7 @@ formData
 
         >
 
-          <FaUndo/>
+          <FaUndo />
 
           Clear
 
@@ -390,8 +517,7 @@ formData
     </form>
 
   </div>
-
-  {/* ================= SUMMARY ================= */}
+    {/* ================= SUMMARY ================= */}
 
   <div className="summary-card">
 
@@ -405,7 +531,7 @@ formData
 
     <div className="summary-box">
 
-      <h3>Active</h3>
+      <h3>Active Notices</h3>
 
       <h2>
 
@@ -413,7 +539,7 @@ formData
 
           notices.filter(
 
-            n=>n.status==="Active"
+            item => item.status === "Active"
 
           ).length
 
@@ -425,7 +551,7 @@ formData
 
     <div className="summary-box">
 
-      <h3>Pinned</h3>
+      <h3>Pinned Notices</h3>
 
       <h2>
 
@@ -433,7 +559,7 @@ formData
 
           notices.filter(
 
-            n=>n.pinned
+            item => item.pinned
 
           ).length
 
@@ -449,7 +575,7 @@ formData
 
   <div className="search-box">
 
-    <FaSearch/>
+    <FaSearch />
 
     <input
 
@@ -469,197 +595,226 @@ formData
 
   <div className="table-card">
 
-    <table className="notice-table">
+    <div className="table-header">
 
-      <thead>
+      <h2>Notice Records</h2>
 
-        <tr>
+    </div>
 
-          <th>ID</th>
+    {
 
-          <th>Title</th>
+      loading
 
-          <th>Type</th>
+      ?
 
-          <th>Status</th>
+      (
 
-          <th>Start</th>
+        <div className="loading">
 
-          <th>End</th>
+          Loading Notices...
 
-          <th>Pinned</th>
+        </div>
 
-          <th>Action</th>
+      )
 
-        </tr>
+      :
 
-      </thead>
+      (
 
-      <tbody>
+        <table className="notice-table">
 
-        {
-
-          notices
-
-          .filter(item=>
-
-            item.title
-
-            .toLowerCase()
-
-            .includes(search.toLowerCase())
-
-          )
-
-          .length===0 ?
-
-          (
+          <thead>
 
             <tr>
 
-              <td
+              <th>ID</th>
 
-                colSpan="8"
+              <th>Title</th>
 
-                className="no-data"
+              <th>Type</th>
 
-              >
+              <th>Status</th>
 
-                No Notice Found
+              <th>Start Date</th>
 
-              </td>
+              <th>End Date</th>
+
+              <th>Pinned</th>
+
+              <th>Action</th>
 
             </tr>
 
-          )
+          </thead>
 
-          :
+          <tbody>
 
-          notices
+            {
 
-          .filter(item=>
+              filteredNotices.length === 0
 
-            item.title
+              ?
 
-            .toLowerCase()
+              (
 
-            .includes(search.toLowerCase())
+                <tr>
 
-          )
+                  <td
 
-          .map(notice=>(
+                    colSpan="8"
 
-            <tr key={notice.id}>
-
-              <td>{notice.id}</td>
-
-              <td>{notice.title}</td>
-
-              <td>{notice.type}</td>
-
-              <td>{notice.status}</td>
-
-              <td>{notice.startDate}</td>
-
-              <td>{notice.endDate}</td>
-
-              <td>
-
-                {
-
-                  notice.pinned
-
-                  ?
-
-                  "📌"
-
-                  :
-
-                  "-"
-
-                }
-
-              </td>
-
-              <td>
-
-                <div className="action-buttons">
-
-                  <button
-
-                    className="edit-btn"
-
-                    onClick={()=>{
-
-                      setEditingId(notice.id);
-
-                      setFormData({
-
-                        title:notice.title,
-
-                        type:notice.type,
-
-                        description:notice.description,
-
-                        startDate:notice.startDate,
-
-                        endDate:notice.endDate,
-
-                        pinned:notice.pinned,
-
-                        status:notice.status
-
-                      });
-
-                    }}
+                    className="no-data"
 
                   >
 
-                    <FaEdit/>
+                    No Notice Found
 
-                  </button>
+                  </td>
 
-                  <button
+                </tr>
 
-                    className="delete-btn"
+              )
 
-                    onClick={async()=>{
+              :
 
-                      if(!window.confirm("Delete Notice?")) return;
+              (
 
-                     await axios.delete(
+                filteredNotices.map((notice)=>(
 
-`https://bmgum.onrender.com/api/notices/${notice.id}`
+                  <tr key={notice.id}>
 
-);
+                    <td>{notice.id}</td>
 
-                      loadNotices();
+                    <td>{notice.title}</td>
 
-                    }}
+                    <td>{notice.type}</td>
 
-                  >
+                    <td>{notice.status}</td>
 
-                    <FaTrash/>
+                    <td>
 
-                  </button>
+                      {
 
-                </div>
+                        notice.startdate
 
-              </td>
+                        ?
 
-            </tr>
+                        new Date(notice.startdate)
 
-          ))
+                        .toISOString()
 
-        }
+                        .split("T")[0]
 
-      </tbody>
+                        :
 
-    </table>
+                        "-"
+
+                      }
+
+                    </td>
+
+                    <td>
+
+                      {
+
+                        notice.enddate
+
+                        ?
+
+                        new Date(notice.enddate)
+
+                        .toISOString()
+
+                        .split("T")[0]
+
+                        :
+
+                        "-"
+
+                      }
+
+                    </td>
+
+                    <td>
+
+                      {
+
+                        notice.pinned
+
+                        ?
+
+                        "📌"
+
+                        :
+
+                        "-"
+
+                      }
+
+                    </td>
+
+                    <td>
+
+                      <div className="action-buttons">
+
+                        <button
+
+                          className="edit-btn"
+
+                          type="button"
+
+                          onClick={()=>
+
+                            editNotice(notice)
+
+                          }
+
+                        >
+
+                          <FaEdit />
+
+                        </button>
+
+                        <button
+
+                          className="delete-btn"
+
+                          type="button"
+
+                          onClick={()=>
+
+                            deleteNotice(notice.id)
+
+                          }
+
+                        >
+
+                          <FaTrash />
+
+                        </button>
+
+                      </div>
+
+                    </td>
+
+                  </tr>
+
+                ))
+
+              )
+
+            }
+
+          </tbody>
+
+        </table>
+
+      )
+
+    }
 
   </div>
-
-</div>
+  </div>
 
 );
 

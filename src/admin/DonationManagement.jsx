@@ -13,6 +13,8 @@ import {
 
 import "../styles/admin/donation.css";
 
+const API = "https://bmgum.onrender.com";
+
 function DonationManagement() {
 
   const today = new Date();
@@ -33,19 +35,27 @@ function DonationManagement() {
 
     amount: "",
 
-    pendingAmount: "",
+    pendingAmount: 0,
 
-    date: today.toLocaleDateString("en-GB"),
+    date: today.toISOString().split("T")[0],
 
-    time: today.toLocaleTimeString(),
+    time: today.toLocaleTimeString("en-IN", {
+
+      hour: "2-digit",
+
+      minute: "2-digit",
+
+      second: "2-digit",
+
+      hour12: true,
+
+    }),
 
     receipt: null,
 
   });
 
-  /* ===========================
-          LOAD DONATIONS
-  ============================ */
+  // ================= LOAD DONATIONS =================
 
   const loadDonations = async () => {
 
@@ -53,11 +63,7 @@ function DonationManagement() {
 
       setLoading(true);
 
-      const res = await axios.get(
-
-        "https://bmgum.onrender.com/api/donations"
-
-      );
+      const res = await axios.get(`${API}/api/donations`);
 
       setDonations(res.data);
 
@@ -83,9 +89,7 @@ function DonationManagement() {
 
   }, []);
 
-  /* ===========================
-          INPUT CHANGE
-  ============================ */
+  // ================= INPUT =================
 
   const handleChange = (e) => {
 
@@ -99,9 +103,7 @@ function DonationManagement() {
 
   };
 
-  /* ===========================
-          RECEIPT IMAGE
-  ============================ */
+  // ================= IMAGE =================
 
   const handleImage = (e) => {
 
@@ -117,17 +119,11 @@ function DonationManagement() {
 
     });
 
-    setPreview(
-
-      URL.createObjectURL(file)
-
-    );
+    setPreview(URL.createObjectURL(file));
 
   };
 
-  /* ===========================
-          CLEAR FORM
-  ============================ */
+  // ================= CLEAR =================
 
   const clearForm = () => {
 
@@ -143,11 +139,21 @@ function DonationManagement() {
 
       amount: "",
 
-      pendingAmount: "",
+      pendingAmount: 0,
 
-      date: now.toLocaleDateString("en-GB"),
+      date: now.toISOString().split("T")[0],
 
-      time: now.toLocaleTimeString(),
+      time: now.toLocaleTimeString("en-IN", {
+
+        hour: "2-digit",
+
+        minute: "2-digit",
+
+        second: "2-digit",
+
+        hour12: true,
+
+      }),
 
       receipt: null,
 
@@ -155,9 +161,7 @@ function DonationManagement() {
 
   };
 
-  /* ===========================
-          SAVE DONATION
-  ============================ */
+  // ================= SAVE =================
 
   const handleSubmit = async (e) => {
 
@@ -165,55 +169,29 @@ function DonationManagement() {
 
     const data = new FormData();
 
-    data.append(
+    data.append("donorName", formData.donorName);
 
-      "donorName",
-
-      formData.donorName
-
-    );
-
-    data.append(
-
-      "amount",
-
-      formData.amount
-
-    );
+    data.append("amount", formData.amount);
 
     data.append(
 
       "pendingAmount",
 
-      formData.pendingAmount
+      formData.pendingAmount === ""
+
+        ? 0
+
+        : formData.pendingAmount
 
     );
 
-    data.append(
+    data.append("date", formData.date);
 
-      "date",
-
-      formData.date
-
-    );
-
-    data.append(
-
-      "time",
-
-      formData.time
-
-    );
+    data.append("time", formData.time);
 
     if (formData.receipt) {
 
-      data.append(
-
-        "receipt",
-
-        formData.receipt
-
-      );
+      data.append("receipt", formData.receipt);
 
     }
 
@@ -221,10 +199,13 @@ function DonationManagement() {
 
       if (editingId) {
 
-     await axios.put(
-`https://bmgum.onrender.com/api/donations/${editingId}`,
-data
-);
+        await axios.put(
+
+          `${API}/api/donations/${editingId}`,
+
+          data
+
+        );
 
         alert("Donation Updated Successfully");
 
@@ -234,7 +215,7 @@ data
 
         await axios.post(
 
-          "https://bmgum.onrender.com/api/donations",
+          `${API}/api/donations`,
 
           data
 
@@ -250,41 +231,36 @@ data
 
     }
 
-  catch (err) {
+    catch (err) {
 
-  console.error(err);
+      console.log(err);
 
-  console.log(err.response?.data);
+      alert(
 
-  alert(err.response?.data?.message || err.message);
+        err.response?.data?.message ||
 
-}
+        "Something went wrong"
+
+      );
+
+    }
 
   };
-
-  /* ===========================
-          DELETE DONATION
-  ============================ */
+    // ================= DELETE =================
 
   const deleteDonation = async (id) => {
 
-    const confirmDelete = window.confirm(
-
-      "Are you sure you want to delete this donation?"
-
-    );
-
-    if (!confirmDelete) return;
+    if (!window.confirm("Delete this donation?")) return;
 
     try {
 
-     await axios.delete(
+      await axios.delete(
 
-`https://bmgum.onrender.com/api/donations/${id}`
+        `${API}/api/donations/${id}`
 
-);
+      );
 
-      alert("Donation Deleted");
+      alert("Donation Deleted Successfully");
 
       loadDonations();
 
@@ -294,13 +270,13 @@ data
 
       console.log(err);
 
+      alert("Delete Failed");
+
     }
 
   };
 
-  /* ===========================
-          EDIT DONATION
-  ============================ */
+  // ================= EDIT =================
 
   const editDonation = (donation) => {
 
@@ -308,15 +284,23 @@ data
 
     setFormData({
 
-      donorName: donation.donorName,
+      donorName: donation.donorName || "",
 
-      amount: donation.amount,
+      amount: donation.amount || "",
 
-      pendingAmount: donation.pendingAmount,
+      pendingAmount: donation.pendingAmount ?? 0,
 
-      date: donation.date,
+      date: donation.date
 
-      time: donation.time,
+        ? new Date(donation.date)
+
+            .toISOString()
+
+            .split("T")[0]
+
+        : "",
+
+      time: donation.time || "",
 
       receipt: null,
 
@@ -326,9 +310,15 @@ data
 
       setPreview(
 
-        `https://bmgum.onrender.com/uploads/receipts/${donation.receipt}`
+        `${API}/uploads/receipts/${donation.receipt}`
 
       );
+
+    }
+
+    else {
+
+      setPreview(null);
 
     }
 
@@ -342,30 +332,25 @@ data
 
   };
 
-  /* ===========================
-          SEARCH
-  ============================ */
+  // ================= SEARCH =================
 
   const filteredDonations = donations.filter(
 
     (item) =>
 
-      item.donorName
+      (item.donorName || "")
 
         .toLowerCase()
 
-        .includes(
-
-          search.toLowerCase()
-
-        )
+        .includes(search.toLowerCase())
 
   );
 
   return (
-    <div className="donation-page">
 
-  {/* ================= HEADER ================= */}
+<div className="donation-page">
+
+  {/* ================= TITLE ================= */}
 
   <div className="page-title">
 
@@ -381,75 +366,89 @@ data
 
   </div>
 
-  {/* ================= FORM CARD ================= */}
+  {/* ================= FORM ================= */}
 
   <div className="donation-card">
 
     <form
-      onSubmit={handleSubmit}
+
       className="donation-form"
+
+      onSubmit={handleSubmit}
+
       encType="multipart/form-data"
+
     >
 
-      {/* Donor Name */}
-
       <div className="form-group">
 
-        <label>देणगीचे नाव *</label>
+        <label>Donor Name *</label>
 
         <input
+
           type="text"
+
           name="donorName"
-          placeholder="Enter Donor Name"
+
           value={formData.donorName}
+
           onChange={handleChange}
+
+          placeholder="Enter Donor Name"
+
           required
+
         />
 
       </div>
 
-      {/* Amount */}
-
       <div className="form-group">
 
-        <label>रक्कम (₹) *</label>
+        <label>Amount *</label>
 
         <input
+
           type="number"
+
           name="amount"
-          placeholder="Enter Amount"
+
           value={formData.amount}
+
           onChange={handleChange}
+
+          placeholder="Enter Amount"
+
           required
+
         />
 
       </div>
 
-      {/* Pending */}
-
       <div className="form-group">
 
-        <label>बाकी रक्कम</label>
+        <label>Pending Amount</label>
 
         <input
+
           type="number"
+
           name="pendingAmount"
-          placeholder="Optional"
+
           value={formData.pendingAmount}
+
           onChange={handleChange}
+
         />
 
       </div>
 
-      {/* Date */}
-
       <div className="form-group">
 
-        <label>दिनांक</label>
+        <label>Date</label>
 
         <input
 
-          type="text"
+          type="date"
 
           value={formData.date}
 
@@ -459,11 +458,9 @@ data
 
       </div>
 
-      {/* Time */}
-
       <div className="form-group">
 
-        <label>वेळ</label>
+        <label>Time</label>
 
         <input
 
@@ -476,8 +473,6 @@ data
         />
 
       </div>
-
-      {/* Receipt */}
 
       <div className="form-group">
 
@@ -501,8 +496,6 @@ data
 
       </div>
 
-      {/* Preview */}
-
       {preview && (
 
         <div className="preview-box">
@@ -513,13 +506,19 @@ data
 
             alt="Receipt"
 
+            style={{
+
+              maxWidth: "220px",
+
+              borderRadius: "8px"
+
+            }}
+
           />
 
         </div>
 
       )}
-
-      {/* Buttons */}
 
       <div className="button-group">
 
@@ -533,11 +532,15 @@ data
 
           <FaSave />
 
-          {editingId
+          {
 
-            ? "Update Donation"
+            editingId
 
-            : "Save Donation"}
+              ? " Update Donation"
+
+              : " Save Donation"
+
+          }
 
         </button>
 
@@ -569,7 +572,7 @@ data
 
     <div className="summary-box">
 
-      <h4>Total Donations</h4>
+      <h3>Total Donations</h3>
 
       <h2>{donations.length}</h2>
 
@@ -577,23 +580,25 @@ data
 
     <div className="summary-box">
 
-      <h4>Total Amount</h4>
+      <h3>Total Amount</h3>
 
       <h2>
 
         ₹
 
-        {donations.reduce(
+        {
 
-          (sum, item) =>
+          donations.reduce(
 
-            sum +
+            (sum, item) =>
 
-            Number(item.amount),
+              sum + Number(item.amount || 0),
 
-          0
+            0
 
-        )}
+          )
+
+        }
 
       </h2>
 
@@ -615,16 +620,12 @@ data
 
       value={search}
 
-      onChange={(e) =>
-
-        setSearch(e.target.value)
-
-      }
+      onChange={(e)=>setSearch(e.target.value)}
 
     />
 
   </div>
-    {/* ================= DONATION TABLE ================= */}
+    {/* ================= TABLE ================= */}
 
   <div className="table-card">
 
@@ -634,161 +635,228 @@ data
 
     </div>
 
-    {loading ? (
+    {
 
-      <div className="loading">
+      loading
 
-        Loading Donations...
+      ?
 
-      </div>
+      (
 
-    ) : (
+        <div className="loading">
 
-      <table className="donation-table">
+          Loading Donations...
 
-        <thead>
+        </div>
 
-          <tr>
+      )
 
-            <th>ID</th>
+      :
 
-            <th>देणगीचे नाव</th>
+      (
 
-            <th>रक्कम</th>
+        <table className="donation-table">
 
-            <th>बाकी</th>
-
-            <th>दिनांक</th>
-
-            <th>वेळ</th>
-
-            <th>Receipt</th>
-
-            <th>Actions</th>
-
-          </tr>
-
-        </thead>
-
-        <tbody>
-
-          {filteredDonations.length === 0 ? (
+          <thead>
 
             <tr>
 
-              <td colSpan="8" className="no-data">
+              <th>ID</th>
 
-                No Donation Found
+              <th>Donor Name</th>
 
-              </td>
+              <th>Amount</th>
+
+              <th>Pending</th>
+
+              <th>Date</th>
+
+              <th>Time</th>
+
+              <th>Receipt</th>
+
+              <th>Action</th>
 
             </tr>
 
-          ) : (
+          </thead>
 
-            filteredDonations.map((donation) => (
+          <tbody>
 
-              <tr key={donation.id}>
+            {
 
-                <td>{donation.id}</td>
+              filteredDonations.length === 0
 
-                <td>{donation.donorName}</td>
+              ?
 
-                <td>₹{donation.amount}</td>
+              (
 
-                <td>
+                <tr>
 
-                  ₹{donation.pendingAmount || 0}
+                  <td
 
-                </td>
+                    colSpan="8"
 
-                <td>{donation.date}</td>
+                    className="no-data"
 
-                <td>{donation.time}</td>
+                  >
 
-                <td>
+                    No Donation Found
 
-                  {donation.receipt ? (
+                  </td>
 
-                    <a
+                </tr>
 
-                      href={`https://bmgum.onrender.com/uploads/receipts/${donation.receipt}`}
+              )
 
-                      target="_blank"
+              :
 
-                      rel="noreferrer"
+              (
 
-                      className="receipt-link"
+                filteredDonations.map((donation) => (
 
-                    >
+                  <tr key={donation.id}>
 
-                      View
+                    <td>{donation.id}</td>
 
-                    </a>
+                    <td>{donation.donorName}</td>
 
-                  ) : (
+                    <td>
 
-                    "-"
+                      ₹{donation.amount}
 
-                  )}
+                    </td>
 
-                </td>
+                    <td>
 
-                <td>
+                      ₹{donation.pendingAmount || 0}
 
-                  <div className="action-buttons">
+                    </td>
 
-                    <button
+                    <td>
 
-                      className="edit-btn"
+                      {
 
-                      onClick={() =>
+                        donation.date
 
-                        editDonation(donation)
+                        ?
 
-                      }
+                        new Date(donation.date)
 
-                    >
+                        .toISOString()
 
-                      <FaEdit />
+                        .split("T")[0]
 
-                    </button>
+                        :
 
-                    <button
-
-                      className="delete-btn"
-
-                      onClick={() =>
-
-                        deleteDonation(donation.id)
+                        "-"
 
                       }
 
-                    >
+                    </td>
 
-                      <FaTrash />
+                    <td>
 
-                    </button>
+                      {donation.time}
 
-                  </div>
+                    </td>
 
-                </td>
+                    <td>
 
-              </tr>
+                      {
 
-            ))
+                        donation.receipt
 
-          )}
+                        ?
 
-        </tbody>
+                        (
 
-      </table>
+                          <a
 
-    )}
+                            href={`${API}/uploads/receipts/${donation.receipt}`}
+
+                            target="_blank"
+
+                            rel="noreferrer"
+
+                          >
+
+                            View Receipt
+
+                          </a>
+
+                        )
+
+                        :
+
+                        "-"
+
+                      }
+
+                    </td>
+
+                    <td>
+
+                      <div className="action-buttons">
+
+                        <button
+
+                          className="edit-btn"
+
+                          type="button"
+
+                          onClick={() =>
+
+                            editDonation(donation)
+
+                          }
+
+                        >
+
+                          <FaEdit />
+
+                        </button>
+
+                        <button
+
+                          className="delete-btn"
+
+                          type="button"
+
+                          onClick={() =>
+
+                            deleteDonation(donation.id)
+
+                          }
+
+                        >
+
+                          <FaTrash />
+
+                        </button>
+
+                      </div>
+
+                    </td>
+
+                  </tr>
+
+                ))
+
+              )
+
+            }
+
+          </tbody>
+
+        </table>
+
+      )
+
+    }
 
   </div>
-
-</div>
+  </div>
 
 );
 

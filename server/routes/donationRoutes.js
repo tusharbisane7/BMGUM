@@ -5,43 +5,25 @@ const multer = require("multer");
 const path = require("path");
 
 const {
-
     getDonations,
-
     getDonationSummary,
-
     addDonation,
-
     updateDonation,
-
-    deleteDonation
-
+    deleteDonation,
 } = require("../controllers/donationController");
 
-// ================= STORAGE =================
+// ================= MULTER STORAGE =================
 
 const storage = multer.diskStorage({
-
     destination: "uploads/receipts",
 
     filename: (req, file, cb) => {
-
-        cb(
-
-            null,
-
-            Date.now() + path.extname(file.originalname)
-
-        );
-
-    }
-
+        cb(null, Date.now() + path.extname(file.originalname));
+    },
 });
 
 const upload = multer({
-
-    storage
-
+    storage,
 });
 
 // ================= ROUTES =================
@@ -53,34 +35,12 @@ router.get("/", getDonations);
 router.get("/summary", getDonationSummary);
 
 // Add Donation
-router.post(
-
-    "/",
-
-    upload.single("receipt"),
-
-    addDonation
-
-);
+router.post("/", upload.single("receipt"), addDonation);
 
 // Update Donation
-router.put(
-
-    "/:id",
-
-    upload.single("receipt"),
-
-    updateDonation
-
-);
+router.put("/:id", upload.single("receipt"), updateDonation);
 
 // Delete Donation
-router.delete(
-
-    "/:id",
-
-    deleteDonation
-
-);
+router.delete("/:id", deleteDonation);
 
 module.exports = router;

@@ -3,11 +3,15 @@ import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import "../styles/aarti.css";
 
+const API = "https://bmgum.onrender.com";
+
 function Aarti() {
 
   const [aartiList, setAartiList] = useState([]);
 
   const [current, setCurrent] = useState(0);
+
+  // ================= LOAD AARTI =================
 
   const loadAarti = async () => {
 
@@ -15,21 +19,33 @@ function Aarti() {
 
       const res = await axios.get(
 
-        "https://bmgum.onrender.com/api/aarti"
+        `${API}/api/aarti`
 
       );
 
-      setAartiList(res.data);
+      setAartiList(
+
+        Array.isArray(res.data)
+
+          ? res.data
+
+          : []
+
+      );
 
     }
 
-    catch(err){
+    catch (err) {
 
       console.log(err);
+
+      setAartiList([]);
 
     }
 
   };
+
+  // ================= FETCH =================
 
   useEffect(() => {
 
@@ -45,27 +61,31 @@ function Aarti() {
 
   }, []);
 
+  // ================= AUTO SLIDER =================
+
   useEffect(() => {
 
-    if(aartiList.length===0) return;
+    if (aartiList.length === 0) return;
 
     const slider = setInterval(() => {
 
-      setCurrent((prev)=>
+      setCurrent((prev) =>
 
-        (prev+1)%aartiList.length
+        (prev + 1) % aartiList.length
 
       );
 
-    },6000);
+    }, 6000);
 
-    return ()=>clearInterval(slider);
+    return () => clearInterval(slider);
 
-  },[aartiList]);
+  }, [aartiList]);
 
-  if(aartiList.length===0){
+  // ================= EMPTY =================
 
-    return(
+  if (aartiList.length === 0) {
+
+    return (
 
       <section className="aarti-section container">
 
@@ -95,153 +115,144 @@ function Aarti() {
 
   }
 
-  const item = aartiList[current];
+  // ================= CURRENT ITEM =================
 
-  return (
+  const item = aartiList[current] || {};
 
-    <section className="aarti-section container">
+  // PostgreSQL compatibility
 
-      <h2 className="title">
+  const performedBy =
 
-        🪔 आरती वेळापत्रक
+    item.performedBy ??
 
-      </h2>
+    item.performedby ??
 
-      <div className="aarti-wrapper">
+    "-";
 
-        <AnimatePresence mode="wait">
+  const formattedDate = item.date
 
-          <motion.div
+    ? new Date(item.date).toLocaleDateString("en-GB")
 
-            key={item.id}
+    : "-";
+    return (
 
-            className="aarti-card"
+  <section className="aarti-section container">
 
-            initial={{
+    <h2 className="title">
 
-              opacity:0,
+      🪔 आरती वेळापत्रक
 
-              x:150,
+    </h2>
 
-              scale:0.9
+    <div className="aarti-wrapper">
 
-            }}
+      <AnimatePresence mode="wait">
 
-            animate={{
+        <motion.div
 
-              opacity:1,
+          key={item.id || current}
 
-              x:0,
+          className="aarti-card"
 
-              scale:1
+          initial={{
+            opacity: 0,
+            x: 150,
+            scale: 0.9
+          }}
 
-            }}
+          animate={{
+            opacity: 1,
+            x: 0,
+            scale: 1
+          }}
 
-            exit={{
+          exit={{
+            opacity: 0,
+            x: -150,
+            scale: 0.9
+          }}
 
-              opacity:0,
+          transition={{
+            duration: 0.8
+          }}
 
-              x:-150,
+        >
 
-              scale:0.9
+          <div className="aarti-icon">
 
-            }}
+            🪔
 
-            transition={{
+          </div>
 
-              duration:0.8
+          <h3>
 
-            }}
+            {item.name || "-"}
 
-          >
+          </h3>
 
-            <div className="aarti-icon">
+          <p>
 
-              🪔
+            <strong>📅 तारीख :</strong>{" "}
 
-            </div>
+            {formattedDate}
 
-            <h3>
+          </p>
 
-              {item.name}
+          <p>
 
-            </h3>
+            <strong>📆 वार :</strong>{" "}
 
-            <p>
+            {item.day || "-"}
 
-              <strong>📅 तारीख :</strong>
+          </p>
 
-              {" "}
+          <p>
 
-              {item.date}
+            <strong>⏰ वेळ :</strong>{" "}
 
-            </p>
+            {item.time || "-"}
 
-            <p>
+          </p>
 
-              <strong>📆 वार :</strong>
+          <p>
 
-              {" "}
+            <strong>👤 आरती :</strong>{" "}
 
-              {item.day}
+            {performedBy}
 
-            </p>
+          </p>
 
-            <p>
+          <p>
 
-              <strong>⏰ वेळ :</strong>
+            <strong>🏷 प्रकार :</strong>{" "}
 
-              {" "}
+            {item.type || "-"}
 
-              {item.time}
+          </p>
 
-            </p>
+          <p>
 
-            <p>
+            <strong>📌 स्थिती :</strong>{" "}
 
-              <strong>👤 आरती :</strong>
+            {item.status || "-"}
 
-              {" "}
+          </p>
 
-              {item.performedBy}
+          <div className="progress-bar">
 
-            </p>
+            <div className="progress-fill"></div>
 
-            <p>
+          </div>
 
-              <strong>🏷 प्रकार :</strong>
+        </motion.div>
 
-              {" "}
+      </AnimatePresence>
 
-              {item.type}
+    </div>
 
-            </p>
+  </section>
 
-            <p>
-
-              <strong>📌 स्थिती :</strong>
-
-              {" "}
-
-              {item.status}
-
-            </p>
-
-            <div className="progress-bar">
-
-              <div className="progress-fill"></div>
-
-            </div>
-
-          </motion.div>
-
-        </AnimatePresence>
-
-      </div>
-
-    </section>
-
-  );
+);
 
 }
 

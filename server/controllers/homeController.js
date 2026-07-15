@@ -6,147 +6,72 @@ const getHomeData = async (req, res) => {
 
     try {
 
-        const homeData = {
+        const donation = await pool.query(`
+            SELECT
+                COALESCE(SUM(amount),0) AS "totalDonation",
+                COUNT(*) AS "totalDonors"
+            FROM donations
+        `);
 
-            totalDonation: 0,
+        const expense = await pool.query(`
+            SELECT
+                COALESCE(SUM(amount),0) AS "totalExpense"
+            FROM expenses
+        `);
 
-            totalExpense: 0,
-
-            balance: 0,
-
-            totalDonors: 0,
-
-            recentDonations: [],
-
-            recentExpenses: [],
-
-            notices: []
-
-        };
-
-        // ================= TOTAL DONATION =================
-
-        const donation = await pool.query(
-
-            `SELECT
-
-                COALESCE(SUM(amount),0) AS totalDonation,
-
-                COUNT(*) AS totalDonors
-
-             FROM donations`
-
-        );
-
-        homeData.totalDonation = Number(
-
-            donation.rows[0].totaldonation
-
-        );
-
-        homeData.totalDonors = Number(
-
-            donation.rows[0].totaldonors
-
-        );
-
-        // ================= TOTAL EXPENSE =================
-
-        const expense = await pool.query(
-
-            `SELECT
-
-                COALESCE(SUM(amount),0) AS totalExpense
-
-             FROM expenses`
-
-        );
-
-        homeData.totalExpense = Number(
-
-            expense.rows[0].totalexpense
-
-        );
-
-        homeData.balance =
-
-            homeData.totalDonation -
-
-            homeData.totalExpense;
-
-        // ================= ACTIVE NOTICES =================
-
-        const notices = await pool.query(
-
-            `SELECT
-
+        const notices = await pool.query(`
+            SELECT
                 id,
-
                 title,
-
                 description,
+                startdate AS "startDate",
+                enddate AS "endDate"
+            FROM notices
+            WHERE status='Active'
+            ORDER BY id DESC
+            LIMIT 5
+        `);
 
-                startDate,
-
-                endDate
-
-             FROM notices
-
-             WHERE status='Active'
-
-             ORDER BY id DESC
-
-             LIMIT 5`
-
-        );
-
-        homeData.notices = notices.rows;
-
-        // ================= RECENT DONATIONS =================
-
-        const donations = await pool.query(
-
-            `SELECT
-
-                donorName,
-
+        const recentDonations = await pool.query(`
+            SELECT
+                donorname AS "donorName",
                 amount,
-
                 date
+            FROM donations
+            ORDER BY id DESC
+            LIMIT 5
+        `);
 
-             FROM donations
-
-             ORDER BY id DESC
-
-             LIMIT 5`
-
-        );
-
-        homeData.recentDonations = donations.rows;
-
-        // ================= RECENT EXPENSES =================
-
-        const expenses = await pool.query(
-
-            `SELECT
-
+        const recentExpenses = await pool.query(`
+            SELECT
                 title,
-
                 amount,
-
                 date
+            FROM expenses
+            ORDER BY id DESC
+            LIMIT 5
+        `);
 
-             FROM expenses
+        const totalDonation = Number(donation.rows[0].totalDonation);
+        const totalExpense = Number(expense.rows[0].totalExpense);
 
-             ORDER BY id DESC
+        res.json({
 
-             LIMIT 5`
+            totalDonation,
 
-        );
+            totalExpense,
 
-        homeData.recentExpenses = expenses.rows;
+            balance: totalDonation - totalExpense,
 
-        res.json(homeData);
+            totalDonors: Number(donation.rows[0].totalDonors),
+
+            recentDonations: recentDonations.rows,
+
+            recentExpenses: recentExpenses.rows,
+
+            notices: notices.rows
+
+        });
 
     }
 

@@ -35,7 +35,7 @@ function Location() {
               <div className="info-item">
                 📞
                 <span>
-                  +91 9671279153
+                  +91 9673279153
                 </span>
               </div>
 

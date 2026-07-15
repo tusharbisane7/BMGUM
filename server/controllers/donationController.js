@@ -3,34 +3,35 @@ const pool = require("../config/neon");
 // ================= GET ALL DONATIONS =================
 
 const getDonations = async (req, res) => {
-
     try {
 
-        const result = await pool.query(
-
-            `SELECT * FROM donations
-             ORDER BY id DESC`
-
-        );
+        const result = await pool.query(`
+            SELECT
+                id,
+                donorname AS "donorName",
+                mobile,
+                amount,
+                pendingamount AS "pendingAmount",
+                date,
+                time,
+                receipt,
+                createdat AS "createdAt"
+            FROM donations
+            ORDER BY id DESC
+        `);
 
         res.json(result.rows);
 
-    }
-
-    catch (err) {
+    } catch (err) {
 
         console.log(err);
 
         res.status(500).json({
-
             success: false,
-
             message: err.message
-
         });
 
     }
-
 };
 
 // ================= DONATION SUMMARY =================
@@ -39,67 +40,43 @@ const getDonationSummary = async (req, res) => {
 
     try {
 
-        const total = await pool.query(
-
-            `SELECT
-
-                COALESCE(SUM(amount),0) AS totalDonation,
-
-                COUNT(*) AS totalDonors
-
-             FROM donations`
-
-        );
+        const total = await pool.query(`
+            SELECT
+                COALESCE(SUM(amount),0) AS "totalDonation",
+                COUNT(*) AS "totalDonors"
+            FROM donations
+        `);
 
         const today = new Date().toISOString().split("T")[0];
 
-        const todayData = await pool.query(
-
-            `SELECT
-
-                COALESCE(SUM(amount),0) AS todayDonation
-
-             FROM donations
-
-             WHERE date=$1`,
-
-            [today]
-
-        );
+        const todayData = await pool.query(`
+            SELECT
+                COALESCE(SUM(amount),0) AS "todayDonation"
+            FROM donations
+            WHERE date=$1
+        `,[today]);
 
         res.json({
 
-            totalDonation: Number(
+            totalDonation:Number(total.rows[0].totalDonation),
 
-                total.rows[0].totaldonation
+            totalDonors:Number(total.rows[0].totalDonors),
 
-            ),
-
-            totalDonors: Number(
-
-                total.rows[0].totaldonors
-
-            ),
-
-            todayDonation: Number(
-
-                todayData.rows[0].todaydonation
-
-            )
+            todayDonation:Number(todayData.rows[0].todayDonation)
 
         });
 
     }
 
-    catch (err) {
+    catch(err){
 
         console.log(err);
 
         res.status(500).json({
 
-            success: false,
+            success:false,
 
-            message: err.message
+            message:err.message
 
         });
 
@@ -109,11 +86,11 @@ const getDonationSummary = async (req, res) => {
 
 // ================= ADD DONATION =================
 
-const addDonation = async (req, res) => {
+const addDonation = async(req,res)=>{
 
-    try {
+    try{
 
-        const {
+        const{
 
             donorName,
 
@@ -125,252 +102,197 @@ const addDonation = async (req, res) => {
 
             time
 
-        } = req.body;
+        }=req.body;
 
-        const receipt = req.file
+        const receipt=req.file?req.file.filename:null;
 
-            ? req.file.filename
+        const result=await pool.query(
 
-            : null;
+`INSERT INTO donations
+(
+donorname,
+amount,
+pendingamount,
+date,
+time,
+receipt
+)
+VALUES($1,$2,$3,$4,$5,$6)
+RETURNING id`,
 
-        const result = await pool.query(
+[
+donorName,
+Number(amount),
+pendingAmount===""||pendingAmount==null?0:Number(pendingAmount),
+date,
+time,
+receipt
+]
 
-            `INSERT INTO donations
+);
 
-            (
+res.json({
 
-                donorName,
+success:true,
 
-                amount,
+message:"Donation Added Successfully",
 
-                pendingAmount,
+id:result.rows[0].id
 
-                date,
+});
 
-                time,
+}
 
-                receipt
+catch(err){
 
-            )
+console.log(err);
 
-            VALUES($1,$2,$3,$4,$5,$6)
+res.status(500).json({
 
-            RETURNING id`,
+success:false,
 
-            [
+message:err.message
 
-                donorName,
+});
 
-                amount,
-
-                pendingAmount,
-
-                date,
-
-                time,
-
-                receipt
-
-            ]
-
-        );
-
-        res.json({
-
-            success: true,
-
-            message: "Donation Saved",
-
-            id: result.rows[0].id
-
-        });
-
-    }
-
-    catch (err) {
-
-        console.log(err);
-
-        res.status(500).json({
-
-            success: false,
-
-            message: err.message
-
-        });
-
-    }
+}
 
 };
 
 // ================= UPDATE DONATION =================
 
-const updateDonation = async (req, res) => {
+const updateDonation=async(req,res)=>{
 
-    try {
+try{
 
-        const {
+const{
 
-            donorName,
+donorName,
 
-            amount,
+amount,
 
-            pendingAmount,
+pendingAmount,
 
-            date,
+date,
 
-            time
+time
 
-        } = req.body;
+}=req.body;
 
-        let receipt = null;
+const old=await pool.query(
 
-        const oldData = await pool.query(
+"SELECT receipt FROM donations WHERE id=$1",
 
-            "SELECT receipt FROM donations WHERE id=$1",
+[req.params.id]
 
-            [
+);
 
-                req.params.id
+const receipt=req.file
 
-            ]
+?req.file.filename
 
-        );
+:(old.rows.length>0?old.rows[0].receipt:null);
 
-        if (req.file) {
+await pool.query(
 
-            receipt = req.file.filename;
+`UPDATE donations
+SET
+donorname=$1,
+amount=$2,
+pendingamount=$3,
+date=$4,
+time=$5,
+receipt=$6
+WHERE id=$7`,
 
-        }
+[
+donorName,
+Number(amount),
+pendingAmount===""||pendingAmount==null?0:Number(pendingAmount),
+date,
+time,
+receipt,
+req.params.id
+]
 
-        else {
+);
 
-            receipt = oldData.rows[0]?.receipt || null;
+res.json({
 
-        }
+success:true,
 
-        await pool.query(
+message:"Donation Updated Successfully"
 
-            `UPDATE donations
+});
 
-             SET
+}
 
-                donorName=$1,
+catch(err){
 
-                amount=$2,
+console.log(err);
 
-                pendingAmount=$3,
+res.status(500).json({
 
-                date=$4,
+success:false,
 
-                time=$5,
+message:err.message
 
-                receipt=$6
+});
 
-             WHERE id=$7`,
-
-            [
-
-                donorName,
-
-                amount,
-
-                pendingAmount,
-
-                date,
-
-                time,
-
-                receipt,
-
-                req.params.id
-
-            ]
-
-        );
-
-        res.json({
-
-            success: true,
-
-            message: "Donation Updated Successfully"
-
-        });
-
-    }
-
-    catch (err) {
-
-        console.log(err);
-
-        res.status(500).json({
-
-            success: false,
-
-            message: err.message
-
-        });
-
-    }
+}
 
 };
 
 // ================= DELETE DONATION =================
 
-const deleteDonation = async (req, res) => {
+const deleteDonation=async(req,res)=>{
 
-    try {
+try{
 
-        await pool.query(
+await pool.query(
 
-            `DELETE FROM donations
+"DELETE FROM donations WHERE id=$1",
 
-             WHERE id=$1`,
+[req.params.id]
 
-            [
+);
 
-                req.params.id
+res.json({
 
-            ]
+success:true,
 
-        );
+message:"Donation Deleted Successfully"
 
-        res.json({
+});
 
-            success: true,
+}
 
-            message: "Donation Deleted Successfully"
+catch(err){
 
-        });
+console.log(err);
 
-    }
+res.status(500).json({
 
-    catch (err) {
+success:false,
 
-        console.log(err);
+message:err.message
 
-        res.status(500).json({
+});
 
-            success: false,
-
-            message: err.message
-
-        });
-
-    }
+}
 
 };
 
-module.exports = {
+module.exports={
 
-    getDonations,
+getDonations,
 
-    getDonationSummary,
+getDonationSummary,
 
-    addDonation,
+addDonation,
 
-    updateDonation,
+updateDonation,
 
-    deleteDonation
+deleteDonation
 
 };

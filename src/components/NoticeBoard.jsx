@@ -31,9 +31,7 @@ function NoticeBoard({ notices = [] }) {
       <section className="notice-section container">
 
         <h2 className="title">
-
           📢 सूचना फलक
-
         </h2>
 
         <div className="notice-wrapper">
@@ -52,14 +50,14 @@ function NoticeBoard({ notices = [] }) {
 
   }
 
+  const notice = notices[currentNotice];
+
   return (
 
     <section className="notice-section container">
 
       <h2 className="title">
-
         📢 सूचना फलक
-
       </h2>
 
       <div className="notice-wrapper">
@@ -68,65 +66,77 @@ function NoticeBoard({ notices = [] }) {
 
           <motion.div
 
-            key={notices[currentNotice].id}
+            key={notice.id}
 
             className="notice-card"
 
             initial={{
-
               opacity:0,
-
               x:150,
-
               scale:0.9
-
             }}
 
             animate={{
-
               opacity:1,
-
               x:0,
-
               scale:1
-
             }}
 
             exit={{
-
               opacity:0,
-
               x:-150,
-
               scale:0.9
-
             }}
 
             transition={{
-
               duration:0.7
-
             }}
 
           >
 
             <span className="notice-date">
 
-              {notices[currentNotice].startDate}
+              {
+
+                notice.startdate
+
+                ?
+
+                new Date(notice.startdate)
+
+                .toLocaleDateString("en-GB")
+
+                :
+
+                "-"
+
+              }
 
             </span>
 
             <h3>
 
-              {notices[currentNotice].title}
+              {notice.title || "-"}
 
             </h3>
 
             <p>
 
-              {notices[currentNotice].description}
+              {notice.description || "-"}
 
             </p>
+
+            {
+
+              notice.type &&
+
+              <span className="notice-type">
+
+                {notice.type}
+
+              </span>
+
+            }
 
             <div className="progress-bar">
 

@@ -6,12 +6,16 @@ const getTimeline = async (req, res) => {
 
     try {
 
-        const result = await pool.query(
-
-            `SELECT * FROM timeline
-             ORDER BY eventDate ASC`
-
-        );
+        const result = await pool.query(`
+            SELECT
+                id,
+                title,
+                icon,
+                eventdate AS "eventDate",
+                description
+            FROM timeline
+            ORDER BY eventdate ASC
+        `);
 
         res.json(result.rows);
 
@@ -21,7 +25,13 @@ const getTimeline = async (req, res) => {
 
         console.log(err);
 
-        res.status(500).json(err);
+        res.status(500).json({
+
+            success: false,
+
+            message: err.message
+
+        });
 
     }
 
@@ -36,7 +46,11 @@ const addTimeline = async (req, res) => {
         const {
 
             title,
+
+            icon,
+
             eventDate,
+
             description
 
         } = req.body;
@@ -44,14 +58,23 @@ const addTimeline = async (req, res) => {
         const result = await pool.query(
 
             `INSERT INTO timeline
-            (title, eventDate, description)
-            VALUES ($1,$2,$3)
+            (
+                title,
+                icon,
+                eventdate,
+                description
+            )
+            VALUES($1,$2,$3,$4)
             RETURNING id`,
 
             [
 
                 title,
+
+                icon,
+
                 eventDate,
+
                 description
 
             ]
@@ -74,7 +97,13 @@ const addTimeline = async (req, res) => {
 
         console.log(err);
 
-        res.status(500).json(err);
+        res.status(500).json({
+
+            success: false,
+
+            message: err.message
+
+        });
 
     }
 
@@ -89,7 +118,11 @@ const updateTimeline = async (req, res) => {
         const {
 
             title,
+
+            icon,
+
             eventDate,
+
             description
 
         } = req.body;
@@ -99,15 +132,21 @@ const updateTimeline = async (req, res) => {
             `UPDATE timeline
              SET
                 title=$1,
-                eventDate=$2,
-                description=$3
-             WHERE id=$4`,
+                icon=$2,
+                eventdate=$3,
+                description=$4
+             WHERE id=$5`,
 
             [
 
                 title,
+
+                icon,
+
                 eventDate,
+
                 description,
+
                 req.params.id
 
             ]
@@ -128,7 +167,13 @@ const updateTimeline = async (req, res) => {
 
         console.log(err);
 
-        res.status(500).json(err);
+        res.status(500).json({
+
+            success: false,
+
+            message: err.message
+
+        });
 
     }
 
@@ -142,8 +187,7 @@ const deleteTimeline = async (req, res) => {
 
         await pool.query(
 
-            `DELETE FROM timeline
-             WHERE id=$1`,
+            "DELETE FROM timeline WHERE id=$1",
 
             [
 
@@ -167,7 +211,13 @@ const deleteTimeline = async (req, res) => {
 
         console.log(err);
 
-        res.status(500).json(err);
+        res.status(500).json({
+
+            success: false,
+
+            message: err.message
+
+        });
 
     }
 

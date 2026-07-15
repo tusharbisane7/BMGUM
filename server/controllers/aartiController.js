@@ -6,12 +6,20 @@ const getAarti = async (req, res) => {
 
     try {
 
-        const result = await pool.query(
-
-            `SELECT * FROM aarti
-             ORDER BY date ASC`
-
-        );
+        const result = await pool.query(`
+            SELECT
+                id,
+                name,
+                day,
+                date,
+                time,
+                performedby AS "performedBy",
+                type,
+                status,
+                createdat AS "createdAt"
+            FROM aarti
+            ORDER BY date ASC
+        `);
 
         res.json(result.rows);
 
@@ -21,7 +29,13 @@ const getAarti = async (req, res) => {
 
         console.log(err);
 
-        res.status(500).json(err);
+        res.status(500).json({
+
+            success: false,
+
+            message: err.message
+
+        });
 
     }
 
@@ -36,11 +50,17 @@ const addAarti = async (req, res) => {
         const {
 
             name,
+
             day,
+
             date,
+
             time,
+
             performedBy,
+
             type,
+
             status
 
         } = req.body;
@@ -48,18 +68,32 @@ const addAarti = async (req, res) => {
         const result = await pool.query(
 
             `INSERT INTO aarti
-            (name, day, date, time, performedBy, type, status)
-            VALUES ($1,$2,$3,$4,$5,$6,$7)
+            (
+                name,
+                day,
+                date,
+                time,
+                performedby,
+                type,
+                status
+            )
+            VALUES($1,$2,$3,$4,$5,$6,$7)
             RETURNING id`,
 
             [
 
                 name,
+
                 day,
+
                 date,
+
                 time,
+
                 performedBy,
+
                 type,
+
                 status
 
             ]
@@ -70,7 +104,7 @@ const addAarti = async (req, res) => {
 
             success: true,
 
-            message: "Aarti Added",
+            message: "Aarti Added Successfully",
 
             id: result.rows[0].id
 
@@ -82,7 +116,13 @@ const addAarti = async (req, res) => {
 
         console.log(err);
 
-        res.status(500).json(err);
+        res.status(500).json({
+
+            success: false,
+
+            message: err.message
+
+        });
 
     }
 
@@ -97,11 +137,17 @@ const updateAarti = async (req, res) => {
         const {
 
             name,
+
             day,
+
             date,
+
             time,
+
             performedBy,
+
             type,
+
             status
 
         } = req.body;
@@ -114,7 +160,7 @@ const updateAarti = async (req, res) => {
                 day=$2,
                 date=$3,
                 time=$4,
-                performedBy=$5,
+                performedby=$5,
                 type=$6,
                 status=$7
              WHERE id=$8`,
@@ -122,12 +168,19 @@ const updateAarti = async (req, res) => {
             [
 
                 name,
+
                 day,
+
                 date,
+
                 time,
+
                 performedBy,
+
                 type,
+
                 status,
+
                 req.params.id
 
             ]
@@ -138,7 +191,7 @@ const updateAarti = async (req, res) => {
 
             success: true,
 
-            message: "Aarti Updated"
+            message: "Aarti Updated Successfully"
 
         });
 
@@ -148,13 +201,19 @@ const updateAarti = async (req, res) => {
 
         console.log(err);
 
-        res.status(500).json(err);
+        res.status(500).json({
+
+            success: false,
+
+            message: err.message
+
+        });
 
     }
 
 };
 
-// ================= DELETE =================
+// ================= DELETE AARTI =================
 
 const deleteAarti = async (req, res) => {
 
@@ -162,8 +221,7 @@ const deleteAarti = async (req, res) => {
 
         await pool.query(
 
-            `DELETE FROM aarti
-             WHERE id=$1`,
+            "DELETE FROM aarti WHERE id=$1",
 
             [
 
@@ -177,7 +235,7 @@ const deleteAarti = async (req, res) => {
 
             success: true,
 
-            message: "Aarti Deleted"
+            message: "Aarti Deleted Successfully"
 
         });
 
@@ -187,7 +245,13 @@ const deleteAarti = async (req, res) => {
 
         console.log(err);
 
-        res.status(500).json(err);
+        res.status(500).json({
+
+            success: false,
+
+            message: err.message
+
+        });
 
     }
 

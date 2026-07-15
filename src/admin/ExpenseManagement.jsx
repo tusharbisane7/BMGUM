@@ -13,9 +13,9 @@ import {
 
 import "../styles/admin/expense.css";
 
-function ExpenseManagement() {
+const API = "https://bmgum.onrender.com";
 
-  const today = new Date();
+function ExpenseManagement() {
 
   const [expenses, setExpenses] = useState([]);
 
@@ -27,6 +27,8 @@ function ExpenseManagement() {
 
   const [loading, setLoading] = useState(false);
 
+  const now = new Date();
+
   const [formData, setFormData] = useState({
 
     title: "",
@@ -37,13 +39,15 @@ function ExpenseManagement() {
 
     description: "",
 
-    date: today.toLocaleDateString("en-GB"),
+    date: now.toISOString().substring(0, 10),
 
-    time: today.toLocaleTimeString(),
+    time: now.toLocaleTimeString(),
 
-    bill: null,
+    bill: null
 
   });
+
+  // ================= LOAD =================
 
   const loadExpenses = async () => {
 
@@ -52,16 +56,32 @@ function ExpenseManagement() {
       setLoading(true);
 
       const res = await axios.get(
-        "https://bmgum.onrender.com/api/expenses"
+
+        `${API}/api/expenses`
+
       );
 
-      setExpenses(res.data);
+      setExpenses(
 
-    } catch (err) {
+        Array.isArray(res.data)
+
+          ? res.data
+
+          : []
+
+      );
+
+    }
+
+    catch (err) {
 
       console.log(err);
 
-    } finally {
+      setExpenses([]);
+
+    }
+
+    finally {
 
       setLoading(false);
 
@@ -75,17 +95,21 @@ function ExpenseManagement() {
 
   }, []);
 
+  // ================= CHANGE =================
+
   const handleChange = (e) => {
 
     setFormData({
 
       ...formData,
 
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
 
     });
 
   };
+
+  // ================= IMAGE =================
 
   const handleImage = (e) => {
 
@@ -97,17 +121,23 @@ function ExpenseManagement() {
 
       ...formData,
 
-      bill: file,
+      bill: file
 
     });
 
-    setPreview(URL.createObjectURL(file));
+    setPreview(
+
+      URL.createObjectURL(file)
+
+    );
 
   };
 
+  // ================= CLEAR =================
+
   const clearForm = () => {
 
-    const now = new Date();
+    const d = new Date();
 
     setEditingId(null);
 
@@ -123,15 +153,17 @@ function ExpenseManagement() {
 
       description: "",
 
-      date: now.toLocaleDateString("en-GB"),
+      date: d.toISOString().substring(0, 10),
 
-      time: now.toLocaleTimeString(),
+      time: d.toLocaleTimeString(),
 
-      bill: null,
+      bill: null
 
     });
 
   };
+
+  // ================= SAVE =================
 
   const handleSubmit = async (e) => {
 
@@ -161,24 +193,29 @@ function ExpenseManagement() {
 
       if (editingId) {
 
-       await axios.put(
-  `https://bmgum.onrender.com/api/expenses/${editingId}`,
-  data
-);
+        await axios.put(
 
-        alert("Expense Updated");
-
-      } else {
-
-        await axios.post(
-
-          "https://bmgum.onrender.com/api/expenses",
+          `${API}/api/expenses/${editingId}`,
 
           data
 
         );
 
-        alert("Expense Added");
+        alert("Expense Updated Successfully");
+
+      }
+
+      else {
+
+        await axios.post(
+
+          `${API}/api/expenses`,
+
+          data
+
+        );
+
+        alert("Expense Added Successfully");
 
       }
 
@@ -186,11 +223,19 @@ function ExpenseManagement() {
 
       loadExpenses();
 
-    } catch (err) {
+    }
+
+    catch (err) {
 
       console.log(err);
 
-      alert("Error Saving Expense");
+      alert(
+
+        err.response?.data?.message ||
+
+        "Error Saving Expense"
+
+      );
 
     }
 
@@ -220,9 +265,13 @@ function ExpenseManagement() {
   <div className="expense-card">
 
     <form
-      onSubmit={handleSubmit}
+
       className="expense-form"
+
+      onSubmit={handleSubmit}
+
       encType="multipart/form-data"
+
     >
 
       {/* Expense Name */}
@@ -237,11 +286,11 @@ function ExpenseManagement() {
 
           name="title"
 
-          placeholder="Enter Expense Name"
-
           value={formData.title}
 
           onChange={handleChange}
+
+          placeholder="Enter Expense Name"
 
           required
 
@@ -261,11 +310,11 @@ function ExpenseManagement() {
 
           name="amount"
 
-          placeholder="Enter Amount"
-
           value={formData.amount}
 
           onChange={handleChange}
+
+          placeholder="Enter Amount"
 
           required
 
@@ -277,7 +326,7 @@ function ExpenseManagement() {
 
       <div className="form-group">
 
-        <label>Category *</label>
+        <label>Category</label>
 
         <select
 
@@ -291,13 +340,13 @@ function ExpenseManagement() {
 
           <option>Decoration</option>
 
-          <option>Sound</option>
-
           <option>Food</option>
 
-          <option>Prize</option>
+          <option>Sound</option>
 
           <option>Electricity</option>
+
+          <option>Prize</option>
 
           <option>Advertisement</option>
 
@@ -315,17 +364,17 @@ function ExpenseManagement() {
 
         <textarea
 
-          name="description"
-
           rows="4"
 
-          placeholder="Expense Description"
+          name="description"
 
           value={formData.description}
 
           onChange={handleChange}
 
-        ></textarea>
+          placeholder="Expense Description"
+
+        />
 
       </div>
 
@@ -337,7 +386,7 @@ function ExpenseManagement() {
 
         <input
 
-          type="text"
+          type="date"
 
           value={formData.date}
 
@@ -365,7 +414,7 @@ function ExpenseManagement() {
 
       </div>
 
-      {/* Bill Upload */}
+      {/* Upload Bill */}
 
       <div className="form-group">
 
@@ -373,7 +422,7 @@ function ExpenseManagement() {
 
           <FaImage />
 
-          Upload Bill
+          Upload Bill / Proof
 
         </label>
 
@@ -401,6 +450,14 @@ function ExpenseManagement() {
 
             alt="Bill Preview"
 
+            style={{
+
+              maxWidth: "220px",
+
+              borderRadius: "8px"
+
+            }}
+
           />
 
         </div>
@@ -421,11 +478,15 @@ function ExpenseManagement() {
 
           <FaSave />
 
-          {editingId
+          {
 
-            ? "Update Expense"
+            editingId
 
-            : "Save Expense"}
+              ? " Update Expense"
+
+              : " Save Expense"
+
+          }
 
         </button>
 
@@ -469,13 +530,15 @@ function ExpenseManagement() {
 
       <h2>
 
-        ₹{
+        ₹
+
+        {
 
           expenses.reduce(
 
             (sum, item) =>
 
-              sum + Number(item.amount),
+              sum + Number(item.amount || 0),
 
             0
 
@@ -542,11 +605,13 @@ function ExpenseManagement() {
 
             <th>Amount</th>
 
+            <th>Description</th>
+
             <th>Date</th>
 
             <th>Time</th>
 
-            <th>Bill</th>
+            <th>Proof</th>
 
             <th>Action</th>
 
@@ -556,32 +621,56 @@ function ExpenseManagement() {
 
         <tbody>
 
-          {expenses
-            .filter((item) =>
-              item.title
-                .toLowerCase()
-                .includes(search.toLowerCase())
-            )
-            .length === 0 ? (
-
-            <tr>
-
-              <td colSpan="8" className="no-data">
-
-                No Expense Found
-
-              </td>
-
-            </tr>
-
-          ) : (
+          {
 
             expenses
-              .filter((item) =>
-                item.title
-                  .toLowerCase()
-                  .includes(search.toLowerCase())
+
+            .filter(item =>
+
+              (item.title || "")
+
+              .toLowerCase()
+
+              .includes(search.toLowerCase())
+
+            )
+
+            .length === 0
+
+            ? (
+
+              <tr>
+
+                <td
+
+                  colSpan="9"
+
+                  className="no-data"
+
+                >
+
+                  No Expense Found
+
+                </td>
+
+              </tr>
+
+            )
+
+            : (
+
+              expenses
+
+              .filter(item =>
+
+                (item.title || "")
+
+                .toLowerCase()
+
+                .includes(search.toLowerCase())
+
               )
+
               .map((expense) => (
 
                 <tr key={expense.id}>
@@ -592,15 +681,49 @@ function ExpenseManagement() {
 
                   <td>{expense.category}</td>
 
-                  <td>₹{expense.amount}</td>
+                  <td>
 
-                  <td>{expense.date}</td>
+                    ₹{expense.amount}
+
+                  </td>
+
+                  <td>
+
+                    {expense.description || "-"}
+
+                  </td>
+
+                  <td>
+
+                    {
+
+                      expense.date
+
+                        ?
+
+                        new Date(expense.date)
+
+                        .toISOString()
+
+                        .split("T")[0]
+
+                        :
+
+                        "-"
+
+                    }
+
+                  </td>
 
                   <td>{expense.time}</td>
 
                   <td>
 
-                    {expense.bill ? (
+                    {
+
+                      expense.bill
+
+                      ?
 
                       <a
 
@@ -612,15 +735,15 @@ function ExpenseManagement() {
 
                       >
 
-                        View
+                        View Proof
 
                       </a>
 
-                    ) : (
+                      :
 
                       "-"
 
-                    )}
+                    }
 
                   </td>
 
@@ -638,19 +761,27 @@ function ExpenseManagement() {
 
                           setFormData({
 
-                            title: expense.title,
+                            title: expense.title || "",
 
-                            amount: expense.amount,
+                            amount: expense.amount || "",
 
-                            category: expense.category,
+                            category: expense.category || "Decoration",
 
-                            description: expense.description,
+                            description: expense.description || "",
 
-                            date: expense.date,
+                            date: expense.date
 
-                            time: expense.time,
+                              ? new Date(expense.date)
 
-                            bill: null,
+                                  .toISOString()
+
+                                  .split("T")[0]
+
+                              : "",
+
+                            time: expense.time || "",
+
+                            bill: null
 
                           });
 
@@ -662,13 +793,17 @@ function ExpenseManagement() {
 
                             );
 
+                          } else {
+
+                            setPreview(null);
+
                           }
 
                           window.scrollTo({
 
                             top: 0,
 
-                            behavior: "smooth",
+                            behavior: "smooth"
 
                           });
 
@@ -690,13 +825,11 @@ function ExpenseManagement() {
 
                             !window.confirm(
 
-                              "Delete Expense?"
+                              "Delete this expense?"
 
                             )
 
-                          )
-
-                            return;
+                          ) return;
 
                           try {
 
@@ -714,9 +847,17 @@ function ExpenseManagement() {
 
                             loadExpenses();
 
-                          } catch (err) {
+                          }
+
+                          catch(err){
 
                             console.log(err);
+
+                            alert(
+
+                              "Delete Failed"
+
+                            );
 
                           }
 
@@ -736,7 +877,9 @@ function ExpenseManagement() {
 
               ))
 
-          )}
+            )
+
+          }
 
         </tbody>
 
@@ -745,8 +888,7 @@ function ExpenseManagement() {
     )}
 
   </div>
-
-</div>
+  </div>
 
 );
 
