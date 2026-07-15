@@ -24,7 +24,7 @@ function Expense() {
 
       const res = await axios.get(
 
-        "http://localhost:5000/api/expenses/summary"
+        "https://bmgum.onrender.com/api/expenses/summary"
 
       );
 

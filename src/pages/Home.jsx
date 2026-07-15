@@ -43,7 +43,7 @@ function Home() {
 
       const res = await axios.get(
 
-        "http://localhost:5000/api/home"
+        "https://bmgum.onrender.com/api/home"
 
       );
 

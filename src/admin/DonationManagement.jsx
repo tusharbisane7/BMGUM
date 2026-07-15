@@ -55,7 +55,7 @@ function DonationManagement() {
 
       const res = await axios.get(
 
-        "http://localhost:5000/api/donations"
+        "https://bmgum.onrender.com/api/donations"
 
       );
 
@@ -237,7 +237,7 @@ function DonationManagement() {
 
         await axios.post(
 
-          "http://localhost:5000/api/donations",
+          "https://bmgum.onrender.com/api/donations",
 
           data
 

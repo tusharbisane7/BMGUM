@@ -14,7 +14,7 @@ function Timeline() {
 
       const res = await axios.get(
 
-        "http://localhost:5000/api/timeline"
+        "https://bmgum.onrender.com/api/timeline"
 
       );
 

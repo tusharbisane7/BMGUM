@@ -49,7 +49,7 @@ function NoticeManagement() {
 
       const res = await axios.get(
 
-        "http://localhost:5000/api/notices"
+        "https://bmgum.onrender.com/api/notices"
 
       );
 
@@ -145,7 +145,7 @@ function NoticeManagement() {
 
         await axios.post(
 
-          "http://localhost:5000/api/notices",
+          "https://bmgum.onrender.com/api/notices",
 
           formData
 

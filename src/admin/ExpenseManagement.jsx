@@ -52,7 +52,7 @@ function ExpenseManagement() {
       setLoading(true);
 
       const res = await axios.get(
-        "http://localhost:5000/api/expenses"
+        "https://bmgum.onrender.com/api/expenses"
       );
 
       setExpenses(res.data);
@@ -175,7 +175,7 @@ function ExpenseManagement() {
 
         await axios.post(
 
-          "http://localhost:5000/api/expenses",
+          "https://bmgum.onrender.com/api/expenses",
 
           data
 

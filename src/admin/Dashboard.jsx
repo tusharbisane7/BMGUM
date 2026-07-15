@@ -65,7 +65,7 @@ function Dashboard() {
 
       const res = await axios.get(
 
-        "http://localhost:5000/api/dashboard"
+        "https://bmgum.onrender.com/api/dashboard"
 
       );
 
@@ -91,7 +91,7 @@ function Dashboard() {
 
       const res = await axios.get(
 
-        "http://localhost:5000/api/server-time"
+        "https://bmgum.onrender.com/api/server-time"
 
       );
 

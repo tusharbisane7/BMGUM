@@ -60,7 +60,7 @@ function AartiManagement() {
 
       const res = await axios.get(
 
-        "http://localhost:5000/api/aarti"
+        "https://bmgum.onrender.com/api/aarti"
 
       );
 
@@ -152,7 +152,7 @@ function AartiManagement() {
 
         await axios.post(
 
-          "http://localhost:5000/api/aarti",
+          "https://bmgum.onrender.com/api/aarti",
 
           formData
 

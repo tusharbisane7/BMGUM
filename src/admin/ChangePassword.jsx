@@ -49,7 +49,7 @@ function ChangePassword() {
 
       const res = await axios.put(
 
-        "http://localhost:5000/api/auth/change-password",
+        "https://bmgum.onrender.com/api/auth/change-password",
 
         {
 
