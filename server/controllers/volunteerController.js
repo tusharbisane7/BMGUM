@@ -484,21 +484,23 @@ const deleteVolunteer = async (req, res) => {
 
     }
 
-    catch (err) {
+ catch(err){
 
-        console.log(err);
+    console.error("Volunteer Delete Error:");
 
-        res.status(500).json({
+    console.error(err);
 
-            success: false,
+    res.status(500).json({
 
-            message: err.message
+        success:false,
 
-        });
+        message:err.message
 
-    }
+    });
 
-};
+}
+
+};   // <-- Missing this closing brace for deleteVolunteer
 
 // ================= EXPORTS =================
 

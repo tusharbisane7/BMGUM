@@ -16,6 +16,10 @@ import UnderConstruction from "./admin/UnderConstruction";
 import ChangePassword from "./admin/ChangePassword";
 import AartiManagement from "./admin/AartiManagement";
 import TimelineManagement from "./admin/TimelineManagement";
+import VolunteerRegistration from "./pages/VolunteerRegistration";
+import VolunteerManagement from "./admin/VolunteerManagement";
+import Volunteers from "./components/Volunteers";
+import SponsorManagement from "./admin/SponsorManagement";
 
 function App() {
   return (
@@ -67,6 +71,26 @@ function App() {
         }
       />
 
+      <Route
+  path="/volunteer-registration"
+  element={
+    <>
+      <Navbar />
+      <VolunteerRegistration />
+    </>
+  }
+/>
+
+<Route
+  path="/volunteers"
+  element={
+    <>
+      <Navbar />
+      <Volunteers />
+    </>
+  }
+/>
+
       <Route path="/login" element={<Login />} />
 
       {/* ADMIN ONLY */}
@@ -103,6 +127,14 @@ function App() {
   element={<AartiManagement />}
 />
 
+<Route
+  path="/admin/volunteers"
+  element={<VolunteerManagement />}
+/>
+<Route
+  path="/admin/sponsors"
+  element={<SponsorManagement />}
+/>
 
     </Routes>
   );

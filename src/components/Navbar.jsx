@@ -122,6 +122,30 @@ function Navbar() {
           </NavLink>
 
         </li>
+<NavLink
+            to="/volunteer-registration"
+            className={({ isActive }) =>
+              isActive ? "active" : ""
+            }
+          >
+
+             स्वयंसेवक बना
+
+          </NavLink>
+         <li>
+
+          <NavLink
+            to="/volunteers"
+            className={({ isActive }) =>
+              isActive ? "active" : ""
+            }
+          >
+
+            नोंदणीकृत स्वयंसेवक
+
+          </NavLink>
+
+        </li>
 
       </ul>
 

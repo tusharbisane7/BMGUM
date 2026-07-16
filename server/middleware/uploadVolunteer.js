@@ -1,18 +1,19 @@
 const multer = require("multer");
-
 const path = require("path");
+const fs = require("fs");
+
+const uploadDir = path.join(__dirname, "../uploads/volunteers");
+
+// Create folder if it doesn't exist
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
 
 const storage = multer.diskStorage({
 
     destination(req, file, cb) {
 
-        cb(
-
-            null,
-
-            "uploads/volunteers"
-
-        );
+        cb(null, uploadDir);
 
     },
 
@@ -22,13 +23,7 @@ const storage = multer.diskStorage({
 
             null,
 
-            Date.now() +
-
-            path.extname(
-
-                file.originalname
-
-            )
+            Date.now() + path.extname(file.originalname)
 
         );
 
@@ -38,45 +33,19 @@ const storage = multer.diskStorage({
 
 const fileFilter = (req, file, cb) => {
 
-    if (
+    if (file.mimetype.startsWith("image/")) {
 
-        file.mimetype.startsWith(
+        cb(null, true);
 
-            "image/"
+    } else {
 
-        )
-
-    ) {
-
-        cb(
-
-            null,
-
-            true
-
-        );
-
-    }
-
-    else {
-
-        cb(
-
-            new Error(
-
-                "Only image files are allowed."
-
-            ),
-
-            false
-
-        );
+        cb(new Error("Only image files are allowed."), false);
 
     }
 
 };
 
-const upload = multer({
+module.exports = multer({
 
     storage,
 
@@ -89,5 +58,3 @@ const upload = multer({
     }
 
 });
-
-module.exports = upload;

@@ -7,6 +7,9 @@ import {
   FaMoneyBillWave,
   FaWallet,
   FaUsers,
+  FaUserFriends,
+  FaHandshake,
+  FaEye,
   FaBullhorn,
   FaUserShield,
   FaSignOutAlt,
@@ -433,6 +436,26 @@ function Dashboard() {
            पासवर्ड बदला 
 
           </button>
+
+          <button
+  onClick={() => navigate("/admin/volunteers")}
+>
+
+  <FaUserFriends />
+
+  स्वयंसेवक व्यवस्थापन
+
+</button>
+
+<button
+  onClick={() => navigate("/admin/sponsors")}
+>
+
+  <FaHandshake />
+
+  प्रायोजक व्यवस्थापन
+
+</button>
 
           {
 

@@ -182,15 +182,23 @@ function VolunteerRegistration() {
 
         }
 
-        catch(err){
+       catch(err){
 
-            console.log(err);
+    console.error("Axios Error:", err);
 
-            alert(
+    console.error("Status:", err.response?.status);
 
-                "Registration Failed"
+    console.error("Response:", err.response?.data);
 
-            );
+    alert(
+
+        err.response?.data?.message ||
+
+        "Registration Failed"
+
+    );
+
+
 
         }
 
@@ -540,170 +548,8 @@ function VolunteerRegistration() {
 
             </div>
 
-        </div>
-                {/* ================= PRINTABLE VOLUNTEER CARD ================= */}
-
-        {
-
-            registered && (
-
-                <div
-
-                    id="printCard"
-
-                    className="print-card"
-
-                >
-
-                    <div className="mandal-header">
-
-                        <img
-
-                            src="/logo.png"
-
-                            alt="Mandal Logo"
-
-                            className="mandal-logo"
-
-                        />
-
-                        <div>
-
-                            <h2>
-
-                                बाल मित्र गणेश उत्सव मंडळ
-
-                            </h2>
-
-                            <p>
-
-                                अचलपूर, जि. अमरावती
-
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                    <hr />
-
-                    <div className="card-body">
-
-                        {
-
-                            preview && (
-
-                                <img
-
-                                    src={preview}
-
-                                    alt="Volunteer"
-
-                                    className="volunteer-photo"
-
-                                />
-
-                            )
-
-                        }
-
-                        <div className="volunteer-details">
-
-                            <p>
-
-                                <strong>
-
-                                    स्वयंसेवक आयडी :
-
-                                </strong>
-
-                                {volunteerId}
-
-                            </p>
-
-                            <p>
-
-                                <strong>
-
-                                    नाव :
-
-                                </strong>
-
-                                {formData.fullName}
-
-                            </p>
-
-                            <p>
-
-                                <strong>
-
-                                    मोबाईल :
-
-                                </strong>
-
-                                {formData.mobile}
-
-                            </p>
-
-                            <p>
-
-                                <strong>
-
-                                    वय :
-
-                                </strong>
-
-                                {formData.age}
-
-                            </p>
-
-                            <p>
-
-                                <strong>
-
-                                    लिंग :
-
-                                </strong>
-
-                                {formData.gender}
-
-                            </p>
-
-                            <p>
-
-                                <strong>
-
-                                    पत्ता :
-
-                                </strong>
-
-                                {formData.address}
-
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                    <div className="signature-box">
-
-                        <div>
-
-                            ______________________
-
-                            <br />
-
-                            अधिकृत स्वाक्षरी
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            )
-
-        }
+       
+                      </div>
 
     );
 

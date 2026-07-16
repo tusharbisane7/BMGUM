@@ -1,78 +1,48 @@
 import { useEffect, useState } from "react";
-
 import axios from "axios";
-
-import { CountUp } from "react-countup";
-
 import { FaUsers } from "react-icons/fa";
-
 import "../styles/visitorcounter.css";
 
 const API = "https://bmgum.onrender.com";
 
 function VisitorCounter() {
 
-    const [count,setCount]=useState(0);
+    const [count, setCount] = useState(0);
+    const [loading, setLoading] = useState(true);
 
-    const [loading,setLoading]=useState(true);
+    const loadVisitor = async () => {
 
-    const loadVisitor=async()=>{
+        try {
 
-        try{
-
-            const visited=
-
-                localStorage.getItem(
-
-                    "bmgm_visitor"
-
-                );
+            const visited = localStorage.getItem("bmgm_visitor");
 
             let res;
 
-            if(!visited){
+            if (!visited) {
 
-                res=await axios.post(
+                res = await axios.post(`${API}/api/visitor`);
 
-                    `${API}/api/visitor`
+                localStorage.setItem("bmgm_visitor", "true");
 
-                );
+            } else {
 
-                localStorage.setItem(
-
-                    "bmgm_visitor",
-
-                    "true"
-
-                );
+                res = await axios.get(`${API}/api/visitor`);
 
             }
 
-            else{
-
-                res=await axios.get(
-
-                    `${API}/api/visitor`
-
-                );
-
-            }
-
-            setCount(
-
-                res.data.totalVisitors
-
-            );
+            setCount(Number(res.data?.totalVisitors || 0));
 
         }
 
-        catch(err){
+        catch (err) {
 
             console.log(err);
 
+            setCount(0);
+
         }
 
-        finally{
+        finally {
 
             setLoading(false);
 
@@ -80,13 +50,13 @@ function VisitorCounter() {
 
     };
 
-    useEffect(()=>{
+    useEffect(() => {
 
         loadVisitor();
 
-    },[]);
+    }, []);
 
-    return(
+    return (
 
         <section className="visitor-section container">
 
@@ -94,7 +64,7 @@ function VisitorCounter() {
 
                 <div className="visitor-icon">
 
-                    <FaUsers/>
+                    <FaUsers />
 
                 </div>
 
@@ -104,41 +74,11 @@ function VisitorCounter() {
 
                 </h2>
 
-                {
+                <h1>
 
-                    loading
+                    {loading ? "..." : count.toLocaleString()}
 
-                    ?
-
-                    (
-
-                        <h1>
-
-                            ...
-
-                        </h1>
-
-                    )
-
-                    :
-
-                    (
-
-                        <h1>
-
-                           <CountUp
-
-    end={count}
-
-    duration={2}
-
-/>
-
-                        </h1>
-
-                    )
-
-                }
+                </h1>
 
                 <p>
 
