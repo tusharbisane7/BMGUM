@@ -23,6 +23,11 @@ const dashboardRoutes = require("./routes/dashboardRoutes");
 const homeRoutes = require("./routes/homeRoutes");
 const aartiRoutes = require("./routes/aartiRoutes");
 const timelineRoutes = require("./routes/timelineRoutes");
+const sponsorRoutes = require("./routes/sponsorRoutes");
+const volunteerRoutes = require("./routes/volunteerRoutes");
+const visitorRoutes = require("./routes/visitorRoutes");
+
+
 
 app.use(cors());
 app.use(express.json());
@@ -37,6 +42,10 @@ app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/home", homeRoutes);
 app.use("/api/aarti", aartiRoutes);
 app.use("/api/timeline", timelineRoutes);
+app.use("/api/sponsors", sponsorRoutes);
+app.use("/api/volunteers", volunteerRoutes);
+app.use("/api/visitor", visitorRoutes);
+
 
 app.get("/", (req, res) => {
 

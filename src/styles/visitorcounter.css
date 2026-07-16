@@ -1,0 +1,239 @@
+.visitor-section{
+
+    padding:60px 20px;
+
+}
+
+.visitor-card{
+
+    max-width:700px;
+
+    margin:auto;
+
+    background:linear-gradient(
+
+        135deg,
+
+        #ff9800,
+
+        #ff6b00
+
+    );
+
+    border-radius:20px;
+
+    padding:45px 30px;
+
+    text-align:center;
+
+    color:#fff;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.18);
+
+    transition:.35s;
+
+}
+
+.visitor-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 20px 40px rgba(0,0,0,.25);
+
+}
+
+.visitor-icon{
+
+    width:100px;
+
+    height:100px;
+
+    margin:0 auto 20px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.2);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    backdrop-filter:blur(8px);
+
+}
+
+.visitor-icon svg{
+
+    font-size:50px;
+
+    color:#fff;
+
+}
+
+.visitor-card h2{
+
+    font-size:32px;
+
+    margin-bottom:20px;
+
+    font-weight:700;
+
+}
+
+.visitor-card h1{
+
+    font-size:65px;
+
+    font-weight:800;
+
+    margin:20px 0;
+
+    letter-spacing:2px;
+
+    color:#fff;
+
+    text-shadow:0 4px 10px rgba(0,0,0,.25);
+
+}
+
+.visitor-card p{
+
+    margin-top:20px;
+
+    font-size:18px;
+
+    line-height:1.7;
+
+    opacity:.95;
+
+}
+
+/* ================= ANIMATION ================= */
+
+.visitor-card{
+
+    animation:fadeUp .8s ease;
+
+}
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(40px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+.visitor-icon{
+
+    animation:pulse 2s infinite;
+
+}
+
+@keyframes pulse{
+
+    0%{
+
+        transform:scale(1);
+
+    }
+
+    50%{
+
+        transform:scale(1.08);
+
+    }
+
+    100%{
+
+        transform:scale(1);
+
+    }
+
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:768px){
+
+    .visitor-section{
+
+        padding:40px 15px;
+
+    }
+
+    .visitor-card{
+
+        padding:35px 20px;
+
+    }
+
+    .visitor-card h2{
+
+        font-size:24px;
+
+    }
+
+    .visitor-card h1{
+
+        font-size:48px;
+
+    }
+
+    .visitor-card p{
+
+        font-size:16px;
+
+    }
+
+    .visitor-icon{
+
+        width:80px;
+
+        height:80px;
+
+    }
+
+    .visitor-icon svg{
+
+        font-size:38px;
+
+    }
+
+}
+
+@media(max-width:480px){
+
+    .visitor-card h2{
+
+        font-size:20px;
+
+    }
+
+    .visitor-card h1{
+
+        font-size:38px;
+
+    }
+
+    .visitor-card p{
+
+        font-size:14px;
+
+    }
+
+}

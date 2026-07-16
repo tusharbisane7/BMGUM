@@ -1,0 +1,283 @@
+.sponsor-section{
+
+    padding:60px 20px;
+
+}
+
+.sponsor-section .title{
+
+    text-align:center;
+
+    font-size:34px;
+
+    font-weight:700;
+
+    color:#ff6b00;
+
+    margin-bottom:35px;
+
+}
+
+.loading,
+
+.no-sponsor{
+
+    text-align:center;
+
+    font-size:18px;
+
+    color:#666;
+
+    padding:40px;
+
+}
+
+/* ================= CARD ================= */
+
+.sponsor-card{
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    text-align:center;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+    transition:.35s;
+
+    height:330px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+.sponsor-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 15px 35px rgba(0,0,0,.15);
+
+}
+
+/* ================= LOGO ================= */
+
+.logo-box{
+
+    width:120px;
+
+    height:120px;
+
+    margin-bottom:18px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+.sponsor-logo{
+
+    width:110px;
+
+    height:110px;
+
+    object-fit:contain;
+
+    border-radius:15px;
+
+    border:2px solid #eee;
+
+    background:#fff;
+
+}
+
+.logo-placeholder{
+
+    width:110px;
+
+    height:110px;
+
+    border-radius:15px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:50px;
+
+    background:#f5f5f5;
+
+}
+
+/* ================= TEXT ================= */
+
+.sponsor-card h3{
+
+    margin:10px 0;
+
+    font-size:22px;
+
+    color:#222;
+
+}
+
+.company{
+
+    color:#666;
+
+    margin-bottom:15px;
+
+    font-size:15px;
+
+}
+
+/* ================= BADGE ================= */
+
+.type{
+
+    display:inline-block;
+
+    padding:8px 18px;
+
+    border-radius:30px;
+
+    color:#fff;
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
+
+.type.gold{
+
+    background:#d4af37;
+
+}
+
+.type.silver{
+
+    background:#9e9e9e;
+
+}
+
+.type.bronze{
+
+    background:#b87333;
+
+}
+
+.type.diamond{
+
+    background:#00bcd4;
+
+}
+
+/* ================= SWIPER ================= */
+
+.swiper{
+
+    padding-bottom:45px;
+
+}
+
+.swiper-pagination-bullet{
+
+    width:12px;
+
+    height:12px;
+
+    background:#ff9800;
+
+    opacity:.4;
+
+}
+
+.swiper-pagination-bullet-active{
+
+    opacity:1;
+
+    background:#ff6b00;
+
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:992px){
+
+    .sponsor-card{
+
+        height:310px;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .sponsor-section{
+
+        padding:40px 15px;
+
+    }
+
+    .sponsor-section .title{
+
+        font-size:28px;
+
+    }
+
+    .logo-box{
+
+        width:100px;
+
+        height:100px;
+
+    }
+
+    .sponsor-logo{
+
+        width:90px;
+
+        height:90px;
+
+    }
+
+    .logo-placeholder{
+
+        width:90px;
+
+        height:90px;
+
+        font-size:42px;
+
+    }
+
+    .sponsor-card{
+
+        height:280px;
+
+        padding:20px;
+
+    }
+
+    .sponsor-card h3{
+
+        font-size:19px;
+
+    }
+
+}

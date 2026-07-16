@@ -8,6 +8,8 @@ import Committee from "../components/Committee";
 import Timeline from "../components/Timeline";
 import Aarti from "../components/Aarti";
 import Location from "../components/Location";
+import Sponsors from "../components/Sponsors";
+import VisitorCounter from "../components/VisitorCounter";
 
 function Home() {
 
@@ -167,6 +169,8 @@ function Home() {
 
       <Committee />
 
+      <Sponsors />
+<VisitorCounter />
       {/* Location */}
 
       <Location />

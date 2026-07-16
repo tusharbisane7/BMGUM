@@ -1,0 +1,728 @@
+.volunteer-management{
+
+    padding:30px;
+
+    background:#f5f7fb;
+
+    min-height:100vh;
+
+}
+
+/* ================= HEADER ================= */
+
+.page-header{
+
+    margin-bottom:30px;
+
+}
+
+.page-header h1{
+
+    font-size:34px;
+
+    color:#222;
+
+    margin-bottom:8px;
+
+}
+
+.page-header p{
+
+    color:#666;
+
+    font-size:16px;
+
+}
+
+/* ================= SUMMARY ================= */
+
+.summary-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+    gap:20px;
+
+    margin-bottom:30px;
+
+}
+
+.summary-card{
+
+    background:#fff;
+
+    border-radius:15px;
+
+    padding:22px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+}
+
+.summary-card:hover{
+
+    transform:translateY(-5px);
+
+}
+
+.summary-card svg{
+
+    font-size:38px;
+
+    color:#ff9800;
+
+}
+
+.summary-card h3{
+
+    margin:0;
+
+    color:#666;
+
+    font-size:15px;
+
+}
+
+.summary-card h2{
+
+    margin-top:8px;
+
+    font-size:30px;
+
+    color:#222;
+
+}
+
+.summary-card.approved svg{
+
+    color:#28a745;
+
+}
+
+.summary-card.pending svg{
+
+    color:#ffc107;
+
+}
+
+.summary-card.rejected svg{
+
+    color:#dc3545;
+
+}
+
+/* ================= SEARCH ================= */
+
+.search-box{
+
+    background:#fff;
+
+    padding:15px 20px;
+
+    border-radius:12px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+    margin-bottom:25px;
+
+}
+
+.search-box svg{
+
+    color:#ff9800;
+
+    font-size:20px;
+
+}
+
+.search-box input{
+
+    border:none;
+
+    outline:none;
+
+    width:100%;
+
+    font-size:16px;
+
+    background:transparent;
+
+}
+
+/* ================= EDIT CARD ================= */
+
+.edit-card{
+
+    background:#fff;
+
+    border-radius:15px;
+
+    padding:25px;
+
+    margin-bottom:30px;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+}
+
+.edit-card h2{
+
+    margin-bottom:20px;
+
+    color:#333;
+
+}
+
+/* ================= FORM ================= */
+
+.edit-form{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:18px;
+
+}
+
+.edit-form input,
+
+.edit-form select,
+
+.edit-form textarea{
+
+    width:100%;
+
+    padding:12px;
+
+    border:1px solid #ddd;
+
+    border-radius:10px;
+
+    outline:none;
+
+    font-size:15px;
+
+    transition:.3s;
+
+}
+
+.edit-form input:focus,
+
+.edit-form textarea:focus,
+
+.edit-form select:focus{
+
+    border-color:#ff9800;
+
+}
+
+.edit-form textarea{
+
+    resize:none;
+
+    grid-column:1/3;
+
+}
+
+/* ================= PHOTO ================= */
+
+.preview{
+
+    width:120px;
+
+    height:120px;
+
+    object-fit:cover;
+
+    border-radius:12px;
+
+    border:2px solid #ddd;
+
+}
+
+/* ================= BUTTON ================= */
+
+.save-btn{
+
+    background:#28a745;
+
+    color:#fff;
+
+    border:none;
+
+    padding:12px 20px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    transition:.3s;
+
+}
+
+.save-btn:hover{
+
+    background:#218838;
+
+}
+/* ================= TABLE ================= */
+
+.table-card{
+
+    background:#fff;
+
+    border-radius:15px;
+
+    overflow-x:auto;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+}
+
+.volunteer-table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    min-width:1100px;
+
+}
+
+.volunteer-table thead{
+
+    background:#ff9800;
+
+    color:#fff;
+
+}
+
+.volunteer-table th,
+
+.volunteer-table td{
+
+    padding:15px;
+
+    text-align:center;
+
+    border-bottom:1px solid #eee;
+
+}
+
+.volunteer-table tbody tr:hover{
+
+    background:#fff8ef;
+
+}
+
+/* ================= PHOTO ================= */
+
+.table-photo{
+
+    width:60px;
+
+    height:60px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    border:2px solid #ddd;
+
+}
+
+/* ================= STATUS ================= */
+
+.status{
+
+    display:inline-block;
+
+    padding:6px 14px;
+
+    border-radius:20px;
+
+    color:#fff;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+.status.approved{
+
+    background:#28a745;
+
+}
+
+.status.pending{
+
+    background:#ffc107;
+
+    color:#222;
+
+}
+
+.status.rejected{
+
+    background:#dc3545;
+
+}
+
+/* ================= ACTION BUTTONS ================= */
+
+.action-buttons{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:8px;
+
+    flex-wrap:wrap;
+
+}
+
+.action-buttons button{
+
+    width:38px;
+
+    height:38px;
+
+    border:none;
+
+    border-radius:8px;
+
+    color:#fff;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.approve-btn{
+
+    background:#28a745;
+
+}
+
+.approve-btn:hover{
+
+    background:#218838;
+
+}
+
+.reject-btn{
+
+    background:#dc3545;
+
+}
+
+.reject-btn:hover{
+
+    background:#bb2d3b;
+
+}
+
+.edit-btn{
+
+    background:#0d6efd;
+
+}
+
+.edit-btn:hover{
+
+    background:#0b5ed7;
+
+}
+
+.delete-btn{
+
+    background:#6c757d;
+
+}
+
+.delete-btn:hover{
+
+    background:#565e64;
+
+}
+
+.print-btn{
+
+    background:#ff9800;
+
+}
+
+.print-btn:hover{
+
+    background:#fb8c00;
+
+}
+
+/* ================= NO DATA ================= */
+
+.no-data{
+
+    padding:35px;
+
+    color:#777;
+
+    font-size:17px;
+
+}
+
+/* ================= PRINT CARD ================= */
+
+.print-card{
+
+    display:none;
+
+}
+
+.id-card{
+
+    width:700px;
+
+    margin:30px auto;
+
+    border:3px solid #222;
+
+    border-radius:15px;
+
+    padding:20px;
+
+    background:#fff;
+
+}
+
+.card-header{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+    margin-bottom:20px;
+
+}
+
+.mandal-logo{
+
+    width:80px;
+
+    height:80px;
+
+    object-fit:contain;
+
+}
+
+.id-card h2{
+
+    margin:0;
+
+}
+
+.id-card p{
+
+    margin-top:5px;
+
+    color:#555;
+
+}
+
+.id-card table{
+
+    width:100%;
+
+    margin-top:15px;
+
+    border-collapse:collapse;
+
+}
+
+.id-card td{
+
+    padding:8px;
+
+    border:none;
+
+    text-align:left;
+
+}
+
+.id-photo{
+
+    width:130px;
+
+    height:160px;
+
+    border:2px solid #ccc;
+
+    object-fit:cover;
+
+    border-radius:10px;
+
+}
+
+.id-placeholder{
+
+    width:130px;
+
+    height:160px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:#f5f5f5;
+
+    border-radius:10px;
+
+    font-size:60px;
+
+}
+
+.signature{
+
+    margin-top:35px;
+
+    text-align:right;
+
+    font-weight:bold;
+
+}
+
+/* ================= PRINT ================= */
+
+@media print{
+
+    body *{
+
+        visibility:hidden;
+
+    }
+
+    .print-card,
+
+    .print-card *{
+
+        visibility:visible;
+
+    }
+
+    .print-card{
+
+        display:block;
+
+        position:absolute;
+
+        top:0;
+
+        left:0;
+
+        width:100%;
+
+    }
+
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:992px){
+
+    .edit-form{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .edit-form textarea{
+
+        grid-column:auto;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .volunteer-management{
+
+        padding:15px;
+
+    }
+
+    .page-header h1{
+
+        font-size:28px;
+
+    }
+
+    .summary-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .summary-card{
+
+        padding:18px;
+
+    }
+
+    .table-photo{
+
+        width:50px;
+
+        height:50px;
+
+    }
+
+    .action-buttons button{
+
+        width:34px;
+
+        height:34px;
+
+    }
+
+    .id-card{
+
+        width:100%;
+
+        padding:15px;
+
+    }
+
+    .card-header{
+
+        flex-direction:column;
+
+        text-align:center;
+
+    }
+
+}
