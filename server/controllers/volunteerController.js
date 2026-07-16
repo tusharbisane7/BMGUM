@@ -60,7 +60,9 @@ const getApprovedVolunteers = async (req, res) => {
                 mobile,
                 age,
                 gender,
-                address
+                address,
+                approvedby AS "approvedBy",
+                status
              FROM volunteers
              WHERE status='Approved'
              ORDER BY fullname ASC`
@@ -86,7 +88,6 @@ const getApprovedVolunteers = async (req, res) => {
     }
 
 };
-
 // ================= SUMMARY =================
 
 const getVolunteerSummary = async(req,res)=>{
@@ -502,6 +503,69 @@ const deleteVolunteer = async (req, res) => {
 
 };   // <-- Missing this closing brace for deleteVolunteer
 
+// ================= GET VOLUNTEER BY ID =================
+
+const getVolunteerById = async (req, res) => {
+
+    try {
+
+        const result = await pool.query(
+
+            `SELECT
+                volunteerid AS "volunteerId",
+                photo,
+                fullname AS "fullName",
+                mobile,
+                age,
+                gender,
+                address,
+                status,
+                approvedby AS "approvedBy"
+             FROM volunteers
+             WHERE volunteerid=$1`,
+
+            [req.params.volunteerId]
+
+        );
+
+        if(result.rows.length===0){
+
+            return res.status(404).json({
+
+                success:false,
+
+                message:"Volunteer Not Found"
+
+            });
+
+        }
+
+        res.json({
+
+            success:true,
+
+            volunteer:result.rows[0]
+
+        });
+
+    }
+
+    catch(err){
+
+        console.log(err);
+
+        res.status(500).json({
+
+            success:false,
+
+            message:err.message
+
+        });
+
+    }
+
+};
+
 // ================= EXPORTS =================
 
 module.exports = {
@@ -511,6 +575,8 @@ module.exports = {
     getApprovedVolunteers,
 
     getVolunteerSummary,
+
+    getVolunteerById,
 
     registerVolunteer,
 

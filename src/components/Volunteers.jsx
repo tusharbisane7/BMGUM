@@ -1,44 +1,38 @@
 import { useEffect, useState } from "react";
-
 import axios from "axios";
 
 import {
-
     FaUsers,
-
     FaSearch,
-
     FaPhone,
-
     FaIdCard,
-
     FaBirthdayCake,
-
     FaMapMarkerAlt,
-
-    FaVenusMars
-
+    FaVenusMars,
+    FaPrint
 } from "react-icons/fa";
 
 import "../styles/volunteers.css";
 
-const API="https://bmgum.onrender.com";
+const API = "https://bmgum.onrender.com";
 
 function Volunteers(){
 
-    const[volunteers,setVolunteers]=useState([]);
+    const [volunteers,setVolunteers] = useState([]);
 
-    const[filtered,setFiltered]=useState([]);
+    const [filtered,setFiltered] = useState([]);
 
-    const[loading,setLoading]=useState(true);
+    const [loading,setLoading] = useState(true);
 
-    const[search,setSearch]=useState("");
+    const [search,setSearch] = useState("");
 
-    const loadVolunteers=async()=>{
+    // ================= LOAD APPROVED VOLUNTEERS =================
+
+    const loadVolunteers = async()=>{
 
         try{
 
-            const res=await axios.get(
+            const res = await axios.get(
 
                 `${API}/api/volunteers/approved`
 
@@ -70,289 +64,555 @@ function Volunteers(){
 
     },[]);
 
+    // ================= SEARCH =================
+
     useEffect(()=>{
 
-        const list=volunteers.filter((item)=>
+        const list = volunteers.filter((item)=>
 
             item.fullName
-
-            .toLowerCase()
-
-            .includes(
-
-                search.toLowerCase()
-
-            )
+                .toLowerCase()
+                .includes(
+                    search.toLowerCase()
+                )
 
             ||
 
-            item.mobile
+            item.mobile.includes(search)
 
-            .includes(search)
+            ||
+
+            item.volunteerId
+                .toLowerCase()
+                .includes(
+                    search.toLowerCase()
+                )
 
         );
 
         setFiltered(list);
 
     },[search,volunteers]);
-        return(
 
-        <div className="volunteers-page">
+    // ================= PRINT ID =================
 
-            <div className="page-header">
+    const printVolunteerId = (item)=>{
 
-                <FaUsers className="header-icon"/>
+        const photo = item.photo
+            ? `${API}/uploads/volunteers/${item.photo}`
+            : "";
 
-                <div>
+        const win = window.open("", "_blank");
 
-                    <h1>
+        win.document.write(`
 
-                        नोंदणीकृत स्वयंसेवक
+        <html>
 
-                    </h1>
+        <head>
 
-                    <p>
+        <title>Volunteer ID Card</title>
 
-                        बाल मित्र गणेश उत्सव मंडळ
+        <style>
 
-                    </p>
+        body{
+
+            font-family:Arial,sans-serif;
+
+            background:#f2f2f2;
+
+            display:flex;
+
+            justify-content:center;
+
+            align-items:center;
+
+            padding:40px;
+
+        }
+
+        .card{
+
+            width:420px;
+
+            border-radius:18px;
+
+            border:3px solid #ff9800;
+
+            background:white;
+
+            overflow:hidden;
+
+            box-shadow:0 10px 25px rgba(0,0,0,.15);
+
+        }
+
+        .header{
+
+            background:#ff9800;
+
+            color:white;
+
+            padding:20px;
+
+            text-align:center;
+
+        }
+
+        .header h2{
+
+            margin:0;
+
+            font-size:24px;
+
+        }
+
+        .header h3{
+
+            margin-top:8px;
+
+            font-weight:500;
+
+        }
+
+        .photo{
+
+            text-align:center;
+
+            margin-top:20px;
+
+        }
+
+        .photo img{
+
+            width:130px;
+
+            height:130px;
+
+            border-radius:50%;
+
+            object-fit:cover;
+
+            border:4px solid #ff9800;
+
+        }
+
+        .content{
+
+            padding:20px;
+
+        }
+
+        .content p{
+
+            margin:10px 0;
+
+            font-size:16px;
+
+        }
+
+        .approved{
+
+            margin-top:20px;
+
+            color:green;
+
+            font-weight:bold;
+
+            text-align:center;
+
+            font-size:18px;
+
+        }
+
+        .footer{
+
+            margin-top:25px;
+
+            border-top:1px solid #ddd;
+
+            padding-top:15px;
+
+            text-align:right;
+
+        }
+
+        </style>
+
+        </head>
+
+        <body>
+
+        <div class="card">
+
+            <div class="header">
+
+                <h2>
+
+                    बाल मित्र गणेश उत्सव मंडळ
+
+                </h2>
+
+                <h3>
+
+                    VOLUNTEER ID CARD
+
+                </h3>
+
+            </div>
+
+            <div class="photo">
+
+                ${
+                    photo
+                    ?
+                    `<img src="${photo}" />`
+                    :
+                    ""
+                }
+
+            </div>
+
+            <div class="content">
+
+                <p><b>Volunteer ID :</b> ${item.volunteerId}</p>
+
+                <p><b>Name :</b> ${item.fullName}</p>
+
+                <p><b>Mobile :</b> ${item.mobile}</p>
+
+                <p><b>Age :</b> ${item.age}</p>
+
+                <p><b>Gender :</b> ${item.gender}</p>
+
+                <p><b>Address :</b> ${item.address}</p>
+
+                <p><b>Approved By :</b> ${item.approvedBy || "Admin"}</p>
+
+                <div class="approved">
+
+                    ✔ APPROVED VOLUNTEER
+
+                </div>
+
+                <div class="footer">
+
+                    Authorised Signatory
 
                 </div>
 
             </div>
 
-            {/* ================= SEARCH ================= */}
+        </div>
 
-            <div className="search-box">
+        <script>
 
-                <FaSearch/>
+            window.onload=function(){
 
-                <input
+                window.print();
 
-                    type="text"
+                window.close();
 
-                    placeholder="नाव किंवा मोबाईल नंबर शोधा..."
+            }
 
-                    value={search}
+        </script>
 
-                    onChange={(e)=>
+        </body>
 
-                        setSearch(
+        </html>
 
-                            e.target.value
+        `);
 
-                        )
+        win.document.close();
 
-                    }
+    };
+    return(
 
-                />
+    <div className="volunteers-page">
+
+        <div className="page-header">
+
+            <FaUsers className="header-icon"/>
+
+            <div>
+
+                <h1>
+
+                    नोंदणीकृत स्वयंसेवक
+
+                </h1>
+
+                <p>
+
+                    बाल मित्र गणेश उत्सव मंडळ
+
+                </p>
 
             </div>
 
-            {/* ================= LOADING ================= */}
+        </div>
 
-            {
+        {/* SEARCH */}
 
-                loading
+        <div className="search-box">
 
-                ?
+            <FaSearch/>
 
-                (
+            <input
 
-                    <div className="loading">
+                type="text"
 
-                        स्वयंसेवक माहिती लोड होत आहे...
+                placeholder="Volunteer ID / नाव / मोबाईल नंबर शोधा..."
 
-                    </div>
+                value={search}
 
-                )
+                onChange={(e)=>
 
-                :
+                    setSearch(e.target.value)
 
-                filtered.length===0
+                }
 
-                ?
+            />
 
-                (
+        </div>
 
-                    <div className="no-data">
+        {
 
-                        कोणताही स्वयंसेवक उपलब्ध नाही.
+            loading
 
-                    </div>
+            ?
 
-                )
+            (
 
-                :
+                <div className="loading">
 
-                (
+                    स्वयंसेवक माहिती लोड होत आहे...
 
-                    <div className="volunteer-grid">
+                </div>
 
-                        {
+            )
 
-                            filtered.map((item)=>(
+            :
 
-                                <div
+            filtered.length===0
 
-                                    className="volunteer-card"
+            ?
 
-                                    key={item.volunteerId}
+            (
 
-                                >
+                <div className="no-data">
 
-                                    <div className="photo-box">
+                    कोणताही Approved स्वयंसेवक उपलब्ध नाही.
+
+                </div>
+
+            )
+
+            :
+
+            (
+
+                <div className="volunteer-grid">
+
+                    {
+
+                        filtered.map((item)=>(
+
+                            <div
+
+                                className="volunteer-card"
+
+                                key={item.volunteerId}
+
+                            >
+
+                                <div className="photo-box">
+
+                                    {
+
+                                        item.photo
+
+                                        ?
+
+                                        (
+
+                                            <img
+
+                                                src={`${API}/uploads/volunteers/${item.photo}`}
+
+                                                alt={item.fullName}
+
+                                                className="volunteer-photo"
+
+                                            />
+
+                                        )
+
+                                        :
+
+                                        (
+
+                                            <div className="photo-placeholder">
+
+                                                👤
+
+                                            </div>
+
+                                        )
+
+                                    }
+
+                                </div>
+
+                                <h2>
+
+                                    {item.fullName}
+
+                                </h2>
+
+                                <div className="info">
+
+                                    <p>
+
+                                        <FaIdCard/>
+
+                                        <strong>
+
+                                            ID :
+
+                                        </strong>
+
+                                        {item.volunteerId}
+
+                                    </p>
+
+                                    <p>
+
+                                        <FaPhone/>
+
+                                        <strong>
+
+                                            मोबाईल :
+
+                                        </strong>
+
+                                        {item.mobile}
+
+                                    </p>
+
+                                    <p>
+
+                                        <FaBirthdayCake/>
+
+                                        <strong>
+
+                                            वय :
+
+                                        </strong>
+
+                                        {item.age}
+
+                                    </p>
+
+                                    <p>
+
+                                        <FaVenusMars/>
+
+                                        <strong>
+
+                                            लिंग :
+
+                                        </strong>
 
                                         {
 
-                                            item.photo
+                                            item.gender==="Male"
 
                                             ?
 
-                                            (
-
-                                                <img
-
-                                                    src={`${API}/uploads/volunteers/${item.photo}`}
-
-                                                    alt={item.fullName}
-
-                                                    className="volunteer-photo"
-
-                                                />
-
-                                            )
+                                            "पुरुष"
 
                                             :
 
-                                            (
+                                            item.gender==="Female"
 
-                                                <div className="photo-placeholder">
+                                            ?
 
-                                                    👤
+                                            "महिला"
 
-                                                </div>
+                                            :
 
-                                            )
+                                            "इतर"
 
                                         }
 
-                                    </div>
+                                    </p>
 
-                                    <h2>
+                                    <p>
 
-                                        {item.fullName}
+                                        <FaMapMarkerAlt/>
 
-                                    </h2>
+                                        <strong>
 
-                                    <div className="info">
-                                                                                <p>
+                                            पत्ता :
 
-                                            <FaIdCard />
+                                        </strong>
 
-                                            <strong>
+                                        {item.address}
 
-                                                ID :
+                                    </p>
 
-                                            </strong>
+                                    <p>
 
-                                            {item.volunteerId}
+                                        <strong>
 
-                                        </p>
+                                            Approved By :
 
-                                        <p>
+                                        </strong>
 
-                                            <FaPhone />
+                                        {item.approvedBy || "Admin"}
 
-                                            <strong>
+                                    </p>
+                                                                        <div className="volunteer-actions">
 
-                                                मोबाईल :
+                                        <button
 
-                                            </strong>
+                                            className="print-btn"
 
-                                            {item.mobile}
+                                            onClick={()=>
 
-                                        </p>
-
-                                        <p>
-
-                                            <FaBirthdayCake />
-
-                                            <strong>
-
-                                                वय :
-
-                                            </strong>
-
-                                            {item.age}
-
-                                        </p>
-
-                                        <p>
-
-                                            <FaVenusMars />
-
-                                            <strong>
-
-                                                लिंग :
-
-                                            </strong>
-
-                                            {
-
-                                                item.gender==="Male"
-
-                                                ?
-
-                                                "पुरुष"
-
-                                                :
-
-                                                item.gender==="Female"
-
-                                                ?
-
-                                                "महिला"
-
-                                                :
-
-                                                "इतर"
+                                                printVolunteerId(item)
 
                                             }
 
-                                        </p>
+                                        >
 
-                                        <p>
+                                            <FaPrint />
 
-                                            <FaMapMarkerAlt />
+                                            {" "}
 
-                                            <strong>
+                                            Print ID
 
-                                                पत्ता :
-
-                                            </strong>
-
-                                            {item.address}
-
-                                        </p>
+                                        </button>
 
                                     </div>
 
                                 </div>
 
-                            ))
+                            </div>
 
-                        }
+                        ))
 
-                    </div>
+                    }
 
-                )
+                </div>
 
-            }
+            )
 
-        </div>
+        }
 
-    );
+    </div>
+
+);
 
 }
 

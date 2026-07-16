@@ -12,6 +12,8 @@ const {
 
     getVolunteerSummary,
 
+    getVolunteerById,
+
     registerVolunteer,
 
     updateVolunteer,
@@ -48,6 +50,15 @@ router.get(
 
 );
 
+// Get Volunteer By Volunteer ID
+
+router.get(
+
+    "/id/:volunteerId",
+
+    getVolunteerById
+
+);
 // ================= ADMIN =================
 
 // All Volunteers
