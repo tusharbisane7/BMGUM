@@ -1,8 +1,14 @@
+/* ================= SECTION ================= */
+
 .visitor-section{
 
-    padding:60px 20px;
+    padding:80px 20px;
+
+    background:#f8fafc;
 
 }
+
+/* ================= CARD ================= */
 
 .visitor-card{
 
@@ -10,103 +16,159 @@
 
     margin:auto;
 
-    background:linear-gradient(
+    background:#ffffff;
 
-        135deg,
+    border-radius:28px;
 
-        #ff9800,
-
-        #ff6b00
-
-    );
-
-    border-radius:20px;
-
-    padding:45px 30px;
+    padding:45px 35px;
 
     text-align:center;
 
-    color:#fff;
+    border:1px solid #ececec;
 
-    box-shadow:0 15px 35px rgba(0,0,0,.18);
+    box-shadow:0 15px 40px rgba(15,23,42,.08);
 
-    transition:.35s;
+    position:relative;
+
+    overflow:hidden;
+
+    transition:.35s ease;
+
+}
+
+/* Decorative Circle */
+
+.visitor-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:220px;
+
+    height:220px;
+
+    border-radius:50%;
+
+    background:linear-gradient(135deg,#ff6b00,#ffb347);
+
+    opacity:.08;
+
+    top:-120px;
+
+    right:-120px;
+
+}
+
+.visitor-card::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:160px;
+
+    height:160px;
+
+    border-radius:50%;
+
+    background:#0ea5e9;
+
+    opacity:.06;
+
+    bottom:-90px;
+
+    left:-90px;
 
 }
 
 .visitor-card:hover{
 
-    transform:translateY(-8px);
+    transform:translateY(-6px);
 
-    box-shadow:0 20px 40px rgba(0,0,0,.25);
+    box-shadow:0 22px 50px rgba(15,23,42,.12);
 
 }
 
+/* ================= ICON ================= */
+
 .visitor-icon{
 
-    width:100px;
+    width:90px;
 
-    height:100px;
+    height:90px;
 
-    margin:0 auto 20px;
+    margin:0 auto 24px;
 
-    border-radius:50%;
-
-    background:rgba(255,255,255,.2);
+    border-radius:22px;
 
     display:flex;
 
-    align-items:center;
-
     justify-content:center;
 
-    backdrop-filter:blur(8px);
+    align-items:center;
+
+    background:linear-gradient(135deg,#ff6b00,#ff9800);
+
+    box-shadow:0 12px 30px rgba(255,107,0,.25);
 
 }
 
 .visitor-icon svg{
 
-    font-size:50px;
+    font-size:42px;
 
     color:#fff;
 
 }
+
+/* ================= TITLE ================= */
 
 .visitor-card h2{
 
-    font-size:32px;
-
-    margin-bottom:20px;
+    font-size:30px;
 
     font-weight:700;
 
+    color:#1f2937;
+
+    margin-bottom:18px;
+
 }
+
+/* ================= COUNT ================= */
 
 .visitor-card h1{
 
-    font-size:65px;
+    font-size:72px;
 
     font-weight:800;
 
-    margin:20px 0;
+    color:#ff6b00;
 
-    letter-spacing:2px;
+    margin:18px 0;
 
-    color:#fff;
-
-    text-shadow:0 4px 10px rgba(0,0,0,.25);
+    line-height:1;
 
 }
+
+/* ================= TEXT ================= */
 
 .visitor-card p{
 
     margin-top:20px;
 
-    font-size:18px;
+    font-size:17px;
 
-    line-height:1.7;
+    color:#6b7280;
 
-    opacity:.95;
+    line-height:1.8;
+
+    max-width:500px;
+
+    margin-left:auto;
+
+    margin-right:auto;
 
 }
 
@@ -124,7 +186,7 @@
 
         opacity:0;
 
-        transform:translateY(40px);
+        transform:translateY(30px);
 
     }
 
@@ -140,27 +202,27 @@
 
 .visitor-icon{
 
-    animation:pulse 2s infinite;
+    animation:float 3s ease-in-out infinite;
 
 }
 
-@keyframes pulse{
+@keyframes float{
 
     0%{
 
-        transform:scale(1);
+        transform:translateY(0);
 
     }
 
     50%{
 
-        transform:scale(1.08);
+        transform:translateY(-6px);
 
     }
 
     100%{
 
-        transform:scale(1);
+        transform:translateY(0);
 
     }
 
@@ -170,70 +232,94 @@
 
 @media(max-width:768px){
 
-    .visitor-section{
+.visitor-section{
 
-        padding:40px 15px;
+    padding:60px 15px;
 
-    }
+}
 
-    .visitor-card{
+.visitor-card{
 
-        padding:35px 20px;
+    padding:30px 22px;
 
-    }
+    border-radius:22px;
 
-    .visitor-card h2{
+}
 
-        font-size:24px;
+.visitor-icon{
 
-    }
+    width:72px;
 
-    .visitor-card h1{
+    height:72px;
 
-        font-size:48px;
+    border-radius:18px;
 
-    }
+}
 
-    .visitor-card p{
+.visitor-icon svg{
 
-        font-size:16px;
+    font-size:34px;
 
-    }
+}
 
-    .visitor-icon{
+.visitor-card h2{
 
-        width:80px;
+    font-size:24px;
 
-        height:80px;
+}
 
-    }
+.visitor-card h1{
 
-    .visitor-icon svg{
+    font-size:52px;
 
-        font-size:38px;
+}
 
-    }
+.visitor-card p{
+
+    font-size:15px;
+
+}
 
 }
 
 @media(max-width:480px){
 
-    .visitor-card h2{
+.visitor-card{
 
-        font-size:20px;
+    padding:24px 18px;
 
-    }
+}
 
-    .visitor-card h1{
+.visitor-card h2{
 
-        font-size:38px;
+    font-size:20px;
 
-    }
+}
 
-    .visitor-card p{
+.visitor-card h1{
 
-        font-size:14px;
+    font-size:42px;
 
-    }
+}
+
+.visitor-card p{
+
+    font-size:14px;
+
+}
+
+.visitor-icon{
+
+    width:64px;
+
+    height:64px;
+
+}
+
+.visitor-icon svg{
+
+    font-size:30px;
+
+}
 
 }

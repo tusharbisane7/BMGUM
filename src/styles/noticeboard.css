@@ -1,37 +1,136 @@
-.notice-section {
+/* ================= NOTICE SECTION ================= */
 
-    margin-top: 80px;
-    margin-bottom: 80px;
+.notice-section{
 
-}
+    margin:70px 0;
 
-.notice-wrapper {
-
-    max-width: 950px;
-
-    margin: auto;
-
-    min-height: 260px;
+    padding:0 15px;
 
 }
 
-.notice-card {
+/* ================= WRAPPER ================= */
 
-    position: relative;
+.notice-wrapper{
 
-    overflow: hidden;
+    max-width:900px;
 
-    background: white;
-
-    padding: 40px;
-
-    border-radius: 25px;
-
-    border-left: 8px solid #ff6b00;
-
-    box-shadow: 0 20px 50px rgba(0,0,0,.12);
+    margin:auto;
 
 }
+
+/* ================= CARD ================= */
+
+.notice-card{
+
+    position:relative;
+
+    overflow:hidden;
+
+    background:rgba(255,255,255,.9);
+
+    backdrop-filter:blur(15px);
+
+    border:1px solid rgba(255,255,255,.4);
+
+    border-radius:24px;
+
+    padding:35px;
+
+    box-shadow:0 12px 35px rgba(0,0,0,.12);
+
+    transition:.35s ease;
+
+}
+
+.notice-card:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:0 18px 40px rgba(0,0,0,.18);
+
+}
+
+/* ================= TOP BAR ================= */
+
+.notice-top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:25px;
+
+}
+
+/* ================= BADGE ================= */
+
+.notice-badge{
+
+    background:linear-gradient(135deg,#ff6b00,#ff9500);
+
+    color:#fff;
+
+    padding:8px 18px;
+
+    border-radius:50px;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    letter-spacing:.5px;
+
+}
+
+/* ================= DATE ================= */
+
+.notice-date{
+
+    background:#fff3e6;
+
+    color:#ff6b00;
+
+    padding:8px 16px;
+
+    border-radius:50px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
+
+/* ================= TITLE ================= */
+
+.notice-card h3{
+
+    margin:0 0 18px;
+
+    font-size:30px;
+
+    color:#222;
+
+    font-weight:700;
+
+}
+
+/* ================= DESCRIPTION ================= */
+
+.notice-card p{
+
+    margin:0;
+
+    color:#555;
+
+    font-size:18px;
+
+    line-height:1.8;
+
+}
+
+/* ================= LEFT STRIP ================= */
 
 .notice-card::before{
 
@@ -39,19 +138,23 @@
 
     position:absolute;
 
-    width:220px;
+    left:0;
 
-    height:220px;
+    top:0;
 
-    border-radius:50%;
+    width:7px;
 
-    background:#ff6b0010;
+    height:100%;
 
-    top:-120px;
-
-    right:-120px;
+    background:linear-gradient(
+        to bottom,
+        #ff6b00,
+        #ff9500
+    );
 
 }
+
+/* ================= DECORATION ================= */
 
 .notice-card::after{
 
@@ -61,71 +164,31 @@
 
     right:25px;
 
-    bottom:10px;
+    bottom:20px;
 
-    font-size:80px;
+    font-size:90px;
 
-    opacity:.08;
+    opacity:.05;
 
-}
-
-.notice-date{
-
-    display:inline-block;
-
-    background:linear-gradient(
-    90deg,
-    #ff6b00,
-    #ffb703
-    );
-
-    color:white;
-
-    padding:8px 18px;
-
-    border-radius:50px;
-
-    font-size:14px;
-
-    font-weight:600;
-
-    margin-bottom:18px;
+    transform:rotate(-15deg);
 
 }
 
-.notice-card h3{
-
-    font-size:32px;
-
-    color:#ff6b00;
-
-    margin-bottom:15px;
-
-}
-
-.notice-card p{
-
-    color:#555;
-
-    font-size:18px;
-
-    line-height:1.9;
-
-}
+/* ================= PROGRESS ================= */
 
 .progress-bar{
 
     width:100%;
 
-    height:8px;
+    height:7px;
 
-    background:#eee;
+    margin-top:28px;
 
     border-radius:50px;
 
-    margin-top:30px;
-
     overflow:hidden;
+
+    background:#ececec;
 
 }
 
@@ -134,18 +197,16 @@
     height:100%;
 
     background:linear-gradient(
-    90deg,
-    #ff6b00,
-    #ffb703
+        90deg,
+        #ff6b00,
+        #ff9500
     );
 
-    width:100%;
-
-    animation:progress 5s linear infinite;
+    animation:noticeProgress 5s linear infinite;
 
 }
 
-@keyframes progress{
+@keyframes noticeProgress{
 
     from{
 
@@ -161,23 +222,57 @@
 
 }
 
+/* ================= MOBILE ================= */
+
 @media(max-width:768px){
 
 .notice-card{
 
-padding:25px;
+    padding:22px;
+
+    border-radius:18px;
+
+}
+
+.notice-top{
+
+    flex-direction:column;
+
+    align-items:flex-start;
+
+    gap:10px;
 
 }
 
 .notice-card h3{
 
-font-size:24px;
+    font-size:24px;
 
 }
 
 .notice-card p{
 
-font-size:16px;
+    font-size:16px;
+
+    line-height:1.7;
+
+}
+
+.notice-badge,
+
+.notice-date{
+
+    font-size:13px;
+
+    padding:6px 14px;
+
+}
+
+.notice-card::after{
+
+    font-size:65px;
+
+    right:15px;
 
 }
 

@@ -1,8 +1,10 @@
+/* ================= PAGE ================= */
+
 .volunteers-page{
 
-    padding:40px 20px;
+    padding:50px 20px 70px;
 
-    background:#f5f7fb;
+    background:#f8fafc;
 
     min-height:100vh;
 
@@ -18,9 +20,9 @@
 
     justify-content:center;
 
-    gap:15px;
+    gap:18px;
 
-    margin-bottom:30px;
+    margin-bottom:40px;
 
     text-align:center;
 
@@ -28,9 +30,9 @@
 
 .header-icon{
 
-    font-size:42px;
+    font-size:48px;
 
-    color:#ff9800;
+    color:#ff6b00;
 
 }
 
@@ -38,19 +40,21 @@
 
     margin:0;
 
-    font-size:34px;
+    font-size:38px;
 
-    color:#222;
+    font-weight:700;
+
+    color:#111827;
 
 }
 
 .page-header p{
 
-    margin-top:5px;
+    margin-top:6px;
 
-    color:#666;
+    color:#6b7280;
 
-    font-size:16px;
+    font-size:17px;
 
 }
 
@@ -58,31 +62,43 @@
 
 .search-box{
 
-    max-width:650px;
+    max-width:700px;
 
-    margin:0 auto 35px;
+    margin:0 auto 45px;
 
-    background:#fff;
+    background:#ffffff;
 
     display:flex;
 
     align-items:center;
 
-    gap:12px;
+    gap:14px;
 
-    padding:14px 20px;
+    padding:16px 22px;
 
-    border-radius:12px;
+    border-radius:18px;
 
-    box-shadow:0 6px 15px rgba(0,0,0,.08);
+    border:1px solid #ececec;
+
+    box-shadow:0 12px 30px rgba(15,23,42,.08);
+
+    transition:.3s;
+
+}
+
+.search-box:focus-within{
+
+    border-color:#ff6b00;
+
+    box-shadow:0 0 0 4px rgba(255,107,0,.12);
 
 }
 
 .search-box svg{
 
-    color:#ff9800;
+    color:#ff6b00;
 
-    font-size:20px;
+    font-size:22px;
 
 }
 
@@ -94,9 +110,11 @@
 
     outline:none;
 
+    background:transparent;
+
     font-size:16px;
 
-    background:transparent;
+    color:#374151;
 
 }
 
@@ -108,7 +126,7 @@
 
     grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
 
-    gap:25px;
+    gap:28px;
 
 }
 
@@ -116,23 +134,51 @@
 
 .volunteer-card{
 
-    background:#fff;
+    position:relative;
 
-    border-radius:18px;
+    overflow:hidden;
 
-    padding:25px;
+    background:#ffffff;
 
-    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    border-radius:24px;
+
+    padding:28px;
+
+    border:1px solid #ececec;
+
+    box-shadow:0 12px 35px rgba(15,23,42,.08);
 
     transition:.35s;
 
 }
 
+.volunteer-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:180px;
+
+    height:180px;
+
+    border-radius:50%;
+
+    background:linear-gradient(135deg,#ff6b00,#ffb347);
+
+    opacity:.06;
+
+    top:-90px;
+
+    right:-90px;
+
+}
+
 .volunteer-card:hover{
 
-    transform:translateY(-6px);
+    transform:translateY(-8px);
 
-    box-shadow:0 12px 28px rgba(0,0,0,.15);
+    box-shadow:0 20px 45px rgba(15,23,42,.12);
 
 }
 
@@ -144,7 +190,7 @@
 
     justify-content:center;
 
-    margin-bottom:20px;
+    margin-bottom:22px;
 
 }
 
@@ -158,7 +204,9 @@
 
     object-fit:cover;
 
-    border:4px solid #ff9800;
+    border:5px solid #ffffff;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
 
 }
 
@@ -170,17 +218,21 @@
 
     border-radius:50%;
 
-    background:#ececec;
-
     display:flex;
-
-    justify-content:center;
 
     align-items:center;
 
-    font-size:55px;
+    justify-content:center;
 
-    border:4px solid #ddd;
+    font-size:52px;
+
+    color:#9ca3af;
+
+    background:#f3f4f6;
+
+    border:5px solid #ffffff;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.12);
 
 }
 
@@ -190,9 +242,13 @@
 
     text-align:center;
 
-    color:#222;
+    margin-bottom:22px;
 
-    margin-bottom:20px;
+    color:#111827;
+
+    font-size:24px;
+
+    font-weight:700;
 
 }
 
@@ -204,7 +260,7 @@
 
     flex-direction:column;
 
-    gap:12px;
+    gap:14px;
 
 }
 
@@ -212,142 +268,53 @@
 
     display:flex;
 
-    align-items:center;
+    align-items:flex-start;
 
-    gap:10px;
+    gap:12px;
 
     margin:0;
 
-    color:#444;
+    padding:12px 14px;
 
-    line-height:1.5;
+    border-radius:12px;
 
-    word-break:break-word;
+    background:#f8fafc;
+
+    color:#4b5563;
+
+    line-height:1.6;
+
+    transition:.3s;
+
+}
+
+.info p:hover{
+
+    background:#fff3e8;
 
 }
 
 .info svg{
 
-    color:#ff9800;
+    color:#ff6b00;
 
     min-width:18px;
+
+    margin-top:3px;
 
 }
 
 .info strong{
 
-    color:#111;
+    color:#111827;
 
 }
 
-/* ================= LOADING ================= */
-
-.loading,
-
-.no-data{
-
-    text-align:center;
-
-    padding:50px;
-
-    font-size:20px;
-
-    color:#666;
-
-}
-
-/* ================= RESPONSIVE ================= */
-
-@media(max-width:768px){
-
-    .volunteers-page{
-
-        padding:20px 15px;
-
-    }
-
-    .page-header{
-
-        flex-direction:column;
-
-    }
-
-    .page-header h1{
-
-        font-size:28px;
-
-    }
-
-    .header-icon{
-
-        font-size:36px;
-
-    }
-
-    .volunteer-grid{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .volunteer-card{
-
-        padding:20px;
-
-    }
-
-    .volunteer-photo,
-
-    .photo-placeholder{
-
-        width:110px;
-
-        height:110px;
-
-    }
-
-    .photo-placeholder{
-
-        font-size:45px;
-
-    }
-
-}
-
-@media(max-width:480px){
-
-    .search-box{
-
-        padding:12px 15px;
-
-    }
-
-    .search-box input{
-
-        font-size:15px;
-
-    }
-
-    .volunteer-card h2{
-
-        font-size:22px;
-
-    }
-
-    .info p{
-
-        font-size:14px;
-
-    }
-
-}
-/* =======================
-VOLUNTEER ACTIONS
-======================= */
+/* ================= ACTION ================= */
 
 .volunteer-actions{
 
-    margin-top:20px;
+    margin-top:24px;
 
     display:flex;
 
@@ -363,17 +330,17 @@ VOLUNTEER ACTIONS
 
     justify-content:center;
 
-    gap:8px;
+    gap:10px;
 
     width:100%;
 
-    padding:12px;
+    padding:14px;
 
     border:none;
 
-    border-radius:10px;
+    border-radius:14px;
 
-    background:linear-gradient(135deg,#ff9800,#ff6b00);
+    background:#ff6b00;
 
     color:#fff;
 
@@ -385,12 +352,154 @@ VOLUNTEER ACTIONS
 
     transition:.3s;
 
+    box-shadow:0 10px 25px rgba(255,107,0,.25);
+
 }
 
 .print-btn:hover{
 
-    transform:translateY(-2px);
+    transform:translateY(-3px);
 
-    box-shadow:0 8px 20px rgba(255,152,0,.35);
+    box-shadow:0 18px 35px rgba(255,107,0,.35);
+
+}
+
+/* ================= LOADING ================= */
+
+.loading,
+
+.no-data{
+
+    text-align:center;
+
+    padding:80px 20px;
+
+    color:#6b7280;
+
+    font-size:22px;
+
+}
+
+/* ================= TABLET ================= */
+
+@media(max-width:768px){
+
+.volunteers-page{
+
+    padding:35px 15px 50px;
+
+}
+
+.page-header{
+
+    flex-direction:column;
+
+    gap:10px;
+
+}
+
+.page-header h1{
+
+    font-size:30px;
+
+}
+
+.header-icon{
+
+    font-size:40px;
+
+}
+
+.search-box{
+
+    margin-bottom:30px;
+
+}
+
+.volunteer-grid{
+
+    grid-template-columns:1fr;
+
+}
+
+.volunteer-card{
+
+    padding:22px;
+
+}
+
+.volunteer-photo,
+
+.photo-placeholder{
+
+    width:110px;
+
+    height:110px;
+
+}
+
+.photo-placeholder{
+
+    font-size:42px;
+
+}
+
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:480px){
+
+.page-header h1{
+
+    font-size:24px;
+
+}
+
+.page-header p{
+
+    font-size:14px;
+
+}
+
+.search-box{
+
+    padding:12px 16px;
+
+}
+
+.search-box input{
+
+    font-size:14px;
+
+}
+
+.volunteer-card{
+
+    border-radius:18px;
+
+}
+
+.volunteer-card h2{
+
+    font-size:20px;
+
+}
+
+.info p{
+
+    font-size:14px;
+
+    padding:10px;
+
+}
+
+.print-btn{
+
+    font-size:14px;
+
+    padding:12px;
+
+}
 
 }

@@ -1,3 +1,5 @@
+/* ================= LOGIN PAGE ================= */
+
 .login-page{
 
     min-height:100vh;
@@ -8,101 +10,170 @@
 
     align-items:center;
 
-    background:linear-gradient(
-    135deg,
-    #fff3e0,
-    #ffe0b2
-    );
+    padding:20px;
+
+    overflow:hidden;
+
+    position:relative;
+
+    background:
+        radial-gradient(circle at top right,#ffe4cc 0%,transparent 35%),
+        radial-gradient(circle at bottom left,#fff3e0 0%,transparent 30%),
+        #f8fafc;
 
 }
+
+/* Decorative Background */
+
+.login-page::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:450px;
+
+    height:450px;
+
+    border-radius:50%;
+
+    background:linear-gradient(135deg,#ff6b00,#ffb347);
+
+    opacity:.06;
+
+    top:-180px;
+
+    right:-180px;
+
+}
+
+.login-page::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:300px;
+
+    height:300px;
+
+    border-radius:50%;
+
+    background:#3b82f6;
+
+    opacity:.05;
+
+    bottom:-120px;
+
+    left:-120px;
+
+}
+
+/* ================= LOGIN CARD ================= */
 
 .login-card{
 
-    width:420px;
+    position:relative;
 
-    background:white;
+    z-index:2;
 
-    padding:40px;
+    width:100%;
 
-    border-radius:25px;
+    max-width:430px;
 
-    box-shadow:0 20px 50px rgba(0,0,0,.12);
+    background:#ffffff;
 
-    text-align:center;
+    padding:45px 35px;
+
+    border-radius:28px;
+
+    border:1px solid #ececec;
+
+    box-shadow:0 18px 45px rgba(15,23,42,.08);
+
+    transition:.35s;
 
 }
 
+.login-card:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:0 25px 55px rgba(15,23,42,.12);
+
+}
+
+/* ================= TITLE ================= */
+
 .login-card h1{
 
-    color:#ff6b00;
+    margin:0 0 10px;
 
-    margin-bottom:10px;
+    text-align:center;
+
+    color:#111827;
+
+    font-size:34px;
+
+    font-weight:700;
 
 }
 
 .login-card p{
 
-    color:#666;
+    text-align:center;
+
+    color:#6b7280;
 
     margin-bottom:30px;
 
+    font-size:15px;
+
 }
+
+/* ================= INPUT ================= */
 
 .login-card input{
 
     width:100%;
 
-    padding:16px;
+    padding:15px 18px;
 
-    margin:12px 0;
+    margin:10px 0;
 
-    border:none;
+    border:1px solid #e5e7eb;
+
+    border-radius:14px;
+
+    background:#f9fafb;
 
     outline:none;
 
-    border-radius:12px;
+    font-size:15px;
 
-    background:#f7f7f7;
+    transition:.3s;
 
-    font-size:16px;
+    color:#111827;
+
+}
+
+.login-card input::placeholder{
+
+    color:#9ca3af;
 
 }
 
 .login-card input:focus{
 
-    border:2px solid #ff6b00;
+    border-color:#ff6b00;
+
+    background:#fff;
+
+    box-shadow:0 0 0 4px rgba(255,107,0,.12);
 
 }
 
-.login-card button{
-
-    width:100%;
-
-    margin-top:20px;
-
-    padding:15px;
-
-    border:none;
-
-    border-radius:12px;
-
-    background:#ff6b00;
-
-    color:white;
-
-    font-size:18px;
-
-    cursor:pointer;
-
-    transition:.3s;
-
-}
-
-.login-card button:hover{
-
-    background:#e65c00;
-
-}
+/* ================= SHOW PASSWORD ================= */
 
 .show-pass{
 
@@ -112,16 +183,154 @@
 
     gap:10px;
 
-    margin-top:10px;
+    margin-top:12px;
+
+    font-size:14px;
+
+    color:#4b5563;
+
+}
+
+.show-pass input{
+
+    width:auto;
+
+    margin:0;
+
+    cursor:pointer;
+
+}
+
+/* ================= BUTTON ================= */
+
+.login-card button{
+
+    width:100%;
+
+    margin-top:25px;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#ff6b00;
+
+    color:#fff;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+    box-shadow:0 10px 25px rgba(255,107,0,.25);
+
+}
+
+.login-card button:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 18px 35px rgba(255,107,0,.35);
+
+    background:#e85d00;
+
+}
+
+/* ================= ERROR ================= */
+
+.error{
+
+    margin-top:18px;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    background:#fef2f2;
+
+    color:#dc2626;
+
+    text-align:center;
+
+    font-size:14px;
+
+    border:1px solid #fecaca;
+
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:768px){
+
+.login-card{
+
+    padding:35px 25px;
+
+    border-radius:22px;
+
+}
+
+.login-card h1{
+
+    font-size:28px;
+
+}
+
+.login-card p{
 
     font-size:14px;
 
 }
 
-.error{
+}
 
-    color:red;
+/* ================= SMALL MOBILE ================= */
 
-    margin-top:15px;
+@media(max-width:480px){
+
+.login-page{
+
+    padding:15px;
+
+}
+
+.login-card{
+
+    padding:28px 20px;
+
+}
+
+.login-card h1{
+
+    font-size:24px;
+
+}
+
+.login-card input{
+
+    padding:14px;
+
+    font-size:14px;
+
+}
+
+.login-card button{
+
+    font-size:15px;
+
+    padding:14px;
+
+}
+
+.show-pass{
+
+    font-size:13px;
+
+}
 
 }

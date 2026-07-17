@@ -1,27 +1,16 @@
 import { useState, useEffect } from "react";
-
 import axios from "axios";
 
 import {
-
     FaHandshake,
-
     FaSave,
-
     FaUndo,
-
     FaEdit,
-
     FaTrash,
-
     FaSearch,
-
     FaImage,
-
     FaCrown,
-
     FaGem
-
 } from "react-icons/fa";
 
 import "../styles/admin/sponsormanagement.css";
@@ -33,17 +22,11 @@ function SponsorManagement() {
     const [sponsors, setSponsors] = useState([]);
 
     const [summary, setSummary] = useState({
-
         totalSponsors: 0,
-
         goldSponsors: 0,
-
         silverSponsors: 0,
-
         bronzeSponsors: 0,
-
         diamondSponsors: 0
-
     });
 
     const [loading, setLoading] = useState(false);
@@ -55,21 +38,13 @@ function SponsorManagement() {
     const [preview, setPreview] = useState(null);
 
     const [formData, setFormData] = useState({
-
         sponsorName: "",
-
         companyName: "",
-
         mobile: "",
-
         address: "",
-
         sponsorType: "Gold",
-
         status: "Active",
-
         logo: null
-
     });
 
     // ================= LOAD SPONSORS =================
@@ -81,24 +56,18 @@ function SponsorManagement() {
             setLoading(true);
 
             const res = await axios.get(
-
                 `${API}/api/sponsors`
-
             );
 
             setSponsors(res.data);
 
-        }
-
-        catch (err) {
+        } catch (err) {
 
             console.log(err);
 
             alert("Unable to load sponsors.");
 
-        }
-
-        finally {
+        } finally {
 
             setLoading(false);
 
@@ -113,16 +82,12 @@ function SponsorManagement() {
         try {
 
             const res = await axios.get(
-
                 `${API}/api/sponsors/summary`
-
             );
 
             setSummary(res.data);
 
-        }
-
-        catch (err) {
+        } catch (err) {
 
             console.log(err);
 
@@ -137,16 +102,14 @@ function SponsorManagement() {
         loadSummary();
 
     }, []);
-        // ================= HANDLE CHANGE =================
+
+    // ================= HANDLE CHANGE =================
 
     const handleChange = (e) => {
 
         setFormData({
-
             ...formData,
-
             [e.target.name]: e.target.value
-
         });
 
     };
@@ -160,18 +123,11 @@ function SponsorManagement() {
         if (!file) return;
 
         setFormData({
-
             ...formData,
-
             logo: file
-
         });
 
-        setPreview(
-
-            URL.createObjectURL(file)
-
-        );
+        setPreview(URL.createObjectURL(file));
 
     };
 
@@ -186,17 +142,11 @@ function SponsorManagement() {
         setFormData({
 
             sponsorName: "",
-
             companyName: "",
-
             mobile: "",
-
             address: "",
-
             sponsorType: "Gold",
-
             status: "Active",
-
             logo: null
 
         });
@@ -211,7 +161,7 @@ function SponsorManagement() {
 
     };
 
-    // ================= SAVE SPONSOR =================
+    // ================= SAVE =================
 
     const handleSubmit = async (e) => {
 
@@ -219,63 +169,16 @@ function SponsorManagement() {
 
         const data = new FormData();
 
-        data.append(
-
-            "sponsorName",
-
-            formData.sponsorName
-
-        );
-
-        data.append(
-
-            "companyName",
-
-            formData.companyName
-
-        );
-
-        data.append(
-
-            "mobile",
-
-            formData.mobile
-
-        );
-
-        data.append(
-
-            "address",
-
-            formData.address
-
-        );
-
-        data.append(
-
-            "sponsorType",
-
-            formData.sponsorType
-
-        );
-
-        data.append(
-
-            "status",
-
-            formData.status
-
-        );
+        data.append("sponsorName", formData.sponsorName);
+        data.append("companyName", formData.companyName);
+        data.append("mobile", formData.mobile);
+        data.append("address", formData.address);
+        data.append("sponsorType", formData.sponsorType);
+        data.append("status", formData.status);
 
         if (formData.logo) {
 
-            data.append(
-
-                "logo",
-
-                formData.logo
-
-            );
+            data.append("logo", formData.logo);
 
         }
 
@@ -284,60 +187,30 @@ function SponsorManagement() {
             if (editingId) {
 
                 await axios.put(
-
                     `${API}/api/sponsors/${editingId}`,
-
                     data,
-
                     {
-
                         headers: {
-
-                            "Content-Type":
-
-                            "multipart/form-data"
-
+                            "Content-Type": "multipart/form-data"
                         }
-
                     }
-
                 );
 
-                alert(
+                alert("Sponsor Updated Successfully");
 
-                    "Sponsor Updated Successfully"
-
-                );
-
-            }
-
-            else {
+            } else {
 
                 await axios.post(
-
                     `${API}/api/sponsors`,
-
                     data,
-
                     {
-
                         headers: {
-
-                            "Content-Type":
-
-                            "multipart/form-data"
-
+                            "Content-Type": "multipart/form-data"
                         }
-
                     }
-
                 );
 
-                alert(
-
-                    "Sponsor Added Successfully"
-
-                );
+                alert("Sponsor Added Successfully");
 
             }
 
@@ -347,24 +220,20 @@ function SponsorManagement() {
 
             loadSummary();
 
-        }
-
-        catch (err) {
+        } catch (err) {
 
             console.log(err);
 
             alert(
-
                 err.response?.data?.message ||
-
                 "Unable to save sponsor."
-
             );
 
         }
 
     };
-        // ================= EDIT SPONSOR =================
+
+    // ================= EDIT =================
 
     const handleEdit = (item) => {
 
@@ -373,17 +242,11 @@ function SponsorManagement() {
         setFormData({
 
             sponsorName: item.sponsorName,
-
             companyName: item.companyName,
-
             mobile: item.mobile,
-
             address: item.address,
-
             sponsorType: item.sponsorType,
-
             status: item.status,
-
             logo: null
 
         });
@@ -391,14 +254,10 @@ function SponsorManagement() {
         if (item.logo) {
 
             setPreview(
-
                 `${API}/uploads/sponsors/${item.logo}`
-
             );
 
-        }
-
-        else {
+        } else {
 
             setPreview(null);
 
@@ -414,53 +273,35 @@ function SponsorManagement() {
 
     };
 
-    // ================= DELETE SPONSOR =================
+    // ================= DELETE =================
 
     const handleDelete = async (id) => {
 
         if (
-
             !window.confirm(
-
                 "Are you sure you want to delete this sponsor?"
-
             )
-
         ) {
-
             return;
-
         }
 
         try {
 
             await axios.delete(
-
                 `${API}/api/sponsors/${id}`
-
             );
 
-            alert(
-
-                "Sponsor Deleted Successfully"
-
-            );
+            alert("Sponsor Deleted Successfully");
 
             loadSponsors();
 
             loadSummary();
 
-        }
-
-        catch (err) {
+        } catch (err) {
 
             console.log(err);
 
-            alert(
-
-                "Unable to delete sponsor."
-
-            );
+            alert("Unable to delete sponsor.");
 
         }
 
@@ -473,31 +314,14 @@ function SponsorManagement() {
         (item) =>
 
             item.sponsorName
-
                 ?.toLowerCase()
-
-                .includes(
-
-                    search.toLowerCase()
-
-                )
-
-            ||
+                .includes(search.toLowerCase()) ||
 
             item.companyName
-
                 ?.toLowerCase()
-
-                .includes(
-
-                    search.toLowerCase()
-
-                )
-
-            ||
+                .includes(search.toLowerCase()) ||
 
             item.mobile
-
                 ?.includes(search)
 
     );
@@ -506,69 +330,60 @@ function SponsorManagement() {
 
         <div className="sponsor-page">
 
-            {/* ================= PAGE TITLE ================= */}
+            {/* ================= PAGE HEADER ================= */}
 
             <div className="page-title">
 
-                <FaHandshake className="title-icon"/>
+                <div className="title-icon">
 
-                <div>
+                    <FaHandshake />
 
-                    <h1>
+                </div>
 
-                        Sponsor Management
+                <div className="title-content">
 
-                    </h1>
+                    <h1>Sponsor Management</h1>
 
                     <p>
-
-                        Add, Edit & Manage Sponsors
-
+                        Add, update and manage all Ganesh
+                        Mandal sponsors from one place.
                     </p>
 
                 </div>
 
             </div>
 
-            {/* ================= SUMMARY ================= */}
+            {/* Part 2 continues from here */}
+
+                        {/* ================= SUMMARY ================= */}
 
             <div className="summary-grid">
 
-                <div className="summary-card">
+                <div className="summary-card total">
 
-                    <h3>
+                    <div>
 
-                        Total Sponsors
+                        <h3>Total Sponsors</h3>
 
-                    </h3>
+                        <h2>{summary.totalSponsors}</h2>
 
-                    <h2>
+                    </div>
 
-                        {summary.totalSponsors}
-
-                    </h2>
+                    <FaHandshake />
 
                 </div>
 
                 <div className="summary-card gold">
 
-                    <FaCrown/>
-
                     <div>
 
-                        <h3>
+                        <h3>Gold Sponsors</h3>
 
-                            Gold
-
-                        </h3>
-
-                        <h2>
-
-                            {summary.goldSponsors}
-
-                        </h2>
+                        <h2>{summary.goldSponsors}</h2>
 
                     </div>
+
+                    <FaCrown />
 
                 </div>
 
@@ -576,19 +391,13 @@ function SponsorManagement() {
 
                     <div>
 
-                        <h3>
+                        <h3>Silver Sponsors</h3>
 
-                            Silver
-
-                        </h3>
-
-                        <h2>
-
-                            {summary.silverSponsors}
-
-                        </h2>
+                        <h2>{summary.silverSponsors}</h2>
 
                     </div>
+
+                    <FaHandshake />
 
                 </div>
 
@@ -596,46 +405,33 @@ function SponsorManagement() {
 
                     <div>
 
-                        <h3>
+                        <h3>Bronze Sponsors</h3>
 
-                            Bronze
-
-                        </h3>
-
-                        <h2>
-
-                            {summary.bronzeSponsors}
-
-                        </h2>
+                        <h2>{summary.bronzeSponsors}</h2>
 
                     </div>
+
+                    <FaHandshake />
 
                 </div>
 
                 <div className="summary-card diamond">
 
-                    <FaGem/>
-
                     <div>
 
-                        <h3>
+                        <h3>Diamond Sponsors</h3>
 
-                            Diamond
-
-                        </h3>
-
-                        <h2>
-
-                            {summary.diamondSponsors}
-
-                        </h2>
+                        <h2>{summary.diamondSponsors}</h2>
 
                     </div>
+
+                    <FaGem />
 
                 </div>
 
             </div>
-                        {/* ================= FORM ================= */}
+
+            {/* ================= FORM ================= */}
 
             <div className="sponsor-card">
 
@@ -649,231 +445,235 @@ function SponsorManagement() {
 
                 >
 
-                    <div className="form-group">
+                    {/* LEFT SIDE */}
 
-                        <label>
+                    <div className="form-left">
 
-                            Sponsor Name *
+                        <div className="form-group">
 
-                        </label>
+                            <label>Sponsor Name *</label>
 
-                        <input
+                            <input
 
-                            type="text"
+                                type="text"
 
-                            name="sponsorName"
+                                name="sponsorName"
 
-                            value={formData.sponsorName}
+                                value={formData.sponsorName}
 
-                            onChange={handleChange}
+                                onChange={handleChange}
 
-                            placeholder="Enter Sponsor Name"
+                                placeholder="Enter Sponsor Name"
 
-                            required
+                                required
 
-                        />
+                            />
 
-                    </div>
+                        </div>
 
-                    <div className="form-group">
+                        <div className="form-group">
 
-                        <label>
+                            <label>Company Name</label>
 
-                            Company Name
+                            <input
 
-                        </label>
+                                type="text"
 
-                        <input
+                                name="companyName"
 
-                            type="text"
+                                value={formData.companyName}
 
-                            name="companyName"
+                                onChange={handleChange}
 
-                            value={formData.companyName}
+                                placeholder="Enter Company Name"
 
-                            onChange={handleChange}
+                            />
 
-                            placeholder="Enter Company Name"
+                        </div>
 
-                        />
+                        <div className="form-group">
 
-                    </div>
+                            <label>Mobile Number</label>
 
-                    <div className="form-group">
+                            <input
 
-                        <label>
+                                type="text"
 
-                            Mobile Number
+                                name="mobile"
 
-                        </label>
+                                value={formData.mobile}
 
-                        <input
+                                onChange={handleChange}
 
-                            type="text"
+                                placeholder="Enter Mobile Number"
 
-                            name="mobile"
+                            />
 
-                            value={formData.mobile}
+                        </div>
 
-                            onChange={handleChange}
+                        <div className="form-group">
 
-                            placeholder="Enter Mobile Number"
+                            <label>Address</label>
 
-                        />
+                            <textarea
 
-                    </div>
+                                rows="4"
 
-                    <div className="form-group">
+                                name="address"
 
-                        <label>
+                                value={formData.address}
 
-                            Address
+                                onChange={handleChange}
 
-                        </label>
+                                placeholder="Enter Address"
 
-                        <textarea
+                            />
 
-                            rows="3"
+                        </div>
 
-                            name="address"
+                        <div className="form-row">
 
-                            value={formData.address}
+                            <div className="form-group">
 
-                            onChange={handleChange}
+                                <label>Sponsor Type</label>
 
-                            placeholder="Enter Address"
+                                <select
 
-                        />
+                                    name="sponsorType"
 
-                    </div>
+                                    value={formData.sponsorType}
 
-                    <div className="form-group">
+                                    onChange={handleChange}
 
-                        <label>
+                                >
 
-                            Sponsor Type
+                                    <option value="Gold">
 
-                        </label>
+                                        Gold Sponsor
 
-                        <select
+                                    </option>
 
-                            name="sponsorType"
+                                    <option value="Silver">
 
-                            value={formData.sponsorType}
+                                        Silver Sponsor
 
-                            onChange={handleChange}
+                                    </option>
 
-                        >
+                                    <option value="Bronze">
 
-                            <option value="Gold">
+                                        Bronze Sponsor
 
-                                Gold Sponsor
+                                    </option>
 
-                            </option>
+                                    <option value="Diamond">
 
-                            <option value="Silver">
+                                        Diamond Sponsor
 
-                                Silver Sponsor
+                                    </option>
 
-                            </option>
-
-                            <option value="Bronze">
-
-                                Bronze Sponsor
-
-                            </option>
-
-                            <option value="Diamond">
-
-                                Diamond Sponsor
-
-                            </option>
-
-                        </select>
-
-                    </div>
-
-                    <div className="form-group">
-
-                        <label>
-
-                            Status
-
-                        </label>
-
-                        <select
-
-                            name="status"
-
-                            value={formData.status}
-
-                            onChange={handleChange}
-
-                        >
-
-                            <option value="Active">
-
-                                Active
-
-                            </option>
-
-                            <option value="Inactive">
-
-                                Inactive
-
-                            </option>
-
-                        </select>
-
-                    </div>
-
-                    <div className="form-group full">
-
-                        <label>
-
-                            <FaImage />
-
-                            Sponsor Logo
-
-                        </label>
-
-                        <input
-
-                            id="logo"
-
-                            type="file"
-
-                            accept="image/*"
-
-                            onChange={handleImage}
-
-                        />
-
-                    </div>
-
-                    {
-
-                        preview &&
-
-                        (
-
-                            <div className="form-group full">
-
-                                <img
-
-                                    src={preview}
-
-                                    alt="Preview"
-
-                                    className="preview-image"
-
-                                />
+                                </select>
 
                             </div>
 
-                        )
+                            <div className="form-group">
 
-                    }
+                                <label>Status</label>
+
+                                <select
+
+                                    name="status"
+
+                                    value={formData.status}
+
+                                    onChange={handleChange}
+
+                                >
+
+                                    <option value="Active">
+
+                                        Active
+
+                                    </option>
+
+                                    <option value="Inactive">
+
+                                        Inactive
+
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    {/* RIGHT SIDE */}
+
+                    <div className="form-right">
+
+                        <div className="upload-card">
+
+                            <FaImage className="upload-icon" />
+
+                            <h3>Sponsor Logo</h3>
+
+                            <p>
+
+                                Upload PNG, JPG or JPEG
+
+                            </p>
+
+                            <input
+
+                                id="logo"
+
+                                type="file"
+
+                                accept="image/*"
+
+                                onChange={handleImage}
+
+                            />
+
+                            {
+
+                                preview ?
+
+                                (
+
+                                    <img
+
+                                        src={preview}
+
+                                        alt="Preview"
+
+                                        className="preview-image"
+
+                                    />
+
+                                )
+
+                                :
+
+                                (
+
+                                    <div className="preview-placeholder">
+
+                                        No Image Selected
+
+                                    </div>
+
+                                )
+
+                            }
+
+                        </div>
+
+                    </div>
+
+                    {/* BUTTONS */}
 
                     <div className="button-group">
 
@@ -891,13 +691,13 @@ function SponsorManagement() {
 
                                 editingId
 
-                                ?
+                                    ?
 
-                                " Update Sponsor"
+                                    " Update Sponsor"
 
-                                :
+                                    :
 
-                                " Add Sponsor"
+                                    " Add Sponsor"
 
                             }
 
@@ -915,7 +715,7 @@ function SponsorManagement() {
 
                             <FaUndo />
 
-                            Clear
+                            Clear Form
 
                         </button>
 
@@ -924,31 +724,35 @@ function SponsorManagement() {
                 </form>
 
             </div>
-                        {/* ================= SEARCH ================= */}
 
-            <div className="search-box">
+                       {/* ================= SEARCH ================= */}
 
-                <FaSearch />
+            <div className="table-header">
 
-                <input
+                <div className="search-box">
 
-                    type="text"
+                    <FaSearch />
 
-                    placeholder="Search Sponsor..."
+                    <input
+                        type="text"
+                        placeholder="Search by Sponsor, Company or Mobile..."
+                        value={search}
+                        onChange={(e) =>
+                            setSearch(e.target.value)
+                        }
+                    />
 
-                    value={search}
+                </div>
 
-                    onChange={(e)=>
+                <div className="table-info">
 
-                        setSearch(
+                    <strong>
+                        Total :
+                    </strong>
 
-                            e.target.value
+                    {filteredSponsors.length}
 
-                        )
-
-                    }
-
-                />
+                </div>
 
             </div>
 
@@ -991,14 +795,11 @@ function SponsorManagement() {
                                 <tr>
 
                                     <td
-
                                         colSpan="7"
-
                                         className="no-data"
-
                                     >
 
-                                        Loading...
+                                        Loading Sponsors...
 
                                     </td>
 
@@ -1008,18 +809,15 @@ function SponsorManagement() {
 
                             :
 
-                            filteredSponsors.length===0 ?
+                            filteredSponsors.length === 0 ?
 
                             (
 
                                 <tr>
 
                                     <td
-
                                         colSpan="7"
-
                                         className="no-data"
-
                                     >
 
                                         No Sponsors Found
@@ -1032,7 +830,7 @@ function SponsorManagement() {
 
                             :
 
-                            filteredSponsors.map((item)=>(
+                            filteredSponsors.map((item) => (
 
                                 <tr key={item.id}>
 
@@ -1045,13 +843,9 @@ function SponsorManagement() {
                                             (
 
                                                 <img
-
                                                     src={`${API}/uploads/sponsors/${item.logo}`}
-
                                                     alt={item.sponsorName}
-
                                                     className="table-logo"
-
                                                 />
 
                                             )
@@ -1060,11 +854,11 @@ function SponsorManagement() {
 
                                             (
 
-                                                <span>
+                                                <div className="table-logo empty">
 
-                                                    -
+                                                    <FaImage />
 
-                                                </span>
+                                                </div>
 
                                             )
 
@@ -1074,7 +868,11 @@ function SponsorManagement() {
 
                                     <td>
 
-                                        {item.sponsorName}
+                                        <strong>
+
+                                            {item.sponsorName}
+
+                                        </strong>
 
                                     </td>
 
@@ -1082,9 +880,7 @@ function SponsorManagement() {
 
                                         {
 
-                                            item.companyName ||
-
-                                            "-"
+                                            item.companyName || "-"
 
                                         }
 
@@ -1094,9 +890,7 @@ function SponsorManagement() {
 
                                         {
 
-                                            item.mobile ||
-
-                                            "-"
+                                            item.mobile || "-"
 
                                         }
 
@@ -1105,22 +899,10 @@ function SponsorManagement() {
                                     <td>
 
                                         <span
-
-                                            className={`badge ${
-
-                                                item.sponsorType
-
-                                                .toLowerCase()
-
-                                            }`}
-
+                                            className={`badge ${item.sponsorType.toLowerCase()}`}
                                         >
 
-                                            {
-
-                                                item.sponsorType
-
-                                            }
+                                            {item.sponsorType}
 
                                         </span>
 
@@ -1130,7 +912,7 @@ function SponsorManagement() {
 
                                         {
 
-                                            item.status==="Active"
+                                            item.status === "Active"
 
                                             ?
 
@@ -1165,42 +947,28 @@ function SponsorManagement() {
                                         <div className="action-buttons">
 
                                             <button
-
                                                 type="button"
-
                                                 className="edit-btn"
-
-                                                onClick={()=>
-
-                                                    handleEdit(item)
-
-                                                }
-
                                                 title="Edit Sponsor"
-
+                                                onClick={() =>
+                                                    handleEdit(item)
+                                                }
                                             >
 
-                                                <FaEdit/>
+                                                <FaEdit />
 
                                             </button>
 
                                             <button
-
                                                 type="button"
-
                                                 className="delete-btn"
-
-                                                onClick={()=>
-
-                                                    handleDelete(item.id)
-
-                                                }
-
                                                 title="Delete Sponsor"
-
+                                                onClick={() =>
+                                                    handleDelete(item.id)
+                                                }
                                             >
 
-                                                <FaTrash/>
+                                                <FaTrash />
 
                                             </button>
 
@@ -1219,10 +987,12 @@ function SponsorManagement() {
                 </table>
 
             </div>
-                    </div>
+
+        </div>
 
     );
 
 }
 
 export default SponsorManagement;
+            

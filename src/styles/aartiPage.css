@@ -2,9 +2,11 @@
 
 .aarti-page{
 
-    padding:30px 0 50px;
+    padding:45px 0 70px;
 
     min-height:100vh;
+
+    background:#f8fafc;
 
 }
 
@@ -12,37 +14,51 @@
 
     text-align:center;
 
-    color:#ff6b00;
-
-    font-size:34px;
-
-    margin-bottom:30px;
+    font-size:38px;
 
     font-weight:700;
+
+    color:#111827;
+
+    margin-bottom:40px;
+
+}
+
+/* ================= TABLE WRAPPER ================= */
+
+.table-wrapper{
+
+    background:#ffffff;
+
+    border-radius:24px;
+
+    overflow-x:auto;
+
+    border:1px solid #ececec;
+
+    box-shadow:0 15px 40px rgba(15,23,42,.08);
+
+    transition:.35s;
+
+}
+
+.table-wrapper:hover{
+
+    box-shadow:0 20px 45px rgba(15,23,42,.12);
 
 }
 
 /* ================= TABLE ================= */
 
-.table-wrapper{
-
-    background:#fff;
-
-    border-radius:18px;
-
-    overflow-x:auto;
-
-    box-shadow:0 8px 25px rgba(0,0,0,.08);
-
-}
-
 .aarti-table{
 
     width:100%;
 
-    border-collapse:collapse;
-
     min-width:1000px;
+
+    border-collapse:separate;
+
+    border-spacing:0;
 
 }
 
@@ -50,15 +66,15 @@
 
 .aarti-table thead{
 
-    background:linear-gradient(90deg,#ff6b00,#ff9f43);
-
-    color:#fff;
+    background:#111827;
 
 }
 
 .aarti-table th{
 
-    padding:16px;
+    padding:18px;
+
+    color:#ffffff;
 
     text-align:center;
 
@@ -68,79 +84,109 @@
 
     white-space:nowrap;
 
+    letter-spacing:.3px;
+
+}
+
+.aarti-table th:first-child{
+
+    border-top-left-radius:20px;
+
+}
+
+.aarti-table th:last-child{
+
+    border-top-right-radius:20px;
+
 }
 
 /* ================= BODY ================= */
 
-.aarti-table td{
+.aarti-table tbody tr{
 
-    padding:15px;
-
-    text-align:center;
-
-    border-bottom:1px solid #ececec;
-
-    color:#444;
-
-    font-size:15px;
+    transition:.3s;
 
 }
 
-.aarti-table tbody tr{
+.aarti-table tbody tr:nth-child(even){
 
-    transition:.25s;
+    background:#fafafa;
 
 }
 
 .aarti-table tbody tr:hover{
 
-    background:#fff8f1;
+    background:#fff7ef;
+
+    transform:scale(1.003);
 
 }
 
-/* ================= COLUMN WIDTHS ================= */
+.aarti-table td{
+
+    padding:18px 15px;
+
+    text-align:center;
+
+    font-size:15px;
+
+    color:#4b5563;
+
+    border-bottom:1px solid #f1f5f9;
+
+}
+
+/* ================= COLUMN ================= */
 
 .aarti-table td:nth-child(1){
 
-    width:60px;
+    font-weight:700;
 
-    font-weight:bold;
+    color:#111827;
+
+    width:70px;
 
 }
 
 .aarti-table td:nth-child(2){
 
-    min-width:220px;
-
     font-weight:600;
 
     color:#ff6b00;
+
+    min-width:220px;
 
 }
 
 .aarti-table td:nth-child(6){
 
-    min-width:170px;
+    min-width:180px;
 
 }
 
-/* ================= TYPE BADGE ================= */
+/* ================= TYPE ================= */
 
 .type{
 
-    display:inline-block;
+    display:inline-flex;
 
-    padding:6px 15px;
+    align-items:center;
+
+    justify-content:center;
+
+    padding:7px 16px;
 
     border-radius:30px;
 
-    background:#ffe7d1;
+    background:#fff3e8;
 
     color:#ff6b00;
 
+    font-size:13px;
+
     font-weight:600;
 
-    font-size:13px;
+    border:1px solid #ffe0c7;
 
 }
 
@@ -148,45 +194,49 @@
 
 .status{
 
-    display:inline-block;
+    display:inline-flex;
 
-    padding:6px 14px;
+    align-items:center;
+
+    justify-content:center;
+
+    padding:7px 16px;
 
     border-radius:30px;
 
     font-size:13px;
 
-    font-weight:bold;
+    font-weight:600;
 
 }
 
 .today{
 
-    background:#d4edda;
+    background:#dcfce7;
 
-    color:#1b5e20;
+    color:#166534;
 
 }
 
 .upcoming{
 
-    background:#fff3cd;
+    background:#fef3c7;
 
-    color:#856404;
+    color:#92400e;
 
 }
 
-/* ================= EMPTY DATA ================= */
+/* ================= EMPTY ================= */
 
 .no-data{
 
-    padding:35px;
-
-    font-size:17px;
-
-    color:#666;
+    padding:60px 20px;
 
     text-align:center;
+
+    font-size:18px;
+
+    color:#6b7280;
 
 }
 
@@ -196,13 +246,13 @@
 
     text-align:center;
 
-    padding:70px 20px;
+    padding:80px 20px;
 
-    font-size:22px;
+    font-size:24px;
 
     color:#ff6b00;
 
-    font-weight:bold;
+    font-weight:700;
 
 }
 
@@ -210,105 +260,117 @@
 
 .table-wrapper::-webkit-scrollbar{
 
-    height:8px;
-
-}
-
-.table-wrapper::-webkit-scrollbar-thumb{
-
-    background:#ff6b00;
-
-    border-radius:20px;
+    height:10px;
 
 }
 
 .table-wrapper::-webkit-scrollbar-track{
 
-    background:#f1f1f1;
+    background:#f3f4f6;
+
+    border-radius:20px;
 
 }
 
-/* ================= MOBILE ================= */
+.table-wrapper::-webkit-scrollbar-thumb{
+
+    background:linear-gradient(135deg,#ff6b00,#ff9800);
+
+    border-radius:20px;
+
+}
+
+/* ================= TABLET ================= */
 
 @media(max-width:992px){
 
 .aarti-page{
 
-padding:20px 0 40px;
+    padding:35px 0 55px;
 
 }
 
 .aarti-page .title{
 
-font-size:28px;
+    font-size:30px;
 
 }
 
 .aarti-table{
 
-min-width:950px;
+    min-width:950px;
 
 }
 
 }
+
+/* ================= MOBILE ================= */
 
 @media(max-width:768px){
 
+.aarti-page{
+
+    padding:30px 0 45px;
+
+}
+
 .aarti-page .title{
 
-font-size:24px;
+    font-size:26px;
 
-margin-bottom:20px;
+    margin-bottom:25px;
 
 }
 
 .table-wrapper{
 
-border-radius:12px;
+    border-radius:18px;
 
 }
 
 .aarti-table{
 
-min-width:900px;
+    min-width:900px;
 
 }
 
 .aarti-table th{
 
-padding:12px;
+    padding:14px;
 
-font-size:14px;
+    font-size:14px;
 
 }
 
 .aarti-table td{
 
-padding:12px;
+    padding:14px;
 
-font-size:14px;
+    font-size:14px;
+
+}
 
 }
 
-}
+/* ================= SMALL MOBILE ================= */
 
 @media(max-width:480px){
 
 .aarti-page{
 
-padding:15px 0 30px;
+    padding:20px 0 35px;
 
 }
 
 .aarti-page .title{
 
-font-size:22px;
+    font-size:22px;
 
 }
 
 .aarti-table{
 
-min-width:850px;
+    min-width:850px;
 
 }
 
@@ -316,25 +378,19 @@ min-width:850px;
 
 .aarti-table td{
 
-padding:10px;
+    padding:12px;
 
-font-size:13px;
-
-}
-
-.type{
-
-font-size:12px;
-
-padding:5px 10px;
+    font-size:13px;
 
 }
+
+.type,
 
 .status{
 
-font-size:12px;
+    font-size:12px;
 
-padding:5px 10px;
+    padding:6px 12px;
 
 }
 

@@ -41,7 +41,7 @@ function Navbar() {
   title="Admin Login"
   onClick={() => navigate("/login")}
 >
-  🔒
+  🔒Login
 </span>
               
 
