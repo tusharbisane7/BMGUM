@@ -7,29 +7,7 @@ function MeetingRoom(){
 
     const { roomName } = useParams();
 
-    const displayName =
-
-        localStorage.getItem(
-
-            "meeting_user_name"
-
-        ) ||
-
-        prompt(
-
-            "आपले नाव प्रविष्ट करा"
-
-        ) ||
-
-        "Guest";
-
-    localStorage.setItem(
-
-        "meeting_user_name",
-
-        displayName
-
-    );
+    const displayName = `Guest-${Math.floor(Math.random() * 10000)}`;
 
     return(
 
