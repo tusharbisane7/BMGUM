@@ -1,62 +1,54 @@
-/* ================= DASHBOARD CARD ================= */
+/* ================= DASHBOARD GRID ================= */
+
+.dashboard-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+
+    gap:12px;
+
+    margin-top:15px;
+
+}
+
+/* ================= CARD ================= */
 
 .dashboard-card{
 
-    display:flex;
+    position:relative;
 
-    align-items:center;
-
-    gap:20px;
-
-    padding:25px;
+    background:#fff;
 
     border-radius:18px;
 
-    color:#fff;
+    padding:16px;
 
-    min-height:140px;
+    display:flex;
 
-    box-shadow:0 10px 25px rgba(0,0,0,.15);
+    flex-direction:column;
 
-    transition:.3s;
+    align-items:flex-start;
 
-    cursor:pointer;
+    justify-content:center;
 
     overflow:hidden;
 
-    position:relative;
+    box-shadow:0 6px 18px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+    min-height:120px;
+
+    border-left:5px solid #ff6b00;
 
 }
-
-/* Hover Effect */
 
 .dashboard-card:hover{
 
-    transform:translateY(-8px);
+    transform:translateY(-5px);
 
-    box-shadow:0 15px 35px rgba(0,0,0,.22);
-
-}
-
-/* Background Circle */
-
-.dashboard-card::before{
-
-    content:"";
-
-    position:absolute;
-
-    width:170px;
-
-    height:170px;
-
-    background:rgba(255,255,255,.12);
-
-    border-radius:50%;
-
-    top:-60px;
-
-    right:-60px;
+    box-shadow:0 12px 25px rgba(0,0,0,.15);
 
 }
 
@@ -64,11 +56,11 @@
 
 .dashboard-card-icon{
 
-    width:75px;
+    width:48px;
 
-    height:75px;
+    height:48px;
 
-    min-width:75px;
+    border-radius:14px;
 
     display:flex;
 
@@ -76,141 +68,177 @@
 
     align-items:center;
 
-    font-size:40px;
+    font-size:22px;
 
-    border-radius:50%;
+    color:#fff;
 
-    background:rgba(255,255,255,.18);
+    margin-bottom:12px;
 
-    backdrop-filter:blur(5px);
+}
+
+/* Individual icon colors */
+
+.dashboard-card.orange .dashboard-card-icon{
+
+    background:#ff6b00;
+
+}
+
+.dashboard-card.blue .dashboard-card-icon{
+
+    background:#0d6efd;
+
+}
+
+.dashboard-card.green .dashboard-card-icon{
+
+    background:#28a745;
+
+}
+
+.dashboard-card.purple .dashboard-card-icon{
+
+    background:#9c27b0;
 
 }
 
 /* ================= CONTENT ================= */
 
-.dashboard-card-content{
-
-    flex:1;
-
-}
-
 .dashboard-card-content h3{
 
     margin:0;
 
-    font-size:17px;
+    font-size:14px;
 
-    font-weight:500;
+    color:#ffffff;
 
-    color:#fff;
-
-    opacity:.95;
+    font-weight:600;
 
 }
 
 .dashboard-card-content h2{
 
-    margin-top:10px;
+    margin-top:8px;
 
-    font-size:32px;
+    font-size:28px;
 
     font-weight:700;
 
-    color:#fff;
-
-    word-break:break-word;
+    color:#ffffff;
 
 }
 
-/* ================= RESPONSIVE ================= */
+/* ================= DECORATION ================= */
 
-@media(max-width:992px){
+.dashboard-card::after{
 
-.dashboard-card{
+    content:"";
 
-min-height:120px;
+    position:absolute;
 
-padding:20px;
+    right:-25px;
 
-}
+    top:-25px;
 
-.dashboard-card-icon{
+    width:80px;
 
-width:65px;
+    height:80px;
 
-height:65px;
+    border-radius:50%;
 
-font-size:34px;
-
-}
-
-.dashboard-card-content h2{
-
-font-size:28px;
+    background:rgba(255,107,0,.08);
 
 }
 
-}
+/* ================= TABLET ================= */
 
 @media(max-width:768px){
 
+.dashboard-grid{
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:10px;
+
+}
+
 .dashboard-card{
 
-padding:18px;
+    min-height:105px;
 
-gap:15px;
-
-min-height:110px;
+    padding:14px;
 
 }
 
 .dashboard-card-icon{
 
-width:60px;
+    width:42px;
 
-height:60px;
+    height:42px;
 
-font-size:30px;
+    font-size:20px;
 
 }
 
 .dashboard-card-content h3{
 
-font-size:15px;
+    font-size:12px;
 
 }
 
 .dashboard-card-content h2{
 
-font-size:24px;
+    font-size:22px;
 
 }
 
 }
+
+/* ================= MOBILE ================= */
 
 @media(max-width:480px){
 
+.dashboard-grid{
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:8px;
+
+}
+
 .dashboard-card{
 
-flex-direction:column;
+    min-height:95px;
 
-text-align:center;
+    padding:12px;
 
-padding:20px;
-
-min-height:auto;
+    border-radius:14px;
 
 }
 
 .dashboard-card-icon{
 
-margin-bottom:10px;
+    width:45px;
+
+    height:45px;
+
+    font-size:30px;
+
+    margin-bottom:8px;
+
+}
+
+.dashboard-card-content h3{
+
+    font-size:15px;
 
 }
 
 .dashboard-card-content h2{
 
-font-size:22px;
+    font-size:18px;
+
+    margin-top:4px;
 
 }
 

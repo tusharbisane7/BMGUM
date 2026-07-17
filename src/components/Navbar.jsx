@@ -63,7 +63,6 @@ function Navbar() {
 
       <ul className="nav-links">
 
-        <li>
 
           <NavLink
             to="/"
@@ -76,39 +75,6 @@ function Navbar() {
 
           </NavLink>
 
-        </li>
-
-        <li>
-
-          <NavLink
-            to="/donation"
-            className={({ isActive }) =>
-              isActive ? "active" : ""
-            }
-          >
-
-            देणगी
-
-          </NavLink>
-
-        </li>
-
-        <li>
-
-          <NavLink
-            to="/expense"
-            className={({ isActive }) =>
-              isActive ? "active" : ""
-            }
-          >
-
-            खर्च
-
-          </NavLink>
-
-        </li>
-
-        <li>
 
           <NavLink
             to="/aarti"
@@ -121,7 +87,7 @@ function Navbar() {
 
           </NavLink>
 
-        </li>
+      
 <NavLink
             to="/volunteer-registration"
             className={({ isActive }) =>
@@ -132,7 +98,7 @@ function Navbar() {
              स्वयंसेवक बना
 
           </NavLink>
-         <li>
+        
 
           <NavLink
             to="/volunteers"
@@ -141,11 +107,11 @@ function Navbar() {
             }
           >
 
-            नोंदणीकृत स्वयंसेवक
+             स्वयंसेवक
 
           </NavLink>
 
-        </li>
+        
 
       </ul>
 
