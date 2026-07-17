@@ -26,7 +26,7 @@ const timelineRoutes = require("./routes/timelineRoutes");
 const sponsorRoutes = require("./routes/sponsorRoutes");
 const volunteerRoutes = require("./routes/volunteerRoutes");
 const visitorRoutes = require("./routes/visitorRoutes");
-
+const meetingRoutes = require("./routes/meetingRoutes");
 
 
 app.use(cors());
@@ -45,7 +45,7 @@ app.use("/api/timeline", timelineRoutes);
 app.use("/api/sponsors", sponsorRoutes);
 app.use("/api/volunteers", volunteerRoutes);
 app.use("/api/visitor", visitorRoutes);
-
+app.use("/api/meetings", meetingRoutes);
 
 app.get("/", (req, res) => {
 

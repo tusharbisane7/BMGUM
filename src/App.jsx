@@ -20,6 +20,10 @@ import VolunteerRegistration from "./pages/VolunteerRegistration";
 import VolunteerManagement from "./admin/VolunteerManagement";
 import Volunteers from "./components/Volunteers";
 import SponsorManagement from "./admin/SponsorManagement";
+import MeetingRoom from "./components/MeetingRoom";
+import LiveMeetingPopup from "./components/LiveMeetingPopup";
+import MeetingManagement from "./admin/MeetingManagement";
+
 
 function App() {
   return (
@@ -91,6 +95,11 @@ function App() {
   }
 />
 
+<Route
+    path="/meeting/:roomName"
+    element={<MeetingRoom />}
+/>
+
       <Route path="/login" element={<Login />} />
 
       {/* ADMIN ONLY */}
@@ -134,6 +143,11 @@ function App() {
 <Route
   path="/admin/sponsors"
   element={<SponsorManagement />}
+/>
+
+<Route
+    path="/admin/meetings"
+    element={<MeetingManagement />}
 />
 
     </Routes>

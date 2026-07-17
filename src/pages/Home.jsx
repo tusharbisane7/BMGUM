@@ -10,6 +10,7 @@ import Aarti from "../components/Aarti";
 import Location from "../components/Location";
 import Sponsors from "../components/Sponsors";
 import VisitorCounter from "../components/VisitorCounter";
+import LiveMeetingPopup from "../components/LiveMeetingPopup";
 
 function Home() {
 
@@ -84,7 +85,7 @@ function Home() {
   return (
 
     <>
-
+<LiveMeetingPopup/>
       {/* Hero Section */}
 
       <Hero />

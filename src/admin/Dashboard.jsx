@@ -17,6 +17,7 @@ import {
   FaReceipt,
   FaCog,
   FaKey,
+  FaVideo
 } from "react-icons/fa";
 
 import "../styles/admin/dashboard.css";
@@ -404,6 +405,13 @@ function Dashboard() {
             पंचकमिटी 
 
           </button>
+
+<button
+  onClick={() => navigate("/admin/meetings")}
+>
+  <FaVideo />
+  मीटिंग व्यवस्थापन
+</button>
 
          <button
   onClick={() =>
