@@ -96,8 +96,8 @@ function App() {
 />
 
 <Route
-    path="/meeting/:roomName"
-    element={<MeetingRoom />}
+  path="/meeting/:roomName"
+  element={<MeetingRoom />}
 />
 
       <Route path="/login" element={<Login />} />
