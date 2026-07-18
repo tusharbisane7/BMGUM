@@ -27,6 +27,7 @@ const sponsorRoutes = require("./routes/sponsorRoutes");
 const volunteerRoutes = require("./routes/volunteerRoutes");
 const visitorRoutes = require("./routes/visitorRoutes");
 const meetingRoutes = require("./routes/meetingRoutes");
+const complaintRoutes = require("./routes/complaintRoutes");
 
 
 app.use(cors());
@@ -46,6 +47,8 @@ app.use("/api/sponsors", sponsorRoutes);
 app.use("/api/volunteers", volunteerRoutes);
 app.use("/api/visitor", visitorRoutes);
 app.use("/api/meetings", meetingRoutes);
+app.use("/api/complaints", complaintRoutes);
+
 
 app.get("/", (req, res) => {
 

@@ -7,6 +7,7 @@ const path = require("path");
 const {
     getDonations,
     getDonationSummary,
+    getRecentDonations,
     addDonation,
     updateDonation,
     deleteDonation,
@@ -42,5 +43,8 @@ router.put("/:id", upload.single("receipt"), updateDonation);
 
 // Delete Donation
 router.delete("/:id", deleteDonation);
+
+// recent donations
+router.get("/recent", getRecentDonations);
 
 module.exports = router;

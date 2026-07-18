@@ -465,6 +465,16 @@ function Dashboard() {
 
 </button>
 
+<button
+  onClick={() => navigate("/admin/complaints")}
+>
+
+  <FaHandshake />
+
+  📋 Complaint Management
+
+</button>
+
           {
 
             user.role === "Super Admin" && (

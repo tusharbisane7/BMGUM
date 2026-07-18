@@ -1,0 +1,228 @@
+/* ===========================================
+   FLOATING DONATION POPUP
+=========================================== */
+
+.recent-popup{
+
+    position:fixed;
+
+    bottom:20px;
+
+    left:20px;
+
+    width:280px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    padding:14px;
+
+    background:rgba(255,255,255,.96);
+
+    backdrop-filter:blur(12px);
+
+    border-radius:16px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+
+    border-left:5px solid #ff7a00;
+
+    z-index:9999;
+
+    transition:all .45s ease;
+}
+
+/* ==========================
+   ICON
+========================== */
+
+.popup-icon{
+
+    width:55px;
+
+    height:55px;
+
+    min-width:55px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:#fff3e8;
+
+    color:#ff7a00;
+
+    font-size:24px;
+
+    animation:pulse 1.5s infinite;
+
+}
+
+@keyframes pulse{
+
+    0%{
+
+        transform:scale(1);
+
+    }
+
+    50%{
+
+        transform:scale(1.12);
+
+    }
+
+    100%{
+
+        transform:scale(1);
+
+    }
+
+}
+
+/* ==========================
+   CONTENT
+========================== */
+
+.popup-content{
+
+    flex:1;
+
+}
+
+.popup-title{
+
+    display:inline-block;
+
+    background:#e8fff0;
+
+    color:#18a44b;
+
+    padding:4px 10px;
+
+    border-radius:20px;
+
+    font-size:11px;
+
+    font-weight:700;
+
+    margin-bottom:8px;
+
+}
+
+.popup-content h4{
+
+    margin:0;
+
+    font-size:16px;
+
+    color:#333;
+
+    font-weight:700;
+
+}
+
+.popup-content h3{
+
+    margin:6px 0;
+
+    color:#ff6b00;
+
+    font-size:24px;
+
+    font-weight:700;
+
+}
+
+.popup-content p{
+
+    margin:0;
+
+    font-size:13px;
+
+    color:#777;
+
+}
+
+/* ==========================
+   SHOW / HIDE
+========================== */
+
+.show{
+
+    opacity:1;
+
+    transform:translateX(0);
+
+    visibility:visible;
+
+}
+
+.hide{
+
+    opacity:0;
+
+    transform:translateX(-120px);
+
+    visibility:hidden;
+
+}
+
+/* ==========================
+   MOBILE
+========================== */
+
+@media(max-width:768px){
+
+.recent-popup{
+
+    left:12px;
+
+    right:12px;
+
+    bottom:12px;
+
+    width:auto;
+
+    padding:12px;
+
+}
+
+.popup-icon{
+
+    width:48px;
+
+    height:48px;
+
+    min-width:48px;
+
+    font-size:20px;
+
+}
+
+.popup-content h4{
+
+    font-size:15px;
+
+}
+
+.popup-content h3{
+
+    font-size:20px;
+
+}
+
+.popup-content p{
+
+    font-size:12px;
+
+}
+
+}

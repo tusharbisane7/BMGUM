@@ -1,123 +1,221 @@
+import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+
 import "../styles/navbar.css";
 import GanpatiLogo from "../assets/images/ganpati.png";
 
 function Navbar() {
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const isLoggedIn = localStorage.getItem("adminLoggedIn");
+    const [menuOpen, setMenuOpen] = useState(false);
 
-  return (
+    const toggleMenu = () => {
 
-    <nav className="navbar">
+        setMenuOpen(!menuOpen);
 
-      {/* ================= LEFT LOGO ================= */}
+    };
 
-      <div className="logo">
+    const closeMenu = () => {
 
-        <img
-          src={GanpatiLogo}
-          alt="Ganesh"
-          className="logo-img"
-        />
+        setMenuOpen(false);
 
-        <div className="logo-text">
+    };
 
-          <div className="logo-heading">
+    useEffect(() => {
 
-            <h2>
+        const handleKey = (e) => {
 
-              बाल मित्र गणेश उत्सव मंडळ
+            if (e.key === "Escape") {
 
-            </h2>
-
-            {
-
-              
-
-               <span
-  className="admin-lock"
-  title="Admin Login"
-  onClick={() => navigate("/login")}
->
-  🔒Login
-</span>
-              
+                closeMenu();
 
             }
 
-          </div>
+        };
 
-          <p className="location">
+        window.addEventListener("keydown", handleKey);
 
-            खिरणीबागपुरा, अचलपूर
+        return () => window.removeEventListener("keydown", handleKey);
 
-          </p>
+    }, []);
 
-        </div>
+    return (
 
-      </div>
+        <>
 
-      {/* ================= MENU ================= */}
+            {/* NAVBAR */}
 
-      <ul className="nav-links">
+            <nav
+                className="navbar"
+                style={{
+                    display:
+                        menuOpen && window.innerWidth <= 900
+                            ? "none"
+                            : "flex"
+                }}
+            >
 
+                <div className="navbar-left">
 
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              isActive ? "active" : ""
-            }
-          >
+                    <button
+                        className={`hamburger ${menuOpen ? "active" : ""}`}
+                        onClick={toggleMenu}
+                    >
 
-            मुख्यपृष्ठ
+                        <span></span>
+                        <span></span>
+                        <span></span>
 
-          </NavLink>
+                    </button>
 
+                    <img
+                        src={GanpatiLogo}
+                        alt="Ganesh"
+                        className="logo-img"
+                    />
 
-          <NavLink
-            to="/aarti"
-            className={({ isActive }) =>
-              isActive ? "active" : ""
-            }
-          >
+                    <div className="logo-text">
 
-            आरती
+                        <h2>
 
-          </NavLink>
+                            बाल मित्र गणेश उत्सव मंडळ
 
-      
-<NavLink
-            to="/volunteer-registration"
-            className={({ isActive }) =>
-              isActive ? "active" : ""
-            }
-          >
+                        </h2>
 
-             स्वयंसेवक बना
+                        <p>
 
-          </NavLink>
-        
+                            खिरणीबागपुरा, अचलपूर
 
-          <NavLink
-            to="/volunteers"
-            className={({ isActive }) =>
-              isActive ? "active" : ""
-            }
-          >
+                        </p>
 
-             स्वयंसेवक
+                    </div>
 
-          </NavLink>
+                </div>
 
-        
+                <div className="desktop-menu">
 
-      </ul>
+                    <NavLink to="/">मुख्यपृष्ठ</NavLink>
 
-    </nav>
+                    <NavLink to="/aarti">आरती</NavLink>
 
-  );
+                    <NavLink to="/volunteer-registration">
+                        स्वयंसेवक बना
+                    </NavLink>
+
+                    <NavLink to="/volunteers">
+                        स्वयंसेवक
+                    </NavLink>
+
+                    <NavLink to="/complaint">
+                        तक्रार
+                    </NavLink>
+
+                </div>
+
+                <button
+                    className="login-btn"
+                    onClick={() => navigate("/login")}
+                >
+
+                    Login
+
+                </button>
+
+            </nav>
+
+            {/* Overlay */}
+
+            <div
+                className={`sidebar-overlay ${menuOpen ? "show" : ""}`}
+                onClick={closeMenu}
+            ></div>
+
+            {/* Sidebar */}
+
+            <aside
+                className={`sidebar ${menuOpen ? "open" : ""}`}
+            >
+
+                <div className="sidebar-header">
+
+                    <button
+                        className="sidebar-close"
+                        onClick={closeMenu}
+                    >
+
+                        ✕
+
+                    </button>
+
+                    <h3>
+
+                        Menu
+
+                    </h3>
+
+                </div>
+
+                <NavLink
+                    to="/"
+                    onClick={closeMenu}
+                >
+
+                    🏠 मुख्यपृष्ठ
+
+                </NavLink>
+
+                <NavLink
+                    to="/aarti"
+                    onClick={closeMenu}
+                >
+
+                    🪔 आरती
+
+                </NavLink>
+
+                <NavLink
+                    to="/volunteer-registration"
+                    onClick={closeMenu}
+                >
+
+                    🙋 स्वयंसेवक बना
+
+                </NavLink>
+
+                <NavLink
+                    to="/volunteers"
+                    onClick={closeMenu}
+                >
+
+                    👥 स्वयंसेवक
+
+                </NavLink>
+
+                <NavLink
+                    to="/complaint"
+                    onClick={closeMenu}
+                >
+
+                    📝 तक्रार
+
+                </NavLink>
+
+                <div className="sidebar-footer">
+
+                    © 2026
+
+                    <br />
+
+                    बाल मित्र गणेश उत्सव मंडळ
+
+                </div>
+
+            </aside>
+
+        </>
+
+    );
 
 }
 

@@ -1,0 +1,395 @@
+/* ===========================================
+   Complaint Management Page
+=========================================== */
+
+.complaint-management {
+  min-height: 100vh;
+  background: #f5f7fb;
+  padding: 25px;
+}
+
+.complaint-management h1 {
+  text-align: center;
+  color: #ff6b00;
+  font-size: 2rem;
+  margin-bottom: 25px;
+  font-weight: 700;
+}
+
+/* ===========================================
+   Top Bar
+=========================================== */
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+
+.top-bar input,
+.top-bar select {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: white;
+  font-size: 15px;
+  transition: .3s;
+}
+
+.top-bar input {
+  flex: 1;
+  min-width: 300px;
+}
+
+.top-bar input:focus,
+.top-bar select:focus {
+  outline: none;
+  border-color: #ff6b00;
+  box-shadow: 0 0 0 4px rgba(255,107,0,.15);
+}
+
+/* ===========================================
+   Table Container
+=========================================== */
+
+.table-container{
+    width:100%;
+    overflow-x:auto;
+    overflow-y:hidden;
+    display:block;
+    -webkit-overflow-scrolling:touch;
+    background:#fff;
+    border-radius:12px;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+.complaint-table{
+    border-collapse:collapse;
+    min-width:900px;
+    width:max-content;
+}
+
+/* Scrollbar */
+
+.table-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: #ff6b00;
+  border-radius: 20px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: #efefef;
+}
+
+/* ===========================================
+   Table
+=========================================== */
+
+.complaint-table {
+  width: 100%;
+  min-width: 1200px;
+  border-collapse: collapse;
+}
+
+.complaint-table thead th {
+  position: sticky;
+  top: 0;
+  background: #ff6b00;
+  color: white;
+  padding: 15px;
+  text-align: center;
+  font-weight: 600;
+  z-index: 10;
+}
+
+.complaint-table tbody td {
+  padding: 14px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+  vertical-align: middle;
+}
+
+.complaint-table tbody tr:nth-child(even) {
+  background: #fafafa;
+}
+
+.complaint-table tbody tr:hover {
+  background: #fff5ef;
+}
+
+/* ===========================================
+   Status Badges
+=========================================== */
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 14px;
+  border-radius: 25px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.status.pending {
+  background: #fff4d6;
+  color: #c88a00;
+}
+
+.status.progress {
+  background: #dbeeff;
+  color: #005ecb;
+}
+
+.status.resolved {
+  background: #dcf8e6;
+  color: #1c8d43;
+}
+
+/* ===========================================
+   Buttons
+=========================================== */
+
+.view-btn,
+.delete-btn,
+.save-btn,
+.cancel-btn {
+  border: none;
+  padding: 9px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 3px;
+  color: white;
+  font-size: 14px;
+  transition: .25s;
+}
+
+.view-btn {
+  background: #0d6efd;
+}
+
+.delete-btn {
+  background: #dc3545;
+}
+
+.save-btn {
+  background: #198754;
+}
+
+.cancel-btn {
+  background: #6c757d;
+}
+
+.view-btn:hover {
+  background: #0b5ed7;
+  transform: translateY(-2px);
+}
+
+.delete-btn:hover {
+  background: #bb2d3b;
+  transform: translateY(-2px);
+}
+
+.save-btn:hover {
+  background: #157347;
+  transform: translateY(-2px);
+}
+
+.cancel-btn:hover {
+  background: #5c636a;
+  transform: translateY(-2px);
+}
+
+/* ===========================================
+   Modal
+=========================================== */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  z-index: 999;
+}
+
+.modal {
+  width: 100%;
+  max-width: 700px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+}
+
+.modal h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #ff6b00;
+}
+
+.modal label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.modal textarea,
+.modal select {
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  margin-bottom: 18px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+.modal textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.modal textarea:focus,
+.modal select:focus {
+  outline: none;
+  border-color: #ff6b00;
+  box-shadow: 0 0 0 4px rgba(255,107,0,.15);
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* ===========================================
+   Loading
+=========================================== */
+
+.loading {
+  text-align: center;
+  padding: 50px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #ff6b00;
+}
+
+/* ===========================================
+   Empty Message
+=========================================== */
+
+.no-data {
+  text-align: center;
+  padding: 30px;
+  color: #777;
+  font-size: 16px;
+}
+
+/* ===========================================
+   Responsive
+=========================================== */
+
+@media (max-width:992px){
+
+.top-bar{
+flex-direction:column;
+align-items:stretch;
+}
+
+.top-bar input,
+.top-bar select{
+width:100%;
+min-width:auto;
+}
+
+}
+
+@media (max-width:768px){
+
+.complaint-management{
+padding:15px;
+}
+
+.complaint-management h1{
+font-size:1.6rem;
+}
+
+.table-container{
+margin:0 -15px;
+border-radius:0;
+padding-bottom:8px;
+}
+
+.complaint-table{
+min-width:1200px;
+}
+
+.modal{
+padding:18px;
+}
+
+.modal-buttons{
+flex-direction:column;
+}
+
+.save-btn,
+.cancel-btn{
+width:100%;
+}
+
+}
+
+@media (max-width:480px){
+
+.complaint-management{
+padding:10px;
+}
+
+.complaint-management h1{
+font-size:1.4rem;
+}
+
+.view-btn,
+.delete-btn,
+.save-btn,
+.cancel-btn{
+font-size:13px;
+padding:8px 12px;
+}
+
+}
+
+/* ===========================================
+   Smooth Animation
+=========================================== */
+
+.table-container,
+.modal,
+.top-bar,
+.complaint-management{
+animation:fadeUp .4s ease;
+}
+
+@keyframes fadeUp{
+
+from{
+opacity:0;
+transform:translateY(20px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}

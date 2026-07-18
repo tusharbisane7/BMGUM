@@ -11,6 +11,8 @@ import Location from "../components/Location";
 import Sponsors from "../components/Sponsors";
 import VisitorCounter from "../components/VisitorCounter";
 import LiveMeetingPopup from "../components/LiveMeetingPopup";
+import RecentDonations from "../components/RecentDonations";
+
 
 function Home() {
 
@@ -85,6 +87,8 @@ function Home() {
   return (
 
     <>
+
+    <RecentDonations />
 <LiveMeetingPopup/>
       {/* Hero Section */}
 

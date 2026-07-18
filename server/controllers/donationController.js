@@ -84,6 +84,45 @@ const getDonationSummary = async (req, res) => {
 
 };
 
+// ================= GET RECENT DONATIONS =================
+
+const getRecentDonations = async (req, res) => {
+  try {
+
+    const donationResult = await pool.query(`
+      SELECT
+        id,
+        donorname AS donor_name,
+        amount,
+        date AS donation_date
+      FROM donations
+      ORDER BY id DESC
+      LIMIT 5
+    `);
+
+    const totalResult = await pool.query(`
+      SELECT COALESCE(SUM(amount),0) AS totalDonation
+      FROM donations
+    `);
+
+    res.json({
+      success: true,
+      donations: donationResult.rows,
+      totalDonation: Number(totalResult.rows[0].totaldonation)
+    });
+
+  } catch (err) {
+
+    console.log(err);
+
+    res.status(500).json({
+      success: false,
+      message: err.message
+    });
+
+  }
+};
+
 // ================= ADD DONATION =================
 
 const addDonation = async(req,res)=>{
@@ -283,16 +322,18 @@ message:err.message
 
 };
 
-module.exports={
+module.exports = {
 
-getDonations,
+  getDonations,
 
-getDonationSummary,
+  getDonationSummary,
 
-addDonation,
+  getRecentDonations,
 
-updateDonation,
+  addDonation,
 
-deleteDonation
+  updateDonation,
+
+  deleteDonation
 
 };
