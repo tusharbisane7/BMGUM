@@ -1,0 +1,268 @@
+/* ==========================
+   PAGE LOADER
+========================== */
+
+.page-loader{
+
+    position:fixed;
+
+    inset:0;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:rgba(255,255,255,.96);
+
+    backdrop-filter:blur(10px);
+
+    z-index:99999;
+
+    animation:fadeIn .35s ease;
+
+}
+
+/* ==========================
+   CARD
+========================== */
+
+.loader-card{
+
+    width:280px;
+
+    padding:28px 24px;
+
+    text-align:center;
+
+    background:#ffffff;
+
+    border-radius:22px;
+
+    border:1px solid rgba(255,152,0,.15);
+
+    box-shadow:
+        0 12px 35px rgba(0,0,0,.08);
+
+    animation:cardUp .4s ease;
+
+}
+
+/* ==========================
+   LOGO
+========================== */
+
+.loader-logo{
+
+    width:72px;
+
+    height:72px;
+
+    object-fit:contain;
+
+    margin-bottom:18px;
+
+    animation:floatLogo 2.5s ease-in-out infinite;
+
+    filter:drop-shadow(0 0 12px rgba(255,153,0,.25));
+
+}
+
+/* ==========================
+   TITLE
+========================== */
+
+.loader-card h1{
+
+    margin:0;
+
+    color:#d35400;
+
+    font-size:20px;
+
+    font-weight:700;
+
+    line-height:1.4;
+
+}
+
+/* ==========================
+   MESSAGE
+========================== */
+
+.loader-card p{
+
+    margin-top:8px;
+
+    color:#666;
+
+    font-size:14px;
+
+    font-weight:500;
+
+    line-height:1.6;
+
+}
+
+/* ==========================
+   DOTS
+========================== */
+
+.loader-dots{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:8px;
+
+    margin-top:22px;
+
+}
+
+.loader-dots span{
+
+    width:10px;
+
+    height:10px;
+
+    border-radius:50%;
+
+    background:#ff9800;
+
+    animation:dots .7s infinite alternate;
+
+}
+
+.loader-dots span:nth-child(2){
+
+    animation-delay:.2s;
+
+}
+
+.loader-dots span:nth-child(3){
+
+    animation-delay:.4s;
+
+}
+
+/* ==========================
+   ANIMATIONS
+========================== */
+
+@keyframes floatLogo{
+
+    0%{
+
+        transform:translateY(0);
+
+    }
+
+    50%{
+
+        transform:translateY(-8px);
+
+    }
+
+    100%{
+
+        transform:translateY(0);
+
+    }
+
+}
+
+@keyframes dots{
+
+    from{
+
+        transform:translateY(0);
+
+        opacity:.5;
+
+    }
+
+    to{
+
+        transform:translateY(-8px);
+
+        opacity:1;
+
+    }
+
+}
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+    }
+
+    to{
+
+        opacity:1;
+
+    }
+
+}
+
+@keyframes cardUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(20px) scale(.96);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0) scale(1);
+
+    }
+
+}
+
+/* ==========================
+   MOBILE
+========================== */
+
+@media(max-width:480px){
+
+    .loader-card{
+
+        width:240px;
+
+        padding:24px 18px;
+
+    }
+
+    .loader-logo{
+
+        width:62px;
+
+        height:62px;
+
+    }
+
+    .loader-card h1{
+
+        font-size:18px;
+
+    }
+
+    .loader-card p{
+
+        font-size:13px;
+
+    }
+
+}

@@ -1,222 +1,200 @@
 import { useState, useEffect } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 import "../styles/navbar.css";
 import GanpatiLogo from "../assets/images/ganpati.png";
 
 function Navbar() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-    const navigate = useNavigate();
+  const location = useLocation();
 
-    const [menuOpen, setMenuOpen] = useState(false);
+  // Close sidebar whenever route changes
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location]);
 
-    const toggleMenu = () => {
-
-        setMenuOpen(!menuOpen);
-
+  // Navbar shadow on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
     };
 
-    const closeMenu = () => {
-
+    const handleKey = (e) => {
+      if (e.key === "Escape") {
         setMenuOpen(false);
-
+      }
     };
 
-    useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("keydown", handleKey);
 
-        const handleKey = (e) => {
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("keydown", handleKey);
+    };
+  }, []);
 
-            if (e.key === "Escape") {
+  return (
+    <>
+      {/* ================= NAVBAR ================= */}
 
-                closeMenu();
+      <header className={`navbar ${scrolled ? "navbar-scrolled" : ""}`}>
 
-            }
+        <div className="navbar-container">
 
-        };
+          {/* Logo */}
 
-        window.addEventListener("keydown", handleKey);
+          <NavLink to="/" className="logo-section">
 
-        return () => window.removeEventListener("keydown", handleKey);
+            <img
+              src={GanpatiLogo}
+              alt="Ganpati"
+              className="logo-img"
+            />
 
-    }, []);
+            <div className="logo-text">
 
-    return (
+              <h2>बाल मित्र गणेश उत्सव मंडळ</h2>
 
-        <>
+              <p>खिरणीबागपुरा, अचलपूर</p>
 
-            {/* NAVBAR */}
+            </div>
 
-            <nav
-                className="navbar"
-                style={{
-                    display:
-                        menuOpen && window.innerWidth <= 900
-                            ? "none"
-                            : "flex"
-                }}
-            >
+          </NavLink>
 
-                <div className="navbar-left">
+          {/* Desktop Menu */}
 
-                    <button
-                        className={`hamburger ${menuOpen ? "active" : ""}`}
-                        onClick={toggleMenu}
-                    >
+          <nav className="desktop-menu">
 
-                        <span></span>
-                        <span></span>
-                        <span></span>
+            <NavLink to="/">
+              मुख्यपृष्ठ
+            </NavLink>
 
-                    </button>
+            <NavLink to="/aarti">
+              आरती
+            </NavLink>
 
-                    <img
-                        src={GanpatiLogo}
-                        alt="Ganesh"
-                        className="logo-img"
-                    />
+  <NavLink
+    to="/online-donation"
+    className={({ isActive }) =>
+      isActive ? "nav-link active" : "nav-link"
+    }
+  >
+    💳 ऑनलाइन देणगी
+  </NavLink>
 
-                    <div className="logo-text">
+            <NavLink to="/volunteer-registration">
+              स्वयंसेवक बना
+            </NavLink>
 
-                        <h2>
+            <NavLink to="/volunteers">
+              स्वयंसेवक
+            </NavLink>
 
-                            बाल मित्र गणेश उत्सव मंडळ
+            <NavLink to="/complaint">
+              तक्रार
+            </NavLink>
 
-                        </h2>
+          </nav>
 
-                        <p>
+          {/* Hamburger */}
 
-                            खिरणीबागपुरा, अचलपूर
+          <button
+            className={`hamburger ${menuOpen ? "active" : ""}`}
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
 
-                        </p>
+            <span></span>
 
-                    </div>
+            <span></span>
 
-                </div>
+            <span></span>
 
-                <div className="desktop-menu">
+          </button>
 
-                    <NavLink to="/">मुख्यपृष्ठ</NavLink>
+        </div>
 
-                    <NavLink to="/aarti">आरती</NavLink>
+      </header>
 
-                    <NavLink to="/volunteer-registration">
-                        स्वयंसेवक बना
-                    </NavLink>
+      {/* ================= Overlay ================= */}
 
-                    <NavLink to="/volunteers">
-                        स्वयंसेवक
-                    </NavLink>
+      <div
+        className={`sidebar-overlay ${menuOpen ? "show" : ""}`}
+        onClick={() => setMenuOpen(false)}
+      ></div>
 
-                    <NavLink to="/complaint">
-                        तक्रार
-                    </NavLink>
+      {/* ================= Sidebar ================= */}
 
-                </div>
+      <aside className={`sidebar ${menuOpen ? "open" : ""}`}>
 
-                <button
-                    className="login-btn"
-                    onClick={() => navigate("/login")}
-                >
+        <div className="sidebar-top">
 
-                    Login
+          <img
+            src={GanpatiLogo}
+            alt=""
+            className="sidebar-logo"
+          />
 
-                </button>
+          <button
+            className="sidebar-close"
+            onClick={() => setMenuOpen(false)}
+          >
 
-            </nav>
+            ✕
 
-            {/* Overlay */}
+          </button>
 
-            <div
-                className={`sidebar-overlay ${menuOpen ? "show" : ""}`}
-                onClick={closeMenu}
-            ></div>
+        </div>
 
-            {/* Sidebar */}
+        <div className="sidebar-title">
 
-            <aside
-                className={`sidebar ${menuOpen ? "open" : ""}`}
-            >
+          <h2>बाल मित्र गणेश उत्सव मंडळ</h2>
 
-                <div className="sidebar-header">
+          <p>खिरणीबागपुरा, अचलपूर</p>
 
-                    <button
-                        className="sidebar-close"
-                        onClick={closeMenu}
-                    >
+        </div>
 
-                        ✕
+        <NavLink to="/">
+          🏠 मुख्यपृष्ठ
+        </NavLink>
 
-                    </button>
+        <NavLink to="/aarti">
+          🪔 आरती
+        </NavLink>
 
-                    <h3>
+        <NavLink to="/online-donation">
+  💳 ऑनलाइन देणगी
+</NavLink>
 
-                        Menu
+        <NavLink to="/volunteer-registration">
+          🙋 स्वयंसेवक बना
+        </NavLink>
 
-                    </h3>
+        <NavLink to="/volunteers">
+          👥 स्वयंसेवक
+        </NavLink>
 
-                </div>
+        <NavLink to="/complaint">
+          📝 तक्रार
+        </NavLink>
 
-                <NavLink
-                    to="/"
-                    onClick={closeMenu}
-                >
+        <NavLink to="/login">
+          🔐 Admin Login
+        </NavLink>
 
-                    🏠 मुख्यपृष्ठ
+        <div className="sidebar-footer">
 
-                </NavLink>
+          <h4>बाल मित्र गणेश उत्सव मंडळ</h4>
 
-                <NavLink
-                    to="/aarti"
-                    onClick={closeMenu}
-                >
+          <p>© 2026 All Rights Reserved</p>
 
-                    🪔 आरती
+        </div>
 
-                </NavLink>
-
-                <NavLink
-                    to="/volunteer-registration"
-                    onClick={closeMenu}
-                >
-
-                    🙋 स्वयंसेवक बना
-
-                </NavLink>
-
-                <NavLink
-                    to="/volunteers"
-                    onClick={closeMenu}
-                >
-
-                    👥 स्वयंसेवक
-
-                </NavLink>
-
-                <NavLink
-                    to="/complaint"
-                    onClick={closeMenu}
-                >
-
-                    📝 तक्रार
-
-                </NavLink>
-
-                <div className="sidebar-footer">
-
-                    © 2026
-
-                    <br />
-
-                    बाल मित्र गणेश उत्सव मंडळ
-
-                </div>
-
-            </aside>
-
-        </>
-
-    );
-
+      </aside>
+    </>
+  );
 }
 
 export default Navbar;
