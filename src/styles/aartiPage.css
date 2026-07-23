@@ -1,116 +1,399 @@
-/* ================= PAGE ================= */
+/*==================================================
+                AARTI PAGE
+==================================================*/
 
 .aarti-page{
 
-    padding:45px 0 70px;
+    position:relative;
+
+    overflow:hidden;
 
     min-height:100vh;
 
-    background:#f8fafc;
+    padding:90px 20px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #fffdfb 0%,
+            #fff8f2 45%,
+            #ffffff 100%
+        );
 
 }
+
+/* Background Glow */
+
+.aarti-page::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:450px;
+
+    height:450px;
+
+    top:-180px;
+
+    right:-180px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,152,0,.10),
+            transparent 70%
+        );
+
+}
+
+.aarti-page::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:350px;
+
+    height:350px;
+
+    bottom:-150px;
+
+    left:-150px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,87,34,.08),
+            transparent 70%
+        );
+
+}
+
+/*==================================================
+                    TITLE
+==================================================*/
 
 .aarti-page .title{
 
+    position:relative;
+
+    z-index:5;
+
     text-align:center;
 
-    font-size:38px;
+    font-size:46px;
 
-    font-weight:700;
+    font-family:"Asar",serif;
 
-    color:#111827;
+    color:#222;
 
-    margin-bottom:40px;
+    margin-bottom:55px;
+
+    letter-spacing:.5px;
 
 }
 
-/* ================= TABLE WRAPPER ================= */
+.aarti-page .title::after{
+
+    content:"";
+
+    display:block;
+
+    width:120px;
+
+    height:5px;
+
+    margin:18px auto 0;
+
+    border-radius:50px;
+
+    background:
+
+        linear-gradient(
+
+            90deg,
+
+            #ff9800,
+
+            #ff5722
+
+        );
+
+}
+
+/*==================================================
+                TABLE WRAPPER
+==================================================*/
 
 .table-wrapper{
 
-    background:#ffffff;
+    position:relative;
 
-    border-radius:24px;
+    z-index:2;
 
     overflow-x:auto;
 
-    border:1px solid #ececec;
+    border-radius:30px;
 
-    box-shadow:0 15px 40px rgba(15,23,42,.08);
+    background:
 
-    transition:.35s;
+        rgba(255,255,255,.92);
+
+    backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,.7);
+
+    box-shadow:
+
+        0 20px 55px rgba(0,0,0,.08),
+
+        0 10px 25px rgba(255,107,0,.08);
+
+    transition:.45s ease;
 
 }
+
+/* Hover */
 
 .table-wrapper:hover{
 
-    box-shadow:0 20px 45px rgba(15,23,42,.12);
+    transform:translateY(-5px);
+
+    box-shadow:
+
+        0 35px 75px rgba(0,0,0,.12),
+
+        0 15px 35px rgba(255,107,0,.15);
 
 }
 
-/* ================= TABLE ================= */
+/* Animated Border */
+
+.table-wrapper::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    padding:2px;
+
+    border-radius:30px;
+
+    background:
+
+        linear-gradient(
+
+            135deg,
+
+            #ff9800,
+
+            #ff6b00,
+
+            #ffd54f,
+
+            #ff9800
+
+        );
+
+    background-size:300%;
+
+    animation:borderMove 8s linear infinite;
+
+    -webkit-mask:
+
+        linear-gradient(#fff 0 0) content-box,
+
+        linear-gradient(#fff 0 0);
+
+    -webkit-mask-composite:xor;
+
+    mask-composite:exclude;
+
+}
+
+/* Corner Glow */
+
+.table-wrapper::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:260px;
+
+    height:260px;
+
+    top:-120px;
+
+    right:-120px;
+
+    border-radius:50%;
+
+    background:
+
+        radial-gradient(
+
+            circle,
+
+            rgba(255,152,0,.15),
+
+            transparent 70%
+
+        );
+
+    animation:floatGlow 8s ease-in-out infinite;
+
+}
+
+/*==================================================
+                TABLE
+==================================================*/
 
 .aarti-table{
 
+    position:relative;
+
     width:100%;
 
-    min-width:1000px;
+    min-width:1050px;
 
     border-collapse:separate;
 
     border-spacing:0;
 
+    z-index:2;
+
 }
 
-/* ================= HEADER ================= */
+/*==================================================
+                ANIMATIONS
+==================================================*/
+
+@keyframes borderMove{
+
+0%{
+
+background-position:0 0;
+
+}
+
+100%{
+
+background-position:300% 0;
+
+}
+
+}
+
+@keyframes floatGlow{
+
+0%,100%{
+
+transform:translateY(0);
+
+}
+
+50%{
+
+transform:translateY(18px);
+
+}
+
+}
+/*==================================================
+                TABLE HEADER
+==================================================*/
 
 .aarti-table thead{
 
-    background:#111827;
+    position:relative;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff6b00,
+            #ff9800
+        );
+
+}
+
+.aarti-table thead::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.15),
+            transparent
+        );
+
+    animation:headerShine 5s linear infinite;
 
 }
 
 .aarti-table th{
 
-    padding:18px;
+    position:relative;
 
-    color:#ffffff;
+    padding:20px 18px;
 
     text-align:center;
 
+    color:#fff;
+
     font-size:15px;
 
-    font-weight:600;
+    font-weight:700;
 
     white-space:nowrap;
 
-    letter-spacing:.3px;
+    letter-spacing:.4px;
+
+    z-index:2;
 
 }
 
 .aarti-table th:first-child{
 
-    border-top-left-radius:20px;
+    border-top-left-radius:28px;
 
 }
 
 .aarti-table th:last-child{
 
-    border-top-right-radius:20px;
+    border-top-right-radius:28px;
 
 }
 
-/* ================= BODY ================= */
+/*==================================================
+                TABLE BODY
+==================================================*/
 
 .aarti-table tbody tr{
 
-    transition:.3s;
+    position:relative;
+
+    transition:.35s;
 
 }
 
 .aarti-table tbody tr:nth-child(even){
 
-    background:#fafafa;
+    background:#fffdfb;
 
 }
 
@@ -118,43 +401,110 @@
 
     background:#fff7ef;
 
-    transform:scale(1.003);
+    transform:scale(1.01);
+
+    box-shadow:
+        inset 4px 0 #ff9800;
 
 }
+
+/*==================================================
+            TODAY LIVE ROW
+==================================================*/
+
+.aarti-table tbody tr.live-row{
+
+    background:
+
+        linear-gradient(
+            90deg,
+            rgba(255,152,0,.10),
+            rgba(255,255,255,.95)
+        );
+
+    animation:liveRowGlow 2s ease-in-out infinite;
+
+}
+
+.aarti-table tbody tr.live-row::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    top:0;
+
+    bottom:0;
+
+    width:6px;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            #ff6b00,
+            #ff9800
+        );
+
+}
+
+/*==================================================
+                TABLE CELL
+==================================================*/
 
 .aarti-table td{
 
-    padding:18px 15px;
+    padding:18px 16px;
 
     text-align:center;
 
+    border-bottom:1px solid #f2f2f2;
+
+    color:#555;
+
     font-size:15px;
 
-    color:#4b5563;
-
-    border-bottom:1px solid #f1f5f9;
+    transition:.35s;
 
 }
 
-/* ================= COLUMN ================= */
+/*==================================================
+            COLUMN STYLING
+==================================================*/
 
 .aarti-table td:nth-child(1){
 
+    width:70px;
+
     font-weight:700;
 
-    color:#111827;
-
-    width:70px;
+    color:#222;
 
 }
 
 .aarti-table td:nth-child(2){
 
-    font-weight:600;
+    min-width:220px;
+
+    font-weight:700;
 
     color:#ff6b00;
 
-    min-width:220px;
+    font-size:16px;
+
+}
+
+.aarti-table td:nth-child(3),
+
+.aarti-table td:nth-child(4),
+
+.aarti-table td:nth-child(5){
+
+    font-weight:600;
+
+    color:#374151;
 
 }
 
@@ -164,7 +514,72 @@
 
 }
 
-/* ================= TYPE ================= */
+.aarti-table td:nth-child(7){
+
+    min-width:140px;
+
+}
+
+/*==================================================
+            HOVER EFFECT
+==================================================*/
+
+.aarti-table tbody tr:hover td{
+
+    color:#222;
+
+}
+
+.aarti-table tbody tr:hover td:nth-child(2){
+
+    color:#e65100;
+
+}
+
+/*==================================================
+            HEADER SHINE
+==================================================*/
+
+@keyframes headerShine{
+
+0%{
+
+transform:translateX(-100%);
+
+}
+
+100%{
+
+transform:translateX(100%);
+
+}
+
+}
+
+/*==================================================
+            LIVE ROW GLOW
+==================================================*/
+
+@keyframes liveRowGlow{
+
+0%,100%{
+
+box-shadow:
+    inset 0 0 0 rgba(255,152,0,0);
+
+}
+
+50%{
+
+box-shadow:
+    inset 0 0 18px rgba(255,152,0,.18);
+
+}
+
+}
+/*==================================================
+                AARTI TYPE
+==================================================*/
 
 .type{
 
@@ -174,125 +589,355 @@
 
     justify-content:center;
 
-    padding:7px 16px;
+    gap:8px;
 
-    border-radius:30px;
+    padding:8px 18px;
 
-    background:#fff3e8;
+    border-radius:50px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff4e8,
+            #ffe3c7
+        );
 
     color:#ff6b00;
 
     font-size:13px;
 
-    font-weight:600;
+    font-weight:700;
 
-    border:1px solid #ffe0c7;
+    border:1px solid #ffd3a8;
+
+    box-shadow:
+        0 8px 18px rgba(255,152,0,.12);
+
+    transition:.35s;
 
 }
 
-/* ================= STATUS ================= */
+.type:hover{
 
-.status{
+    transform:translateY(-2px);
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff9800,
+            #ff6b00
+        );
+
+    color:#fff;
+
+}
+
+/*==================================================
+                LIVE STATUS
+==================================================*/
+
+.live-status{
 
     display:inline-flex;
 
     align-items:center;
 
-    justify-content:center;
+    gap:8px;
 
-    padding:7px 16px;
+    padding:8px 18px;
 
-    border-radius:30px;
+    border-radius:50px;
+
+    background:#fff1f2;
+
+    color:#dc2626;
 
     font-size:13px;
 
-    font-weight:600;
+    font-weight:700;
+
+    border:1px solid #fecaca;
+
+    box-shadow:
+        0 8px 18px rgba(239,68,68,.12);
 
 }
 
-.today{
+.live-dot{
 
-    background:#dcfce7;
+    width:10px;
 
-    color:#166534;
+    height:10px;
 
-}
+    border-radius:50%;
 
-.upcoming{
+    background:#ef4444;
 
-    background:#fef3c7;
+    animation:liveBlink 1s infinite;
 
-    color:#92400e;
-
-}
-
-/* ================= EMPTY ================= */
-
-.no-data{
-
-    padding:60px 20px;
-
-    text-align:center;
-
-    font-size:18px;
-
-    color:#6b7280;
+    box-shadow:
+        0 0 12px rgba(239,68,68,.45);
 
 }
 
-/* ================= LOADING ================= */
+/*==================================================
+            UPCOMING STATUS
+==================================================*/
 
-.loading-box{
+.upcoming-status{
 
-    text-align:center;
+    display:inline-flex;
 
-    padding:80px 20px;
+    align-items:center;
 
-    font-size:24px;
+    gap:8px;
 
-    color:#ff6b00;
+    padding:8px 18px;
+
+    border-radius:50px;
+
+    background:#fff7ed;
+
+    color:#ea580c;
+
+    border:1px solid #fed7aa;
+
+    font-size:13px;
 
     font-weight:700;
 
 }
 
-/* ================= SCROLLBAR ================= */
+/*==================================================
+            COMPLETED STATUS
+==================================================*/
+
+.completed-status{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:8px 18px;
+
+    border-radius:50px;
+
+    background:#ecfdf5;
+
+    color:#16a34a;
+
+    border:1px solid #bbf7d0;
+
+    font-size:13px;
+
+    font-weight:700;
+
+}
+
+/*==================================================
+                EMPTY STATE
+==================================================*/
+
+.no-data{
+
+    padding:90px 20px;
+
+    text-align:center;
+
+    color:#6b7280;
+
+}
+
+.no-data h3{
+
+    margin:20px 0 10px;
+
+    font-size:28px;
+
+    color:#374151;
+
+}
+
+.no-data p{
+
+    font-size:16px;
+
+    line-height:1.8;
+
+}
+
+.no-data .emoji{
+
+    font-size:70px;
+
+    animation:floatEmoji 3s ease-in-out infinite;
+
+}
+
+/*==================================================
+                LOADING
+==================================================*/
+
+.loading-box{
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:20px;
+
+    padding:100px 20px;
+
+}
+
+.loader{
+
+    width:60px;
+
+    height:60px;
+
+    border-radius:50%;
+
+    border:5px solid #ffe0c7;
+
+    border-top-color:#ff6b00;
+
+    animation:loaderRotate .8s linear infinite;
+
+}
+
+.loading-box span{
+
+    color:#ff6b00;
+
+    font-size:22px;
+
+    font-weight:700;
+
+}
+
+/*==================================================
+                SCROLLBAR
+==================================================*/
 
 .table-wrapper::-webkit-scrollbar{
 
-    height:10px;
+    height:12px;
 
 }
 
 .table-wrapper::-webkit-scrollbar-track{
 
-    background:#f3f4f6;
+    background:#f5f5f5;
 
-    border-radius:20px;
+    border-radius:30px;
 
 }
 
 .table-wrapper::-webkit-scrollbar-thumb{
 
-    background:linear-gradient(135deg,#ff6b00,#ff9800);
+    border-radius:30px;
 
-    border-radius:20px;
+    background:
+
+        linear-gradient(
+            135deg,
+            #ff9800,
+            #ff6b00
+        );
 
 }
 
-/* ================= TABLET ================= */
+.table-wrapper::-webkit-scrollbar-thumb:hover{
 
-@media(max-width:992px){
+    background:
+
+        linear-gradient(
+            135deg,
+            #ff6b00,
+            #e65100
+        );
+
+}
+
+/*==================================================
+                ANIMATIONS
+==================================================*/
+
+@keyframes liveBlink{
+
+0%,100%{
+
+opacity:1;
+
+transform:scale(1);
+
+}
+
+50%{
+
+opacity:.35;
+
+transform:scale(1.5);
+
+}
+
+}
+
+@keyframes loaderRotate{
+
+to{
+
+transform:rotate(360deg);
+
+}
+
+}
+
+@keyframes floatEmoji{
+
+0%,100%{
+
+transform:translateY(0);
+
+}
+
+50%{
+
+transform:translateY(-12px);
+
+}
+
+}
+/*==================================================
+                TABLET
+==================================================*/
+
+@media (max-width:992px){
 
 .aarti-page{
 
-    padding:35px 0 55px;
+    padding:70px 15px;
 
 }
 
 .aarti-page .title{
 
-    font-size:30px;
+    font-size:38px;
+
+    margin-bottom:40px;
+
+}
+
+.table-wrapper{
+
+    border-radius:24px;
 
 }
 
@@ -302,23 +947,58 @@
 
 }
 
+.aarti-table th{
+
+    padding:16px;
+
+    font-size:14px;
+
 }
 
-/* ================= MOBILE ================= */
+.aarti-table td{
 
-@media(max-width:768px){
+    padding:16px;
+
+    font-size:14px;
+
+}
+
+.type,
+.live-status,
+.upcoming-status,
+.completed-status{
+
+    font-size:12px;
+
+    padding:7px 15px;
+
+}
+
+}
+
+/*==================================================
+                MOBILE
+==================================================*/
+
+@media (max-width:768px){
 
 .aarti-page{
 
-    padding:30px 0 45px;
+    padding:55px 12px;
 
 }
 
 .aarti-page .title{
 
-    font-size:26px;
+    font-size:30px;
 
-    margin-bottom:25px;
+    margin-bottom:28px;
+
+}
+
+.aarti-page .title::after{
+
+    width:90px;
 
 }
 
@@ -330,7 +1010,7 @@
 
 .aarti-table{
 
-    min-width:900px;
+    min-width:850px;
 
 }
 
@@ -338,60 +1018,238 @@
 
     padding:14px;
 
-    font-size:14px;
+    font-size:13px;
 
 }
 
 .aarti-table td{
 
-    padding:14px;
-
-    font-size:14px;
-
-}
-
-}
-
-/* ================= SMALL MOBILE ================= */
-
-@media(max-width:480px){
-
-.aarti-page{
-
-    padding:20px 0 35px;
-
-}
-
-.aarti-page .title{
-
-    font-size:22px;
-
-}
-
-.aarti-table{
-
-    min-width:850px;
-
-}
-
-.aarti-table th,
-
-.aarti-table td{
-
-    padding:12px;
+    padding:14px 12px;
 
     font-size:13px;
 
 }
 
 .type,
-
-.status{
-
-    font-size:12px;
+.live-status,
+.upcoming-status,
+.completed-status{
 
     padding:6px 12px;
 
+    font-size:11px;
+
 }
+
+.live-dot{
+
+    width:8px;
+
+    height:8px;
+
+}
+
+.loading-box{
+
+    padding:80px 20px;
+
+}
+
+.loader{
+
+    width:50px;
+
+    height:50px;
+
+}
+
+.no-data .emoji{
+
+    font-size:56px;
+
+}
+
+.no-data h3{
+
+    font-size:22px;
+
+}
+
+}
+
+/*==================================================
+            SMALL MOBILE
+==================================================*/
+
+@media (max-width:480px){
+
+.aarti-page{
+
+    padding:40px 10px;
+
+}
+
+.aarti-page .title{
+
+    font-size:24px;
+
+}
+
+.table-wrapper{
+
+    border-radius:16px;
+
+}
+
+.aarti-table{
+
+    min-width:760px;
+
+}
+
+.aarti-table th{
+
+    padding:12px;
+
+    font-size:12px;
+
+}
+
+.aarti-table td{
+
+    padding:12px 10px;
+
+    font-size:12px;
+
+}
+
+.type,
+.live-status,
+.upcoming-status,
+.completed-status{
+
+    font-size:10px;
+
+    padding:5px 10px;
+
+}
+
+.live-dot{
+
+    width:7px;
+
+    height:7px;
+
+}
+
+}
+
+/*==================================================
+            SMOOTH TRANSITIONS
+==================================================*/
+
+.aarti-table th,
+.aarti-table td,
+.type,
+.live-status,
+.upcoming-status,
+.completed-status,
+.table-wrapper{
+
+    transition:all .35s ease;
+
+}
+
+/*==================================================
+            FOCUS STATE
+==================================================*/
+
+.table-wrapper:focus-within{
+
+    outline:3px solid rgba(255,152,0,.18);
+
+    outline-offset:4px;
+
+}
+
+/*==================================================
+            REDUCED MOTION
+==================================================*/
+
+@media (prefers-reduced-motion:reduce){
+
+*,
+*::before,
+*::after{
+
+    animation:none !important;
+
+    transition:none !important;
+
+}
+
+}
+
+/*==================================================
+                PRINT
+==================================================*/
+
+@media print{
+
+body{
+
+    background:#fff;
+
+}
+
+.aarti-page{
+
+    padding:0;
+
+    background:#fff;
+
+}
+
+.table-wrapper{
+
+    box-shadow:none;
+
+    border:1px solid #ccc;
+
+}
+
+}
+
+/*==================================================
+                PREMIUM FINISH
+==================================================*/
+
+.aarti-table{
+
+    overflow:hidden;
+
+}
+
+.aarti-table tbody tr:last-child td:first-child{
+
+    border-bottom-left-radius:24px;
+
+}
+
+.aarti-table tbody tr:last-child td:last-child{
+
+    border-bottom-right-radius:24px;
+
+}
+
+.aarti-table tbody tr{
+
+    will-change:transform;
+
+}
+
+.table-wrapper{
+
+    isolation:isolate;
 
 }

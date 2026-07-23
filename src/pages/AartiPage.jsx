@@ -4,233 +4,192 @@ import "../styles/aartiPage.css";
 
 function AartiPage() {
 
-  const [aartiList, setAartiList] = useState([]);
+    const [aartiList, setAartiList] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-  const [loading, setLoading] = useState(true);
+    const loadAarti = async () => {
 
-  const loadAarti = async () => {
+        try {
 
-    try {
+            const res = await axios.get(
+                "https://bmgum.onrender.com/api/aarti"
+            );
 
-      const res = await axios.get(
+            setAartiList(res.data);
 
-        "https://bmgum.onrender.com/api/aarti"
+        } catch (err) {
 
-      );
+            console.log(err);
 
-      setAartiList(res.data);
+        } finally {
+
+            setLoading(false);
+
+        }
+
+    };
+
+    useEffect(() => {
+
+        loadAarti();
+
+        const interval = setInterval(loadAarti, 3000);
+
+        return () => clearInterval(interval);
+
+    }, []);
+
+    if (loading) {
+
+        return (
+
+            <div className="loading-box">
+
+                <div className="loader"></div>
+
+                <span>🪔 आरती माहिती लोड होत आहे...</span>
+
+            </div>
+
+        );
 
     }
 
-    catch(err){
+    return (
 
-      console.log(err);
+        <div className="container aarti-page">
 
-    }
+            <h1 className="title">
+                🪔 आरती वेळापत्रक
+            </h1>
 
-    finally{
+            <div className="table-wrapper">
 
-      setLoading(false);
+                <table className="aarti-table">
 
-    }
+                    <thead>
 
-  };
+                        <tr>
 
-  useEffect(() => {
+                            <th>क्र.</th>
+                            <th>आरतीचे नाव</th>
+                            <th>वार</th>
+                            <th>तारीख</th>
+                            <th>वेळ</th>
+                            <th>आरती करणारे</th>
+                            <th>प्रकार</th>
+                            <th>स्थिती</th>
 
-    loadAarti();
+                        </tr>
 
-    const interval = setInterval(() => {
+                    </thead>
 
-      loadAarti();
+                    <tbody>
 
-    }, 3000);
+                        {aartiList.length === 0 ? (
 
-    return () => clearInterval(interval);
+                            <tr>
 
-  }, []);
+                                <td colSpan="8">
 
-  if(loading){
+                                    <div className="no-data">
 
-    return(
+                                        <div className="emoji">🪔</div>
 
-      <div className="container">
+                                        <h3>आरती उपलब्ध नाही</h3>
 
-        <h2 style={{textAlign:"center"}}>
+                                        <p>
+                                            सध्या कोणतीही आरती उपलब्ध नाही.
+                                        </p>
 
-          आरती माहिती लोड होत आहे...
+                                    </div>
 
-        </h2>
+                                </td>
 
-      </div>
+                            </tr>
+
+                        ) : (
+
+                            aartiList.map((item, index) => (
+
+                                <tr
+                                    key={item.id}
+                                    className={
+                                        item.status === "आज"
+                                            ? "live-row"
+                                            : ""
+                                    }
+                                >
+
+                                    <td>{index + 1}</td>
+
+                                    <td>{item.name}</td>
+
+                                    <td>{item.day}</td>
+
+                                    <td>{item.date}</td>
+
+                                    <td>{item.time}</td>
+
+                                    <td>{item.performedBy}</td>
+
+                                    <td>
+
+                                        <span className="type">
+
+                                            🪔 {item.type}
+
+                                        </span>
+
+                                    </td>
+
+                                    <td>
+
+                                        {item.status === "आज" ? (
+
+                                            <div className="live-status">
+
+                                                <span className="live-dot"></span>
+
+                                                LIVE
+
+                                            </div>
+
+                                        ) : item.status === "पूर्ण" ? (
+
+                                            <div className="completed-status">
+
+                                                ✅ पूर्ण
+
+                                            </div>
+
+                                        ) : (
+
+                                            <div className="upcoming-status">
+
+                                                🟡 आगामी
+
+                                            </div>
+
+                                        )}
+
+                                    </td>
+
+                                </tr>
+
+                            ))
+
+                        )}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
 
     );
-
-  }
-
-  return (
-
-    <div className="container aarti-page">
-
-      <h1 className="title">
-
-        🪔 आरती वेळापत्रक
-
-      </h1>
-
-      <div className="table-wrapper">
-
-        <table className="aarti-table">
-
-          <thead>
-
-            <tr>
-
-              <th>क्र.</th>
-
-              <th>आरतीचे नाव</th>
-
-              <th>वार</th>
-
-              <th>तारीख</th>
-
-              <th>वेळ</th>
-
-              <th>आरती करणारे</th>
-
-              <th>प्रकार</th>
-
-              <th>स्थिती</th>
-
-            </tr>
-
-          </thead>
-
-          <tbody>
-
-            {
-
-              aartiList.length===0 ?
-
-              (
-
-                <tr>
-
-                  <td
-
-                    colSpan="8"
-
-                    style={{
-
-                      textAlign:"center",
-
-                      padding:"25px"
-
-                    }}
-
-                  >
-
-                    कोणतीही आरती उपलब्ध नाही.
-
-                  </td>
-
-                </tr>
-
-              )
-
-              :
-
-              aartiList.map((item,index)=>(
-
-                <tr key={item.id}>
-
-                  <td>
-
-                    {index+1}
-
-                  </td>
-
-                  <td>
-
-                    {item.name}
-
-                  </td>
-
-                  <td>
-
-                    {item.day}
-
-                  </td>
-
-                  <td>
-
-                    {item.date}
-
-                  </td>
-
-                  <td>
-
-                    {item.time}
-
-                  </td>
-
-                  <td>
-
-                    {item.performedBy}
-
-                  </td>
-
-                  <td>
-
-                    <span className="type">
-
-                      {item.type}
-
-                    </span>
-
-                  </td>
-
-                  <td>
-
-                    <span
-
-                      className={
-
-                        item.status==="आज"
-
-                        ?
-
-                        "status today"
-
-                        :
-
-                        "status upcoming"
-
-                      }
-
-                    >
-
-                      {item.status}
-
-                    </span>
-
-                  </td>
-
-                </tr>
-
-              ))
-
-            }
-
-          </tbody>
-
-        </table>
-
-      </div>
-
-    </div>
-
-  );
 
 }
 

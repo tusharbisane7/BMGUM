@@ -5,7 +5,7 @@ import Hero from "../components/Hero";
 import DashboardCard from "../components/DashboardCard";
 import NoticeBoard from "../components/NoticeBoard";
 import Committee from "../components/Committee";
-import Timeline from "../components/Timeline";
+
 import Aarti from "../components/Aarti";
 import Location from "../components/Location";
 import Sponsors from "../components/Sponsors";
@@ -162,9 +162,7 @@ function Home() {
 
       <NoticeBoard notices={homeData.notices} />
 
-      {/* Timeline */}
-
-      <Timeline />
+    
 
       {/* Aarti */}
 
@@ -178,7 +176,7 @@ function Home() {
 <VisitorCounter />
       {/* Location */}
 
-      <Location />
+      
 
     </>
 

@@ -18,15 +18,12 @@ const Complaint = () => {
   });
 
   const [loading, setLoading] = useState(false);
-
   const [success, setSuccess] = useState(false);
 
   const [trackingId, setTrackingId] = useState("");
-
   const [trackingInput, setTrackingInput] = useState("");
 
   const [complaint, setComplaint] = useState(null);
-
   const [error, setError] = useState("");
 
   // =============================
@@ -37,7 +34,6 @@ const Complaint = () => {
     e.preventDefault();
 
     setLoading(true);
-
     setError("");
 
     try {
@@ -62,18 +58,14 @@ const Complaint = () => {
         top: 0,
         behavior: "smooth",
       });
-
     } catch (err) {
-
       setError(
         err.response?.data?.message ||
-        "तक्रार नोंदविण्यात अडचण आली."
+          "तक्रार नोंदविण्यात अडचण आली."
       );
-
     }
 
     setLoading(false);
-
   };
 
   // =============================
@@ -81,25 +73,19 @@ const Complaint = () => {
   // =============================
 
   const fetchComplaint = async (id = trackingInput) => {
-
     if (!id) return;
 
     try {
-
       const res = await trackComplaint(id);
 
       setComplaint(res.complaint);
 
       setError("");
-
     } catch {
-
       setComplaint(null);
 
       setError("Tracking ID सापडला नाही.");
-
     }
-
   };
 
   // =============================
@@ -107,9 +93,7 @@ const Complaint = () => {
   // =============================
 
   const handleTrack = () => {
-
     fetchComplaint();
-
   };
 
   // =============================
@@ -117,211 +101,171 @@ const Complaint = () => {
   // =============================
 
   useEffect(() => {
-
     if (!trackingInput) return;
 
     const interval = setInterval(() => {
-
       fetchComplaint(trackingInput);
+    }, 15000);
 
-    },15000);
-
-    return ()=>clearInterval(interval);
-
-  },[trackingInput]);
+    return () => clearInterval(interval);
+  }, [trackingInput]);
 
   // =============================
   // Copy Tracking ID
   // =============================
 
-  const copyTrackingId = ()=>{
-
+  const copyTrackingId = () => {
     navigator.clipboard.writeText(trackingId);
 
     alert("Tracking ID कॉपी झाला.");
-
   };
 
   return (
+    <div className="complaint-page">
 
-<div className="complaint-page">
+      <div className="complaint-container">
 
-<div className="complaint-container">
+        {/* ================= HEADER ================= */}
 
-{/* ================= HEADER ================= */}
+        <div className="complaint-header">
 
-<div className="complaint-header">
+          <h1>📝 तक्रार नोंदणी</h1>
 
-<h1>📝 तक्रार नोंदणी</h1>
+          <p>
+            मंडळाशी संबंधित कोणतीही तक्रार येथे नोंदवा.
+            तक्रार नोंदवल्यानंतर तुम्हाला Tracking ID मिळेल.
+          </p>
 
-<p>
+        </div>
 
-मंडळाशी संबंधित कोणतीही तक्रार येथे नोंदवा.
+        {/* ================= TRACK COMPLAINT ================= */}
 
-तक्रार नोंदवल्यानंतर तुम्हाला Tracking ID मिळेल.
+        <div className="track-container">
 
-</p>
+          <h2 className="track-title">
+            🔍 तक्रार ट्रॅक करा
+          </h2>
 
-</div>
+          <div className="track-search">
 
-{/* ================= SUCCESS CARD ================= */}
+            <input
+              className="form-control"
+              placeholder="Tracking ID टाका"
+              value={trackingInput}
+              onChange={(e) =>
+                setTrackingInput(e.target.value)
+              }
+            />
 
-{success && (
+            <button onClick={handleTrack}>
+              शोधा
+            </button>
 
-<div className="success-card">
+          </div>
 
-<div className="success-icon">
+          {error && (
 
-✅
+            <div className="alert alert-error">
 
-</div>
+              <div>❌</div>
 
-<div className="success-content">
+              <div>
 
-<h3>
+                <h3>त्रुटी</h3>
 
-तक्रार यशस्वीरित्या नोंदविण्यात आली.
+                <p>{error}</p>
 
-</h3>
+              </div>
 
-<p>
+            </div>
 
-कृपया तुमचा Tracking ID सुरक्षित ठेवा.
+          )}
 
-</p>
+          {complaint && (
 
-<div className="tracking-card">
+            <ComplaintTracker
+              complaint={complaint}
+            />
 
-<div className="track-left">
+          )}
 
-<span className="track-label">
+        </div>
 
-Tracking ID
+        <div className="divider"></div>
 
-</span>
+        {/* ================= SUCCESS CARD ================= */}
 
-<span className="track-id">
+        {success && (
 
-{trackingId}
+          <div className="success-card">
 
-</span>
+            <div className="success-icon">
 
-</div>
+              ✅
 
-<button
+            </div>
 
-className="copy-btn"
+            <div className="success-content">
 
-onClick={copyTrackingId}
+              <h3>
 
->
+                तक्रार यशस्वीरित्या नोंदविण्यात आली.
 
-📋 Copy
+              </h3>
 
-</button>
+              <p>
 
-</div>
+                कृपया तुमचा Tracking ID सुरक्षित ठेवा.
 
-</div>
+              </p>
 
-</div>
+              <div className="tracking-card">
 
-)}
+                <div className="track-left">
 
-{/* ================= FORM ================= */}
+                  <span className="track-label">
 
-<ComplaintForm
+                    Tracking ID
 
-formData={formData}
+                  </span>
 
-setFormData={setFormData}
+                  <span className="track-id">
 
-handleSubmit={handleSubmit}
+                    {trackingId}
 
-loading={loading}
+                  </span>
 
-/>
+                </div>
 
-<div className="divider"></div>
+                <button
+                  className="copy-btn"
+                  onClick={copyTrackingId}
+                >
 
-{/* ================= TRACK ================= */}
+                  📋 Copy
 
-<div className="track-container">
+                </button>
 
-<h2 className="track-title">
+              </div>
 
-🔍 तक्रार ट्रॅक करा
+            </div>
 
-</h2>
+          </div>
 
-<div className="track-search">
+        )}
 
-<input
+        {/* ================= COMPLAINT FORM ================= */}
 
-className="form-control"
+        <ComplaintForm
+          formData={formData}
+          setFormData={setFormData}
+          handleSubmit={handleSubmit}
+          loading={loading}
+        />
 
-placeholder="Tracking ID"
+      </div>
 
-value={trackingInput}
-
-onChange={(e)=>setTrackingInput(e.target.value)}
-
-/>
-
-<button onClick={handleTrack}>
-
-शोधा
-
-</button>
-
-</div>
-
-{error && (
-
-<div className="alert alert-error">
-
-<div>
-
-❌
-
-</div>
-
-<div>
-
-<h3>
-
-त्रुटी
-
-</h3>
-
-<p>
-
-{error}
-
-</p>
-
-</div>
-
-</div>
-
-)}
-
-{complaint && (
-
-<ComplaintTracker
-
-complaint={complaint}
-
-/>
-
-)}
-
-</div>
-
-</div>
-
-</div>
-
+    </div>
   );
 };
 

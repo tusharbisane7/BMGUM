@@ -7,253 +7,453 @@ const API = "https://bmgum.onrender.com";
 
 function Aarti() {
 
-  const [aartiList, setAartiList] = useState([]);
+    const [aartiList, setAartiList] = useState([]);
 
-  const [current, setCurrent] = useState(0);
+    const [current, setCurrent] = useState(0);
 
-  // ================= LOAD AARTI =================
+    /*=========================================
+                LOAD AARTI
+    =========================================*/
 
-  const loadAarti = async () => {
+    const loadAarti = async () => {
 
-    try {
+        try {
 
-      const res = await axios.get(
+            const res = await axios.get(
+                `${API}/api/aarti`
+            );
 
-        `${API}/api/aarti`
+            setAartiList(
 
-      );
+                Array.isArray(res.data)
 
-      setAartiList(
+                    ? res.data
 
-        Array.isArray(res.data)
+                    : []
 
-          ? res.data
+            );
 
-          : []
+        }
 
-      );
+        catch (err) {
+
+            console.error(err);
+
+            setAartiList([]);
+
+        }
+
+    };
+
+    /*=========================================
+                FETCH DATA
+    =========================================*/
+
+    useEffect(() => {
+
+        loadAarti();
+
+        const refresh = setInterval(() => {
+
+            loadAarti();
+
+        }, 5000);
+
+        return () => clearInterval(refresh);
+
+    }, []);
+
+    /*=========================================
+                AUTO SLIDER
+    =========================================*/
+
+    useEffect(() => {
+
+        if (aartiList.length === 0) return;
+
+        const slider = setInterval(() => {
+
+            setCurrent((prev) =>
+
+                (prev + 1) % aartiList.length
+
+            );
+
+        }, 6000);
+
+        return () => clearInterval(slider);
+
+    }, [aartiList]);
+
+    /*=========================================
+                EMPTY
+    =========================================*/
+
+    if (aartiList.length === 0) {
+
+        return (
+
+            <section className="aarti-section container">
+
+                <h2 className="title">
+
+                    🪔 आरती वेळापत्रक
+
+                </h2>
+
+                <div className="aarti-wrapper">
+
+                    <div className="aarti-card">
+
+                        <div className="aarti-header">
+
+                            <div className="aarti-icon">
+
+                                🪔
+
+                            </div>
+
+                            <h3>
+
+                                कोणतीही आरती उपलब्ध नाही.
+
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        );
 
     }
 
-    catch (err) {
+    /*=========================================
+            CURRENT AARTI
+    =========================================*/
 
-      console.log(err);
+    const item = aartiList[current] || {};
 
-      setAartiList([]);
+    const performedBy =
 
-    }
+        item.performedBy ??
 
-  };
+        item.performedby ??
 
-  // ================= FETCH =================
+        "-";
 
-  useEffect(() => {
+    const formattedDate =
 
-    loadAarti();
+        item.date
 
-    const refresh = setInterval(() => {
+            ? new Date(item.date).toLocaleDateString(
 
-      loadAarti();
+                "en-GB"
 
-    }, 5000);
+            )
 
-    return () => clearInterval(refresh);
+            : "-";
+            return (
 
-  }, []);
-
-  // ================= AUTO SLIDER =================
-
-  useEffect(() => {
-
-    if (aartiList.length === 0) return;
-
-    const slider = setInterval(() => {
-
-      setCurrent((prev) =>
-
-        (prev + 1) % aartiList.length
-
-      );
-
-    }, 6000);
-
-    return () => clearInterval(slider);
-
-  }, [aartiList]);
-
-  // ================= EMPTY =================
-
-  if (aartiList.length === 0) {
-
-    return (
-
-      <section className="aarti-section container">
-
-        <h2 className="title">
-
-          🪔 आरती वेळापत्रक
-
-        </h2>
-
-        <div className="aarti-wrapper">
-
-          <div className="aarti-card">
-
-            <h3>
-
-              कोणतीही आरती उपलब्ध नाही.
-
-            </h3>
-
-          </div>
-
-        </div>
-
-      </section>
-
-    );
-
-  }
-
-  // ================= CURRENT ITEM =================
-
-  const item = aartiList[current] || {};
-
-  // PostgreSQL compatibility
-
-  const performedBy =
-
-    item.performedBy ??
-
-    item.performedby ??
-
-    "-";
-
-  const formattedDate = item.date
-
-    ? new Date(item.date).toLocaleDateString("en-GB")
-
-    : "-";
-    return (
-
-  <section className="aarti-section container">
+<section className="aarti-section container">
 
     <h2 className="title">
 
-      🪔 आरती वेळापत्रक
+        🪔 आरती वेळापत्रक
 
     </h2>
 
     <div className="aarti-wrapper">
 
-      <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait">
 
-        <motion.div
+            <motion.div
 
-          key={item.id || current}
+                key={item.id || current}
 
-          className="aarti-card"
+                className="aarti-card"
 
-          initial={{
-            opacity: 0,
-            x: 150,
-            scale: 0.9
-          }}
+                initial={{
+                    opacity:0,
+                    x:120,
+                    scale:.9
+                }}
 
-          animate={{
-            opacity: 1,
-            x: 0,
-            scale: 1
-          }}
+                animate={{
+                    opacity:1,
+                    x:0,
+                    scale:1
+                }}
 
-          exit={{
-            opacity: 0,
-            x: -150,
-            scale: 0.9
-          }}
+                exit={{
+                    opacity:0,
+                    x:-120,
+                    scale:.9
+                }}
 
-          transition={{
-            duration: 0.8
-          }}
+                transition={{
+                    duration:.7,
+                    ease:"easeInOut"
+                }}
 
-        >
+            >
 
-          <div className="aarti-icon">
+                <div className="shine"></div>
 
-            🪔
+                <div className="particle one"></div>
 
-          </div>
+                <div className="particle two"></div>
 
-          <h3>
+                <div className="particle three"></div>
 
-            {item.name || "-"}
+                <div className="today-badge">
 
-          </h3>
+                    🙏 Today's Aarti
 
-          <p>
+                </div>
 
-            <strong>📅 तारीख :</strong>{" "}
+                <div className="aarti-header">
 
-            {formattedDate}
+                    <div className="aarti-icon">
 
-          </p>
+                        🪔
 
-          <p>
+                    </div>
 
-            <strong>📆 वार :</strong>{" "}
+                    <h3>
 
-            {item.day || "-"}
+                        {item.name || "आरती"}
 
-          </p>
+                    </h3>
 
-          <p>
+                </div>
 
-            <strong>⏰ वेळ :</strong>{" "}
+                <div className="aarti-details">
 
-            {item.time || "-"}
+                    <div className="info-row">
 
-          </p>
+                        <div className="info-left">
 
-          <p>
+                            <div className="info-icon">
 
-            <strong>👤 आरती :</strong>{" "}
+                                📅
 
-            {performedBy}
+                            </div>
 
-          </p>
+                            <div>
 
-          <p>
+                                <div className="info-label">
 
-            <strong>🏷 प्रकार :</strong>{" "}
+                                    Date
 
-            {item.type || "-"}
+                                </div>
 
-          </p>
+                                <div className="info-value">
 
-          <p>
+                                    {formattedDate}
 
-            <strong>📌 स्थिती :</strong>{" "}
+                                </div>
 
-            {item.status || "-"}
+                            </div>
 
-          </p>
+                        </div>
 
-          <div className="progress-bar">
+                    </div>
 
-            <div className="progress-fill"></div>
+                    <div className="info-row">
 
-          </div>
+                        <div className="info-left">
 
-        </motion.div>
+                            <div className="info-icon">
 
-      </AnimatePresence>
+                                📆
+
+                            </div>
+
+                            <div>
+
+                                <div className="info-label">
+
+                                    Day
+
+                                </div>
+
+                                <div className="info-value">
+
+                                    {item.day || "-"}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div className="info-row">
+
+                        <div className="info-left">
+
+                            <div className="info-icon">
+
+                                ⏰
+
+                            </div>
+
+                            <div>
+
+                                <div className="info-label">
+
+                                    Time
+
+                                </div>
+
+                                <div className="info-value">
+
+                                    {item.time || "-"}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div className="info-row">
+
+                        <div className="info-left">
+
+                            <div className="info-icon">
+
+                                👤
+
+                            </div>
+
+                            <div>
+
+                                <div className="info-label">
+
+                                    Performed By
+
+                                </div>
+
+                                <div className="info-value">
+
+                                    {performedBy}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div className="info-row">
+
+                        <div className="info-left">
+
+                            <div className="info-icon">
+
+                                🏷️
+
+                            </div>
+
+                            <div>
+
+                                <div className="info-label">
+
+                                    Type
+
+                                </div>
+
+                                <div className="info-value">
+
+                                    {item.type || "-"}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div className="info-row">
+
+                        <div className="info-left">
+
+                            <div className="info-icon">
+
+                                📌
+
+                            </div>
+
+                            <div>
+
+                                <div className="info-label">
+
+                                    Status
+
+                                </div>
+
+                                <div className="info-value">
+
+                                    {item.status || "-"}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div className="aarti-status">
+
+                    <div className="status-top">
+
+                        <div className="status-title">
+
+                            <div className="live-dot"></div>
+
+                            Ganesh Utsav Aarti
+
+                        </div>
+
+                        <div className="status-percent">
+
+                            Live
+
+                        </div>
+
+                    </div>
+
+                    <div className="progress-bar">
+
+                        <div className="progress-fill"></div>
+
+                    </div>
+
+                </div>
+
+                
+
+            </motion.div>
+
+        </AnimatePresence>
 
     </div>
 
-  </section>
+</section>
 
 );
-
 }
 
 export default Aarti;

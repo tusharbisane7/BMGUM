@@ -1,10 +1,10 @@
 import "../styles/committee.css";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, EffectFade } from "swiper/modules";
+import { Autoplay, Pagination } from "swiper/modules";
 
 import "swiper/css";
-import "swiper/css/effect-fade";
+import "swiper/css/pagination";
 
 import PranayImg from "../assets/images/pranay.jpg";
 import DarshanImg from "../assets/images/darshan.png";
@@ -14,7 +14,6 @@ import VedantImg from "../assets/images/vedant.jpg";
 import GopalImg from "../assets/images/gopal.jpg";
 
 const members = [
-
   {
     id: 1,
     name: "प्रणय जवंजाळ",
@@ -22,7 +21,6 @@ const members = [
     phone: "8261874483",
     image: PranayImg,
   },
-
   {
     id: 2,
     name: "दर्शन भागवत",
@@ -30,7 +28,6 @@ const members = [
     phone: "9604887614",
     image: DarshanImg,
   },
-
   {
     id: 3,
     name: "मनीष लव्हाळे",
@@ -38,7 +35,6 @@ const members = [
     phone: "9067975438",
     image: ManishImg,
   },
-
   {
     id: 4,
     name: "तुषार बिसने",
@@ -46,7 +42,6 @@ const members = [
     phone: "9673279153",
     image: TusharImg,
   },
-
   {
     id: 5,
     name: "वेदान्त गाडगे",
@@ -54,7 +49,6 @@ const members = [
     phone: "9356713339",
     image: VedantImg,
   },
-
   {
     id: 6,
     name: "गोपाल घोडे",
@@ -62,43 +56,49 @@ const members = [
     phone: "8999873184",
     image: GopalImg,
   },
-
 ];
 
 function Committee() {
-
   return (
-
     <section className="committee-section container">
 
+      {/* Floating Particles */}
+      <div className="committee-particle one"></div>
+      <div className="committee-particle two"></div>
+      <div className="committee-particle three"></div>
+      <div className="committee-particle four"></div>
+
       <h2 className="title">
-
         👥 कार्यकारिणी सदस्य
-
       </h2>
 
       <Swiper
-        modules={[Autoplay, EffectFade]}
-        effect="fade"
-        fadeEffect={{ crossFade: true }}
+        modules={[Autoplay, Pagination]}
         slidesPerView={1}
+        spaceBetween={30}
+        centeredSlides={true}
         loop={true}
+        pagination={{
+          clickable: true,
+        }}
         autoplay={{
-          delay: 3500,
+          delay: 2000,
           disableOnInteraction: false,
+          pauseOnMouseEnter: true,
         }}
       >
-
         {members.map((member) => (
-
           <SwiperSlide key={member.id}>
-
             <div className="member-card">
 
-              <img
-                src={member.image}
-                alt={member.name}
-              />
+              <div className="shine"></div>
+
+              <div className="member-image">
+                <img
+                  src={member.image}
+                  alt={member.name}
+                />
+              </div>
 
               <h3>{member.name}</h3>
 
@@ -107,17 +107,12 @@ function Committee() {
               <p>📞 {member.phone}</p>
 
             </div>
-
           </SwiperSlide>
-
         ))}
-
       </Swiper>
 
     </section>
-
   );
-
 }
 
 export default Committee;
