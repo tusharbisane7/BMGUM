@@ -11,7 +11,7 @@ import {
 } from "react-icons/fa";
 import "../styles/UserManagement.css";
 
-const API = "http://localhost:5000/api/users";
+const API = "https://bmgum.onrender.com/api/users";
 
 function UserManagement() {
   const [users, setUsers] = useState([]);

@@ -12,7 +12,6 @@ import {
   FaBullhorn,
   FaUserShield,
   FaSignOutAlt,
-  FaPlusCircle,
   FaReceipt,
   FaCog,
   FaKey,
@@ -28,38 +27,51 @@ function Dashboard() {
   const user =
     JSON.parse(localStorage.getItem("adminUser")) || {};
 
-  /* ===============================
-              STATES
-  =============================== */
+  /* =====================================
+              DASHBOARD STATES
+  ===================================== */
 
   const [dashboardData, setDashboardData] = useState({
 
     totalDonation: 0,
+
     totalExpense: 0,
+
     balance: 0,
+
     totalDonors: 0,
+
     activeNotices: 0,
 
     recentDonations: [],
+
     recentExpenses: [],
+
     notices: []
 
   });
 
-  const [currentDate, setCurrentDate] = useState("");
-  const [currentTime, setCurrentTime] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [currentDate, setCurrentDate] =
+    useState("");
 
-  /* ===============================
-          LOAD DASHBOARD
-  =============================== */
+  const [currentTime, setCurrentTime] =
+    useState("");
+
+  const [loading, setLoading] =
+    useState(true);
+
+  /* =====================================
+          LOAD DASHBOARD DATA
+  ===================================== */
 
   const loadDashboard = async () => {
 
     try {
 
       const res = await axios.get(
+
         "https://bmgum.onrender.com/api/dashboard"
+
       );
 
       setDashboardData(res.data);
@@ -72,19 +84,22 @@ function Dashboard() {
 
   };
 
-  /* ===============================
-          LOAD SERVER TIME
-  =============================== */
+  /* =====================================
+          LOAD SERVER DATE & TIME
+  ===================================== */
 
   const loadServerTime = async () => {
 
     try {
 
       const res = await axios.get(
+
         "https://bmgum.onrender.com/api/server-time"
+
       );
 
       setCurrentDate(res.data.date);
+
       setCurrentTime(res.data.time);
 
     } catch (err) {
@@ -95,19 +110,20 @@ function Dashboard() {
 
   };
 
-  /* ===============================
-            USE EFFECT
-  =============================== */
+  /* =====================================
+              INITIAL LOAD
+  ===================================== */
 
   useEffect(() => {
 
-    const fetchAll = async () => {
+    const fetchDashboard = async () => {
 
       setLoading(true);
 
       await Promise.all([
 
         loadDashboard(),
+
         loadServerTime()
 
       ]);
@@ -116,11 +132,12 @@ function Dashboard() {
 
     };
 
-    fetchAll();
+    fetchDashboard();
 
     const interval = setInterval(() => {
 
       loadDashboard();
+
       loadServerTime();
 
     }, 1000);
@@ -129,23 +146,25 @@ function Dashboard() {
 
   }, []);
 
-  /* ===============================
-              LOGOUT
-  =============================== */
+  /* =====================================
+                LOGOUT
+  ===================================== */
 
   const logout = () => {
 
     localStorage.removeItem("adminLoggedIn");
+
     localStorage.removeItem("adminUser");
+
     localStorage.removeItem("token");
 
     navigate("/login");
 
   };
 
-  /* ===============================
-          LOADING SCREEN
-  =============================== */
+  /* =====================================
+            LOADING SCREEN
+  ===================================== */
 
   if (loading) {
 
@@ -153,7 +172,11 @@ function Dashboard() {
 
       <div className="loading-page">
 
-        <h2>Loading Dashboard...</h2>
+        <h2>
+
+          Loading Dashboard...
+
+        </h2>
 
       </div>
 
@@ -163,683 +186,670 @@ function Dashboard() {
 
   return (
 
-    <>
-          <div className="dashboard-layout">
+    <div className="dashboard-container">
 
-        {/* ================= SIDEBAR ================= */}
+      <main className="dashboard-main">
 
-        <aside className="sidebar">
+        {/* =====================================
+                    HEADER
+        ===================================== */}
 
-          <div className="sidebar-top">
+        <div className="dashboard-header">
 
-            <div className="sidebar-logo">
+          <div className="header-left">
 
-              <h2>🛕</h2>
+            <h1>
 
-              <div>
+              🛕 बाल मित्र गणेश उत्सव मंडळ
 
-                <h3>BMGUM</h3>
+            </h1>
 
-                <span>Admin Panel</span>
+            <p>
+
+              खिरणीबागपुरा, अचलपूर
+
+            </p>
+
+          </div>
+
+          <div className="header-right">
+
+            <div className="user-card">
+
+              <FaUserShield className="user-icon" />
+
+              <div className="user-details">
+
+                <h3>
+
+                  {user.username}
+
+                </h3>
+
+                <span>
+
+                  {user.role}
+
+                </span>
 
               </div>
+
+              <button
+
+                className="header-logout"
+
+                onClick={logout}
+
+              >
+
+                <FaSignOutAlt />
+
+                <span>
+
+                  Logout
+
+                </span>
+
+              </button>
 
             </div>
 
           </div>
 
-          <nav className="sidebar-menu">
+        </div>
 
-            <button onClick={() => navigate("/")}>
-              🏠
-              <span>मुख्य पृष्ठ</span>
+        {/* Statistics section starts in Part 2 */}
+                {/* =====================================
+                STATISTICS CARDS
+        ===================================== */}
+
+        <div className="cards-grid">
+
+          <div className="dashboard-card donation">
+
+            <FaDonate className="card-icon" />
+
+            <div className="card-content">
+
+              <span>एकूण देणगी</span>
+
+              <h2>
+                ₹{(dashboardData.totalDonation || 0).toLocaleString()}
+              </h2>
+
+            </div>
+
+          </div>
+
+          <div className="dashboard-card expense">
+
+            <FaMoneyBillWave className="card-icon" />
+
+            <div className="card-content">
+
+              <span>एकूण खर्च</span>
+
+              <h2>
+                ₹{(dashboardData.totalExpense || 0).toLocaleString()}
+              </h2>
+
+            </div>
+
+          </div>
+
+          <div className="dashboard-card balance">
+
+            <FaWallet className="card-icon" />
+
+            <div className="card-content">
+
+              <span>शिल्लक रक्कम</span>
+
+              <h2>
+                ₹{(dashboardData.balance || 0).toLocaleString()}
+              </h2>
+
+            </div>
+
+          </div>
+
+          <div className="dashboard-card donors">
+
+            <FaUsers className="card-icon" />
+
+            <div className="card-content">
+
+              <span>देणगीदार</span>
+
+              <h2>{dashboardData.totalDonors || 0}</h2>
+
+            </div>
+
+          </div>
+
+          <div className="dashboard-card notice">
+
+            <FaBullhorn className="card-icon" />
+
+            <div className="card-content">
+
+              <span>सक्रिय सूचना</span>
+
+              <h2>{dashboardData.activeNotices || 0}</h2>
+
+            </div>
+
+          </div>
+
+          <div className="dashboard-card clock">
+
+            <div className="clock-icon">🕒</div>
+
+            <div className="card-content">
+
+              <span>सध्याची वेळ</span>
+
+              <h2>{currentTime}</h2>
+
+              <p>{currentDate}</p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        {/* =====================================
+                ADMIN SERVICES
+        ===================================== */}
+
+        <div className="dashboard-section">
+
+          <div className="section-header">
+
+            <h2>⚙️ व्यवस्थापन सेवा</h2>
+
+          </div>
+
+          <div className="services-list">
+
+            <button
+              className="service-item"
+              onClick={() => navigate("/admin/donations")}
+            >
+              <FaDonate />
+              <span>देणगी व्यवस्थापन</span>
             </button>
 
-            <button onClick={() => navigate("/admin/donations")}>
-              💰
-              <span>देणगी</span>
+            <button
+              className="service-item"
+              onClick={() => navigate("/admin/expenses")}
+            >
+              <FaMoneyBillWave />
+              <span>खर्च व्यवस्थापन</span>
             </button>
 
-            <button onClick={() => navigate("/admin/expenses")}>
-              💸
-              <span>खर्च</span>
+            <button
+              className="service-item"
+              onClick={() => navigate("/admin/notices")}
+            >
+              <FaBullhorn />
+              <span>सूचना व्यवस्थापन</span>
             </button>
 
-            <button onClick={() => navigate("/admin/notices")}>
-              📢
-              <span>सूचना</span>
+            <button
+              className="service-item"
+              onClick={() => navigate("/admin/committee")}
+            >
+              <FaUsers />
+              <span>कार्यकारिणी व्यवस्थापन</span>
             </button>
 
-            <button onClick={() => navigate("/admin/committee")}>
-              👥
-              <span>पंचकमिटी</span>
-            </button>
-
-            <button onClick={() => navigate("/admin/aarti")}>
+            <button
+              className="service-item"
+              onClick={() => navigate("/admin/aarti")}
+            >
               🪔
-              <span>आरती</span>
+              <span>आरती व्यवस्थापन</span>
             </button>
 
-            <button onClick={() => navigate("/admin/timeline")}>
-              📅
-              <span>कार्यक्रम</span>
+            <button
+              className="service-item"
+              onClick={() => navigate("/admin/users")}
+            >
+              <FaCog />
+              <span>वापरकर्ता व्यवस्थापन</span>
             </button>
 
-            <button onClick={() => navigate("/admin/meetings")}>
-              🎥
-              <span>मीटिंग</span>
+            <button
+              className="service-item"
+              onClick={() => navigate("/admin/meetings")}
+            >
+              <FaVideo />
+              <span>मीटिंग व्यवस्थापन</span>
             </button>
 
-            <button onClick={() => navigate("/admin/volunteers")}>
-              🙋
-              <span>स्वयंसेवक</span>
+            <button
+              className="service-item"
+              onClick={() => navigate("/admin/volunteers")}
+            >
+              <FaUserFriends />
+              <span>स्वयंसेवक व्यवस्थापन</span>
             </button>
 
-            <button onClick={() => navigate("/admin/sponsors")}>
-              🤝
-              <span>प्रायोजक</span>
+            <button
+              className="service-item"
+              onClick={() => navigate("/admin/sponsors")}
+            >
+              <FaHandshake />
+              <span>प्रायोजक व्यवस्थापन</span>
             </button>
 
-            <button onClick={() => navigate("/admin/complaints")}>
-              📋
-              <span>तक्रारी</span>
+            <button
+              className="service-item"
+              onClick={() => navigate("/admin/complaints")}
+            >
+              <FaReceipt />
+              <span>तक्रार व्यवस्थापन</span>
             </button>
 
-            <button onClick={() => navigate("/admin/change-password")}>
-              🔑
-              <span>पासवर्ड</span>
+            <button
+              className="service-item"
+              onClick={() => navigate("/admin/change-password")}
+            >
+              <FaKey />
+              <span>पासवर्ड बदला</span>
             </button>
 
             {user.role === "Super Admin" && (
 
-              <button onClick={() => navigate("/admin/users")}>
-
-                👤
-
-                <span>यूजर</span>
-
+              <button
+                className="service-item"
+                onClick={() => navigate("/admin/users")}
+              >
+                <FaUserShield />
+                <span>वापरकर्ता व्यवस्थापन</span>
               </button>
 
             )}
 
-          </nav>
+          </div>
 
-          <button
-            className="sidebar-logout"
-            onClick={logout}
-          >
+        </div>
 
-            <FaSignOutAlt />
+        {/* Table section starts in Part 3 */}
+                {/* =====================================
+                RECENT DONATIONS & EXPENSES
+        ===================================== */}
 
-            <span>लॉगआउट</span>
+        <div className="table-grid">
 
-          </button>
+          {/* ================= DONATIONS ================= */}
 
-        </aside>
+          <div className="dashboard-section">
 
-        {/* ================= MAIN ================= */}
+            <div className="section-header">
 
-        <main className="dashboard-main">
+              <h2>💰 अलीकडील देणग्या</h2>
 
-          {/* ================= HEADER ================= */}
+              <button
+                className="view-btn"
+                onClick={() => navigate("/admin/donations")}
+              >
+                सर्व पहा
+              </button>
 
-          <div className="dashboard-header">
+            </div>
 
-            <div>
+            <table className="dashboard-table">
 
-              <h1>
-                🛕 बाल मित्र गणेश उत्सव मंडळ
-              </h1>
+              <thead>
+
+                <tr>
+
+                  <th>ID</th>
+
+                  <th>देणगीदार</th>
+
+                  <th>रक्कम</th>
+
+                  <th>दिनांक</th>
+
+                  <th>पावती</th>
+
+                </tr>
+
+              </thead>
+
+              <tbody>
+
+                {(dashboardData.recentDonations || []).length === 0 ? (
+
+                  <tr>
+
+                    <td colSpan="5">
+
+                      कोणतीही देणगी उपलब्ध नाही.
+
+                    </td>
+
+                  </tr>
+
+                ) : (
+
+                  dashboardData.recentDonations.map((item) => (
+
+                    <tr key={item.id}>
+
+                      <td>{item.id}</td>
+
+                      <td>{item.donorName}</td>
+
+                      <td>
+
+                        ₹{Number(item.amount).toLocaleString()}
+
+                      </td>
+
+                      <td>{item.date}</td>
+
+                      <td>
+
+                        {item.receipt ? (
+
+                          <a
+                            href={`https://bmgum.onrender.com/uploads/receipts/${item.receipt}`}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+
+                            👁 View
+
+                          </a>
+
+                        ) : (
+
+                          "-"
+
+                        )}
+
+                      </td>
+
+                    </tr>
+
+                  ))
+
+                )}
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+          {/* ================= EXPENSES ================= */}
+
+          <div className="dashboard-section">
+
+            <div className="section-header">
+
+              <h2>💸 अलीकडील खर्च</h2>
+
+              <button
+                className="view-btn"
+                onClick={() => navigate("/admin/expenses")}
+              >
+                सर्व पहा
+              </button>
+
+            </div>
+
+            <table className="dashboard-table">
+
+              <thead>
+
+                <tr>
+
+                  <th>ID</th>
+
+                  <th>खर्च</th>
+
+                  <th>रक्कम</th>
+
+                  <th>दिनांक</th>
+
+                  <th>बिल</th>
+
+                </tr>
+
+              </thead>
+
+              <tbody>
+
+                {(dashboardData.recentExpenses || []).length === 0 ? (
+
+                  <tr>
+
+                    <td colSpan="5">
+
+                      कोणताही खर्च उपलब्ध नाही.
+
+                    </td>
+
+                  </tr>
+
+                ) : (
+
+                  dashboardData.recentExpenses.map((item) => (
+
+                    <tr key={item.id}>
+
+                      <td>{item.id}</td>
+
+                      <td>{item.title}</td>
+
+                      <td>
+
+                        ₹{Number(item.amount).toLocaleString()}
+
+                      </td>
+
+                      <td>{item.date}</td>
+
+                      <td>
+
+                        {item.bill ? (
+
+                          <a
+                            href={`https://bmgum.onrender.com/uploads/bills/${item.bill}`}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+
+                            👁 View
+
+                          </a>
+
+                        ) : (
+
+                          "-"
+
+                        )}
+
+                      </td>
+
+                    </tr>
+
+                  ))
+
+                )}
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+        {/* Notice Board starts in Part 4 */}
+                {/* =====================================
+                NOTICE BOARD
+        ===================================== */}
+
+        <div className="dashboard-section">
+
+          <div className="section-header">
+
+            <h2>📢 सक्रिय सूचना फलक</h2>
+
+          </div>
+
+          {(dashboardData.notices || []).length === 0 ? (
+
+            <div className="notice-empty">
+
+              <h3>📭</h3>
 
               <p>
-                खिरणीबागपुरा, अचलपूर
+
+                सध्या कोणतीही सूचना उपलब्ध नाही.
+
               </p>
 
             </div>
 
-            <div className="header-right">
+          ) : (
 
-              <div className="user-card">
+            <div className="notice-grid">
 
-                <FaUserShield className="user-icon" />
+              {(dashboardData.notices || []).map((notice) => (
 
-                <div>
+                <div
 
-                  <h3>{user.username}</h3>
+                  key={notice.id}
 
-                  <span>{user.role}</span>
+                  className="notice-card"
 
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-                    {/* ================= STATISTICS ================= */}
-
-          <div className="cards-grid">
-
-            <div className="dashboard-card donation">
-
-              <FaDonate className="card-icon" />
-
-              <div className="card-content">
-
-                <span>एकूण देणगी</span>
-
-                <h2>
-                  ₹{(dashboardData.totalDonation || 0).toLocaleString()}
-                </h2>
-
-              </div>
-
-            </div>
-
-            <div className="dashboard-card expense">
-
-              <FaMoneyBillWave className="card-icon" />
-
-              <div className="card-content">
-
-                <span>एकूण खर्च</span>
-
-                <h2>
-                  ₹{(dashboardData.totalExpense || 0).toLocaleString()}
-                </h2>
-
-              </div>
-
-            </div>
-
-            <div className="dashboard-card balance">
-
-              <FaWallet className="card-icon" />
-
-              <div className="card-content">
-
-                <span>शिल्लक रक्कम</span>
-
-                <h2>
-                  ₹{(dashboardData.balance || 0).toLocaleString()}
-                </h2>
-
-              </div>
-
-            </div>
-
-            <div className="dashboard-card donors">
-
-              <FaUsers className="card-icon" />
-
-              <div className="card-content">
-
-                <span>देणगीदार</span>
-
-                <h2>
-                  {dashboardData.totalDonors || 0}
-                </h2>
-
-              </div>
-
-            </div>
-
-            <div className="dashboard-card notice">
-
-              <FaBullhorn className="card-icon" />
-
-              <div className="card-content">
-
-                <span>सक्रिय सूचना</span>
-
-                <h2>
-                  {dashboardData.activeNotices || 0}
-                </h2>
-
-              </div>
-
-            </div>
-
-            {/* ================= LIVE CLOCK ================= */}
-
-            <div className="dashboard-card clock">
-
-              <div className="clock-icon">
-
-                🕒
-
-              </div>
-
-              <div className="card-content">
-
-                <span>सध्याची वेळ</span>
-
-                <h2>{currentTime}</h2>
-
-                <p>{currentDate}</p>
-
-              </div>
-
-            </div>
-
-          </div>
-
-       {/* ================= QUICK ACTIONS ================= */}
-
-<div className="quick-section">
-
-  <div className="section-header">
-    <h2>⚡ झटपट कृती</h2>
-  </div>
-
-  <div className="quick-grid">
-
-    <button onClick={() => navigate("/admin/donations")}>
-      <FaDonate />
-      <span>देणगी व्यवस्थापन</span>
-    </button>
-
-    <button onClick={() => navigate("/admin/expenses")}>
-      <FaMoneyBillWave />
-      <span>खर्च व्यवस्थापन</span>
-    </button>
-
-    <button onClick={() => navigate("/admin/notices")}>
-      <FaBullhorn />
-      <span>सूचना व्यवस्थापन</span>
-    </button>
-
-    <button onClick={() => navigate("/admin/committee")}>
-      <FaUsers />
-      <span>कार्यकारिणी व्यवस्थापन</span>
-    </button>
-
-    <button onClick={() => navigate("/admin/aarti")}>
-      🪔
-      <span>आरती व्यवस्थापन</span>
-    </button>
-
-    <button onClick={() => navigate("/admin/timeline")}>
-      <FaCog />
-      <span>कार्यक्रम व्यवस्थापन</span>
-    </button>
-
-    <button onClick={() => navigate("/admin/meetings")}>
-      <FaVideo />
-      <span>मीटिंग व्यवस्थापन</span>
-    </button>
-
-    <button onClick={() => navigate("/admin/volunteers")}>
-      <FaUserFriends />
-      <span>स्वयंसेवक व्यवस्थापन</span>
-    </button>
-
-    <button onClick={() => navigate("/admin/sponsors")}>
-      <FaHandshake />
-      <span>प्रायोजक व्यवस्थापन</span>
-    </button>
-
-    <button onClick={() => navigate("/admin/complaints")}>
-      <FaReceipt />
-      <span>तक्रार व्यवस्थापन</span>
-    </button>
-
-    <button onClick={() => navigate("/admin/change-password")}>
-      <FaKey />
-      <span>पासवर्ड बदला</span>
-    </button>
-
-    {user.role === "Super Admin" && (
-      <button onClick={() => navigate("/admin/users")}>
-        <FaUserShield />
-        <span>वापरकर्ता व्यवस्थापन</span>
-      </button>
-    )}
-
-  </div>
-
-</div>
-                    {/* ================= TABLE SECTION ================= */}
-
-          <div className="table-grid">
-
-            {/* ================= RECENT DONATIONS ================= */}
-
-            <div className="dashboard-section">
-
-              <div className="section-header">
-
-                <h2>💰 अलीकडील देणग्या</h2>
-
-                <button
-                  className="view-btn"
-                  onClick={() => navigate("/admin/donations")}
                 >
-                  सर्व पहा
-                </button>
 
-              </div>
+                  <div className="notice-top">
 
-              <table className="dashboard-table">
+                    <span className="notice-badge">
 
-                <thead>
+                      📢 सूचना
 
-                  <tr>
-
-                    <th>ID</th>
-
-                    <th>देणगीदार</th>
-
-                    <th>रक्कम</th>
-
-                    <th>दिनांक</th>
-
-                    <th>पावती</th>
-
-                  </tr>
-
-                </thead>
-
-                <tbody>
-
-                  {(dashboardData.recentDonations || []).length === 0 ? (
-
-                    <tr>
-
-                      <td colSpan="5">
-
-                        कोणतीही देणगी उपलब्ध नाही.
-
-                      </td>
-
-                    </tr>
-
-                  ) : (
-
-                    dashboardData.recentDonations.map((item) => (
-
-                      <tr key={item.id}>
-
-                        <td>{item.id}</td>
-
-                        <td>{item.donorName}</td>
-
-                        <td>
-
-                          ₹{Number(item.amount).toLocaleString()}
-
-                        </td>
-
-                        <td>{item.date}</td>
-
-                        <td>
-
-                          {item.receipt ? (
-
-                            <a
-                              href={`https://bmgum.onrender.com/uploads/receipts/${item.receipt}`}
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-
-                              👁 View
-
-                            </a>
-
-                          ) : (
-
-                            "-"
-
-                          )}
-
-                        </td>
-
-                      </tr>
-
-                    ))
-
-                  )}
-
-                </tbody>
-
-              </table>
-
-            </div>
-
-            {/* ================= RECENT EXPENSES ================= */}
-
-            <div className="dashboard-section">
-
-              <div className="section-header">
-
-                <h2>💸 अलीकडील खर्च</h2>
-
-                <button
-                  className="view-btn"
-                  onClick={() => navigate("/admin/expenses")}
-                >
-                  सर्व पहा
-                </button>
-
-              </div>
-
-              <table className="dashboard-table">
-
-                <thead>
-
-                  <tr>
-
-                    <th>ID</th>
-
-                    <th>खर्च</th>
-
-                    <th>रक्कम</th>
-
-                    <th>दिनांक</th>
-
-                    <th>बिल</th>
-
-                  </tr>
-
-                </thead>
-
-                <tbody>
-
-                  {(dashboardData.recentExpenses || []).length === 0 ? (
-
-                    <tr>
-
-                      <td colSpan="5">
-
-                        कोणताही खर्च उपलब्ध नाही.
-
-                      </td>
-
-                    </tr>
-
-                  ) : (
-
-                    dashboardData.recentExpenses.map((item) => (
-
-                      <tr key={item.id}>
-
-                        <td>{item.id}</td>
-
-                        <td>{item.title}</td>
-
-                        <td>
-
-                          ₹{Number(item.amount).toLocaleString()}
-
-                        </td>
-
-                        <td>{item.date}</td>
-
-                        <td>
-
-                          {item.bill ? (
-
-                            <a
-                              href={`https://bmgum.onrender.com/uploads/bills/${item.bill}`}
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-
-                              👁 View
-
-                            </a>
-
-                          ) : (
-
-                            "-"
-
-                          )}
-
-                        </td>
-
-                      </tr>
-
-                    ))
-
-                  )}
-
-                </tbody>
-
-              </table>
-
-            </div>
-
-          </div>
-                    {/* ================= NOTICE BOARD ================= */}
-
-          <div className="dashboard-section">
-
-            <div className="section-header">
-
-              <h2>📢 सक्रिय सूचना फलक</h2>
-
-            </div>
-
-            {(dashboardData.notices || []).length === 0 ? (
-
-              <div className="notice-empty">
-
-                <h3>📭</h3>
-
-                <p>सध्या कोणतीही सूचना उपलब्ध नाही.</p>
-
-              </div>
-
-            ) : (
-
-              <div className="notice-grid">
-
-                {(dashboardData.notices || []).map((notice) => (
-
-                  <div
-                    key={notice.id}
-                    className="notice-card"
-                  >
-
-                    <div className="notice-top">
-
-                      <span className="notice-badge">
-
-                        📢 सूचना
-
-                      </span>
-
-                    </div>
-
-                    <h3>
-
-                      {notice.title}
-
-                    </h3>
-
-                    <p>
-
-                      {notice.description}
-
-                    </p>
+                    </span>
 
                   </div>
 
-                ))}
+                  <h3>
 
-              </div>
+                    {notice.title}
 
-            )}
+                  </h3>
 
-          </div>
+                  <p>
 
-          {/* ================= ADMIN PROFILE ================= */}
+                    {notice.description}
 
-          <div className="dashboard-section">
+                  </p>
 
-            <div className="section-header">
+                </div>
 
-              <h2>👤 प्रशासक माहिती</h2>
-
-            </div>
-
-            <div className="admin-profile">
-
-              <div className="profile-item">
-
-                <span>👤 Username</span>
-
-                <strong>{user.username}</strong>
-
-              </div>
-
-              <div className="profile-item">
-
-                <span>🛡 Role</span>
-
-                <strong>{user.role}</strong>
-
-              </div>
-
-              <div className="profile-item">
-
-                <span>🟢 Status</span>
-
-                <strong
-                  style={{
-                    color: "#16a34a"
-                  }}
-                >
-                  Online
-                </strong>
-
-              </div>
-
-              <div className="profile-item">
-
-                <span>📅 Date</span>
-
-                <strong>{currentDate}</strong>
-
-              </div>
-
-              <div className="profile-item">
-
-                <span>🕒 Time</span>
-
-                <strong>{currentTime}</strong>
-
-              </div>
+              ))}
 
             </div>
 
+          )}
+
+        </div>
+
+        {/* =====================================
+                ADMIN PROFILE
+        ===================================== */}
+
+        <div className="dashboard-section">
+
+          <div className="section-header">
+
+            <h2>👤 प्रशासक माहिती</h2>
+
           </div>
 
-        </main>
+          <div className="admin-profile">
 
-      </div>
+            <div className="profile-item">
 
-    </>
+              <span>👤 Username</span>
+
+              <strong>
+
+                {user.username}
+
+              </strong>
+
+            </div>
+
+            <div className="profile-item">
+
+              <span>🛡 Role</span>
+
+              <strong>
+
+                {user.role}
+
+              </strong>
+
+            </div>
+
+            <div className="profile-item">
+
+              <span>🟢 Status</span>
+
+              <strong
+                style={{
+                  color: "#16a34a"
+                }}
+              >
+
+                Online
+
+              </strong>
+
+            </div>
+
+            <div className="profile-item">
+
+              <span>📅 Date</span>
+
+              <strong>
+
+                {currentDate}
+
+              </strong>
+
+            </div>
+
+            <div className="profile-item">
+
+              <span>🕒 Time</span>
+
+              <strong>
+
+                {currentTime}
+
+              </strong>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </main>
+
+    </div>
 
   );
 

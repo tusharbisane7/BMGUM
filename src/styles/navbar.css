@@ -923,3 +923,346 @@ background:#ff9800;
 color:#fff;
 
 }
+/* ==========================================
+   USER PROFILE
+========================================== */
+
+.profile-menu{
+
+    position:relative;
+
+    margin-left:10px;
+
+}
+
+.profile-btn{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    border:none;
+
+    outline:none;
+
+    cursor:pointer;
+
+    padding:8px 14px;
+
+    border-radius:50px;
+
+    background:#fff8ef;
+
+    color:#d35400;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+    box-shadow:
+        0 5px 18px rgba(0,0,0,.08);
+
+}
+
+.profile-btn:hover{
+
+    background:#ff9800;
+
+    color:#fff;
+
+    transform:translateY(-2px);
+
+}
+
+.profile-avatar{
+
+    width:38px;
+
+    height:38px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:#ffffff;
+
+    font-size:18px;
+
+    box-shadow:
+        0 3px 10px rgba(0,0,0,.08);
+
+}
+
+.profile-name{
+
+    white-space:nowrap;
+
+}
+
+.profile-arrow{
+
+    font-size:11px;
+
+    transition:.3s;
+
+}
+
+.profile-btn:hover .profile-arrow{
+
+    transform:rotate(180deg);
+
+}
+/* ==========================================
+   PROFILE DROPDOWN
+========================================== */
+
+.profile-dropdown{
+
+    position:absolute;
+
+    top:60px;
+
+    right:0;
+
+    width:240px;
+
+    background:#fff;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 15px 35px rgba(0,0,0,.18);
+
+    animation:dropdown .25s ease;
+
+    z-index:99999;
+
+}
+
+@keyframes dropdown{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(-10px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+.profile-dropdown a{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    width:100%;
+
+    padding:15px 18px;
+
+    text-decoration:none;
+
+    color:#444;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.profile-dropdown button{
+
+    width:100%;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    padding:15px 18px;
+
+    border:none;
+
+    background:#fff;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    color:#444;
+
+    font-weight:600;
+
+    transition:.3s;
+
+    text-align:left;
+
+}
+
+.profile-dropdown a:hover,
+
+.profile-dropdown button:hover{
+
+    background:#fff4e8;
+
+    color:#ff6b00;
+
+}
+/* ==========================================
+   SIDEBAR USER
+========================================== */
+
+.sidebar-user-card{
+
+    margin:18px;
+
+    padding:16px;
+
+    border-radius:16px;
+
+    background:linear-gradient(
+        135deg,
+        #fff4e5,
+        #ffe2b3
+    );
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+}
+
+.sidebar-user-avatar{
+
+    width:60px;
+
+    height:60px;
+
+    border-radius:50%;
+
+    background:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:28px;
+
+    color:#ff9800;
+
+}
+
+.sidebar-user-info{
+
+    flex:1;
+
+}
+
+.sidebar-user-info h3{
+
+    color:#d35400;
+
+    font-size:17px;
+
+    margin-bottom:4px;
+
+}
+
+.sidebar-user-info p{
+
+    color:#777;
+
+    font-size:13px;
+
+}
+
+.sidebar-logout{
+
+    margin:12px 18px 20px;
+
+    border:none;
+
+    background:#e53935;
+
+    color:#fff;
+
+    border-radius:10px;
+
+    padding:14px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.sidebar-logout:hover{
+
+    background:#c62828;
+
+}
+@media(max-width:950px){
+
+.profile-menu{
+
+display:none;
+
+}
+
+.sidebar-user-card{
+
+margin:15px;
+
+}
+
+}
+
+@media(max-width:500px){
+
+.sidebar-user-avatar{
+
+width:55px;
+
+height:55px;
+
+font-size:24px;
+
+}
+
+.sidebar-user-info h3{
+
+font-size:15px;
+
+}
+
+}

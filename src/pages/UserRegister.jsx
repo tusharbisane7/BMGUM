@@ -68,7 +68,7 @@ function UserRegister() {
         setCheckingUsername(true);
 
         const res = await axios.get(
-          `http://localhost:5000/api/users/check-username/${formData.username}`
+          `https://bmgum.onrender.com/api/users/check-username/${formData.username}`
         );
 
         setUsernameAvailable(res.data.available);
@@ -142,7 +142,7 @@ function UserRegister() {
       setLoading(true);
 
       await axios.post(
-        "http://localhost:5000/api/users/register",
+        "https://bmgum.onrender.com/api/users/register",
         formData
       );
 

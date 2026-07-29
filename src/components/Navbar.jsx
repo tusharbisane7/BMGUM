@@ -307,21 +307,7 @@ function Navbar() {
 
         </div>
 
-        <div className="sidebar-title">
-
-          <h2>
-
-            बाल मित्र गणेश उत्सव मंडळ
-
-          </h2>
-
-          <p>
-
-            खिरणीबागपुरा, अचलपूर
-
-          </p>
-
-        </div>
+    
                 <NavLink to="/">
           🏠 मुख्यपृष्ठ
         </NavLink>
@@ -357,7 +343,7 @@ function Navbar() {
             </NavLink>
 
             <NavLink to="/login">
-              🔐 Admin Login
+              🔐 ADMIN PANEL
             </NavLink>
 
           </>

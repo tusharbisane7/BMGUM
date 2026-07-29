@@ -60,7 +60,7 @@ function Login() {
 
           <h1>बाल मित्र गणेश उत्सव मंडळ</h1>
 
-          <h2>प्रशासन पोर्टल</h2>
+          <h2>ADMIN पोर्टल</h2>
 
           <p>
             सुरक्षित लॉगिन करून प्रशासन पॅनेलमध्ये प्रवेश करा.
@@ -72,7 +72,7 @@ function Login() {
 
           <div className="input-group">
 
-            <label>वापरकर्तानाव</label>
+            <label>USERNAME</label>
 
             <input
               type="text"
@@ -86,7 +86,7 @@ function Login() {
 
           <div className="input-group">
 
-            <label>संकेतशब्द</label>
+            <label>PASSWORD</label>
 
             <input
               type={showPassword ? "text" : "password"}
@@ -121,7 +121,7 @@ function Login() {
             type="submit"
             disabled={loading}
           >
-            {loading ? "लॉगिन सुरू आहे..." : "🔐 प्रशासक लॉगिन"}
+            {loading ? "लॉगिन सुरू आहे..." : "🔐 ADMIN लॉगिन"}
           </button>
 
         </form>
@@ -139,19 +139,7 @@ function Login() {
             🏠 मुख्यपृष्ठ
           </Link>
 
-          <Link
-            to="/register-user"
-            className="portal-btn user-btn"
-          >
-            👤 वापरकर्ता नोंदणी
-          </Link>
-
-          <Link
-            to="/register-admin"
-            className="portal-btn admin-btn"
-          >
-            🛡️ प्रशासक नोंदणी
-          </Link>
+         
 
         </div>
 

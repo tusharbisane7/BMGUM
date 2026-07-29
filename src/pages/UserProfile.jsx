@@ -15,7 +15,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import "../styles/profile.css";
 
-const API = "http://localhost:5000/api/users";
+const API = "https://bmgum.onrender.com/api/users";
 
 function UserProfile() {
 
