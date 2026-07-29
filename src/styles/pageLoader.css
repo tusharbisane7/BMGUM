@@ -10,42 +10,97 @@
 
     display:flex;
 
+    flex-direction:column;
+
     justify-content:center;
 
     align-items:center;
 
-    background:rgba(255,255,255,.96);
+    background:linear-gradient(135deg,#fffdf8,#fff5e8);
 
-    backdrop-filter:blur(10px);
+    overflow:hidden;
 
     z-index:99999;
 
-    animation:fadeIn .35s ease;
+}
+
+/* Background Glow */
+
+.page-loader::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:380px;
+
+    height:380px;
+
+    border-radius:50%;
+
+    background:rgba(255,152,0,.10);
+
+    filter:blur(90px);
+
+    animation:glow 4s ease-in-out infinite;
 
 }
 
 /* ==========================
-   CARD
+   CIRCLE
 ========================== */
 
-.loader-card{
+.loader-circle{
 
-    width:280px;
+    position:relative;
 
-    padding:28px 24px;
+    width:170px;
 
-    text-align:center;
+    height:170px;
 
-    background:#ffffff;
+    display:flex;
 
-    border-radius:22px;
+    justify-content:center;
 
-    border:1px solid rgba(255,152,0,.15);
+    align-items:center;
 
-    box-shadow:
-        0 12px 35px rgba(0,0,0,.08);
+}
 
-    animation:cardUp .4s ease;
+/* Outer Ring */
+
+.loader-ring{
+
+    position:absolute;
+
+    inset:0;
+
+    border-radius:50%;
+
+    border:6px solid rgba(255,152,0,.18);
+
+    border-top:6px solid #ff9800;
+
+    animation:spin 1.2s linear infinite;
+
+}
+
+/* Inner Glow */
+
+.loader-circle::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:120px;
+
+    height:120px;
+
+    border-radius:50%;
+
+    background:rgba(255,152,0,.08);
+
+    animation:pulse 2s ease-in-out infinite;
 
 }
 
@@ -55,17 +110,17 @@
 
 .loader-logo{
 
-    width:72px;
+    position:relative;
 
-    height:72px;
+    width:90px;
+
+    height:90px;
 
     object-fit:contain;
 
-    margin-bottom:18px;
+    z-index:2;
 
-    animation:floatLogo 2.5s ease-in-out infinite;
-
-    filter:drop-shadow(0 0 12px rgba(255,153,0,.25));
+    animation:float 2s ease-in-out infinite;
 
 }
 
@@ -73,77 +128,71 @@
    TITLE
 ========================== */
 
-.loader-card h1{
+.loader-title{
 
-    margin:0;
+    margin-top:28px;
 
     color:#d35400;
 
-    font-size:20px;
+    font-size:28px;
 
     font-weight:700;
 
-    line-height:1.4;
+    text-align:center;
 
 }
 
 /* ==========================
-   MESSAGE
+   TEXT
 ========================== */
 
-.loader-card p{
+.loader-text{
 
     margin-top:8px;
 
     color:#666;
 
-    font-size:14px;
+    font-size:16px;
 
     font-weight:500;
-
-    line-height:1.6;
 
 }
 
 /* ==========================
-   DOTS
+   LOADING DOTS
 ========================== */
 
-.loader-dots{
+.loader-loading{
 
     display:flex;
 
-    justify-content:center;
-
-    align-items:center;
-
     gap:8px;
 
-    margin-top:22px;
+    margin-top:24px;
 
 }
 
-.loader-dots span{
+.dot{
 
-    width:10px;
+    width:12px;
 
-    height:10px;
+    height:12px;
 
     border-radius:50%;
 
     background:#ff9800;
 
-    animation:dots .7s infinite alternate;
+    animation:bounce .8s infinite alternate;
 
 }
 
-.loader-dots span:nth-child(2){
+.dot:nth-child(2){
 
     animation-delay:.2s;
 
 }
 
-.loader-dots span:nth-child(3){
+.dot:nth-child(3){
 
     animation-delay:.4s;
 
@@ -153,9 +202,25 @@
    ANIMATIONS
 ========================== */
 
-@keyframes floatLogo{
+@keyframes spin{
 
-    0%{
+    from{
+
+        transform:rotate(0deg);
+
+    }
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+
+@keyframes float{
+
+    0%,100%{
 
         transform:translateY(0);
 
@@ -167,15 +232,29 @@
 
     }
 
-    100%{
+}
 
-        transform:translateY(0);
+@keyframes pulse{
+
+    0%,100%{
+
+        transform:scale(1);
+
+        opacity:.4;
+
+    }
+
+    50%{
+
+        transform:scale(1.15);
+
+        opacity:1;
 
     }
 
 }
 
-@keyframes dots{
+@keyframes bounce{
 
     from{
 
@@ -187,7 +266,7 @@
 
     to{
 
-        transform:translateY(-8px);
+        transform:translateY(-10px);
 
         opacity:1;
 
@@ -195,37 +274,17 @@
 
 }
 
-@keyframes fadeIn{
+@keyframes glow{
 
-    from{
+    0%,100%{
 
-        opacity:0;
-
-    }
-
-    to{
-
-        opacity:1;
+        transform:scale(1);
 
     }
 
-}
+    50%{
 
-@keyframes cardUp{
-
-    from{
-
-        opacity:0;
-
-        transform:translateY(20px) scale(.96);
-
-    }
-
-    to{
-
-        opacity:1;
-
-        transform:translateY(0) scale(1);
+        transform:scale(1.2);
 
     }
 
@@ -235,33 +294,39 @@
    MOBILE
 ========================== */
 
-@media(max-width:480px){
+@media(max-width:768px){
 
-    .loader-card{
+    .loader-circle{
 
-        width:240px;
+        width:140px;
 
-        padding:24px 18px;
+        height:140px;
+
+    }
+
+    .loader-ring{
+
+        border-width:5px;
 
     }
 
     .loader-logo{
 
-        width:62px;
+        width:75px;
 
-        height:62px;
-
-    }
-
-    .loader-card h1{
-
-        font-size:18px;
+        height:75px;
 
     }
 
-    .loader-card p{
+    .loader-title{
 
-        font-size:13px;
+        font-size:22px;
+
+    }
+
+    .loader-text{
+
+        font-size:14px;
 
     }
 

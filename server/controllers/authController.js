@@ -2,226 +2,224 @@ const pool = require("../config/neon");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-// ================= LOGIN =================
+// ================= ADMIN LOGIN =================
 
 const login = async (req, res) => {
+  try {
+    const { username, password } = req.body;
 
-    try {
+    const result = await pool.query(
+      `SELECT * FROM users WHERE username = $1`,
+      [username]
+    );
 
-        const { username, password } = req.body;
-
-        const result = await pool.query(
-
-            `SELECT * FROM users
-             WHERE username=$1`,
-
-            [username]
-
-        );
-
-        if (result.rows.length === 0) {
-
-            return res.status(401).json({
-
-                success: false,
-
-                message: "Invalid Username"
-
-            });
-
-        }
-
-        const user = result.rows[0];
-
-        const match = await bcrypt.compare(
-
-            password,
-
-            user.password
-
-        );
-
-        if (!match) {
-
-            return res.status(401).json({
-
-                success: false,
-
-                message: "Invalid Password"
-
-            });
-
-        }
-
-        const token = jwt.sign(
-
-            {
-
-                id: user.id,
-
-                role: user.role
-
-            },
-
-            process.env.JWT_SECRET,
-
-            {
-
-                expiresIn: "1d"
-
-            }
-
-        );
-
-        res.json({
-
-            success: true,
-
-            token,
-
-            user: {
-
-                id: user.id,
-
-                username: user.username,
-
-                role: user.role
-
-            }
-
-        });
-
+    if (result.rows.length === 0) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid Username",
+      });
     }
 
-    catch (err) {
+    const user = result.rows[0];
 
-        console.log(err);
-
-        res.status(500).json({
-
-            success: false,
-
-            message: err.message
-
-        });
-
+    // Allow only admins
+    if (
+      user.role !== "Admin" &&
+      user.role !== "Super Admin"
+    ) {
+      return res.status(403).json({
+        success: false,
+        message: "Please use User Login",
+      });
     }
 
+    const match = await bcrypt.compare(
+      password,
+      user.password
+    );
+
+    if (!match) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid Password",
+      });
+    }
+
+    const token = jwt.sign(
+      {
+        id: user.id,
+        role: user.role,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1d",
+      }
+    );
+
+    res.json({
+      success: true,
+      token,
+      user: {
+        id: user.id,
+        full_name: user.full_name,
+        username: user.username,
+        mobile: user.mobile,
+        age: user.age,
+        address: user.address,
+        role: user.role,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+// ================= USER LOGIN =================
+
+const userLogin = async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    const result = await pool.query(
+      `SELECT * FROM users WHERE username = $1`,
+      [username]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid Username",
+      });
+    }
+
+    const user = result.rows[0];
+
+    // Block admin accounts
+    if (
+      user.role === "Admin" ||
+      user.role === "Super Admin"
+    ) {
+      return res.status(403).json({
+        success: false,
+        message: "Please use Admin Login",
+      });
+    }
+
+    const match = await bcrypt.compare(
+      password,
+      user.password
+    );
+
+    if (!match) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid Password",
+      });
+    }
+
+    const token = jwt.sign(
+      {
+        id: user.id,
+        role: user.role,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1d",
+      }
+    );
+
+    res.json({
+      success: true,
+      token,
+      user: {
+        id: user.id,
+        full_name: user.full_name,
+        username: user.username,
+        mobile: user.mobile,
+        age: user.age,
+        address: user.address,
+        role: user.role,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
 };
 
 // ================= CHANGE PASSWORD =================
 
 const changePassword = async (req, res) => {
+  try {
+    const {
+      username,
+      currentPassword,
+      newPassword,
+    } = req.body;
 
-    try {
+    const result = await pool.query(
+      `SELECT * FROM users WHERE username = $1`,
+      [username]
+    );
 
-        const {
-
-            username,
-
-            currentPassword,
-
-            newPassword
-
-        } = req.body;
-
-        const result = await pool.query(
-
-            `SELECT * FROM users
-             WHERE username=$1`,
-
-            [username]
-
-        );
-
-        if (result.rows.length === 0) {
-
-            return res.status(404).json({
-
-                success: false,
-
-                message: "User Not Found"
-
-            });
-
-        }
-
-        const user = result.rows[0];
-
-        const match = await bcrypt.compare(
-
-            currentPassword,
-
-            user.password
-
-        );
-
-        if (!match) {
-
-            return res.status(400).json({
-
-                success: false,
-
-                message: "Current Password is Incorrect"
-
-            });
-
-        }
-
-        const hashedPassword = await bcrypt.hash(
-
-            newPassword,
-
-            10
-
-        );
-
-        await pool.query(
-
-            `UPDATE users
-             SET password=$1
-             WHERE username=$2`,
-
-            [
-
-                hashedPassword,
-
-                username
-
-            ]
-
-        );
-
-        res.json({
-
-            success: true,
-
-            message: "Password Changed Successfully"
-
-        });
-
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "User Not Found",
+      });
     }
 
-    catch (err) {
+    const user = result.rows[0];
 
-        console.log(err);
+    const match = await bcrypt.compare(
+      currentPassword,
+      user.password
+    );
 
-        res.status(500).json({
-
-            success: false,
-
-            message: err.message
-
-        });
-
+    if (!match) {
+      return res.status(400).json({
+        success: false,
+        message: "Current Password is Incorrect",
+      });
     }
 
+    const hashedPassword = await bcrypt.hash(
+      newPassword,
+      10
+    );
+
+    await pool.query(
+      `UPDATE users
+       SET password = $1
+       WHERE username = $2`,
+      [hashedPassword, username]
+    );
+
+    res.json({
+      success: true,
+      message: "Password Changed Successfully",
+    });
+  } catch (err) {
+    console.log(err);
+
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
 };
 
 module.exports = {
-
-    login,
-
-    changePassword
-
+  login,
+  userLogin,
+  changePassword,
 };

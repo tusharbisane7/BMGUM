@@ -1,31 +1,41 @@
 import "../styles/pageLoader.css";
 
 function PageLoader({ logo }) {
-  return (
-    <div className="page-loader">
+    return (
+        <div className="page-loader">
 
-      <div className="loader-card">
+            <div className="loader-circle">
 
-        <img
-          src={logo}
-          alt="Logo"
-          className="loader-logo"
-        />
+                <div className="loader-ring"></div>
 
-        <h1>🙏 गणपती बाप्पा मोरया 🙏</h1>
+                <img
+                    src={logo}
+                    alt="Ganesh Mandal Logo"
+                    className="loader-logo"
+                />
 
-        <p>पृष्ठ लोड होत आहे...</p>
+            </div>
 
-        <div className="loader-dots">
-          <span></span>
-          <span></span>
-          <span></span>
+            <h2 className="loader-title">
+                🙏 गणपती बाप्पा मोरया 🙏
+            </h2>
+
+            <p className="loader-text">
+                पृष्ठ लोड होत आहे...
+            </p>
+
+            <div className="loader-loading">
+
+                <span className="dot"></span>
+
+                <span className="dot"></span>
+
+                <span className="dot"></span>
+
+            </div>
+
         </div>
-
-      </div>
-
-    </div>
-  );
+    );
 }
 
 export default PageLoader;

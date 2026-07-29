@@ -8,19 +8,43 @@
 
     overflow:hidden;
 
-    padding:100px 20px;
+    padding:110px 20px;
+
+    isolation:isolate;
 
     background:
-        linear-gradient(
-            180deg,
-            #fffdfb 0%,
-            #fff8f2 45%,
-            #ffffff 100%
-        );
+
+    radial-gradient(
+        circle at top left,
+        rgba(255,152,0,.12),
+        transparent 30%
+    ),
+
+    radial-gradient(
+        circle at top right,
+        rgba(255,193,7,.10),
+        transparent 28%
+    ),
+
+    radial-gradient(
+        circle at bottom left,
+        rgba(255,107,0,.08),
+        transparent 35%
+    ),
+
+    linear-gradient(
+        180deg,
+        #fffdfb 0%,
+        #fff9f4 35%,
+        #fff6ee 70%,
+        #ffffff 100%
+    );
 
 }
 
-/* Background Glow */
+/*=====================================
+        Animated Top Glow
+======================================*/
 
 .aarti-section::before{
 
@@ -28,24 +52,41 @@
 
     position:absolute;
 
-    width:450px;
+    width:650px;
 
-    height:450px;
+    height:650px;
 
-    right:-180px;
+    right:-220px;
 
-    top:-180px;
+    top:-260px;
 
     border-radius:50%;
 
     background:
-        radial-gradient(
-            circle,
-            rgba(255,152,0,.12),
-            transparent 70%
-        );
+
+    radial-gradient(
+
+        circle,
+
+        rgba(255,152,0,.18),
+
+        rgba(255,193,7,.08),
+
+        transparent 72%
+
+    );
+
+    filter:blur(45px);
+
+    animation:blobMoveOne 16s ease-in-out infinite;
+
+    z-index:0;
 
 }
+
+/*=====================================
+        Animated Bottom Glow
+======================================*/
 
 .aarti-section::after{
 
@@ -53,22 +94,183 @@
 
     position:absolute;
 
-    width:320px;
+    width:520px;
 
-    height:320px;
+    height:520px;
 
-    left:-140px;
+    left:-180px;
 
-    bottom:-140px;
+    bottom:-200px;
 
     border-radius:50%;
 
     background:
-        radial-gradient(
-            circle,
-            rgba(255,107,0,.08),
-            transparent 70%
-        );
+
+    radial-gradient(
+
+        circle,
+
+        rgba(255,107,0,.12),
+
+        transparent 72%
+
+    );
+
+    filter:blur(40px);
+
+    animation:blobMoveTwo 18s ease-in-out infinite;
+
+    z-index:0;
+
+}
+
+/*=====================================
+        Floating Circles
+======================================*/
+
+.bg-circle{
+
+    position:absolute;
+
+    border-radius:50%;
+
+    backdrop-filter:blur(15px);
+
+    background:rgba(255,255,255,.28);
+
+    border:1px solid rgba(255,152,0,.12);
+
+    animation:circleFloat 10s ease-in-out infinite;
+
+    z-index:1;
+
+}
+
+.bg-circle.one{
+
+    width:70px;
+
+    height:70px;
+
+    left:8%;
+
+    top:18%;
+
+}
+
+.bg-circle.two{
+
+    width:45px;
+
+    height:45px;
+
+    right:12%;
+
+    top:58%;
+
+    animation-delay:2s;
+
+}
+
+.bg-circle.three{
+
+    width:95px;
+
+    height:95px;
+
+    left:82%;
+
+    top:22%;
+
+    animation-delay:4s;
+
+}
+
+.bg-circle.four{
+
+    width:32px;
+
+    height:32px;
+
+    left:18%;
+
+    bottom:18%;
+
+    animation-delay:6s;
+
+}
+
+/*=====================================
+            Golden Light
+======================================*/
+
+.top-light{
+
+    position:absolute;
+
+    left:50%;
+
+    top:-150px;
+
+    transform:translateX(-50%);
+
+    width:850px;
+
+    height:320px;
+
+    border-radius:50%;
+
+    background:
+
+    radial-gradient(
+
+        ellipse,
+
+        rgba(255,193,7,.18),
+
+        rgba(255,193,7,.08),
+
+        transparent 75%
+
+    );
+
+    filter:blur(55px);
+
+    animation:lightPulse 8s ease-in-out infinite;
+
+    pointer-events:none;
+
+    z-index:0;
+
+}
+
+/*=====================================
+        Tiny Decorative Dots
+======================================*/
+
+.pattern{
+
+    position:absolute;
+
+    inset:0;
+
+    background-image:
+
+    radial-gradient(
+
+        rgba(255,152,0,.06) 1px,
+
+        transparent 1px
+
+    );
+
+    background-size:32px 32px;
+
+    opacity:.45;
+
+    pointer-events:none;
+
+    z-index:0;
 
 }
 
@@ -90,9 +292,13 @@
 
     color:#222;
 
-    margin-bottom:60px;
+    margin-bottom:65px;
 
-    letter-spacing:.5px;
+    letter-spacing:.6px;
+
+    text-shadow:
+
+        0 2px 8px rgba(255,152,0,.12);
 
 }
 
@@ -111,11 +317,22 @@
     border-radius:50px;
 
     background:
-        linear-gradient(
-            90deg,
-            #ff9800,
-            #ff5722
-        );
+
+    linear-gradient(
+
+        90deg,
+
+        #ff9800,
+
+        #ff6b00,
+
+        #ff9800
+
+    );
+
+    background-size:300%;
+
+    animation:gradientLine 6s linear infinite;
 
 }
 
@@ -127,7 +344,7 @@
 
     position:relative;
 
-    z-index:2;
+    z-index:5;
 
     display:flex;
 
@@ -136,9 +353,8 @@
     align-items:center;
 
 }
-
 /*==================================================
-                    CARD
+                PREMIUM CARD
 ==================================================*/
 
 .aarti-card{
@@ -148,7 +364,6 @@
     overflow:hidden;
 
     width:100%;
-
     max-width:570px;
 
     padding:42px 38px;
@@ -156,33 +371,53 @@
     border-radius:30px;
 
     background:
-        rgba(255,255,255,.92);
+        linear-gradient(
+            180deg,
+            rgba(255,255,255,.96),
+            rgba(255,250,246,.95)
+        );
 
     backdrop-filter:blur(18px);
 
-    border:1px solid rgba(255,255,255,.6);
+    border:1px solid rgba(255,255,255,.7);
 
     box-shadow:
-        0 20px 55px rgba(0,0,0,.08),
-        0 10px 22px rgba(255,107,0,.08);
 
-    transition:.45s ease;
+        0 25px 70px rgba(0,0,0,.08),
+
+        0 10px 30px rgba(255,152,0,.10),
+
+        inset 0 1px 0 rgba(255,255,255,.9);
+
+    transition:
+        transform .45s ease,
+        box-shadow .45s ease;
 
 }
 
-/* Hover */
+/*==================================================
+            PREMIUM HOVER
+==================================================*/
 
 .aarti-card:hover{
 
-    transform:translateY(-10px);
+    transform:
+        translateY(-10px)
+        scale(1.01);
 
     box-shadow:
-        0 35px 80px rgba(0,0,0,.12),
-        0 12px 28px rgba(255,107,0,.18);
+
+        0 35px 85px rgba(0,0,0,.12),
+
+        0 18px 40px rgba(255,152,0,.18),
+
+        inset 0 1px 0 rgba(255,255,255,1);
 
 }
 
-/* Animated Border */
+/*==================================================
+            ANIMATED BORDER
+==================================================*/
 
 .aarti-card::before{
 
@@ -197,29 +432,44 @@
     border-radius:30px;
 
     background:
+
         linear-gradient(
+
             135deg,
+
             #ff9800,
-            #ff6b00,
+
+            #ffb300,
+
             #ffd54f,
-            #ff9800
+
+            #ff9800,
+
+            #ff6b00
+
         );
 
-    background-size:300%;
+    background-size:350% 350%;
 
-    animation:borderMove 8s linear infinite;
+    animation:borderFlow 8s linear infinite;
 
     -webkit-mask:
+
         linear-gradient(#fff 0 0) content-box,
+
         linear-gradient(#fff 0 0);
 
     -webkit-mask-composite:xor;
 
     mask-composite:exclude;
 
+    pointer-events:none;
+
 }
 
-/* Floating Corner Glow */
+/*==================================================
+            GLOW
+==================================================*/
 
 .aarti-card::after{
 
@@ -227,9 +477,9 @@
 
     position:absolute;
 
-    width:250px;
+    width:260px;
 
-    height:250px;
+    height:260px;
 
     right:-120px;
 
@@ -238,42 +488,58 @@
     border-radius:50%;
 
     background:
+
         radial-gradient(
+
             circle,
-            rgba(255,152,0,.16),
-            transparent 70%
+
+            rgba(255,193,7,.20),
+
+            rgba(255,152,0,.10),
+
+            transparent 72%
+
         );
 
-    animation:floatGlow 8s ease-in-out infinite;
+    filter:blur(18px);
+
+    animation:cardGlow 8s ease-in-out infinite;
+
+    pointer-events:none;
 
 }
 
 /*==================================================
-                SHINE EFFECT
+            SHINE EFFECT
 ==================================================*/
 
 .shine{
 
     position:absolute;
 
-    top:-160%;
+    top:-180%;
 
-    left:-70%;
+    left:-90%;
 
-    width:60%;
+    width:70%;
 
-    height:320%;
+    height:360%;
 
     transform:rotate(25deg);
 
     background:
+
         linear-gradient(
+
             transparent,
-            rgba(255,255,255,.45),
+
+            rgba(255,255,255,.55),
+
             transparent
+
         );
 
-    transition:1.2s;
+    opacity:.9;
 
     pointer-events:none;
 
@@ -281,43 +547,81 @@
 
 .aarti-card:hover .shine{
 
-    left:150%;
+    animation:shineSweep 1.4s ease forwards;
 
 }
 
 /*==================================================
-                ANIMATIONS
+            INNER SHADOW
 ==================================================*/
 
-@keyframes borderMove{
+.aarti-card .inner-shadow{
 
-0%{
+    position:absolute;
 
-background-position:0 0;
+    inset:0;
 
-}
+    border-radius:30px;
 
-100%{
+    pointer-events:none;
 
-background-position:300% 0;
+    box-shadow:
 
-}
+        inset 0 0 25px rgba(255,255,255,.25),
 
-}
-
-@keyframes floatGlow{
-
-0%,100%{
-
-transform:translateY(0);
+        inset 0 -15px 30px rgba(255,193,7,.04);
 
 }
 
-50%{
+/*==================================================
+            CARD BOTTOM LIGHT
+==================================================*/
 
-transform:translateY(18px);
+.aarti-card .bottom-light{
+
+    position:absolute;
+
+    bottom:-80px;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    width:300px;
+
+    height:120px;
+
+    border-radius:50%;
+
+    background:
+
+        radial-gradient(
+
+            ellipse,
+
+            rgba(255,193,7,.20),
+
+            transparent 75%
+
+        );
+
+    filter:blur(40px);
+
+    opacity:.65;
+
+    pointer-events:none;
 
 }
+
+/*==================================================
+            HOVER GLOW
+==================================================*/
+
+.aarti-card:hover .bottom-light{
+
+    opacity:1;
+
+    transition:.4s;
 
 }
 /*==================================================
@@ -336,12 +640,14 @@ transform:translateY(18px);
 
     justify-content:center;
 
-    margin-bottom:35px;
+    margin-bottom:38px;
+
+    z-index:5;
 
 }
 
 /*==================================================
-                ICON
+                DIYA ICON
 ==================================================*/
 
 .aarti-icon{
@@ -352,35 +658,39 @@ transform:translateY(18px);
 
     height:95px;
 
-    margin:auto;
-
     margin-bottom:22px;
-
-    border-radius:26px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #ff6b00,
-            #ff9800
-        );
 
     display:flex;
 
+    align-items:center;
+
     justify-content:center;
 
-    align-items:center;
+    border-radius:24px;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #ff9800,
+            #ff6b00
+        );
 
     color:#fff;
 
     font-size:42px;
 
     box-shadow:
-        0 18px 40px rgba(255,107,0,.28);
 
-    animation:iconFloat 3s ease-in-out infinite;
+        0 15px 35px rgba(255,107,0,.25),
 
-    z-index:5;
+        inset 0 2px 6px rgba(255,255,255,.25);
+
+    animation:
+
+        iconFloat 3.5s ease-in-out infinite,
+
+        iconGlow 2.5s ease-in-out infinite;
 
 }
 
@@ -394,7 +704,7 @@ transform:translateY(18px);
 
     inset:-10px;
 
-    border-radius:32px;
+    border-radius:30px;
 
     border:2px dashed rgba(255,152,0,.35);
 
@@ -402,7 +712,7 @@ transform:translateY(18px);
 
 }
 
-/* Glow */
+/* Outer Glow */
 
 .aarti-icon::after{
 
@@ -410,22 +720,27 @@ transform:translateY(18px);
 
     position:absolute;
 
-    inset:-18px;
+    inset:-22px;
 
     border-radius:40px;
 
     background:
+
         radial-gradient(
+
             circle,
-            rgba(255,152,0,.18),
+
+            rgba(255,193,7,.22),
+
             transparent 70%
+
         );
 
     z-index:-1;
 
-}
+    animation:outerGlow 4s ease-in-out infinite;
 
-/* Hover */
+}
 
 .aarti-card:hover .aarti-icon{
 
@@ -451,7 +766,7 @@ transform:translateY(18px);
 
     line-height:1.4;
 
-    letter-spacing:.5px;
+    letter-spacing:.6px;
 
     transition:.35s;
 
@@ -460,6 +775,26 @@ transform:translateY(18px);
 .aarti-card:hover h3{
 
     color:#ff6b00;
+
+}
+
+/* Typewriter */
+
+.typing{
+
+    display:inline-block;
+
+    overflow:hidden;
+
+    white-space:nowrap;
+
+}
+
+.cursor{
+
+    color:#ff6b00;
+
+    animation:blink .8s infinite;
 
 }
 
@@ -480,6 +815,7 @@ transform:translateY(18px);
     border-radius:50px;
 
     background:
+
         linear-gradient(
             135deg,
             #fff5eb,
@@ -495,25 +831,24 @@ transform:translateY(18px);
     border:1px solid #ffd4ae;
 
     box-shadow:
+
         0 8px 18px rgba(255,152,0,.15);
 
-    animation:badgePulse 2s infinite;
+    animation:
 
-    z-index:5;
+        badgePulse 2s infinite,
+
+        badgeGlow 3s ease-in-out infinite;
 
 }
 
 /*==================================================
-                PARTICLES
+            PARTICLES
 ==================================================*/
 
 .particle{
 
     position:absolute;
-
-    width:8px;
-
-    height:8px;
 
     border-radius:50%;
 
@@ -521,13 +856,19 @@ transform:translateY(18px);
 
     opacity:.18;
 
+    pointer-events:none;
+
 }
 
 .particle.one{
 
-    top:35px;
+    width:8px;
+
+    height:8px;
 
     left:35px;
+
+    top:35px;
 
     animation:floatOne 6s infinite ease-in-out;
 
@@ -535,9 +876,13 @@ transform:translateY(18px);
 
 .particle.two{
 
-    top:130px;
+    width:10px;
+
+    height:10px;
 
     right:45px;
+
+    top:120px;
 
     animation:floatTwo 7s infinite ease-in-out;
 
@@ -545,121 +890,43 @@ transform:translateY(18px);
 
 .particle.three{
 
-    bottom:45px;
+    width:9px;
+
+    height:9px;
 
     right:70px;
+
+    bottom:45px;
 
     animation:floatThree 5s infinite ease-in-out;
 
 }
 
-/*==================================================
-                ANIMATIONS
-==================================================*/
+.particle.four{
 
-@keyframes iconFloat{
+    width:7px;
 
-0%,100%{
+    height:7px;
 
-transform:translateY(0);
+    left:80px;
 
-}
+    bottom:70px;
 
-50%{
-
-transform:translateY(-8px);
+    animation:floatFour 8s infinite ease-in-out;
 
 }
 
-}
+.particle.five{
 
-@keyframes ringRotate{
+    width:6px;
 
-from{
+    height:6px;
 
-transform:rotate(0deg);
+    right:100px;
 
-}
+    top:60px;
 
-to{
-
-transform:rotate(360deg);
-
-}
-
-}
-
-@keyframes badgePulse{
-
-0%{
-
-transform:scale(1);
-
-}
-
-50%{
-
-transform:scale(1.05);
-
-}
-
-100%{
-
-transform:scale(1);
-
-}
-
-}
-
-@keyframes floatOne{
-
-0%,100%{
-
-transform:translateY(0);
-
-opacity:.18;
-
-}
-
-50%{
-
-transform:translateY(-18px);
-
-opacity:.35;
-
-}
-
-}
-
-@keyframes floatTwo{
-
-0%,100%{
-
-transform:translate(0,0);
-
-}
-
-50%{
-
-transform:translate(-12px,-15px);
-
-}
-
-}
-
-@keyframes floatThree{
-
-0%,100%{
-
-transform:translateY(0);
-
-}
-
-50%{
-
-transform:translateY(14px);
-
-}
+    animation:floatFive 7s infinite ease-in-out;
 
 }
 /*==================================================
@@ -668,21 +935,25 @@ transform:translateY(14px);
 
 .aarti-details{
 
+    position:relative;
+
     margin-top:35px;
 
     display:flex;
 
     flex-direction:column;
 
-    gap:16px;
+    gap:18px;
 
 }
 
 /*==================================================
-                INFO ROW
+            INFO ROW
 ==================================================*/
 
 .info-row{
+
+    position:relative;
 
     display:flex;
 
@@ -694,31 +965,135 @@ transform:translateY(14px);
 
     padding:18px 20px;
 
-    border-radius:18px;
+    border-radius:20px;
 
-    background:#ffffff;
+    background:
 
-    border:1px solid #f2f2f2;
+        linear-gradient(
+            180deg,
+            #ffffff,
+            #fffdfa
+        );
+
+    border:1px solid rgba(255,152,0,.10);
 
     box-shadow:
-        0 6px 15px rgba(0,0,0,.04);
 
-    transition:.35s;
+        0 8px 20px rgba(0,0,0,.04),
+
+        inset 0 1px 0 rgba(255,255,255,.9);
+
+    overflow:hidden;
 
     cursor:pointer;
 
+    transition:
+
+        transform .35s ease,
+
+        box-shadow .35s ease,
+
+        border-color .35s ease;
+
 }
+
+/* Left Orange Accent */
+
+.info-row::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    top:0;
+
+    width:5px;
+
+    height:100%;
+
+    border-radius:10px;
+
+    background:
+
+        linear-gradient(
+
+            180deg,
+
+            #ff9800,
+
+            #ff6b00
+
+        );
+
+    transform:scaleY(0);
+
+    transform-origin:top;
+
+    transition:.35s;
+
+}
+
+/* Shine */
+
+.info-row::after{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:-120%;
+
+    width:60%;
+
+    height:100%;
+
+    transform:skewX(-25deg);
+
+    background:
+
+        linear-gradient(
+
+            transparent,
+
+            rgba(255,255,255,.45),
+
+            transparent
+
+        );
+
+}
+
+/* Hover */
 
 .info-row:hover{
 
-    transform:translateX(8px);
+    transform:
 
-    background:#fff8ef;
+        translateX(8px)
+
+        scale(1.015);
 
     border-color:#ffd7ad;
 
     box-shadow:
-        0 15px 28px rgba(255,107,0,.12);
+
+        0 18px 35px rgba(255,107,0,.12);
+
+}
+
+.info-row:hover::before{
+
+    transform:scaleY(1);
+
+}
+
+.info-row:hover::after{
+
+    animation:rowShine .9s ease;
 
 }
 
@@ -744,17 +1119,17 @@ transform:translateY(14px);
 
 .info-icon{
 
-    width:52px;
+    width:54px;
 
-    height:52px;
+    height:54px;
 
-    border-radius:16px;
+    border-radius:18px;
 
     display:flex;
 
-    align-items:center;
-
     justify-content:center;
+
+    align-items:center;
 
     font-size:24px;
 
@@ -763,13 +1138,18 @@ transform:translateY(14px);
     background:
 
         linear-gradient(
+
             135deg,
+
             #ff9800,
+
             #ff6b00
+
         );
 
     box-shadow:
-        0 10px 20px rgba(255,152,0,.25);
+
+        0 12px 22px rgba(255,152,0,.25);
 
     transition:.35s;
 
@@ -777,37 +1157,37 @@ transform:translateY(14px);
 
 .info-row:hover .info-icon{
 
-    transform:rotate(-8deg) scale(1.08);
+    transform:
+
+        rotate(-8deg)
+
+        scale(1.1);
 
 }
 
 /*==================================================
-                TEXT
+                LABEL
 ==================================================*/
-
-.info-text{
-
-    display:flex;
-
-    flex-direction:column;
-
-}
 
 .info-label{
 
     font-size:12px;
 
-    font-weight:600;
-
     text-transform:uppercase;
 
-    color:#999;
-
     letter-spacing:1px;
+
+    font-weight:700;
+
+    color:#999;
 
     margin-bottom:4px;
 
 }
+
+/*==================================================
+                VALUE
+==================================================*/
 
 .info-value{
 
@@ -817,7 +1197,13 @@ transform:translateY(14px);
 
     color:#222;
 
-    line-height:1.4;
+    transition:.3s;
+
+}
+
+.info-row:hover .info-value{
+
+    color:#ff6b00;
 
 }
 
@@ -839,63 +1225,27 @@ transform:translateY(14px);
 
     font-weight:700;
 
-}
+    border:1px solid #ffd8b4;
 
-/*==================================================
-                DESCRIPTION
-==================================================*/
-
-.aarti-description{
-
-    margin-top:28px;
-
-    padding:22px;
-
-    border-radius:20px;
-
-    background:
-
-        linear-gradient(
-            180deg,
-            #fffdfb,
-            #fff8ef
-        );
-
-    border:1px solid #ffe3c4;
+    transition:.3s;
 
 }
 
-.aarti-description h4{
+.info-row:hover .info-chip{
 
-    margin:0 0 12px;
+    background:#ff6b00;
 
-    font-size:18px;
-
-    color:#ff6b00;
-
-    font-weight:700;
-
-}
-
-.aarti-description p{
-
-    margin:0;
-
-    font-size:15px;
-
-    color:#555;
-
-    line-height:1.9;
+    color:#fff;
 
 }
 
 /*==================================================
-            CARD ENTRY ANIMATION
+            ENTRY ANIMATION
 ==================================================*/
 
 .info-row{
 
-    animation:slideUp .5s ease both;
+    animation:slideFade .5s ease both;
 
 }
 
@@ -928,35 +1278,37 @@ animation-delay:.32s;
 animation-delay:.40s;
 
 }
-
-@keyframes slideUp{
-
-from{
-
-opacity:0;
-
-transform:translateY(20px);
-
-}
-
-to{
-
-opacity:1;
-
-transform:translateY(0);
-
-}
-
-}
 /*==================================================
                 LIVE STATUS
 ==================================================*/
 
 .aarti-status{
 
-    margin-top:30px;
+    margin-top:35px;
+
+    padding:22px;
+
+    border-radius:22px;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            #fffdfb,
+            #fff8f1
+        );
+
+    border:1px solid rgba(255,152,0,.12);
+
+    box-shadow:
+
+        0 10px 25px rgba(255,152,0,.08);
 
 }
+
+/*==================================================
+                STATUS TOP
+==================================================*/
 
 .status-top{
 
@@ -966,7 +1318,7 @@ transform:translateY(0);
 
     align-items:center;
 
-    margin-bottom:15px;
+    margin-bottom:18px;
 
 }
 
@@ -978,13 +1330,29 @@ transform:translateY(0);
 
     gap:10px;
 
+    color:#333;
+
     font-size:15px;
 
     font-weight:700;
 
-    color:#333;
+    letter-spacing:.3px;
 
 }
+
+.status-percent{
+
+    color:#ff6b00;
+
+    font-size:15px;
+
+    font-weight:700;
+
+}
+
+/*==================================================
+                LIVE DOT
+==================================================*/
 
 .live-dot{
 
@@ -994,21 +1362,29 @@ transform:translateY(0);
 
     border-radius:50%;
 
-    background:#ff5722;
+    background:#28c76f;
 
-    box-shadow:0 0 12px rgba(255,87,34,.45);
+    position:relative;
 
-    animation:livePulse 1.5s infinite;
+    box-shadow:
+
+        0 0 12px rgba(40,199,111,.5);
 
 }
 
-.status-percent{
+.live-dot::after{
 
-    font-size:15px;
+    content:"";
 
-    font-weight:700;
+    position:absolute;
 
-    color:#ff6b00;
+    inset:0;
+
+    border-radius:50%;
+
+    border:2px solid rgba(40,199,111,.5);
+
+    animation:liveRing 1.8s infinite;
 
 }
 
@@ -1018,11 +1394,13 @@ transform:translateY(0);
 
 .progress-bar{
 
+    position:relative;
+
     width:100%;
 
     height:12px;
 
-    border-radius:50px;
+    border-radius:30px;
 
     overflow:hidden;
 
@@ -1032,11 +1410,11 @@ transform:translateY(0);
 
 .progress-fill{
 
+    position:relative;
+
     height:100%;
 
-    width:75%;
-
-    border-radius:50px;
+    border-radius:30px;
 
     background:
 
@@ -1050,6 +1428,8 @@ transform:translateY(0);
 
             #ffd54f,
 
+            #ff9800,
+
             #ff6b00
 
         );
@@ -1058,43 +1438,41 @@ transform:translateY(0);
 
     animation:
 
-        gradientMove 3s linear infinite;
+        progressGradient 4s linear infinite;
 
 }
 
-@keyframes gradientMove{
+/* Moving Shine */
 
-0%{
+.progress-fill::after{
 
-background-position:0;
+    content:"";
 
-}
+    position:absolute;
 
-100%{
+    top:0;
 
-background-position:300%;
+    left:-35%;
 
-}
+    width:35%;
 
-}
+    height:100%;
 
-@keyframes livePulse{
+    background:
 
-0%,100%{
+        linear-gradient(
 
-transform:scale(1);
+            90deg,
 
-opacity:1;
+            transparent,
 
-}
+            rgba(255,255,255,.85),
 
-50%{
+            transparent
 
-transform:scale(1.3);
+        );
 
-opacity:.4;
-
-}
+    animation:progressShine 2s linear infinite;
 
 }
 
@@ -1104,11 +1482,11 @@ opacity:.4;
 
 .aarti-footer{
 
-    margin-top:32px;
+    margin-top:30px;
 
     padding-top:20px;
 
-    border-top:1px solid #eee;
+    border-top:1px solid rgba(255,152,0,.12);
 
     display:flex;
 
@@ -1116,9 +1494,9 @@ opacity:.4;
 
     align-items:center;
 
-    flex-wrap:wrap;
-
     gap:15px;
+
+    flex-wrap:wrap;
 
 }
 
@@ -1128,15 +1506,27 @@ opacity:.4;
 
     font-size:13px;
 
+    font-weight:500;
+
 }
 
 .footer-tag{
 
-    padding:8px 16px;
+    padding:9px 18px;
 
     border-radius:40px;
 
-    background:#fff5ea;
+    background:
+
+        linear-gradient(
+
+            135deg,
+
+            #fff5eb,
+
+            #ffe4c7
+
+        );
 
     color:#ff6b00;
 
@@ -1144,281 +1534,345 @@ opacity:.4;
 
     font-weight:700;
 
-}
-
-/*==================================================
-                HOVER EFFECTS
-==================================================*/
-
-.aarti-card:hover .footer-tag{
-
-    background:#ff6b00;
-
-    color:#fff;
+    border:1px solid #ffd3aa;
 
     transition:.35s;
 
 }
 
-.aarti-card:hover .progress-fill{
+.aarti-card:hover .footer-tag{
 
-    filter:brightness(1.08);
+    background:
+
+        linear-gradient(
+
+            135deg,
+
+            #ff9800,
+
+            #ff6b00
+
+        );
+
+    color:#fff;
+
+    transform:translateY(-2px);
+
+    box-shadow:
+
+        0 10px 20px rgba(255,152,0,.25);
+
+}
+
+/*==================================================
+            ANIMATIONS
+==================================================*/
+
+@keyframes progressGradient{
+
+    0%{
+
+        background-position:0%;
+
+    }
+
+    100%{
+
+        background-position:300%;
+
+    }
+
+}
+
+@keyframes progressShine{
+
+    0%{
+
+        left:-35%;
+
+    }
+
+    100%{
+
+        left:130%;
+
+    }
+
+}
+
+@keyframes liveRing{
+
+    0%{
+
+        transform:scale(1);
+
+        opacity:1;
+
+    }
+
+    100%{
+
+        transform:scale(2.5);
+
+        opacity:0;
+
+    }
+
+}
+/*==================================================
+        PREMIUM MICRO INTERACTIONS
+==================================================*/
+
+/* Smooth Rendering */
+
+.aarti-card,
+.info-row,
+.aarti-icon,
+.today-badge{
+
+    will-change:transform;
+
+    backface-visibility:hidden;
+
+}
+
+/*==================================================
+        CARD 3D HOVER
+==================================================*/
+
+.aarti-card{
+
+    transform-style:preserve-3d;
 
 }
 
 .aarti-card:hover{
 
-    transform:translateY(-10px) scale(1.01);
+    transform:
+
+        perspective(1200px)
+
+        rotateX(2deg)
+
+        rotateY(-2deg)
+
+        translateY(-8px);
 
 }
 
 /*==================================================
-                TABLET
+        TITLE HOVER
 ==================================================*/
-
-@media (max-width:992px){
-
-.aarti-card{
-
-max-width:100%;
-
-padding:34px;
-
-}
-
-.aarti-section .title{
-
-font-size:38px;
-
-}
-
-.aarti-icon{
-
-width:82px;
-
-height:82px;
-
-font-size:36px;
-
-}
 
 .aarti-card h3{
 
-font-size:30px;
+    transition:
+
+        color .35s,
+
+        letter-spacing .35s,
+
+        transform .35s;
 
 }
+
+.aarti-card:hover h3{
+
+    letter-spacing:1px;
+
+    transform:translateY(-2px);
 
 }
 
 /*==================================================
-                MOBILE
+        ICON POP
 ==================================================*/
 
-@media (max-width:768px){
+.info-row:hover .info-icon{
 
-.aarti-section{
-
-padding:70px 15px;
+    animation:iconPop .4s ease;
 
 }
 
-.aarti-section .title{
+/*==================================================
+        TODAY BADGE
+==================================================*/
 
-font-size:30px;
+.today-badge:hover{
 
-margin-bottom:40px;
+    transform:
 
-}
+        scale(1.06)
 
-.aarti-card{
-
-padding:24px 18px;
-
-border-radius:22px;
+        rotate(-2deg);
 
 }
 
-.today-badge{
+/*==================================================
+        GLASS REFLECTION
+==================================================*/
 
-position:static;
+.aarti-card::after{
 
-display:inline-flex;
-
-margin-bottom:18px;
-
-}
-
-.aarti-header{
-
-margin-bottom:25px;
+    backdrop-filter:blur(10px);
 
 }
 
-.aarti-icon{
-
-width:72px;
-
-height:72px;
-
-font-size:30px;
-
-border-radius:20px;
-
-}
-
-.aarti-card h3{
-
-font-size:24px;
-
-}
+/*==================================================
+        BUTTON FEEL
+==================================================*/
 
 .info-row{
 
-padding:14px;
-
-gap:12px;
+    user-select:none;
 
 }
 
-.info-icon{
+.info-row:active{
 
-width:44px;
+    transform:
 
-height:44px;
-
-font-size:20px;
-
-}
-
-.info-label{
-
-font-size:11px;
-
-}
-
-.info-value{
-
-font-size:15px;
-
-}
-
-.aarti-description{
-
-padding:18px;
-
-}
-
-.status-top{
-
-flex-direction:column;
-
-align-items:flex-start;
-
-gap:10px;
-
-}
-
-.aarti-footer{
-
-flex-direction:column;
-
-text-align:center;
-
-}
-
-.footer-tag{
-
-width:100%;
-
-justify-content:center;
-
-display:flex;
-
-}
+        scale(.98);
 
 }
 
 /*==================================================
-            SMALL MOBILE
+        SOFT PAGE ENTRY
 ==================================================*/
 
-@media (max-width:480px){
+.aarti-wrapper{
 
-.aarti-section{
+    animation:
 
-padding:55px 12px;
-
-}
-
-.aarti-section .title{
-
-font-size:26px;
+        sectionFade .8s ease;
 
 }
 
-.aarti-card{
-
-padding:18px 14px;
-
-}
-
-.aarti-icon{
-
-width:64px;
-
-height:64px;
-
-font-size:26px;
-
-}
-
-.aarti-card h3{
-
-font-size:21px;
-
-}
-
-.info-row{
-
-flex-direction:column;
-
-align-items:flex-start;
-
-}
-
-.info-left{
-
-width:100%;
-
-}
-
-.info-chip{
-
-width:100%;
-
-text-align:center;
-
-}
+/*==================================================
+        STATUS GLOW
+==================================================*/
 
 .status-percent{
 
-font-size:14px;
+    text-shadow:
 
-}
+        0 0 8px rgba(255,107,0,.18);
 
 }
 
 /*==================================================
-            REDUCED MOTION
+        PARTICLE BLUR
 ==================================================*/
 
-@media (prefers-reduced-motion:reduce){
+.particle{
 
-*{
+    filter:blur(.5px);
 
-animation:none !important;
+}
 
-transition:none !important;
+/*==================================================
+        PREMIUM SCROLLBAR
+==================================================*/
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#f8f8f8;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:
+
+        linear-gradient(
+
+            #ff9800,
+
+            #ff6b00
+
+        );
+
+    border-radius:30px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:
+
+        linear-gradient(
+
+            #ff6b00,
+
+            #ff9800
+
+        );
+
+}
+
+/*==================================================
+        SELECTION
+==================================================*/
+
+::selection{
+
+    background:#ff9800;
+
+    color:#fff;
+
+}
+
+/*==================================================
+        ANIMATIONS
+==================================================*/
+
+@keyframes sectionFade{
+
+from{
+
+opacity:0;
+
+transform:
+
+translateY(30px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:
+
+translateY(0);
+
+}
+
+}
+
+@keyframes iconPop{
+
+0%{
+
+transform:scale(.9);
+
+}
+
+50%{
+
+transform:scale(1.15);
+
+}
+
+100%{
+
+transform:scale(1);
 
 }
 

@@ -14,6 +14,8 @@ import Complaint from "./pages/Complaint";
 import PrintVolunteer from "./pages/PrintVolunteer";
 import UserRegister from "./pages/UserRegister";
 import AdminRegister from "./pages/AdminRegister";
+import UserLogin from "./pages/UserLogin";
+import UserProfile from "./pages/UserProfile";
 
 // ================= COMPONENTS =================
 
@@ -35,7 +37,7 @@ import ComplaintManagement from "./admin/ComplaintManagement";
 import UnderConstruction from "./admin/UnderConstruction";
 import ChangePassword from "./admin/ChangePassword";
 import OnlineDonation from "./pages/Donation/OnlineDonation";
-
+import UserManagement from "./admin/UserManagement";
 
 function App() {
   return (
@@ -108,6 +110,9 @@ function App() {
         element={<Login />}
       />
 
+<Route path="/user-login" element={<UserLogin />} />
+
+<Route path="/profile" element={<UserProfile />} />
       {/* ================= MEETING ================= */}
 
       <Route
@@ -174,7 +179,7 @@ function App() {
 
       <Route
         path="/admin/users"
-        element={<UnderConstruction />}
+        element={<UserManagement />}
       />
 
       <Route
