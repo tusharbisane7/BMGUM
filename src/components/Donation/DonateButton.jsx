@@ -6,9 +6,12 @@ function DonateButton({
   setShowSuccess,
   setSuccessData,
 }) {
+
   const [loading, setLoading] = useState(false);
 
+
   const validateForm = () => {
+
     if (!formData.fullName.trim()) {
       alert("Please enter your full name.");
       return false;
@@ -42,115 +45,135 @@ function DonateButton({
     return true;
   };
 
+
   const handleDonate = async () => {
+
     if (!validateForm()) return;
+
 
     setLoading(true);
 
+
     try {
-      const { data } = await axios.post(
-        "https://bmgum.onrender.com/api/payment/create-order",
+
+      const token = localStorage.getItem("token");
+
+
+      const response = await axios.post(
+
+        "https://bmgum.onrender.com/api/payment/verify-payment",
+
         {
-          amount: Number(formData.amount),
+          donor: formData,
+        },
+
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
+
       );
 
-      const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY,
 
-        amount: data.amount,
-        currency: data.currency,
-        order_id: data.id,
+      if (response.data.success) {
 
-        name: "बाल मित्र गणेश उत्सव मंडळ",
-        description: "Online Donation",
 
-        image: "/logo.png",
+        setSuccessData({
 
-        prefill: {
-          name: formData.fullName,
-          contact: formData.mobile,
-        },
+          receiptNo: response.data.receiptNo,
 
-        notes: {
-          marathiName: formData.marathiName,
-          address: formData.address,
-          purpose: formData.purpose,
-        },
+          paymentId: response.data.paymentId,
 
-        theme: {
-          color: "#ff6b00",
-        },
+          amount: formData.amount,
 
-        modal: {
-          ondismiss: () => {
-            setLoading(false);
-          },
-        },
+          donor: formData.fullName,
 
-        handler: async function (response) {
-          try {
-            const verify = await axios.post(
-              "https://bmgum.onrender.com/api/payment/verify-payment",
-              {
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
-                donor: formData,
-              }
-            );
+          pdfUrl: response.data.pdfUrl,
 
-            if (verify.data.success) {
-             setSuccessData({
-  receiptNo: verify.data.receiptNo,
-  paymentId: verify.data.paymentId,
-  amount: formData.amount,
-  donor: formData.fullName,
-  pdfUrl: verify.data.pdfUrl,
-});
+        });
 
-              setShowSuccess(true);
-            } else {
-              alert("Payment Verification Failed.");
-            }
-          } catch (err) {
-  console.error(err);
 
-  alert(
-    err.response?.data?.message ||
-    err.response?.data?.error ||
-    err.message
-  );
-}
-        },
-      };
+        setShowSuccess(true);
 
-      const razorpay = new window.Razorpay(options);
 
-      razorpay.open();
-    } catch (err) {
+      } 
+      else {
+
+        alert("Donation Failed");
+
+      }
+
+
+    } 
+    catch (err) {
+
+
       console.error(err);
-      alert("Unable to initiate payment.");
+
+
+      alert(
+
+        err.response?.data?.message ||
+
+        err.response?.data?.error ||
+
+        "Unable to save donation"
+
+      );
+
+
+    } 
+    finally {
+
+
       setLoading(false);
+
+
     }
+
   };
 
+
   return (
+
     <button
+
       className="donate-btn"
+
       onClick={handleDonate}
+
       disabled={loading}
+
     >
-      {loading ? (
-        <>
-          <span className="spinner"></span>
-          Processing...
-        </>
-      ) : (
-        <>❤️ Donate ₹{formData.amount || 0}</>
-      )}
+
+      {
+
+        loading ? (
+
+          <>
+
+            <span className="spinner"></span>
+
+            Processing...
+
+          </>
+
+        ) : (
+
+          <>
+            ❤️ Donate ₹{formData.amount || 0}
+          </>
+
+        )
+
+      }
+
     </button>
+
   );
+
 }
+
 
 export default DonateButton;

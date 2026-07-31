@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import "./../styles/myDonations.css";
 
+import "../styles/myDonations.css";
 function MyDonations() {
 
     const [donations, setDonations] = useState([]);

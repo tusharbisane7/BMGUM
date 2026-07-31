@@ -4,11 +4,14 @@ import DonationSummary from "./DonationSummary";
 import DonateButton from "./DonateButton";
 import SuccessModal from "./SuccessModal";
 
+// Get logged-in user from localStorage
+const user = JSON.parse(localStorage.getItem("user"));
+
 const initialFormData = {
-  fullName: "",
+  fullName: user?.full_name || "",
   marathiName: "",
-  mobile: "",
-  address: "",
+  mobile: user?.mobile || "",
+  address: user?.address || "",
   amount: "",
   purpose: "General Donation",
   agree: false,
@@ -24,6 +27,7 @@ function DonationForm() {
     paymentId: "",
     amount: "",
     donor: "",
+    pdfUrl: "",
   });
 
   const handleChange = (e) => {
@@ -45,13 +49,20 @@ function DonationForm() {
   const closeSuccessModal = () => {
     setShowSuccess(false);
 
-    setFormData(initialFormData);
+    setFormData({
+      ...initialFormData,
+      marathiName: "",
+      amount: "",
+      purpose: "General Donation",
+      agree: false,
+    });
 
     setSuccessData({
       receiptNo: "",
       paymentId: "",
       amount: "",
       donor: "",
+      pdfUrl: "",
     });
   };
 
@@ -63,17 +74,20 @@ function DonationForm() {
         <div className="donation-form-card">
           <h2>👤 Donor Information</h2>
 
+          {/* Full Name */}
+
           <div className="form-group">
-            <label>Full Name (English) *</label>
+            <label>Full Name (English)</label>
 
             <input
               type="text"
               name="fullName"
-              placeholder="Enter your full name"
               value={formData.fullName}
-              onChange={handleChange}
+              readOnly
             />
           </div>
+
+          {/* Marathi Name */}
 
           <div className="form-group">
             <label>मराठी नाव *</label>
@@ -87,30 +101,33 @@ function DonationForm() {
             />
           </div>
 
+          {/* Mobile */}
+
           <div className="form-group">
-            <label>📱 Mobile Number *</label>
+            <label>📱 Mobile Number</label>
 
             <input
               type="tel"
               name="mobile"
-              maxLength={10}
-              placeholder="9876543210"
               value={formData.mobile}
-              onChange={handleChange}
+              readOnly
             />
           </div>
 
+          {/* Address */}
+
           <div className="form-group">
-            <label>🏠 Address *</label>
+            <label>🏠 Address</label>
 
             <textarea
               rows={4}
               name="address"
-              placeholder="Enter your complete address"
               value={formData.address}
-              onChange={handleChange}
+              readOnly
             />
           </div>
+
+          {/* Amount */}
 
           <div className="form-group">
             <label>💰 Donation Amount *</label>
@@ -128,6 +145,8 @@ function DonationForm() {
               onSelect={handleAmountSelect}
             />
           </div>
+
+          {/* Purpose */}
 
           <div className="form-group">
             <label>Donation Purpose</label>
@@ -162,6 +181,8 @@ function DonationForm() {
               </option>
             </select>
           </div>
+
+          {/* Terms */}
 
           <div className="checkbox-row">
             <input

@@ -1,114 +1,284 @@
 const express = require("express");
-const crypto = require("crypto");
-const razorpay = require("../config/razorpay");
+const jwt = require("jsonwebtoken");
+
+const pool = require("../config/neon");
 const generateReceiptPDF = require("../utils/generateReceiptPDF");
 
 const router = express.Router();
 
+
 /* =====================================
-   CREATE ORDER
+   CREATE ORDER (TEMPORARY)
+   Razorpay disabled
 ===================================== */
 
 router.post("/create-order", async (req, res) => {
+
   try {
+
     const { amount } = req.body;
 
-    if (!amount || amount <= 0) {
+
+    if (!amount || Number(amount) <= 0) {
+
       return res.status(400).json({
-        success: false,
-        message: "Invalid Amount",
+
+        success:false,
+
+        message:"Invalid Amount"
+
       });
+
     }
 
-    const options = {
-      amount: Number(amount) * 100,
-      currency: "INR",
-      receipt: "DONATION_" + Date.now(),
-    };
-
-    const order = await razorpay.orders.create(options);
-
-    res.json(order);
-  } catch (err) {
-    console.log(err);
-
-    res.status(500).json({
-      success: false,
-      message: "Unable to create Razorpay Order",
-    });
-  }
-});
-
-/* =====================================
-   VERIFY PAYMENT
-===================================== */
-
-router.post("/verify-payment", async (req, res) => {
-  try {
-    const {
-      razorpay_order_id,
-      razorpay_payment_id,
-      razorpay_signature,
-      donor,
-    } = req.body;
-
-    const body = razorpay_order_id + "|" + razorpay_payment_id;
-
-    const expectedSignature = crypto
-      .createHmac("sha256", process.env.RAZORPAY_SECRET)
-      .update(body)
-      .digest("hex");
-
-    if (expectedSignature !== razorpay_signature) {
-      return res.status(400).json({
-        success: false,
-        message: "Payment Verification Failed",
-      });
-    }
-
-    console.log("✅ Payment Verified");
-
-    const receiptNo =
-      "BMGM-" +
-      new Date().getFullYear() +
-      "-" +
-      Date.now();
-
-    const donation = {
-      receiptNo,
-      paymentId: razorpay_payment_id,
-      fullName: donor.fullName,
-      marathiName: donor.marathiName,
-      mobile: donor.mobile,
-      address: donor.address,
-      purpose: donor.purpose,
-      amount: donor.amount,
-    };
-
-    // Generate PDF Receipt
-    const pdfFile = generateReceiptPDF(donation);
-
-    console.log("✅ Receipt Generated:", pdfFile);
 
     res.json({
-      success: true,
-      message: "Payment Verified Successfully",
 
-      receiptNo,
+      success:true,
 
-      paymentId: razorpay_payment_id,
+      amount:Number(amount),
 
-      pdfUrl: `https://bmgum.onrender.com/receipts/${pdfFile}`,
+      message:"Test order created"
+
     });
-  } catch (err) {
+
+
+  } catch(err){
+
     console.log(err);
 
     res.status(500).json({
-      success: false,
-      message: "Server Error",
-      error: err.message,
+
+      success:false,
+
+      message:"Server Error"
+
     });
+
   }
+
 });
+
+
+
+/* =====================================
+   VERIFY PAYMENT (TEMP DIRECT SAVE)
+
+   No Razorpay verification
+===================================== */
+
+router.post("/verify-payment", async (req,res)=>{
+
+
+  try {
+
+
+    const token =
+      req.headers.authorization?.split(" ")[1];
+
+
+    if(!token){
+
+      return res.status(401).json({
+
+        success:false,
+
+        message:"Unauthorized"
+
+      });
+
+    }
+
+
+
+    const decoded = jwt.verify(
+
+      token,
+
+      process.env.JWT_SECRET
+
+    );
+
+
+
+    const { donor } = req.body;
+
+
+
+    if(!donor){
+
+      return res.status(400).json({
+
+        success:false,
+
+        message:"Donor data missing"
+
+      });
+
+    }
+
+
+
+    const receiptNo =
+
+      "BMGM-" +
+
+      new Date().getFullYear() +
+
+      "-" +
+
+      Date.now();
+
+
+
+    console.log(
+      "Saving Donation:",
+      donor
+    );
+
+
+    console.log(
+      "User:",
+      decoded
+    );
+
+
+
+    // SAVE DONATION
+
+    await pool.query(
+
+      `
+      INSERT INTO donations
+      (
+        user_id,
+        donorname,
+        mobile,
+        amount,
+        payment_id,
+        payment_status,
+        receipt,
+        createdat
+      )
+
+      VALUES
+      ($1,$2,$3,$4,$5,$6,$7,NOW())
+
+      `,
+
+      [
+
+        decoded.id,
+
+        donor.fullName,
+
+        donor.mobile,
+
+        donor.amount,
+
+        "TEST_PAYMENT",
+
+        "Success",
+
+        receiptNo
+
+      ]
+
+    );
+
+
+
+    const donation = {
+
+
+      receiptNo,
+
+
+      paymentId:"TEST_PAYMENT",
+
+
+      fullName:donor.fullName,
+
+
+      marathiName:donor.marathiName,
+
+
+      mobile:donor.mobile,
+
+
+      address:donor.address,
+
+
+      purpose:donor.purpose,
+
+
+      amount:donor.amount
+
+
+    };
+
+
+
+    const pdfFile =
+      generateReceiptPDF(donation);
+
+
+
+    res.json({
+
+
+      success:true,
+
+
+      message:"Donation Saved Successfully",
+
+
+      receiptNo,
+
+
+      paymentId:"TEST_PAYMENT",
+
+
+      pdfUrl:
+
+      `https://bmgum.onrender.com/receipts/${pdfFile}`
+
+
+    });
+
+
+
+  }
+
+  catch(err){
+
+
+    console.log(
+      "PAYMENT ERROR:",
+      err
+    );
+
+
+    res.status(500).json({
+
+
+      success:false,
+
+
+      message:"Server Error",
+
+
+      error:err.message
+
+
+    });
+
+
+  }
+
+
+});
+
+
 
 module.exports = router;
