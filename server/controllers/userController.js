@@ -9,7 +9,9 @@ const checkUsername = async (req, res) => {
 
     try {
 
-        const username = req.params.username.trim().toLowerCase();
+        const username = req.params.username
+            .trim()
+            .toLowerCase();
 
         if (!username) {
 
@@ -25,7 +27,7 @@ const checkUsername = async (req, res) => {
 
         const result = await pool.query(
 
-            "SELECT username FROM users WHERE username=$1",
+            "SELECT username FROM users WHERE username = $1",
 
             [username]
 
@@ -80,10 +82,10 @@ const checkUsername = async (req, res) => {
 };
 
 
+
 /* ==========================================================
    REGISTER USER
 ========================================================== */
-
 const registerUser = async (req, res) => {
 
     try {
@@ -132,9 +134,13 @@ const registerUser = async (req, res) => {
 
         const check = await pool.query(
 
-            "SELECT id FROM users WHERE username=$1",
+            "SELECT id FROM users WHERE username = $1",
 
-            [username.toLowerCase()]
+            [
+
+                username.toLowerCase()
+
+            ]
 
         );
 
@@ -150,8 +156,15 @@ const registerUser = async (req, res) => {
 
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
-                const result = await pool.query(
+        const hashedPassword = await bcrypt.hash(
+
+            password,
+
+            10
+
+        );
+
+        const result = await pool.query(
 
             `INSERT INTO users
             (
@@ -164,16 +177,24 @@ const registerUser = async (req, res) => {
                 role
             )
             VALUES
-            ($1,$2,$3,$4,$5,$6,$7)
+            (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7
+            )
             RETURNING
-            id,
-            full_name,
-            username,
-            age,
-            mobile,
-            address,
-            role,
-            created_at`,
+                id,
+                full_name,
+                username,
+                age,
+                mobile,
+                address,
+                role,
+                created_at`,
 
             [
 
@@ -183,7 +204,7 @@ const registerUser = async (req, res) => {
 
                 hashedPassword,
 
-                age,
+                age || null,
 
                 mobile,
 
@@ -209,29 +230,36 @@ const registerUser = async (req, res) => {
 
     catch (err) {
 
-    console.error("REGISTER ERROR:");
-    console.error(err);
+        console.error("REGISTER ERROR");
 
-    return res.status(500).json({
-        success:false,
-        message: err.message,
-        error: err
-    });
+        console.error(err);
 
+        return res.status(500).json({
 
+            success: false,
+
+            message: err.message,
+
+            error: err
+
+        });
 
     }
 
 };
 
 
+
+/* ==========================================================
+   GET ALL USERS
+========================================================== */
 /* ==========================================================
    GET ALL USERS
 ========================================================== */
 
-const getUsers = async(req,res)=>{
+const getUsers = async (req, res) => {
 
-    try{
+    try {
 
         const result = await pool.query(
 
@@ -249,17 +277,19 @@ const getUsers = async(req,res)=>{
 
         );
 
-        return res.json(result.rows);
+        return res.status(200).json(result.rows);
 
     }
 
-    catch(err){
+    catch (err) {
 
         console.error(err);
 
         return res.status(500).json({
 
-            message:"Internal Server Error"
+            success: false,
+
+            message: "Internal Server Error"
 
         });
 
@@ -268,13 +298,19 @@ const getUsers = async(req,res)=>{
 };
 
 
+
+/* ==========================================================
+   GET USER BY ID
+========================================================== */
 /* ==========================================================
    GET USER BY ID
 ========================================================== */
 
-const getUserById = async(req,res)=>{
+const getUserById = async (req, res) => {
 
-    try{
+    try {
+
+        const { id } = req.params;
 
         const result = await pool.query(
 
@@ -288,83 +324,9 @@ const getUserById = async(req,res)=>{
                 role,
                 created_at
              FROM users
-             WHERE id=$1`,
+             WHERE id = $1`,
 
-            [req.params.id]
-
-        );
-
-        if(result.rows.length===0){
-
-            return res.status(404).json({
-
-                message:"User not found"
-
-            });
-
-        }
-
-        return res.json(result.rows[0]);
-
-    }
-
-    catch(err){
-
-        console.error(err);
-
-        return res.status(500).json({
-
-            message:"Internal Server Error"
-
-        });
-
-    }
-
-};
-/* ==========================================================
-   UPDATE USER
-========================================================== */
-
-const updateUser = async (req, res) => {
-
-    try {
-
-        const {
-            fullName,
-            age,
-            mobile,
-            address,
-            role
-        } = req.body;
-
-        const result = await pool.query(
-
-            `UPDATE users
-             SET
-                full_name = $1,
-                age = $2,
-                mobile = $3,
-                address = $4,
-                role = $5
-             WHERE id = $6
-             RETURNING
-                id,
-                full_name,
-                username,
-                age,
-                mobile,
-                address,
-                role,
-                created_at`,
-
-            [
-                fullName,
-                age,
-                mobile,
-                address,
-                role,
-                req.params.id
-            ]
+            [id]
 
         );
 
@@ -380,11 +342,125 @@ const updateUser = async (req, res) => {
 
         }
 
-        return res.json({
+        return res.status(200).json(result.rows[0]);
+
+    }
+
+    catch (err) {
+
+        console.error(err);
+
+        return res.status(500).json({
+
+            success: false,
+
+            message: "Internal Server Error"
+
+        });
+
+    }
+
+};
+
+
+
+/* ==========================================================
+   UPDATE USER
+========================================================== */
+/* ==========================================================
+   UPDATE USER
+========================================================== */
+
+const updateUser = async (req, res) => {
+
+    try {
+
+        const { id } = req.params;
+
+        const {
+
+            full_name,
+
+            mobile,
+
+            age,
+
+            address
+
+        } = req.body;
+
+        if (
+
+            !full_name ||
+
+            !mobile ||
+
+            !address
+
+        ) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message: "Please fill all required fields."
+
+            });
+
+        }
+
+        const result = await pool.query(
+
+            `UPDATE users
+             SET
+                full_name = $1,
+                mobile = $2,
+                age = $3,
+                address = $4
+             WHERE id = $5
+             RETURNING
+                id,
+                full_name,
+                username,
+                age,
+                mobile,
+                address,
+                role,
+                created_at`,
+
+            [
+
+                full_name,
+
+                mobile,
+
+                age || null,
+
+                address,
+
+                id
+
+            ]
+
+        );
+
+        if (result.rows.length === 0) {
+
+            return res.status(404).json({
+
+                success: false,
+
+                message: "User not found."
+
+            });
+
+        }
+
+        return res.status(200).json({
 
             success: true,
 
-            message: "User updated successfully.",
+            message: "Profile updated successfully.",
 
             user: result.rows[0]
 
@@ -409,6 +485,10 @@ const updateUser = async (req, res) => {
 };
 
 
+
+/* ==========================================================
+   DELETE USER
+========================================================== */
 /* ==========================================================
    DELETE USER
 ========================================================== */
@@ -417,11 +497,19 @@ const deleteUser = async (req, res) => {
 
     try {
 
+        const { id } = req.params;
+
         const result = await pool.query(
 
-            "DELETE FROM users WHERE id=$1 RETURNING id",
+            `DELETE FROM users
+             WHERE id = $1
+             RETURNING id`,
 
-            [req.params.id]
+            [
+
+                id
+
+            ]
 
         );
 
@@ -431,13 +519,13 @@ const deleteUser = async (req, res) => {
 
                 success: false,
 
-                message: "User not found"
+                message: "User not found."
 
             });
 
         }
 
-        return res.json({
+        return res.status(200).json({
 
             success: true,
 
@@ -464,6 +552,10 @@ const deleteUser = async (req, res) => {
 };
 
 
+
+/* ==========================================================
+   RESET PASSWORD
+========================================================== */
 /* ==========================================================
    RESET PASSWORD
 ========================================================== */
@@ -473,6 +565,8 @@ const resetPassword = async (req, res) => {
     try {
 
         const { password } = req.body;
+
+        const { id } = req.params;
 
         if (!password) {
 
@@ -486,18 +580,28 @@ const resetPassword = async (req, res) => {
 
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(
+
+            password,
+
+            10
+
+        );
 
         const result = await pool.query(
 
             `UPDATE users
-             SET password = $1
+             SET
+                password = $1
              WHERE id = $2
              RETURNING id`,
 
             [
+
                 hashedPassword,
-                req.params.id
+
+                id
+
             ]
 
         );
@@ -508,13 +612,13 @@ const resetPassword = async (req, res) => {
 
                 success: false,
 
-                message: "User not found"
+                message: "User not found."
 
             });
 
         }
 
-        return res.json({
+        return res.status(200).json({
 
             success: true,
 
@@ -524,21 +628,21 @@ const resetPassword = async (req, res) => {
 
     }
 
-    catch (err) {
+  catch (err) {
 
-        console.error(err);
+    console.error("UPDATE USER ERROR");
+    console.error(err);
 
-        return res.status(500).json({
+    return res.status(500).json({
+        success: false,
+        message: err.message,
+        error: err
+    });
 
-            success: false,
-
-            message: "Internal Server Error"
-
-        });
-
-    }
+}
 
 };
+
 
 
 /* ==========================================================

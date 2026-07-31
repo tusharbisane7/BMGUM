@@ -41,7 +41,7 @@
 .circle1{
   width:280px;
   height:280px;
-  background:#ff9800;
+  
   top:-60px;
   left:-60px;
 }
@@ -49,7 +49,7 @@
 .circle2{
   width:220px;
   height:220px;
-  background:#ff5722;
+
   bottom:-40px;
   right:-40px;
 }
@@ -57,7 +57,7 @@
 .circle3{
   width:170px;
   height:170px;
-  background:#ffc107;
+  
   top:40%;
   right:12%;
 }
@@ -162,7 +162,7 @@ transform:scale(1);
 
 font-size:26px;
 font-weight:700;
-color:#bf360c;
+color:#664040;
 
 margin-bottom:8px;
 
@@ -172,7 +172,7 @@ margin-bottom:8px;
 
 font-size:22px;
 
-color:#ff6f00;
+color:#0c441e;
 
 margin-bottom:10px;
 
