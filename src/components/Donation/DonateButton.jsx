@@ -13,118 +13,348 @@ function DonateButton({
   const validateForm = () => {
 
     if (!formData.fullName.trim()) {
+
       alert("Please enter your full name.");
       return false;
+
     }
+
 
     if (!formData.marathiName.trim()) {
+
       alert("Please enter your Marathi name.");
       return false;
+
     }
+
 
     if (!/^[6-9]\d{9}$/.test(formData.mobile)) {
-      alert("Please enter a valid 10-digit mobile number.");
+
+      alert("Please enter valid 10 digit mobile number.");
       return false;
+
     }
+
 
     if (!formData.address.trim()) {
+
       alert("Please enter your address.");
       return false;
+
     }
+
 
     if (!formData.amount || Number(formData.amount) < 1) {
-      alert("Please enter a valid donation amount.");
+
+      alert("Please enter valid donation amount.");
       return false;
+
     }
+
 
     if (!formData.agree) {
+
       alert("Please accept Terms & Conditions.");
       return false;
+
     }
 
+
     return true;
+
   };
+
 
 
   const handleDonate = async () => {
 
+
     if (!validateForm()) return;
+
+
+    const token = localStorage.getItem("token");
+
+
+    if (!token) {
+
+      alert("Please login first for online donation.");
+
+      return;
+
+    }
+
 
 
     setLoading(true);
 
 
+
     try {
 
-      const token = localStorage.getItem("token");
 
+      // CREATE RAZORPAY ORDER
 
-      const response = await axios.post(
+      const { data } = await axios.post(
 
-        "https://bmgum.onrender.com/api/payment/verify-payment",
-
-        {
-          donor: formData,
-        },
+        "https://bmgum.onrender.com/api/payment/create-order",
 
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          amount:Number(formData.amount)
         }
 
       );
 
 
-      if (response.data.success) {
+
+      const options = {
 
 
-        setSuccessData({
-
-          receiptNo: response.data.receiptNo,
-
-          paymentId: response.data.paymentId,
-
-          amount: formData.amount,
-
-          donor: formData.fullName,
-
-          pdfUrl: response.data.pdfUrl,
-
-        });
+        key:
+          import.meta.env.VITE_RAZORPAY_KEY,
 
 
-        setShowSuccess(true);
+        amount:
+          data.amount,
 
 
-      } 
-      else {
-
-        alert("Donation Failed");
-
-      }
+        currency:
+          data.currency,
 
 
-    } 
-    catch (err) {
+        order_id:
+          data.id,
 
 
-      console.error(err);
+
+        name:
+          "बाल मित्र गणेश उत्सव मंडळ",
+
+
+
+        description:
+          "Online Donation",
+
+
+
+        image:
+          "/logo.png",
+
+
+
+        prefill:{
+
+          name:
+            formData.fullName,
+
+
+          contact:
+            formData.mobile
+
+        },
+
+
+
+        notes:{
+
+          marathiName:
+            formData.marathiName,
+
+
+          address:
+            formData.address,
+
+
+          purpose:
+            formData.purpose
+
+        },
+
+
+
+        theme:{
+
+          color:"#ff6b00"
+
+        },
+
+
+
+        modal:{
+
+          ondismiss:()=>{
+
+            setLoading(false);
+
+          }
+
+        },
+
+
+
+        handler: async function(response){
+
+
+          try{
+
+
+            // VERIFY PAYMENT
+
+            const verify = await axios.post(
+
+
+              "https://bmgum.onrender.com/api/payment/verify-payment",
+
+
+              {
+
+
+                razorpay_order_id:
+                  response.razorpay_order_id,
+
+
+                razorpay_payment_id:
+                  response.razorpay_payment_id,
+
+
+                razorpay_signature:
+                  response.razorpay_signature,
+
+
+                donor:
+                  formData
+
+
+              },
+
+
+              {
+
+
+                headers:{
+
+
+                  Authorization:
+                  `Bearer ${token}`
+
+
+                }
+
+
+              }
+
+
+            );
+
+
+
+            if(verify.data.success){
+
+
+
+              setSuccessData({
+
+                receiptNo:
+                  verify.data.receiptNo,
+
+
+                paymentId:
+                  verify.data.paymentId,
+
+
+                amount:
+                  formData.amount,
+
+
+                donor:
+                  formData.fullName,
+
+
+                pdfUrl:
+                  verify.data.pdfUrl
+
+
+              });
+
+
+
+              setShowSuccess(true);
+
+
+
+            }
+
+            else{
+
+
+              alert(
+                "Payment verification failed"
+              );
+
+
+            }
+
+
+
+          }
+
+          catch(err){
+
+
+            console.log(err);
+
+
+            alert(
+
+              err.response?.data?.message ||
+
+              "Payment verification error"
+
+            );
+
+
+          }
+
+
+          finally{
+
+
+            setLoading(false);
+
+
+          }
+
+
+        }
+
+
+      };
+
+
+
+      const razorpay =
+        new window.Razorpay(options);
+
+
+
+      razorpay.open();
+
+
+
+    }
+
+    catch(err){
+
+
+      console.log(err);
 
 
       alert(
 
         err.response?.data?.message ||
 
-        err.response?.data?.error ||
-
-        "Unable to save donation"
+        "Unable to start payment"
 
       );
-
-
-    } 
-    finally {
 
 
       setLoading(false);
@@ -132,7 +362,9 @@ function DonateButton({
 
     }
 
+
   };
+
 
 
   return (
@@ -149,7 +381,9 @@ function DonateButton({
 
       {
 
-        loading ? (
+        loading ?
+
+        (
 
           <>
 
@@ -159,7 +393,11 @@ function DonateButton({
 
           </>
 
-        ) : (
+        )
+
+        :
+
+        (
 
           <>
             ❤️ Donate ₹{formData.amount || 0}
@@ -168,6 +406,7 @@ function DonateButton({
         )
 
       }
+
 
     </button>
 

@@ -1,6 +1,8 @@
 const express = require("express");
+const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 
+const razorpay = require("../config/razorpay");
 const pool = require("../config/neon");
 const generateReceiptPDF = require("../utils/generateReceiptPDF");
 
@@ -8,8 +10,7 @@ const router = express.Router();
 
 
 /* =====================================
-   CREATE ORDER (TEMPORARY)
-   Razorpay disabled
+   CREATE RAZORPAY ORDER
 ===================================== */
 
 router.post("/create-order", async (req, res) => {
@@ -24,7 +25,6 @@ router.post("/create-order", async (req, res) => {
       return res.status(400).json({
 
         success:false,
-
         message:"Invalid Amount"
 
       });
@@ -32,26 +32,37 @@ router.post("/create-order", async (req, res) => {
     }
 
 
-    res.json({
+    const options = {
 
-      success:true,
+      amount:Number(amount) * 100,
 
-      amount:Number(amount),
+      currency:"INR",
 
-      message:"Test order created"
+      receipt:"DONATION_" + Date.now()
 
-    });
+    };
 
 
-  } catch(err){
+    const order =
+      await razorpay.orders.create(options);
+
+
+
+    res.json(order);
+
+
+  }
+
+  catch(err){
 
     console.log(err);
+
 
     res.status(500).json({
 
       success:false,
 
-      message:"Server Error"
+      message:"Unable to create order"
 
     });
 
@@ -61,13 +72,12 @@ router.post("/create-order", async (req, res) => {
 
 
 
-/* =====================================
-   VERIFY PAYMENT (TEMP DIRECT SAVE)
 
-   No Razorpay verification
+/* =====================================
+   VERIFY RAZORPAY PAYMENT
 ===================================== */
 
-router.post("/verify-payment", async (req,res)=>{
+router.post("/verify-payment", async(req,res)=>{
 
 
   try {
@@ -75,6 +85,7 @@ router.post("/verify-payment", async (req,res)=>{
 
     const token =
       req.headers.authorization?.split(" ")[1];
+
 
 
     if(!token){
@@ -91,29 +102,58 @@ router.post("/verify-payment", async (req,res)=>{
 
 
 
-    const decoded = jwt.verify(
-
-      token,
-
-      process.env.JWT_SECRET
-
-    );
+    const decoded =
+      jwt.verify(
+        token,
+        process.env.JWT_SECRET
+      );
 
 
 
-    const { donor } = req.body;
+    const {
+
+      razorpay_order_id,
+
+      razorpay_payment_id,
+
+      razorpay_signature,
+
+      donor
+
+
+    } = req.body;
 
 
 
-    if(!donor){
+    const body =
+      razorpay_order_id +
+      "|" +
+      razorpay_payment_id;
+
+
+
+    const expectedSignature =
+      crypto
+      .createHmac(
+        "sha256",
+        process.env.RAZORPAY_SECRET
+      )
+      .update(body)
+      .digest("hex");
+
+
+
+    if(expectedSignature !== razorpay_signature){
+
 
       return res.status(400).json({
 
         success:false,
 
-        message:"Donor data missing"
+        message:"Payment Verification Failed"
 
       });
+
 
     }
 
@@ -131,20 +171,7 @@ router.post("/verify-payment", async (req,res)=>{
 
 
 
-    console.log(
-      "Saving Donation:",
-      donor
-    );
-
-
-    console.log(
-      "User:",
-      decoded
-    );
-
-
-
-    // SAVE DONATION
+    // SAVE ONLY AFTER VERIFIED PAYMENT
 
     await pool.query(
 
@@ -162,6 +189,7 @@ router.post("/verify-payment", async (req,res)=>{
       )
 
       VALUES
+
       ($1,$2,$3,$4,$5,$6,$7,NOW())
 
       `,
@@ -176,7 +204,7 @@ router.post("/verify-payment", async (req,res)=>{
 
         donor.amount,
 
-        "TEST_PAYMENT",
+        razorpay_payment_id,
 
         "Success",
 
@@ -188,29 +216,23 @@ router.post("/verify-payment", async (req,res)=>{
 
 
 
+
     const donation = {
 
 
       receiptNo,
 
-
-      paymentId:"TEST_PAYMENT",
-
+      paymentId:razorpay_payment_id,
 
       fullName:donor.fullName,
 
-
       marathiName:donor.marathiName,
-
 
       mobile:donor.mobile,
 
-
       address:donor.address,
 
-
       purpose:donor.purpose,
-
 
       amount:donor.amount
 
@@ -226,18 +248,13 @@ router.post("/verify-payment", async (req,res)=>{
 
     res.json({
 
-
       success:true,
 
-
-      message:"Donation Saved Successfully",
-
+      message:"Payment Verified Successfully",
 
       receiptNo,
 
-
-      paymentId:"TEST_PAYMENT",
-
+      paymentId:razorpay_payment_id,
 
       pdfUrl:
 
@@ -254,22 +271,18 @@ router.post("/verify-payment", async (req,res)=>{
 
 
     console.log(
-      "PAYMENT ERROR:",
+      "VERIFY ERROR:",
       err
     );
 
 
     res.status(500).json({
 
-
       success:false,
-
 
       message:"Server Error",
 
-
       error:err.message
-
 
     });
 
