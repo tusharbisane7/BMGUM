@@ -1,0 +1,986 @@
+/*=========================================================
+                LOGIN POPUP
+=========================================================*/
+
+.login-popup-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:20px;
+
+    background:rgba(0,0,0,.55);
+
+    backdrop-filter:blur(12px);
+
+    -webkit-backdrop-filter:blur(12px);
+
+    z-index:99999;
+
+}
+
+/*=========================================================
+                CARD
+=========================================================*/
+
+.login-popup-card{
+
+    position:relative;
+
+    overflow:hidden;
+
+    width:100%;
+
+    max-width:460px;
+
+    padding:40px 35px;
+
+    border-radius:28px;
+
+    text-align:center;
+
+    background:
+
+        linear-gradient(
+
+            180deg,
+
+            rgba(255,255,255,.92),
+
+            rgba(255,249,243,.95)
+
+        );
+
+    backdrop-filter:blur(20px);
+
+    -webkit-backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,.6);
+
+    box-shadow:
+
+        0 30px 80px rgba(0,0,0,.18),
+
+        0 12px 35px rgba(255,152,0,.15);
+
+}
+
+/*=========================================================
+            PREMIUM BORDER
+=========================================================*/
+
+.login-popup-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    padding:2px;
+
+    border-radius:28px;
+
+    background:
+
+        linear-gradient(
+
+            135deg,
+
+            #ff9800,
+
+            #ffd54f,
+
+            #ff6b00,
+
+            #ff9800
+
+        );
+
+    background-size:350%;
+
+    animation:borderMove 8s linear infinite;
+
+    -webkit-mask:
+
+        linear-gradient(#fff 0 0) content-box,
+
+        linear-gradient(#fff 0 0);
+
+    -webkit-mask-composite:xor;
+
+    mask-composite:exclude;
+
+    pointer-events:none;
+
+}
+
+/*=========================================================
+                SHINE
+=========================================================*/
+
+.popup-shine{
+
+    position:absolute;
+
+    top:-170%;
+
+    left:-100%;
+
+    width:70%;
+
+    height:340%;
+
+    transform:rotate(25deg);
+
+    background:
+
+        linear-gradient(
+
+            transparent,
+
+            rgba(255,255,255,.55),
+
+            transparent
+
+        );
+
+    animation:shineSweep 7s linear infinite;
+
+}
+
+/*=========================================================
+                GLOW
+=========================================================*/
+
+.popup-glow{
+
+    position:absolute;
+
+    width:240px;
+
+    height:240px;
+
+    right:-100px;
+
+    top:-100px;
+
+    border-radius:50%;
+
+    background:
+
+        radial-gradient(
+
+            circle,
+
+            rgba(255,193,7,.30),
+
+            rgba(255,152,0,.12),
+
+            transparent 72%
+
+        );
+
+    filter:blur(28px);
+
+}
+
+/*=========================================================
+                CLOSE
+=========================================================*/
+
+.popup-close{
+
+    position:absolute;
+
+    right:18px;
+
+    top:18px;
+
+    width:42px;
+
+    height:42px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:#fff;
+
+    color:#666;
+
+    cursor:pointer;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:17px;
+
+    transition:.3s;
+
+    box-shadow:
+
+        0 8px 20px rgba(0,0,0,.08);
+
+}
+
+.popup-close:hover{
+
+    background:#ff6b00;
+
+    color:#fff;
+
+    transform:rotate(90deg);
+
+}
+
+/*=========================================================
+                ICON
+=========================================================*/
+
+.popup-icon{
+
+    width:95px;
+
+    height:95px;
+
+    margin:auto;
+
+    margin-bottom:25px;
+
+    border-radius:28px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:42px;
+
+    color:#fff;
+
+    background:
+
+        linear-gradient(
+
+            135deg,
+
+            #ff9800,
+
+            #ff6b00
+
+        );
+
+    box-shadow:
+
+        0 18px 35px rgba(255,107,0,.28);
+
+    animation:
+
+        iconFloat 4s ease-in-out infinite,
+
+        iconGlow 2.5s ease-in-out infinite;
+
+}
+
+/*=========================================================
+                TITLE
+=========================================================*/
+
+.login-popup-card h2{
+
+    font-size:32px;
+
+    color:#222;
+
+    margin-bottom:16px;
+
+    font-family:"Asar",serif;
+
+}
+
+/*=========================================================
+                DESCRIPTION
+=========================================================*/
+
+.login-popup-card p{
+
+    color:#666;
+
+    line-height:1.8;
+
+    font-size:15px;
+
+    margin-bottom:32px;
+
+}
+
+.login-popup-card strong{
+
+    color:#ff6b00;
+
+}
+/*=========================================================
+                BUTTONS
+=========================================================*/
+
+.popup-buttons{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:16px;
+
+    margin-top:10px;
+
+}
+
+/*=========================================================
+                COMMON BUTTON
+=========================================================*/
+
+.popup-buttons button{
+
+    position:relative;
+
+    overflow:hidden;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:12px;
+
+    width:100%;
+
+    padding:16px 22px;
+
+    border:none;
+
+    border-radius:16px;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.35s ease;
+
+}
+
+/*=========================================================
+                LOGIN BUTTON
+=========================================================*/
+
+.login-btn{
+
+    color:#fff;
+
+    background:
+
+        linear-gradient(
+
+            135deg,
+
+            #ff9800,
+
+            #ff6b00
+
+        );
+
+    box-shadow:
+
+        0 14px 28px rgba(255,152,0,.30);
+
+}
+
+.login-btn:hover{
+
+    transform:
+
+        translateY(-4px);
+
+    box-shadow:
+
+        0 22px 40px rgba(255,107,0,.35);
+
+}
+
+/*=========================================================
+                REGISTER BUTTON
+=========================================================*/
+
+.register-btn{
+
+    color:#ff6b00;
+
+    background:#fff7ef;
+
+    border:2px solid #ffd2a6;
+
+}
+
+.register-btn:hover{
+
+    background:
+
+        linear-gradient(
+
+            135deg,
+
+            #ff9800,
+
+            #ff6b00
+
+        );
+
+    color:#fff;
+
+    transform:
+
+        translateY(-4px);
+
+    border-color:transparent;
+
+    box-shadow:
+
+        0 20px 36px rgba(255,152,0,.28);
+
+}
+
+/*=========================================================
+                RIPPLE
+=========================================================*/
+
+.popup-buttons button::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:0;
+
+    height:0;
+
+    border-radius:50%;
+
+    background:
+
+        rgba(255,255,255,.35);
+
+    top:50%;
+
+    left:50%;
+
+    transform:translate(-50%,-50%);
+
+    transition:.6s;
+
+}
+
+.popup-buttons button:hover::before{
+
+    width:380px;
+
+    height:380px;
+
+}
+
+/*=========================================================
+                BUTTON ICON
+=========================================================*/
+
+.popup-buttons svg{
+
+    font-size:18px;
+
+    z-index:2;
+
+}
+
+.popup-buttons span{
+
+    position:relative;
+
+    z-index:2;
+
+}
+
+/*=========================================================
+                CANCEL BUTTON
+=========================================================*/
+
+.later-btn{
+
+    margin-top:22px;
+
+    background:none;
+
+    border:none;
+
+    color:#777;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.later-btn:hover{
+
+    color:#ff6b00;
+
+    letter-spacing:.5px;
+
+}
+
+/*=========================================================
+                FLOATING PARTICLES
+=========================================================*/
+
+.login-popup-card::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:12px;
+
+    height:12px;
+
+    top:70px;
+
+    left:45px;
+
+    border-radius:50%;
+
+    background:#ff9800;
+
+    opacity:.18;
+
+    box-shadow:
+
+        260px 40px #ff9800,
+
+        180px 260px #ffd54f,
+
+        40px 290px #ff9800,
+
+        310px 170px #ffd54f;
+
+    animation:particleFloat 8s ease-in-out infinite;
+
+}
+
+/*=========================================================
+                MOBILE
+=========================================================*/
+
+@media(max-width:768px){
+
+.login-popup-card{
+
+padding:30px 22px;
+
+border-radius:22px;
+
+}
+
+.popup-icon{
+
+width:80px;
+
+height:80px;
+
+font-size:36px;
+
+margin-bottom:18px;
+
+}
+
+.login-popup-card h2{
+
+font-size:26px;
+
+}
+
+.login-popup-card p{
+
+font-size:14px;
+
+line-height:1.7;
+
+}
+
+.popup-buttons button{
+
+padding:15px;
+
+font-size:15px;
+
+}
+
+}
+
+@media(max-width:480px){
+
+.login-popup-overlay{
+
+padding:15px;
+
+}
+
+.login-popup-card{
+
+padding:24px 18px;
+
+}
+
+.popup-icon{
+
+width:70px;
+
+height:70px;
+
+font-size:30px;
+
+}
+
+.login-popup-card h2{
+
+font-size:22px;
+
+}
+
+.popup-buttons{
+
+gap:14px;
+
+}
+
+.popup-buttons button{
+
+padding:14px;
+
+font-size:14px;
+
+}
+
+.later-btn{
+
+font-size:14px;
+
+}
+
+}
+/*=========================================================
+                PERFORMANCE
+=========================================================*/
+
+.login-popup-card,
+.popup-icon,
+.popup-buttons button,
+.popup-close{
+
+    will-change:transform;
+
+    backface-visibility:hidden;
+
+    transform:translateZ(0);
+
+}
+
+/*=========================================================
+                TEXT SELECTION
+=========================================================*/
+
+.login-popup-card ::selection{
+
+    background:#ff9800;
+
+    color:#fff;
+
+}
+
+/*=========================================================
+                SCROLLBAR
+=========================================================*/
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#fafafa;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:linear-gradient(
+
+        180deg,
+
+        #ff9800,
+
+        #ff6b00
+
+    );
+
+    border-radius:30px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:linear-gradient(
+
+        180deg,
+
+        #ff6b00,
+
+        #ff9800
+
+    );
+
+}
+
+/*=========================================================
+                CARD HOVER
+=========================================================*/
+
+.login-popup-card:hover{
+
+    transform:
+
+        translateY(-5px)
+
+        scale(1.01);
+
+}
+
+.login-popup-card:hover .popup-icon{
+
+    transform:
+
+        scale(1.08)
+
+        rotate(-5deg);
+
+}
+
+/*=========================================================
+                BUTTON ACTIVE
+=========================================================*/
+
+.popup-buttons button:active{
+
+    transform:scale(.98);
+
+}
+
+.popup-close:active{
+
+    transform:scale(.92);
+
+}
+
+/*=========================================================
+                ANIMATIONS
+=========================================================*/
+
+@keyframes borderMove{
+
+    0%{
+
+        background-position:0%;
+
+    }
+
+    100%{
+
+        background-position:300%;
+
+    }
+
+}
+
+@keyframes shineSweep{
+
+    0%{
+
+        left:-120%;
+
+    }
+
+    100%{
+
+        left:160%;
+
+    }
+
+}
+
+@keyframes iconFloat{
+
+    0%,100%{
+
+        transform:translateY(0);
+
+    }
+
+    50%{
+
+        transform:translateY(-8px);
+
+    }
+
+}
+
+@keyframes iconGlow{
+
+    0%,100%{
+
+        box-shadow:
+
+            0 16px 35px rgba(255,107,0,.28);
+
+    }
+
+    50%{
+
+        box-shadow:
+
+            0 25px 55px rgba(255,107,0,.45);
+
+    }
+
+}
+
+@keyframes particleFloat{
+
+    0%,100%{
+
+        transform:
+
+            translateY(0)
+
+            rotate(0deg);
+
+    }
+
+    50%{
+
+        transform:
+
+            translateY(-18px)
+
+            rotate(180deg);
+
+    }
+
+}
+
+/*=========================================================
+                OVERLAY ENTRY
+=========================================================*/
+
+.login-popup-overlay{
+
+    animation:overlayFade .35s ease;
+
+}
+
+@keyframes overlayFade{
+
+    from{
+
+        opacity:0;
+
+    }
+
+    to{
+
+        opacity:1;
+
+    }
+
+}
+
+/*=========================================================
+                PREMIUM BUTTON HOVER
+=========================================================*/
+
+.login-btn:hover{
+
+    letter-spacing:.4px;
+
+}
+
+.register-btn:hover{
+
+    letter-spacing:.4px;
+
+}
+
+.later-btn:hover{
+
+    transform:translateY(-2px);
+
+}
+
+/*=========================================================
+                ACCESSIBILITY
+=========================================================*/
+
+.popup-buttons button:focus,
+
+.popup-close:focus,
+
+.later-btn:focus{
+
+    outline:3px solid rgba(255,152,0,.35);
+
+    outline-offset:3px;
+
+}
+
+/*=========================================================
+                REDUCED MOTION
+=========================================================*/
+
+@media (prefers-reduced-motion: reduce){
+
+*{
+
+animation:none !important;
+
+transition:none !important;
+
+scroll-behavior:auto !important;
+
+}
+
+}

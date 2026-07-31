@@ -1,349 +1,739 @@
-import { useState, useEffect } from "react";
 import {
-  NavLink,
-  useLocation,
-  useNavigate,
+
+    useState,
+
+    useEffect,
+
+    useRef,
+
+} from "react";
+
+import {
+
+    NavLink,
+
+    useLocation,
+
+    useNavigate,
+
 } from "react-router-dom";
 
+import LoginPopup from "./LoginPopup";
+
 import "../styles/navbar.css";
+
 import GanpatiLogo from "../assets/images/ganpati.png";
+
+import DefaultProfile from "../assets/images/profile.jpg";
 
 function Navbar() {
 
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+    const navigate = useNavigate();
 
-  const [user, setUser] = useState(null);
-  const [showProfileMenu, setShowProfileMenu] = useState(false);
+    const location = useLocation();
 
-  const location = useLocation();
-  const navigate = useNavigate();
+    const dropdownRef = useRef(null);
 
-  // Load logged in user
+    /*==================================
+            STATES
+    ==================================*/
 
-  useEffect(() => {
+    const [menuOpen, setMenuOpen] = useState(false);
 
-    const storedUser = localStorage.getItem("user");
+    const [scrolled, setScrolled] = useState(false);
 
-    if (storedUser) {
+    const [user, setUser] = useState(null);
 
-      try {
+    const [showProfileMenu, setShowProfileMenu] = useState(false);
 
-        setUser(JSON.parse(storedUser));
+    const [showLoginPopup, setShowLoginPopup] = useState(false);
 
-      } catch {
+    /*==================================
+            LOAD USER
+    ==================================*/
 
-        localStorage.removeItem("user");
+    useEffect(() => {
 
-      }
+        const storedUser = localStorage.getItem("user");
 
-    }
+        if (storedUser) {
 
-  }, []);
+            try {
 
-  // Close sidebar on route change
+                setUser(JSON.parse(storedUser));
 
-  useEffect(() => {
+            }
 
-    setMenuOpen(false);
+            catch {
 
-    setShowProfileMenu(false);
+                localStorage.removeItem("user");
 
-  }, [location]);
+            }
 
-  // Navbar scroll shadow
+        }
 
-  useEffect(() => {
+    }, []);
 
-    const handleScroll = () => {
+    /*==================================
+        CLOSE MENUS ON ROUTE CHANGE
+    ==================================*/
 
-      setScrolled(window.scrollY > 20);
-
-    };
-
-    const handleKey = (e) => {
-
-      if (e.key === "Escape") {
+    useEffect(() => {
 
         setMenuOpen(false);
 
         setShowProfileMenu(false);
 
-      }
+    }, [location]);
+
+    /*==================================
+            NAVBAR SCROLL
+    ==================================*/
+
+    useEffect(() => {
+
+        const handleScroll = () => {
+
+            setScrolled(window.scrollY > 20);
+
+        };
+
+        window.addEventListener(
+
+            "scroll",
+
+            handleScroll
+
+        );
+
+        return () =>
+
+            window.removeEventListener(
+
+                "scroll",
+
+                handleScroll
+
+            );
+
+    }, []);
+
+    /*==================================
+        CLOSE PROFILE DROPDOWN
+    ==================================*/
+
+    useEffect(() => {
+
+        const handleOutsideClick = (e) => {
+
+            if (
+
+                dropdownRef.current &&
+
+                !dropdownRef.current.contains(e.target)
+
+            ) {
+
+                setShowProfileMenu(false);
+
+            }
+
+        };
+
+        document.addEventListener(
+
+            "mousedown",
+
+            handleOutsideClick
+
+        );
+
+        return () =>
+
+            document.removeEventListener(
+
+                "mousedown",
+
+                handleOutsideClick
+
+            );
+
+    }, []);
+
+    /*==================================
+            LOGOUT
+    ==================================*/
+
+    const logout = () => {
+
+        localStorage.removeItem("token");
+
+        localStorage.removeItem("user");
+
+        localStorage.removeItem("userLoggedIn");
+
+        setUser(null);
+
+        setShowProfileMenu(false);
+
+        navigate("/");
 
     };
 
-    window.addEventListener("scroll", handleScroll);
+    /*==================================
+        ONLINE DONATION
+    ==================================*/
 
-    window.addEventListener("keydown", handleKey);
+    const handleOnlineDonation = (e) => {
 
-    return () => {
+        e.preventDefault();
 
-      window.removeEventListener("scroll", handleScroll);
+        if (!user) {
 
-      window.removeEventListener("keydown", handleKey);
+            setShowLoginPopup(true);
+
+            return;
+
+        }
+
+        navigate("/online-donation");
 
     };
 
-  }, []);
+    /*==================================
+            PROFILE IMAGE
+    ==================================*/
 
-  // Logout
+    const profileImage =
 
-  const logout = () => {
+        user?.profile_image ||
 
-    localStorage.removeItem("token");
+        DefaultProfile;
+            return (
 
-    localStorage.removeItem("user");
+        <>
 
-    localStorage.removeItem("userLoggedIn");
+            {/* ================= NAVBAR ================= */}
 
-    navigate("/");
+            <header
 
-    window.location.reload();
+                className={`navbar ${
 
-  };
+                    scrolled
 
-  return (
+                        ? "navbar-scrolled"
 
-    <>
+                        : ""
 
-      {/* ================= NAVBAR ================= */}
+                }`}
 
-      <header className={`navbar ${scrolled ? "navbar-scrolled" : ""}`}>
-
-        <div className="navbar-container">
-
-          {/* Logo */}
-
-          <NavLink
-            to="/"
-            className="logo-section"
-          >
-
-            <img
-              src={GanpatiLogo}
-              alt="Ganpati"
-              className="logo-img"
-            />
-
-            <div className="logo-text">
-
-              <h2>बाल मित्र गणेश उत्सव मंडळ</h2>
-
-              <p>खिरणीबागपुरा, अचलपूर</p>
-
-            </div>
-
-          </NavLink>
-
-          {/* Desktop Menu */}
-
-          <nav className="desktop-menu">
-                        <NavLink to="/">
-              मुख्यपृष्ठ
-            </NavLink>
-
-            <NavLink to="/aarti">
-              आरती
-            </NavLink>
-
-            <NavLink
-              to="/online-donation"
-              className={({ isActive }) =>
-                isActive ? "nav-link active" : "nav-link"
-              }
             >
-              💳 ऑनलाइन देणगी
-            </NavLink>
 
-            <NavLink to="/volunteer-registration">
-              🙋 स्वयंसेवक बना
-            </NavLink>
+                <div className="navbar-container">
 
-            <NavLink to="/volunteers">
-              👥 स्वयंसेवक
-            </NavLink>
-
-            <NavLink to="/complaint">
-              📝 तक्रार
-            </NavLink>
-
-            {/* ================= USER SECTION ================= */}
-
-            {!user ? (
-
-              <>
-
-                <NavLink to="/user-login">
-                  👤 वापरकर्ता लॉगिन
-                </NavLink>
-
-                <NavLink to="/login">
-                  🔐 Admin Login
-                </NavLink>
-
-              </>
-
-            ) : (
-
-              <div className="profile-menu">
-
-                <button
-                  className="profile-btn"
-                  onClick={() =>
-                    setShowProfileMenu(!showProfileMenu)
-                  }
-                >
-
-                  <span className="profile-avatar">
-
-                    👤
-
-                  </span>
-
-                  <span className="profile-name">
-
-                    {user.full_name}
-
-                  </span>
-
-                  <span className="profile-arrow">
-
-                    ▼
-
-                  </span>
-
-                </button>
-
-                {showProfileMenu && (
-
-                  <div className="profile-dropdown">
+                    {/*================ LOGO ================*/}
 
                     <NavLink
-                      to="/profile"
-                      onClick={() =>
-                        setShowProfileMenu(false)
-                      }
+
+                        to="/"
+
+                        className="logo-section"
+
                     >
 
-                      👤 माझे प्रोफाइल
+                        {user ? (
+
+                            <img
+
+                                src={profileImage}
+
+                                alt="Profile"
+
+                                className="navbar-profile-logo"
+
+                            />
+
+                        ) : (
+
+                            <img
+
+                                src={GanpatiLogo}
+
+                                alt="Ganpati"
+
+                                className="logo-img"
+
+                            />
+
+                        )}
+
+                        <div className="logo-text">
+
+                            {user ? (
+
+                                <>
+
+                                    <span className="welcome-back">
+
+                                        👋 स्वागत आहे
+
+                                    </span>
+
+                                    <h2>
+
+                                        {user.full_name}
+
+                                    </h2>
+
+                                    <p>
+
+                                        @{user.username}
+
+                                    </p>
+
+                                </>
+
+                            ) : (
+
+                                <>
+
+                                    <h2>
+
+                                        बाल मित्र गणेश उत्सव मंडळ
+
+                                    </h2>
+
+                                    <p>
+
+                                        खिरणीबागपुरा, अचलपूर
+
+                                    </p>
+
+                                </>
+
+                            )}
+
+                        </div>
 
                     </NavLink>
 
+                    {/*================ DESKTOP MENU ================*/}
+
+                    <nav className="desktop-menu">
+
+                        <NavLink to="/">
+
+                            मुख्यपृष्ठ
+
+                        </NavLink>
+
+                        <NavLink to="/aarti">
+
+                            🪔 आरती
+
+                        </NavLink>
+
+                        {/* Protected Donation */}
+
+                        <button
+
+                            className="nav-link-btn"
+
+                            onClick={handleOnlineDonation}
+
+                        >
+
+                            💳 ऑनलाइन देणगी
+
+                        </button>
+
+                        <NavLink
+
+                            to="/volunteer-registration"
+
+                        >
+
+                            🙋 स्वयंसेवक बना
+
+                        </NavLink>
+
+                        <NavLink
+
+                            to="/volunteers"
+
+                        >
+
+                            👥 स्वयंसेवक
+
+                        </NavLink>
+
+                        <NavLink
+
+                            to="/complaint"
+
+                        >
+
+                            📝 तक्रार
+
+                        </NavLink>
+
+                        {!user ? (
+
+                            <>
+
+                                <NavLink
+
+                                    to="/user-login"
+
+                                >
+
+                                    👤 वापरकर्ता लॉगिन
+
+                                </NavLink>
+
+                                <NavLink
+
+                                    to="/login"
+
+                                >
+
+                                    🔐 Admin Login
+
+                                </NavLink>
+
+                            </>
+
+                        ) : (
+
+                            <div
+
+                                className="profile-menu"
+
+                                ref={dropdownRef}
+
+                            >
+
+                                <button
+
+                                    className="profile-btn"
+
+                                    onClick={() =>
+
+                                        setShowProfileMenu(
+
+                                            !showProfileMenu
+
+                                        )
+
+                                    }
+
+                                >
+
+                                    <img
+
+                                        src={profileImage}
+
+                                        alt="Profile"
+
+                                        className="profile-avatar-img"
+
+                                    />
+
+                                    <div className="profile-text">
+
+                                        <span className="welcome-text">
+
+                                            👋 स्वागत आहे
+
+                                        </span>
+
+                                        <span className="profile-name">
+
+                                            {user.full_name}
+
+                                        </span>
+
+                                    </div>
+
+                                    <span
+
+                                        className={`profile-arrow ${
+
+                                            showProfileMenu
+
+                                                ? "rotate"
+
+                                                : ""
+
+                                        }`}
+
+                                    >
+
+                                        ▼
+
+                                    </span>
+
+                                </button>
+                                                                {showProfileMenu && (
+
+                                    <div className="profile-dropdown">
+
+                                        <div className="dropdown-header">
+
+                                            <img
+
+                                                src={profileImage}
+
+                                                alt="Profile"
+
+                                                className="dropdown-avatar"
+
+                                            />
+
+                                            <div className="dropdown-user-info">
+
+                                                <h4>
+
+                                                    {user.full_name}
+
+                                                </h4>
+
+                                                <p>
+
+                                                    @{user.username}
+
+                                                </p>
+
+                                                <span className="role-chip">
+
+                                                    {user.role}
+
+                                                </span>
+
+                                            </div>
+
+                                        </div>
+
+                                        <NavLink
+
+                                            to="/profile"
+
+                                            className="dropdown-link"
+
+                                            onClick={() =>
+
+                                                setShowProfileMenu(false)
+
+                                            }
+
+                                        >
+
+                                            👤 माझे प्रोफाइल
+
+                                        </NavLink>
+
+<NavLink
+    to="/my-donations"
+    className="dropdown-link"
+    onClick={() => setShowProfileMenu(false)}
+>
+    💰 माझ्या ऑनलाइन देणग्या
+</NavLink>
+                                        <button
+
+                                            className="dropdown-logout"
+
+                                            onClick={logout}
+
+                                        >
+
+                                            🚪 लॉगआउट
+
+                                        </button>
+
+                                    </div>
+
+                                )}
+
+                            </div>
+
+                        )}
+
+                    </nav>
+
+                    {/*================ HAMBURGER =================*/}
+
                     <button
-                      onClick={logout}
+
+                        className={`hamburger ${
+
+                            menuOpen ? "active" : ""
+
+                        }`}
+
+                        onClick={() =>
+
+                            setMenuOpen(!menuOpen)
+
+                        }
+
                     >
 
-                      🚪 लॉगआउट
+                        <span></span>
+
+                        <span></span>
+
+                        <span></span>
 
                     </button>
 
-                  </div>
+                </div>
 
-                )}
+            </header>
 
-              </div>
+            {/*================ OVERLAY =================*/}
 
-            )}
+            <div
 
-          </nav>
+                className={`sidebar-overlay ${
 
-          {/* ================= HAMBURGER ================= */}
+                    menuOpen ? "show" : ""
 
-          <button
-            className={`hamburger ${menuOpen ? "active" : ""}`}
-            onClick={() =>
-              setMenuOpen(!menuOpen)
-            }
-          >
+                }`}
 
-            <span></span>
+                onClick={() =>
 
-            <span></span>
+                    setMenuOpen(false)
 
-            <span></span>
+                }
 
-          </button>
-
-        </div>
-
-      </header>
-
-      {/* ================= OVERLAY ================= */}
-
-      <div
-        className={`sidebar-overlay ${
-          menuOpen ? "show" : ""
-        }`}
-        onClick={() => setMenuOpen(false)}
-      ></div>
-
-      {/* ================= SIDEBAR ================= */}
+            />
+                  {/*================ SIDEBAR =================*/}
 
       <aside
-        className={`sidebar ${
-          menuOpen ? "open" : ""
-        }`}
+        className={`sidebar ${menuOpen ? "open" : ""}`}
       >
+        {/*================ SIDEBAR HEADER =================*/}
 
         <div className="sidebar-top">
-
-          <img
-            src={GanpatiLogo}
-            alt=""
-            className="sidebar-logo"
-          />
-
           <button
             className="sidebar-close"
-            onClick={() =>
-              setMenuOpen(false)
-            }
+            onClick={() => setMenuOpen(false)}
           >
-
             ✕
-
           </button>
-
         </div>
 
-    
-                <NavLink to="/">
+        {/*================ USER HEADER =================*/}
+
+        {user ? (
+          <div className="mobile-user-header">
+            <div className="mobile-profile-wrapper">
+              <img
+                src={profileImage}
+                alt="Profile"
+                className="mobile-profile-image"
+              />
+
+              <span className="online-indicator"></span>
+            </div>
+
+            <span className="mobile-welcome">
+              👋 स्वागत आहे
+            </span>
+
+            <h2>{user.full_name}</h2>
+
+            <p>@{user.username}</p>
+
+            <span className="mobile-role">
+              {user.role}
+            </span>
+          </div>
+        ) : (
+          <div className="mobile-logo-header">
+
+           
+
+            <h3>
+             
+            </h3>
+
+            <p>
+             Ganpati Bappa Morya!
+            </p>
+
+          </div>
+        )}
+
+        {/*================ MENU =================*/}
+
+        <NavLink
+          to="/"
+          onClick={() => setMenuOpen(false)}
+        >
           🏠 मुख्यपृष्ठ
         </NavLink>
 
-        <NavLink to="/aarti">
+        <NavLink
+          to="/aarti"
+          onClick={() => setMenuOpen(false)}
+        >
           🪔 आरती
         </NavLink>
 
-        <NavLink to="/online-donation">
-          💳 ऑनलाइन देणगी
-        </NavLink>
+        <button
+          className="sidebar-nav-btn"
+          onClick={(e) => {
 
-        <NavLink to="/volunteer-registration">
+            setMenuOpen(false);
+
+            handleOnlineDonation(e);
+
+          }}
+        >
+          💳 ऑनलाइन देणगी
+        </button>
+
+        <NavLink
+          to="/volunteer-registration"
+          onClick={() => setMenuOpen(false)}
+        >
           🙋 स्वयंसेवक बना
         </NavLink>
 
-        <NavLink to="/volunteers">
+        <NavLink
+          to="/volunteers"
+          onClick={() => setMenuOpen(false)}
+        >
           👥 स्वयंसेवक
         </NavLink>
 
-        <NavLink to="/complaint">
+        <NavLink
+          to="/complaint"
+          onClick={() => setMenuOpen(false)}
+        >
           📝 तक्रार
         </NavLink>
-
-        {/* ================= USER SECTION ================= */}
 
         {!user ? (
 
           <>
 
-            <NavLink to="/user-login">
+            <NavLink
+              to="/user-login"
+              onClick={() => setMenuOpen(false)}
+            >
               👤 वापरकर्ता लॉगिन
             </NavLink>
 
-            <NavLink to="/login">
-              🔐 ADMIN PANEL
+           
+
+            <NavLink
+              to="/login"
+              onClick={() => setMenuOpen(false)}
+            >
+              🔐 Admin Login
             </NavLink>
 
           </>
@@ -352,71 +742,99 @@ function Navbar() {
 
           <>
 
-            <div className="sidebar-user-card">
-
-              <div className="sidebar-user-avatar">
-
-                👤
-
-              </div>
-
-              <div className="sidebar-user-info">
-
-                <h3>
-
-                  {user.full_name}
-
-                </h3>
-
-                <p>
-
-                  @{user.username}
-
-                </p>
-
-              </div>
-
-            </div>
-
             <NavLink
               to="/profile"
-              onClick={() => setMenuOpen(false)}
+              onClick={() => {
+
+                setMenuOpen(false);
+
+                setShowProfileMenu(false);
+
+              }}
             >
-
               👤 माझे प्रोफाइल
-
             </NavLink>
 
+<NavLink
+    to="/my-donations"
+    onClick={() => setMenuOpen(false)}
+>
+    💰 माझ्या ऑनलाइन देणग्या
+</NavLink>
             <button
               className="sidebar-logout"
-              onClick={logout}
+              onClick={() => {
+
+                setMenuOpen(false);
+
+                logout();
+
+              }}
             >
-
               🚪 लॉगआउट
-
             </button>
 
           </>
 
         )}
 
+        {/*================ FOOTER =================*/}
+
         <div className="sidebar-footer">
 
+          <img
+            src={GanpatiLogo}
+            alt="Ganpati"
+            className="footer-logo"
+          />
+
           <h4>
-
             बाल मित्र गणेश उत्सव मंडळ
-
           </h4>
 
           <p>
-
-            © 2026 All Rights Reserved
-
+            खिरणीबागपुरा, अचलपूर
           </p>
+
+          <small>
+
+            © {new Date().getFullYear()} All Rights Reserved
+
+          </small>
 
         </div>
 
       </aside>
+
+      {/*================ LOGIN POPUP =================*/}
+
+      <LoginPopup
+
+        isOpen={showLoginPopup}
+
+        onClose={() =>
+
+          setShowLoginPopup(false)
+
+        }
+
+        onLogin={() => {
+
+          setShowLoginPopup(false);
+
+          navigate("/user-login");
+
+        }}
+
+        onRegister={() => {
+
+          setShowLoginPopup(false);
+
+          navigate("/user-register");
+
+        }}
+
+      />
 
     </>
 

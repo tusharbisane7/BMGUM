@@ -1,0 +1,770 @@
+/*=========================================
+MY DONATIONS PAGE
+=========================================*/
+
+.myDonationPage{
+
+    min-height:100vh;
+
+    background:linear-gradient(135deg,#fff7ec,#fffdf8);
+
+    padding-bottom:60px;
+
+}
+
+
+/*=========================================
+HERO
+=========================================*/
+
+.donationHero{
+
+    position:relative;
+
+    height:280px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    overflow:hidden;
+
+    background:linear-gradient(135deg,#ff8a00,#ffb347);
+
+}
+
+.heroOverlay{
+
+    position:absolute;
+
+    inset:0;
+
+    background:rgba(0,0,0,.18);
+
+    backdrop-filter:blur(2px);
+
+}
+
+.heroContent{
+
+    position:relative;
+
+    z-index:2;
+
+    text-align:center;
+
+    color:#fff;
+
+}
+
+.heroContent h1{
+
+    font-size:44px;
+
+    font-weight:700;
+
+    margin-bottom:12px;
+
+}
+
+.heroContent p{
+
+    font-size:18px;
+
+    line-height:1.8;
+
+}
+
+
+/*=========================================
+STAT CARDS
+=========================================*/
+
+.statsSection{
+
+    max-width:1200px;
+
+    margin:-60px auto 40px;
+
+    padding:0 20px;
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:25px;
+
+}
+
+.statCard{
+
+    background:rgba(255,255,255,.82);
+
+    backdrop-filter:blur(18px);
+
+    border-radius:24px;
+
+    padding:35px;
+
+    text-align:center;
+
+    box-shadow:0 18px 45px rgba(0,0,0,.08);
+
+    transition:.35s;
+
+}
+
+.statCard:hover{
+
+    transform:translateY(-8px);
+
+}
+
+.statCard span{
+
+    font-size:42px;
+
+}
+
+.statCard h2{
+
+    margin:15px 0;
+
+    font-size:34px;
+
+    color:#ff6a00;
+
+}
+
+.statCard p{
+
+    color:#666;
+
+}
+
+
+/*=========================================
+SEARCH
+=========================================*/
+
+.searchSection{
+
+    max-width:1200px;
+
+    margin:auto;
+
+    padding:0 20px 35px;
+
+}
+
+.searchSection input{
+
+    width:100%;
+
+    height:58px;
+
+    border:none;
+
+    border-radius:18px;
+
+    padding:0 22px;
+
+    font-size:17px;
+
+    background:#fff;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+}
+
+.searchSection input:focus{
+
+    outline:none;
+
+    border:2px solid #ff8a00;
+
+}
+
+
+/*=========================================
+TABLE
+=========================================*/
+
+.donationTableWrapper{
+
+    max-width:1200px;
+
+    margin:auto;
+
+    padding:0 20px;
+
+}
+
+.donationTable{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    overflow:hidden;
+
+    border-radius:20px;
+
+    background:#fff;
+
+    box-shadow:0 18px 40px rgba(0,0,0,.08);
+
+}
+
+.donationTable thead{
+
+    background:linear-gradient(90deg,#ff8a00,#ff6a00);
+
+    color:#fff;
+
+}
+
+.donationTable th{
+
+    padding:20px;
+
+    text-align:left;
+
+    font-size:15px;
+
+}
+
+.donationTable td{
+
+    padding:18px;
+
+    border-bottom:1px solid #eee;
+
+    font-size:15px;
+
+}
+
+.donationTable tbody tr{
+
+    transition:.3s;
+
+}
+
+.donationTable tbody tr:hover{
+
+    background:#fff7ef;
+
+}
+
+
+/*=========================================
+STATUS
+=========================================*/
+
+.status{
+
+    display:inline-block;
+
+    padding:7px 14px;
+
+    border-radius:50px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+.status.success{
+
+    background:#d9ffe5;
+
+    color:#0d8a3f;
+
+}
+
+
+/*=========================================
+ACTION BUTTONS
+=========================================*/
+
+.actionButtons{
+
+    display:flex;
+
+    gap:10px;
+
+}
+
+.actionBtn{
+
+    width:42px;
+
+    height:42px;
+
+    border:none;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+    color:#fff;
+
+}
+
+.actionBtn.download{
+
+    background:#1976d2;
+
+}
+
+.actionBtn.whatsapp{
+
+    background:#25D366;
+
+}
+
+.actionBtn:hover{
+
+    transform:scale(1.08);
+
+}
+
+
+/*=========================================
+EMPTY STATE
+=========================================*/
+
+.emptyDonation{
+
+    max-width:700px;
+
+    margin:70px auto;
+
+    background:#fff;
+
+    border-radius:24px;
+
+    text-align:center;
+
+    padding:60px;
+
+    box-shadow:0 20px 45px rgba(0,0,0,.08);
+
+}
+
+.emptyIcon{
+
+    font-size:70px;
+
+    margin-bottom:20px;
+
+}
+
+.emptyDonation h2{
+
+    color:#ff6a00;
+
+    margin-bottom:15px;
+
+}
+
+.emptyDonation p{
+
+    color:#777;
+
+    margin-bottom:30px;
+
+}
+
+.donateNowBtn{
+
+    display:inline-block;
+
+    padding:15px 35px;
+
+    border-radius:40px;
+
+    background:linear-gradient(135deg,#ff8a00,#ff6a00);
+
+    color:#fff;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.donateNowBtn:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 15px 30px rgba(255,106,0,.35);
+
+}
+/*=========================================
+LOADING
+=========================================*/
+
+.loadingBox{
+
+    width:220px;
+
+    margin:70px auto;
+
+    background:#fff;
+
+    padding:18px;
+
+    text-align:center;
+
+    border-radius:15px;
+
+    font-weight:600;
+
+    color:#ff6a00;
+
+    box-shadow:0 12px 25px rgba(0,0,0,.08);
+
+    animation:pulse 1.2s infinite;
+
+}
+
+@keyframes pulse{
+
+    0%{transform:scale(1);}
+
+    50%{transform:scale(1.05);}
+
+    100%{transform:scale(1);}
+
+}
+
+
+/*=========================================
+MOBILE CARDS
+=========================================*/
+
+.mobileDonationCards{
+
+    display:none;
+
+    padding:20px;
+
+    gap:20px;
+
+}
+
+.donationCard{
+
+    background:#fff;
+
+    border-radius:22px;
+
+    padding:22px;
+
+    box-shadow:0 18px 35px rgba(0,0,0,.08);
+
+    transition:.35s;
+
+}
+
+.donationCard:hover{
+
+    transform:translateY(-5px);
+
+}
+
+.cardTop{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:18px;
+
+}
+
+.cardTop h3{
+
+    color:#ff6a00;
+
+    font-size:18px;
+
+}
+
+.donationCard p{
+
+    margin:10px 0;
+
+    color:#555;
+
+    font-size:15px;
+
+    word-break:break-word;
+
+}
+
+.mobileActions{
+
+    display:flex;
+
+    gap:12px;
+
+    margin-top:20px;
+
+}
+
+.mobileActions button{
+
+    flex:1;
+
+    border:none;
+
+    border-radius:14px;
+
+    padding:12px;
+
+    cursor:pointer;
+
+    color:#fff;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.mobileActions button:hover{
+
+    transform:translateY(-2px);
+
+}
+
+.mobileActions .download{
+
+    background:#1976d2;
+
+}
+
+.mobileActions .whatsapp{
+
+    background:#25D366;
+
+}
+
+
+/*=========================================
+SCROLLBAR
+=========================================*/
+
+::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#ff8a00;
+
+    border-radius:20px;
+
+}
+
+
+/*=========================================
+RESPONSIVE
+=========================================*/
+
+@media(max-width:992px){
+
+.statsSection{
+
+grid-template-columns:1fr;
+
+margin-top:-40px;
+
+}
+
+.heroContent h1{
+
+font-size:34px;
+
+}
+
+.heroContent p{
+
+font-size:16px;
+
+}
+
+}
+
+@media(max-width:768px){
+
+.donationHero{
+
+height:220px;
+
+}
+
+.heroContent h1{
+
+font-size:28px;
+
+}
+
+.heroContent p{
+
+font-size:15px;
+
+}
+
+.donationTableWrapper{
+
+display:none;
+
+}
+
+.mobileDonationCards{
+
+display:grid;
+
+}
+
+.statCard{
+
+padding:25px;
+
+}
+
+.statCard h2{
+
+font-size:28px;
+
+}
+
+.searchSection{
+
+padding:20px;
+
+}
+
+.searchSection input{
+
+height:52px;
+
+font-size:15px;
+
+}
+
+.emptyDonation{
+
+margin:30px 20px;
+
+padding:35px 20px;
+
+}
+
+.emptyDonation h2{
+
+font-size:24px;
+
+}
+
+.emptyIcon{
+
+font-size:55px;
+
+}
+
+}
+
+@media(max-width:480px){
+
+.heroContent h1{
+
+font-size:24px;
+
+}
+
+.heroContent p{
+
+font-size:14px;
+
+}
+
+.statsSection{
+
+padding:0 15px;
+
+}
+
+.statCard{
+
+border-radius:18px;
+
+}
+
+.statCard span{
+
+font-size:34px;
+
+}
+
+.statCard h2{
+
+font-size:24px;
+
+}
+
+.donationCard{
+
+padding:18px;
+
+}
+
+.cardTop{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+gap:10px;
+
+}
+
+.mobileActions{
+
+flex-direction:column;
+
+}
+
+.mobileActions button{
+
+width:100%;
+
+}
+
+.searchSection{
+
+padding:15px;
+
+}
+
+.searchSection input{
+
+padding:0 15px;
+
+}
+
+}

@@ -16,7 +16,7 @@ import UserRegister from "./pages/UserRegister";
 import AdminRegister from "./pages/AdminRegister";
 import UserLogin from "./pages/UserLogin";
 import UserProfile from "./pages/UserProfile";
-
+import MyDonations from "./pages/MyDonations";
 // ================= COMPONENTS =================
 
 import Volunteers from "./components/Volunteers";
@@ -99,6 +99,11 @@ function App() {
 <Route
     path="/online-donation"
     element={<OnlineDonation />}
+/>
+
+<Route
+    path="/my-donations"
+    element={<MyDonations />}
 />
 
       </Route>

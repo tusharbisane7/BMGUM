@@ -7,9 +7,15 @@ const API = "https://bmgum.onrender.com";
 
 function Aarti() {
 
+    /*=========================================
+                STATES
+    =========================================*/
+
     const [aartiList, setAartiList] = useState([]);
 
     const [current, setCurrent] = useState(0);
+
+    const [loading, setLoading] = useState(true);
 
     /*=========================================
                 LOAD AARTI
@@ -23,15 +29,15 @@ function Aarti() {
                 `${API}/api/aarti`
             );
 
-            setAartiList(
+            const data = Array.isArray(res.data)
+                ? res.data
+                : [];
 
-                Array.isArray(res.data)
+            setAartiList(data);
 
-                    ? res.data
-
-                    : []
-
-            );
+            if (current >= data.length) {
+                setCurrent(0);
+            }
 
         }
 
@@ -43,10 +49,16 @@ function Aarti() {
 
         }
 
+        finally {
+
+            setLoading(false);
+
+        }
+
     };
 
     /*=========================================
-                FETCH DATA
+                INITIAL LOAD
     =========================================*/
 
     useEffect(() => {
@@ -57,7 +69,7 @@ function Aarti() {
 
             loadAarti();
 
-        }, 5000);
+        }, 10000);
 
         return () => clearInterval(refresh);
 
@@ -69,11 +81,11 @@ function Aarti() {
 
     useEffect(() => {
 
-        if (aartiList.length === 0) return;
+        if (aartiList.length <= 1) return;
 
-        const slider = setInterval(() => {
+        const timer = setInterval(() => {
 
-            setCurrent((prev) =>
+            setCurrent(prev =>
 
                 (prev + 1) % aartiList.length
 
@@ -81,47 +93,25 @@ function Aarti() {
 
         }, 6000);
 
-        return () => clearInterval(slider);
+        return () => clearInterval(timer);
 
     }, [aartiList]);
 
     /*=========================================
-                EMPTY
+            LOADING
     =========================================*/
 
-    if (aartiList.length === 0) {
+    if (loading) {
 
         return (
 
             <section className="aarti-section container">
 
-                <h2 className="title">
+                <div className="aarti-loading">
 
-                    🪔 आरती वेळापत्रक
+                    <div className="loader-ring"></div>
 
-                </h2>
-
-                <div className="aarti-wrapper">
-
-                    <div className="aarti-card">
-
-                        <div className="aarti-header">
-
-                            <div className="aarti-icon">
-
-                                🪔
-
-                            </div>
-
-                            <h3>
-
-                                कोणतीही आरती उपलब्ध नाही.
-
-                            </h3>
-
-                        </div>
-
-                    </div>
+                    <h3>आरती लोड होत आहे...</h3>
 
                 </div>
 
@@ -132,324 +122,300 @@ function Aarti() {
     }
 
     /*=========================================
-            CURRENT AARTI
+            EMPTY
     =========================================*/
 
-    const item = aartiList[current] || {};
+    if (aartiList.length === 0) {
 
-    const performedBy =
+        return (
 
-        item.performedBy ??
+            <section className="aarti-section container">
 
-        item.performedby ??
+                <div className="aarti-empty">
 
-        "-";
-
-    const formattedDate =
-
-        item.date
-
-            ? new Date(item.date).toLocaleDateString(
-
-                "en-GB"
-
-            )
-
-            : "-";
-            return (
-
-<section className="aarti-section container">
-
-    <h2 className="title">
-
-        🪔 आरती वेळापत्रक
-
-    </h2>
-
-    <div className="aarti-wrapper">
-
-        <AnimatePresence mode="wait">
-
-            <motion.div
-
-                key={item.id || current}
-
-                className="aarti-card"
-
-                initial={{
-                    opacity:0,
-                    x:120,
-                    scale:.9
-                }}
-
-                animate={{
-                    opacity:1,
-                    x:0,
-                    scale:1
-                }}
-
-                exit={{
-                    opacity:0,
-                    x:-120,
-                    scale:.9
-                }}
-
-                transition={{
-                    duration:.7,
-                    ease:"easeInOut"
-                }}
-
-            >
-
-                <div className="shine"></div>
-
-                <div className="particle one"></div>
-
-                <div className="particle two"></div>
-
-                <div className="particle three"></div>
-
-                <div className="today-badge">
-
-                    🙏 Today's Aarti
-
-                </div>
-
-                <div className="aarti-header">
-
-                    <div className="aarti-icon">
+                    <div className="empty-icon">
 
                         🪔
 
                     </div>
 
-                    <h3>
+                    <h2>
 
-                        {item.name || "आरती"}
+                        आरती उपलब्ध नाही
 
-                    </h3>
+                    </h2>
+
+                    <p>
+
+                        कृपया नंतर पुन्हा प्रयत्न करा.
+
+                    </p>
 
                 </div>
 
-                <div className="aarti-details">
+            </section>
 
-                    <div className="info-row">
+        );
 
-                        <div className="info-left">
+    }
 
-                            <div className="info-icon">
+    /*=========================================
+            CURRENT ITEM
+    =========================================*/
 
-                                📅
+    const item = aartiList[current];
 
-                            </div>
+    const performedBy =
+        item.performedBy ??
+        item.performedby ??
+        "-";
 
-                            <div>
+    const formattedDate =
+        item.date
+            ? new Date(item.date).toLocaleDateString(
+                "en-GB"
+            )
+            : "-";
+            return (
 
-                                <div className="info-label">
+<section className="aarti-section container">
 
-                                    Date
+    <AnimatePresence mode="wait">
 
-                                </div>
+        <motion.div
 
-                                <div className="info-value">
+            key={item.id || current}
 
-                                    {formattedDate}
+            className="premium-aarti-card"
 
-                                </div>
+            initial={{
+                opacity:0,
+                y:60,
+                scale:.92
+            }}
 
-                            </div>
+            animate={{
+                opacity:1,
+                y:0,
+                scale:1
+            }}
 
-                        </div>
+            exit={{
+                opacity:0,
+                y:-60,
+                scale:.92
+            }}
 
-                    </div>
+            transition={{
+                duration:.65,
+                ease:"easeInOut"
+            }}
 
-                    <div className="info-row">
+        >
 
-                        <div className="info-left">
+            {/* Background Effects */}
 
-                            <div className="info-icon">
+            <div className="shine"></div>
 
-                                📆
+            <div className="blur-circle circle1"></div>
 
-                            </div>
+            <div className="blur-circle circle2"></div>
 
-                            <div>
+            <div className="particle p1"></div>
 
-                                <div className="info-label">
+            <div className="particle p2"></div>
 
-                                    Day
+            <div className="particle p3"></div>
 
-                                </div>
+            {/* Header */}
 
-                                <div className="info-value">
+            <div className="aarti-top">
 
-                                    {item.day || "-"}
+                <div className="aarti-icon-box">
 
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div className="info-row">
-
-                        <div className="info-left">
-
-                            <div className="info-icon">
-
-                                ⏰
-
-                            </div>
-
-                            <div>
-
-                                <div className="info-label">
-
-                                    Time
-
-                                </div>
-
-                                <div className="info-value">
-
-                                    {item.time || "-"}
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div className="info-row">
-
-                        <div className="info-left">
-
-                            <div className="info-icon">
-
-                                👤
-
-                            </div>
-
-                            <div>
-
-                                <div className="info-label">
-
-                                    Performed By
-
-                                </div>
-
-                                <div className="info-value">
-
-                                    {performedBy}
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div className="info-row">
-
-                        <div className="info-left">
-
-                            <div className="info-icon">
-
-                                🏷️
-
-                            </div>
-
-                            <div>
-
-                                <div className="info-label">
-
-                                    Type
-
-                                </div>
-
-                                <div className="info-value">
-
-                                    {item.type || "-"}
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div className="info-row">
-
-                        <div className="info-left">
-
-                            <div className="info-icon">
-
-                                📌
-
-                            </div>
-
-                            <div>
-
-                                <div className="info-label">
-
-                                    Status
-
-                                </div>
-
-                                <div className="info-value">
-
-                                    {item.status || "-"}
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
+                    🪔
 
                 </div>
 
-                <div className="aarti-status">
+                <div>
 
-                    <div className="status-top">
+                    <h2>
 
-                        <div className="status-title">
+                        {item.name || "गणेश आरती"}
 
-                            <div className="live-dot"></div>
+                    </h2>
 
-                            Ganesh Utsav Aarti
+                    <span>
 
-                        </div>
+                        Ganesh Utsav Aarti
 
-                        <div className="status-percent">
-
-                            Live
-
-                        </div>
-
-                    </div>
-
-                    <div className="progress-bar">
-
-                        <div className="progress-fill"></div>
-
-                    </div>
+                    </span>
 
                 </div>
 
-                
+                <div className="live-badge">
 
-            </motion.div>
+                    LIVE
 
-        </AnimatePresence>
+                </div>
 
-    </div>
+            </div>
+
+            {/* Content */}
+
+            <div className="aarti-grid">
+
+                <motion.div
+
+                    whileHover={{scale:1.05}}
+
+                    className="info-box"
+
+                >
+
+                    <div className="icon">
+
+                        📅
+
+                    </div>
+
+                    <span>
+
+                        Date
+
+                    </span>
+
+                    <h4>
+
+                        {formattedDate}
+
+                    </h4>
+
+                </motion.div>
+
+                <motion.div
+
+                    whileHover={{scale:1.05}}
+
+                    className="info-box"
+
+                >
+
+                    <div className="icon">
+
+                        👤
+
+                    </div>
+
+                    <span>
+
+                        Performed By
+
+                    </span>
+
+                    <h4>
+
+                        {performedBy}
+
+                    </h4>
+
+                </motion.div>
+
+                <motion.div
+
+                    whileHover={{scale:1.05}}
+
+                    className="info-box"
+
+                >
+
+                    <div className="icon">
+
+                        🏷️
+
+                    </div>
+
+                    <span>
+
+                        Aarti Type
+
+                    </span>
+
+                    <h4>
+
+                        {item.type || "-"}
+
+                    </h4>
+
+                </motion.div>
+
+            </div>
+
+          
+
+            {/* Progress */}
+
+            <div className="progress-area">
+
+                <div className="progress-bar">
+
+                    <motion.div
+
+                        className="progress-fill"
+
+                        initial={{width:0}}
+
+                        animate={{width:"100%"}}
+
+                        transition={{
+
+                            duration:5,
+
+                            repeat:Infinity
+
+                        }}
+
+                    />
+
+                </div>
+
+            </div>
+
+            {/* Slider */}
+
+            {aartiList.length>1 && (
+
+            <div className="slider-dots">
+
+                {aartiList.map((_,index)=>(
+
+                    <button
+
+                        key={index}
+
+                        onClick={()=>setCurrent(index)}
+
+                        className={
+
+                            current===index
+
+                            ? "dot active"
+
+                            : "dot"
+
+                        }
+
+                    />
+
+                ))}
+
+            </div>
+
+            )}
+
+        </motion.div>
+
+    </AnimatePresence>
 
 </section>
 

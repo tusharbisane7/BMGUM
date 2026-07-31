@@ -25,6 +25,7 @@ const meetingRoutes = require("./routes/meetingRoutes");
 const complaintRoutes = require("./routes/complaintRoutes");
 const paymentRoutes = require("./routes/payment");
 const userRoutes = require("./routes/userRoutes");
+const myDonationRoutes = require("./routes/mydonations");
 
 app.use(cors());
 app.use(express.json());
@@ -50,6 +51,7 @@ app.use("/api/meetings", meetingRoutes);
 app.use("/api/complaints", complaintRoutes);
 app.use("/api/users", userRoutes);
 
+app.use("/api/donations", myDonationRoutes);
 
 app.get("/", (req, res) => {
   res.send("BMGM Backend Running 🚀");
