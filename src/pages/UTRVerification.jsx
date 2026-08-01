@@ -38,27 +38,19 @@ function UTRVerification() {
        VALIDATION
     ===================================== */
 
-    const validate = () => {
+  const validate = () => {
 
-        if (!utr.trim()) {
+    if (!utr.trim()) {
 
-            alert("Please enter UTR Number.");
+        alert("Please enter UTR Number.");
 
-            return false;
+        return false;
 
-        }
+    }
 
-        if (utr.trim().length < 10) {
+    return true;
 
-            alert("Please enter a valid UTR Number.");
-
-            return false;
-
-        }
-
-        return true;
-
-    };
+};
         /* =====================================
        SUBMIT UTR
     ===================================== */

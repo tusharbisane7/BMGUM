@@ -16,9 +16,8 @@ function DonationSummary({ formData, donateButton }) {
 
       <div className="summary-header">
 
-        <h2>💳 Donation Summary</h2>
+        <h2></h2>
 
-        <p>Review your donation details before payment</p>
 
       </div>
 

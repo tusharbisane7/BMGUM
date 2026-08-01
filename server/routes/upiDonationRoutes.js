@@ -1,6 +1,7 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const pool = require("../config/neon");
+const generateReceiptPDF = require("../utils/generateReceiptPDF");
 
 const router = express.Router();
 
@@ -146,9 +147,7 @@ router.post("/submit", async (req, res) => {
 
             success: true,
 
-            message:
-
-                "Donation submitted successfully. Waiting for admin verification.",
+            message: "Donation submitted successfully. Waiting for admin verification.",
 
             donation: result.rows[0]
 
@@ -421,13 +420,43 @@ router.put("/approve/:id", async (req, res) => {
 
         }
 
+        const donation = result.rows[0];
+
+        /* ===============================
+           GENERATE PDF RECEIPT
+        =============================== */
+
+        const pdfFile = generateReceiptPDF({
+
+            receiptNo: donation.receipt,
+
+            paymentId: donation.utr,
+
+            fullName: donation.donorname,
+
+            marathiName: donation.marathi_name || "",
+
+            mobile: donation.mobile,
+
+            address: donation.address || "",
+
+            purpose: donation.purpose || "",
+
+            amount: donation.amount
+
+        });
+
         res.json({
 
             success: true,
 
             message: "Donation approved successfully.",
 
-            donation: result.rows[0]
+            donation,
+
+            pdfUrl:
+
+                `/receipts/${pdfFile}`
 
         });
 
@@ -543,6 +572,62 @@ router.put("/reject/:id", async (req, res) => {
             message: "Unable to reject donation.",
 
             error: err.message
+
+        });
+
+    }
+
+});
+
+
+/* =====================================
+   DOWNLOAD RECEIPT
+===================================== */
+
+router.get("/receipt/:receiptNo", async (req, res) => {
+
+    try {
+
+        const fs = require("fs");
+        const path = require("path");
+
+        const { receiptNo } = req.params;
+
+        const filePath = path.join(
+
+            __dirname,
+
+            "../receipts",
+
+            `${receiptNo}.pdf`
+
+        );
+
+        if (!fs.existsSync(filePath)) {
+
+            return res.status(404).json({
+
+                success: false,
+
+                message: "Receipt not found."
+
+            });
+
+        }
+
+        res.download(filePath);
+
+    }
+
+    catch (err) {
+
+        console.error(err);
+
+        res.status(500).json({
+
+            success: false,
+
+            message: "Unable to download receipt."
 
         });
 

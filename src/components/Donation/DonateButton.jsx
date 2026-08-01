@@ -84,7 +84,7 @@ function DonateButton({
     setLoading(true);
 
     // Replace with your own UPI ID
-    const upiId = "yourupi@okaxis";
+    const upiId = "gitabisane-3@oksbi";
 
     const name = encodeURIComponent(
       "Bal Mitra Ganesh Utsav Mandal"

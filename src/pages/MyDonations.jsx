@@ -401,29 +401,35 @@ function MyDonations() {
 
                                                 <div className="actionButtons">
 
-                                                    {
+                                                  {
+    item.status === "Success" ? (
 
-                                                        item.status === "Success" && (
+        <a
+            href={`https://bmgum.onrender.com/receipts/${item.receipt}.pdf`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="actionBtn download"
+        >
+            📄
+        </a>
 
-                                                            <button
+    ) : (
 
-                                                                className="actionBtn download"
+        <button
+            className="actionBtn pending"
+            onClick={() => {
 
-                                                                onClick={() => {
+                alert(
+                    "Receipt download will be available after admin verification."
+                );
 
-                                                                    alert("Receipt download will be available after admin verification.");
+            }}
+        >
+            ⏳
+        </button>
 
-                                                                }}
-
-                                                            >
-
-                                                                📄
-
-                                                            </button>
-
-                                                        )
-
-                                                    }
+    )
+}
 
                                                     <button
 
@@ -556,29 +562,35 @@ Thank You ❤️`;
 
                                     <div className="mobileActions">
 
-                                        {
+                                       {
+    item.status === "Success" ? (
 
-                                            item.status === "Success" && (
+       <a
+    href={`https://bmgum.onrender.com/api/upi-donations/receipt/${item.receipt}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="download"
+>
+    📄 Download Receipt
+</a>
 
-                                                <button
+    ) : (
 
-                                                    className="download"
+        <button
+            className="pending"
+            onClick={() => {
 
-                                                    onClick={() => {
+                alert(
+                    "Receipt download will be available after admin verification."
+                );
 
-                                                        alert("Receipt download will be available after admin verification.");
+            }}
+        >
+            ⏳ Pending Verification
+        </button>
 
-                                                    }}
-
-                                                >
-
-                                                    📄 Download
-
-                                                </button>
-
-                                            )
-
-                                        }
+    )
+}
 
                                         <button
 
