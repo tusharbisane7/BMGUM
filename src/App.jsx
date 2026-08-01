@@ -17,6 +17,7 @@ import AdminRegister from "./pages/AdminRegister";
 import UserLogin from "./pages/UserLogin";
 import UserProfile from "./pages/UserProfile";
 import MyDonations from "./pages/MyDonations";
+import UTRVerification from "./pages/UTRVerification";
 // ================= COMPONENTS =================
 
 import Volunteers from "./components/Volunteers";
@@ -38,6 +39,7 @@ import UnderConstruction from "./admin/UnderConstruction";
 import ChangePassword from "./admin/ChangePassword";
 import OnlineDonation from "./pages/Donation/OnlineDonation";
 import UserManagement from "./admin/UserManagement";
+import UPIDonationManagement from "./admin/UPIDonationManagement";
 
 function App() {
   return (
@@ -104,6 +106,11 @@ function App() {
 <Route
     path="/my-donations"
     element={<MyDonations />}
+/>
+
+<Route
+    path="/verify-payment"
+    element={<UTRVerification />}
 />
 
       </Route>
@@ -191,7 +198,10 @@ function App() {
         path="/admin/change-password"
         element={<ChangePassword />}
       />
-
+<Route
+    path="/admin/upi-donations"
+    element={<UPIDonationManagement />}
+/>
       {/* ================= 404 PAGE ================= */}
 
       <Route

@@ -5,7 +5,7 @@ const pool = require("../config/neon");
 const router = express.Router();
 
 /* =====================================
-   MY ONLINE DONATIONS
+   MY DONATIONS
 ===================================== */
 
 router.get("/my", async (req, res) => {
@@ -34,10 +34,14 @@ router.get("/my", async (req, res) => {
         donorname,
         mobile,
         amount,
+        receipt,
+        utr,
+        payment_method,
+        status,
         payment_id,
         payment_status,
-        receipt,
-        createdat
+        createdat,
+        verified_at
       FROM donations
       WHERE user_id = $1
       ORDER BY createdat DESC
@@ -45,8 +49,13 @@ router.get("/my", async (req, res) => {
       [decoded.id]
     );
 
-    return res.status(200).json(result.rows);
+    return res.status(200).json({
+      success: true,
+      donations: result.rows,
+    });
+
   } catch (err) {
+
     console.error("MY DONATIONS ERROR:", err);
 
     if (
@@ -62,6 +71,7 @@ router.get("/my", async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Failed to fetch donations",
+      error: err.message,
     });
   }
 });

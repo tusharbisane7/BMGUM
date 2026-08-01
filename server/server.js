@@ -23,9 +23,10 @@ const volunteerRoutes = require("./routes/volunteerRoutes");
 const visitorRoutes = require("./routes/visitorRoutes");
 const meetingRoutes = require("./routes/meetingRoutes");
 const complaintRoutes = require("./routes/complaintRoutes");
-const paymentRoutes = require("./routes/payment");
+const paymentRoutes = require("./routes/upiDonationRoutes");
 const userRoutes = require("./routes/userRoutes");
 const myDonationRoutes = require("./routes/mydonations");
+const upiDonationRoutes = require("./routes/upiDonationRoutes");
 
 app.use(cors());
 app.use(express.json());
@@ -50,7 +51,7 @@ app.use("/api/visitor", visitorRoutes);
 app.use("/api/meetings", meetingRoutes);
 app.use("/api/complaints", complaintRoutes);
 app.use("/api/users", userRoutes);
-
+app.use("/api/upi-donations", upiDonationRoutes);
 app.use("/api/donations", myDonationRoutes);
 
 app.get("/", (req, res) => {

@@ -1,0 +1,911 @@
+/*=====================================================
+UPI DONATION MANAGEMENT
+=====================================================*/
+
+.upiDonationPage{
+
+    min-height:100vh;
+
+    background:linear-gradient(135deg,#fff7ef,#fffdf9);
+
+    padding-bottom:60px;
+
+}
+
+
+
+/*=====================================================
+HERO
+=====================================================*/
+
+.upiHero{
+
+    height:270px;
+
+    background:linear-gradient(135deg,#ff7a00,#ff9800);
+
+    position:relative;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    overflow:hidden;
+
+}
+
+
+
+.overlay{
+
+    position:absolute;
+
+    inset:0;
+
+    background:rgba(0,0,0,.18);
+
+}
+
+
+
+.heroContent{
+
+    position:relative;
+
+    z-index:2;
+
+    text-align:center;
+
+    color:#fff;
+
+}
+
+
+
+.heroContent h1{
+
+    font-size:42px;
+
+    margin-bottom:10px;
+
+    font-weight:700;
+
+}
+
+
+
+.heroContent p{
+
+    font-size:18px;
+
+    opacity:.95;
+
+}
+
+
+
+/*=====================================================
+STATS
+=====================================================*/
+
+.statsGrid{
+
+    max-width:1300px;
+
+    margin:-55px auto 40px;
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:25px;
+
+    padding:0 20px;
+
+}
+
+
+
+.statCard{
+
+    background:#fff;
+
+    border-radius:22px;
+
+    padding:30px;
+
+    text-align:center;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+}
+
+
+
+.statCard:hover{
+
+    transform:translateY(-6px);
+
+}
+
+
+
+.statCard span{
+
+    font-size:42px;
+
+}
+
+
+
+.statCard h2{
+
+    margin:15px 0;
+
+    font-size:34px;
+
+    color:#ff6b00;
+
+}
+
+
+
+.statCard p{
+
+    color:#666;
+
+    font-size:15px;
+
+}
+
+
+
+/*=====================================================
+SEARCH
+=====================================================*/
+
+.toolbar{
+
+    max-width:1300px;
+
+    margin:auto;
+
+    display:flex;
+
+    gap:18px;
+
+    padding:0 20px 35px;
+
+}
+
+
+
+.toolbar input{
+
+    flex:1;
+
+    height:58px;
+
+    border:none;
+
+    border-radius:18px;
+
+    padding:0 22px;
+
+    font-size:16px;
+
+    background:#fff;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+}
+
+
+
+.toolbar input:focus{
+
+    outline:none;
+
+    border:2px solid #ff7a00;
+
+}
+
+
+
+.toolbar select{
+
+    width:220px;
+
+    border:none;
+
+    border-radius:18px;
+
+    padding:0 18px;
+
+    background:#fff;
+
+    font-size:16px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+}
+
+
+
+.toolbar select:focus{
+
+    outline:none;
+
+}
+
+
+
+/*=====================================================
+LOADING
+=====================================================*/
+
+.loadingBox{
+
+    width:260px;
+
+    margin:60px auto;
+
+    background:#fff;
+
+    padding:18px;
+
+    border-radius:18px;
+
+    text-align:center;
+
+    color:#ff6b00;
+
+    font-weight:700;
+
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+
+}
+
+
+
+/*=====================================================
+EMPTY
+=====================================================*/
+
+.emptyBox{
+
+    max-width:700px;
+
+    margin:70px auto;
+
+    background:#fff;
+
+    border-radius:24px;
+
+    padding:55px;
+
+    text-align:center;
+
+    box-shadow:0 18px 40px rgba(0,0,0,.08);
+
+}
+
+
+
+.emptyBox span{
+
+    font-size:70px;
+
+}
+
+
+
+.emptyBox h2{
+
+    margin:18px 0;
+
+    color:#ff6b00;
+
+}
+
+
+
+.emptyBox p{
+
+    color:#777;
+
+}
+/*=====================================================
+TABLE
+=====================================================*/
+
+.tableWrapper{
+
+    max-width:1300px;
+
+    margin:auto;
+
+    padding:0 20px;
+
+    overflow-x:auto;
+
+}
+
+
+
+.upiTable{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    background:#fff;
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+    box-shadow:0 18px 40px rgba(0,0,0,.08);
+
+}
+
+
+
+.upiTable thead{
+
+    background:linear-gradient(90deg,#ff7a00,#ff9800);
+
+    color:#fff;
+
+}
+
+
+
+.upiTable th{
+
+    padding:20px;
+
+    font-size:15px;
+
+    text-align:left;
+
+    white-space:nowrap;
+
+}
+
+
+
+.upiTable td{
+
+    padding:18px;
+
+    border-bottom:1px solid #f2f2f2;
+
+    color:#555;
+
+    font-size:15px;
+
+    vertical-align:middle;
+
+}
+
+
+
+.upiTable tbody tr{
+
+    transition:.25s;
+
+}
+
+
+
+.upiTable tbody tr:hover{
+
+    background:#fff7ef;
+
+}
+
+
+
+/*=====================================================
+STATUS
+=====================================================*/
+
+.status{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    min-width:95px;
+
+    padding:8px 14px;
+
+    border-radius:50px;
+
+    font-size:13px;
+
+    font-weight:700;
+
+}
+
+
+
+.status.pending{
+
+    background:#fff4cc;
+
+    color:#b77900;
+
+}
+
+
+
+.status.success{
+
+    background:#dff9e7;
+
+    color:#0d8a3f;
+
+}
+
+
+
+.status.rejected{
+
+    background:#ffe2e2;
+
+    color:#c62828;
+
+}
+
+
+
+/*=====================================================
+ACTION BUTTONS
+=====================================================*/
+
+.actionButtons{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+
+
+.actionButtons button{
+
+    width:42px;
+
+    height:42px;
+
+    border:none;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    transition:.3s;
+
+}
+
+
+
+.actionButtons button:hover{
+
+    transform:translateY(-2px) scale(1.08);
+
+}
+
+
+
+.viewBtn{
+
+    background:#1976d2;
+
+    color:#fff;
+
+}
+
+
+
+.approveBtn{
+
+    background:#1fa74d;
+
+    color:#fff;
+
+}
+
+
+
+.rejectBtn{
+
+    background:#e53935;
+
+    color:#fff;
+
+}
+
+
+
+/*=====================================================
+SCROLLBAR
+=====================================================*/
+
+.tableWrapper::-webkit-scrollbar{
+
+    height:8px;
+
+}
+
+
+
+.tableWrapper::-webkit-scrollbar-thumb{
+
+    background:#ff9800;
+
+    border-radius:20px;
+
+}
+/*=====================================================
+MODAL
+=====================================================*/
+
+.modalOverlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.55);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:9999;
+
+    animation:fadeIn .25s ease;
+
+}
+
+
+
+.donationModal{
+
+    width:95%;
+
+    max-width:620px;
+
+    background:#fff;
+
+    border-radius:24px;
+
+    padding:30px;
+
+    box-shadow:0 30px 60px rgba(0,0,0,.25);
+
+    animation:scaleIn .25s ease;
+
+}
+
+
+
+.donationModal h2{
+
+    margin-bottom:25px;
+
+    text-align:center;
+
+    color:#ff6b00;
+
+    font-size:30px;
+
+}
+
+
+
+.modalBody{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:14px;
+
+}
+
+
+
+.modalBody p{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:14px 16px;
+
+    background:#fff7ef;
+
+    border-radius:14px;
+
+    font-size:15px;
+
+    color:#444;
+
+    word-break:break-word;
+
+}
+
+
+
+.modalBody strong{
+
+    color:#222;
+
+    font-weight:700;
+
+}
+
+
+
+/*=====================================================
+MODAL BUTTONS
+=====================================================*/
+
+.modalButtons{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-top:28px;
+
+}
+
+
+
+.modalButtons button{
+
+    flex:1;
+
+    height:50px;
+
+    border:none;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    color:#fff;
+
+    transition:.3s;
+
+}
+
+
+
+.modalButtons button:hover{
+
+    transform:translateY(-2px);
+
+}
+
+
+
+.modalButtons .approveBtn{
+
+    background:#16a34a;
+
+}
+
+
+
+.modalButtons .rejectBtn{
+
+    background:#dc2626;
+
+}
+
+
+
+.closeBtn{
+
+    background:#6b7280;
+
+}
+
+
+
+/*=====================================================
+ANIMATION
+=====================================================*/
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+    }
+
+    to{
+
+        opacity:1;
+
+    }
+
+}
+
+
+
+@keyframes scaleIn{
+
+    from{
+
+        opacity:0;
+
+        transform:scale(.92);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:scale(1);
+
+    }
+
+}
+
+
+
+/*=====================================================
+GLOBAL SCROLLBAR
+=====================================================*/
+
+::-webkit-scrollbar{
+
+    width:8px;
+
+    height:8px;
+
+}
+
+
+
+::-webkit-scrollbar-thumb{
+
+    background:#ff8a00;
+
+    border-radius:20px;
+
+}
+
+
+
+::-webkit-scrollbar-track{
+
+    background:#f3f3f3;
+
+}
+
+
+
+/*=====================================================
+FINAL RESPONSIVE
+=====================================================*/
+
+@media(max-width:768px){
+
+    .donationModal{
+
+        width:94%;
+
+        padding:22px;
+
+    }
+
+    .modalBody p{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:6px;
+
+    }
+
+    .modalButtons{
+
+        flex-direction:column;
+
+    }
+
+}
+
+
+
+@media(max-width:480px){
+
+    .upiHero{
+
+        height:220px;
+
+    }
+
+    .heroContent h1{
+
+        font-size:24px;
+
+    }
+
+    .heroContent p{
+
+        font-size:14px;
+
+    }
+
+    .statCard{
+
+        padding:22px;
+
+    }
+
+    .statCard h2{
+
+        font-size:28px;
+
+    }
+
+    .toolbar{
+
+        padding:15px;
+
+    }
+
+    .toolbar input{
+
+        height:52px;
+
+        font-size:15px;
+
+    }
+
+    .toolbar select{
+
+        height:52px;
+
+        font-size:15px;
+
+    }
+
+    .donationModal h2{
+
+        font-size:24px;
+
+    }
+
+}

@@ -1,0 +1,679 @@
+/*=========================================
+UTR PAGE
+=========================================*/
+
+.utrPage{
+
+    min-height:100vh;
+
+    background:linear-gradient(135deg,#fff7ec,#fffdf8);
+
+    padding-bottom:60px;
+
+}
+
+
+
+/*=========================================
+HERO
+=========================================*/
+
+.utrHero{
+
+    height:260px;
+
+    background:linear-gradient(135deg,#ff7b00,#ff9a00);
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:#fff;
+
+    text-align:center;
+
+    padding:20px;
+
+}
+
+
+
+.utrHero h1{
+
+    font-size:42px;
+
+    margin-bottom:10px;
+
+    font-weight:700;
+
+}
+
+
+
+.utrHero p{
+
+    font-size:18px;
+
+    opacity:.95;
+
+}
+
+
+
+/*=========================================
+LAYOUT
+=========================================*/
+
+.utrContainer{
+
+    max-width:1200px;
+
+    margin:-50px auto 0;
+
+    display:grid;
+
+    grid-template-columns:380px 1fr;
+
+    gap:30px;
+
+    padding:20px;
+
+}
+
+
+
+/*=========================================
+CARDS
+=========================================*/
+
+.summaryCard,
+
+.utrCard{
+
+    background:#fff;
+
+    border-radius:24px;
+
+    padding:30px;
+
+    box-shadow:0 18px 40px rgba(0,0,0,.08);
+
+}
+
+
+
+.summaryCard h2,
+
+.utrCard h2{
+
+    color:#ff6a00;
+
+    margin-bottom:25px;
+
+    font-size:28px;
+
+}
+
+
+
+/*=========================================
+SUMMARY
+=========================================*/
+
+.summaryRow{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:16px 0;
+
+    border-bottom:1px solid #eee;
+
+}
+
+
+
+.summaryRow:last-child{
+
+    border-bottom:none;
+
+}
+
+
+
+.summaryRow span{
+
+    color:#666;
+
+    font-size:15px;
+
+}
+
+
+
+.summaryRow strong{
+
+    color:#222;
+
+    font-size:16px;
+
+}
+/*=========================================
+FORM
+=========================================*/
+
+.utrCard{
+
+display:flex;
+
+flex-direction:column;
+
+}
+
+
+
+.utrCard label{
+
+font-size:15px;
+
+font-weight:600;
+
+color:#444;
+
+margin-bottom:8px;
+
+margin-top:18px;
+
+}
+
+
+
+.utrCard input[type="text"]{
+
+width:100%;
+
+height:58px;
+
+border:2px solid #ececec;
+
+border-radius:16px;
+
+padding:0 18px;
+
+font-size:16px;
+
+transition:.3s;
+
+background:#fff;
+
+}
+
+
+
+.utrCard input[type="text"]:focus{
+
+outline:none;
+
+border-color:#ff8a00;
+
+box-shadow:0 0 0 4px rgba(255,138,0,.12);
+
+}
+
+
+
+.utrCard input[type="file"]{
+
+width:100%;
+
+padding:16px;
+
+border:2px dashed #ffb15f;
+
+border-radius:16px;
+
+background:#fffaf3;
+
+cursor:pointer;
+
+transition:.3s;
+
+margin-top:5px;
+
+}
+
+
+
+.utrCard input[type="file"]:hover{
+
+background:#fff2df;
+
+border-color:#ff8a00;
+
+}
+
+
+
+/*=========================================
+IMAGE PREVIEW
+=========================================*/
+
+.previewImage{
+
+width:100%;
+
+max-height:280px;
+
+object-fit:cover;
+
+margin-top:20px;
+
+border-radius:18px;
+
+border:2px solid #eee;
+
+box-shadow:0 12px 25px rgba(0,0,0,.08);
+
+transition:.3s;
+
+}
+
+
+
+.previewImage:hover{
+
+transform:scale(1.02);
+
+}
+
+
+
+/*=========================================
+SUBMIT BUTTON
+=========================================*/
+
+.submitBtn{
+
+margin-top:28px;
+
+height:58px;
+
+border:none;
+
+border-radius:16px;
+
+background:linear-gradient(135deg,#ff8a00,#ff6200);
+
+color:#fff;
+
+font-size:18px;
+
+font-weight:700;
+
+cursor:pointer;
+
+transition:.3s;
+
+box-shadow:0 14px 28px rgba(255,98,0,.25);
+
+}
+
+
+
+.submitBtn:hover{
+
+transform:translateY(-3px);
+
+box-shadow:0 20px 35px rgba(255,98,0,.35);
+
+}
+
+
+
+.submitBtn:disabled{
+
+cursor:not-allowed;
+
+opacity:.7;
+
+transform:none;
+
+box-shadow:none;
+
+}
+/*=========================================
+LOADING EFFECT
+=========================================*/
+
+.submitBtn:disabled{
+
+opacity:.75;
+
+cursor:not-allowed;
+
+}
+
+
+
+.submitBtn:disabled::after{
+
+content:"";
+
+display:inline-block;
+
+width:18px;
+
+height:18px;
+
+margin-left:10px;
+
+border:2px solid rgba(255,255,255,.4);
+
+border-top:2px solid #fff;
+
+border-radius:50%;
+
+animation:spin .8s linear infinite;
+
+vertical-align:middle;
+
+}
+
+
+
+@keyframes spin{
+
+0%{
+
+transform:rotate(0deg);
+
+}
+
+100%{
+
+transform:rotate(360deg);
+
+}
+
+}
+
+
+
+/*=========================================
+CARD ANIMATION
+=========================================*/
+
+.summaryCard,
+
+.utrCard{
+
+animation:fadeUp .6s ease;
+
+}
+
+
+
+@keyframes fadeUp{
+
+0%{
+
+opacity:0;
+
+transform:translateY(40px);
+
+}
+
+100%{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
+
+
+
+/*=========================================
+SCROLLBAR
+=========================================*/
+
+::-webkit-scrollbar{
+
+width:8px;
+
+height:8px;
+
+}
+
+
+
+::-webkit-scrollbar-thumb{
+
+background:#ff8a00;
+
+border-radius:20px;
+
+}
+
+
+
+::-webkit-scrollbar-track{
+
+background:#f5f5f5;
+
+}
+
+
+
+/*=========================================
+TABLET
+=========================================*/
+
+@media(max-width:992px){
+
+.utrContainer{
+
+grid-template-columns:1fr;
+
+gap:25px;
+
+}
+
+.summaryCard{
+
+order:2;
+
+}
+
+.utrCard{
+
+order:1;
+
+}
+
+}
+
+
+
+/*=========================================
+MOBILE
+=========================================*/
+
+@media(max-width:768px){
+
+.utrHero{
+
+height:220px;
+
+padding:20px;
+
+}
+
+.utrHero h1{
+
+font-size:30px;
+
+}
+
+.utrHero p{
+
+font-size:15px;
+
+}
+
+.utrContainer{
+
+padding:18px;
+
+margin-top:-35px;
+
+}
+
+.summaryCard,
+
+.utrCard{
+
+padding:22px;
+
+border-radius:20px;
+
+}
+
+.summaryCard h2,
+
+.utrCard h2{
+
+font-size:24px;
+
+}
+
+.summaryRow{
+
+padding:12px 0;
+
+}
+
+.summaryRow strong{
+
+font-size:15px;
+
+}
+
+.utrCard input[type="text"]{
+
+height:54px;
+
+font-size:15px;
+
+}
+
+.submitBtn{
+
+height:54px;
+
+font-size:16px;
+
+}
+
+.previewImage{
+
+max-height:220px;
+
+}
+
+}
+
+
+
+/*=========================================
+SMALL MOBILE
+=========================================*/
+
+@media(max-width:480px){
+
+.utrHero{
+
+height:180px;
+
+}
+
+.utrHero h1{
+
+font-size:24px;
+
+}
+
+.utrHero p{
+
+font-size:14px;
+
+}
+
+.utrContainer{
+
+padding:15px;
+
+}
+
+.summaryCard,
+
+.utrCard{
+
+padding:18px;
+
+}
+
+.summaryCard h2,
+
+.utrCard h2{
+
+font-size:20px;
+
+}
+
+.summaryRow{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+gap:5px;
+
+}
+
+.summaryRow strong{
+
+font-size:15px;
+
+}
+
+.submitBtn{
+
+height:50px;
+
+font-size:15px;
+
+}
+
+.previewImage{
+
+max-height:180px;
+
+}
+
+}
+
+
+
+/*=========================================
+END
+=========================================*/

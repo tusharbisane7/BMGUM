@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function DonateButton({
   formData,
@@ -7,58 +7,59 @@ function DonateButton({
   setSuccessData,
 }) {
 
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
+  const [loading, setLoading] = useState(false);
 
   const validateForm = () => {
 
     if (!formData.fullName.trim()) {
 
       alert("Please enter your full name.");
+
       return false;
 
     }
-
 
     if (!formData.marathiName.trim()) {
 
       alert("Please enter your Marathi name.");
+
       return false;
 
     }
-
 
     if (!/^[6-9]\d{9}$/.test(formData.mobile)) {
 
-      alert("Please enter valid 10 digit mobile number.");
+      alert("Please enter a valid 10 digit mobile number.");
+
       return false;
 
     }
-
 
     if (!formData.address.trim()) {
 
       alert("Please enter your address.");
+
       return false;
 
     }
 
+    if (!formData.amount || Number(formData.amount) <= 0) {
 
-    if (!formData.amount || Number(formData.amount) < 1) {
+      alert("Please enter donation amount.");
 
-      alert("Please enter valid donation amount.");
       return false;
 
     }
-
 
     if (!formData.agree) {
 
       alert("Please accept Terms & Conditions.");
+
       return false;
 
     }
-
 
     return true;
 
@@ -66,308 +67,73 @@ function DonateButton({
 
 
 
-  const handleDonate = async () => {
-
+  const handleDonate = () => {
 
     if (!validateForm()) return;
 
-
     const token = localStorage.getItem("token");
-
 
     if (!token) {
 
-      alert("Please login first for online donation.");
+      alert("Please login first.");
 
       return;
 
     }
 
-
-
     setLoading(true);
 
+    // Replace with your own UPI ID
+    const upiId = "yourupi@okaxis";
 
+    const name = encodeURIComponent(
+      "Bal Mitra Ganesh Utsav Mandal"
+    );
 
-    try {
+    const amount = formData.amount;
 
+    const note = encodeURIComponent(
+      formData.purpose
+    );
 
-      // CREATE RAZORPAY ORDER
+    const upiUrl =
 
-      const { data } = await axios.post(
+      `upi://pay?pa=${upiId}` +
 
-        "https://bmgum.onrender.com/api/payment/create-order",
+      `&pn=${name}` +
 
-        {
-          amount:Number(formData.amount)
-        }
+      `&am=${amount}` +
 
-      );
+      `&cu=INR` +
 
+      `&tn=${note}`;
 
+    window.location.href = upiUrl;
 
-      const options = {
-
-
-        key:
-          import.meta.env.VITE_RAZORPAY_KEY,
-
-
-        amount:
-          data.amount,
-
-
-        currency:
-          data.currency,
-
-
-        order_id:
-          data.id,
-
-
-
-        name:
-          "बाल मित्र गणेश उत्सव मंडळ",
-
-
-
-        description:
-          "Online Donation",
-
-
-
-        image:
-          "/logo.png",
-
-
-
-        prefill:{
-
-          name:
-            formData.fullName,
-
-
-          contact:
-            formData.mobile
-
-        },
-
-
-
-        notes:{
-
-          marathiName:
-            formData.marathiName,
-
-
-          address:
-            formData.address,
-
-
-          purpose:
-            formData.purpose
-
-        },
-
-
-
-        theme:{
-
-          color:"#ff6b00"
-
-        },
-
-
-
-        modal:{
-
-          ondismiss:()=>{
-
-            setLoading(false);
-
-          }
-
-        },
-
-
-
-        handler: async function(response){
-
-
-          try{
-
-
-            // VERIFY PAYMENT
-
-            const verify = await axios.post(
-
-
-              "https://bmgum.onrender.com/api/payment/verify-payment",
-
-
-              {
-
-
-                razorpay_order_id:
-                  response.razorpay_order_id,
-
-
-                razorpay_payment_id:
-                  response.razorpay_payment_id,
-
-
-                razorpay_signature:
-                  response.razorpay_signature,
-
-
-                donor:
-                  formData
-
-
-              },
-
-
-              {
-
-
-                headers:{
-
-
-                  Authorization:
-                  `Bearer ${token}`
-
-
-                }
-
-
-              }
-
-
-            );
-
-
-
-            if(verify.data.success){
-
-
-
-              setSuccessData({
-
-                receiptNo:
-                  verify.data.receiptNo,
-
-
-                paymentId:
-                  verify.data.paymentId,
-
-
-                amount:
-                  formData.amount,
-
-
-                donor:
-                  formData.fullName,
-
-
-                pdfUrl:
-                  verify.data.pdfUrl
-
-
-              });
-
-
-
-              setShowSuccess(true);
-
-
-
-            }
-
-            else{
-
-
-              alert(
-                "Payment verification failed"
-              );
-
-
-            }
-
-
-
-          }
-
-          catch(err){
-
-
-            console.log(err);
-
-
-            alert(
-
-              err.response?.data?.message ||
-
-              "Payment verification error"
-
-            );
-
-
-          }
-
-
-          finally{
-
-
-            setLoading(false);
-
-
-          }
-
-
-        }
-
-
-      };
-
-
-
-      const razorpay =
-        new window.Razorpay(options);
-
-
-
-      razorpay.open();
-
-
-
-    }
-
-    catch(err){
-
-
-      console.log(err);
-
-
-      alert(
-
-        err.response?.data?.message ||
-
-        "Unable to start payment"
-
-      );
-
+    setTimeout(() => {
 
       setLoading(false);
 
+      navigate(
 
-    }
+        "/verify-payment",
 
+        {
+
+          state:{
+
+            ...formData
+
+          }
+
+        }
+
+      );
+
+    },3000);
 
   };
-
-
-
-  return (
+    return (
 
     <button
 
@@ -389,7 +155,7 @@ function DonateButton({
 
             <span className="spinner"></span>
 
-            Processing...
+            Opening UPI...
 
           </>
 
@@ -400,19 +166,19 @@ function DonateButton({
         (
 
           <>
-            ❤️ Donate ₹{formData.amount || 0}
+
+            💳 Pay ₹{formData.amount || 0} with UPI
+
           </>
 
         )
 
       }
 
-
     </button>
 
   );
 
 }
-
 
 export default DonateButton;

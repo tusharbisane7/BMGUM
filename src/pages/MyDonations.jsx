@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
 import "../styles/myDonations.css";
+
 function MyDonations() {
 
     const [donations, setDonations] = useState([]);
@@ -10,9 +11,9 @@ function MyDonations() {
 
     const [search, setSearch] = useState("");
 
-    // ==========================
-    // Fetch Donations
-    // ==========================
+    /* ==========================
+       FETCH MY DONATIONS
+    ========================== */
 
     useEffect(() => {
 
@@ -40,13 +41,23 @@ function MyDonations() {
 
                 const result = await response.json();
 
-                setDonations(result || []);
+                if (result.success) {
+
+                    setDonations(result.donations);
+
+                } else {
+
+                    setDonations([]);
+
+                }
 
             }
 
             catch (err) {
 
                 console.log(err);
+
+                setDonations([]);
 
             }
 
@@ -62,9 +73,9 @@ function MyDonations() {
 
     }, []);
 
-    // ==========================
-    // Search Filter
-    // ==========================
+    /* ==========================
+       SEARCH FILTER
+    ========================== */
 
     const filteredDonations = useMemo(() => {
 
@@ -72,7 +83,7 @@ function MyDonations() {
 
             return (
 
-                item.receipt_no
+                item.receipt
 
                     ?.toLowerCase()
 
@@ -80,7 +91,7 @@ function MyDonations() {
 
                 ||
 
-                item.payment_id
+                item.utr
 
                     ?.toLowerCase()
 
@@ -100,9 +111,11 @@ function MyDonations() {
 
     }, [donations, search]);
 
-    // ==========================
-    // Dashboard Stats
-    // ==========================
+
+
+    /* ==========================
+       DASHBOARD STATS
+    ========================== */
 
     const totalDonation = donations.reduce(
 
@@ -116,13 +129,14 @@ function MyDonations() {
 
     const totalReceipts = donations.length;
 
-    const latestDonation = donations.length
+    const latestDonation =
 
-        ? donations[0].amount
+        donations.length > 0
 
-        : 0;
+            ? donations[0].amount
 
-    return (
+            : 0;
+                return (
 
         <div className="myDonationPage">
 
@@ -136,7 +150,7 @@ function MyDonations() {
 
                     <h1>
 
-                        🙏 My Online Donations
+                        🙏 My Donations
 
                     </h1>
 
@@ -214,7 +228,7 @@ function MyDonations() {
 
                     type="text"
 
-                    placeholder="Search Receipt / Payment ID..."
+                    placeholder="Search Receipt / UTR Number..."
 
                     value={search}
 
@@ -243,7 +257,8 @@ function MyDonations() {
                 )
 
             }
-                        {/* ================= CONTENT ================= */}
+
+            {/* ================= EMPTY ================= */}
 
             {
 
@@ -265,7 +280,7 @@ function MyDonations() {
 
                         <p>
 
-                            You haven't made any online donations yet.
+                            You haven't submitted any donations yet.
 
                         </p>
 
@@ -286,6 +301,7 @@ function MyDonations() {
                 )
 
             }
+                        {/* ================= DESKTOP TABLE ================= */}
 
             {
 
@@ -305,9 +321,11 @@ function MyDonations() {
 
                                     <th>Amount</th>
 
-                                    <th>Status</th>
+                                    <th>UTR Number</th>
 
-                                    <th>Payment ID</th>
+                                    <th>Method</th>
+
+                                    <th>Status</th>
 
                                     <th>Action</th>
 
@@ -319,139 +337,139 @@ function MyDonations() {
 
                                 {
 
-                                    filteredDonations.map(
+                                    filteredDonations.map((item) => (
 
-                                        (item) => (
+                                        <tr key={item.id}>
 
-                                            <tr
+                                            <td>
 
-                                                key={item.id}
+                                                {item.receipt}
 
-                                            >
+                                            </td>
 
-                                                <td>
+                                            <td>
+
+                                                {
+
+                                                    new Date(
+
+                                                        item.createdat
+
+                                                    ).toLocaleDateString(
+
+                                                        "en-IN"
+
+                                                    )
+
+                                                }
+
+                                            </td>
+
+                                            <td>
+
+                                                ₹{item.amount}
+
+                                            </td>
+
+                                            <td>
+
+                                                {item.utr || "-"}
+
+                                            </td>
+
+                                            <td>
+
+                                                {item.payment_method || "UPI"}
+
+                                            </td>
+
+                                            <td>
+
+                                                <span
+
+                                                    className={`status ${item.status?.toLowerCase()}`}
+
+                                                >
+
+                                                    {item.status}
+
+                                                </span>
+
+                                            </td>
+
+                                            <td>
+
+                                                <div className="actionButtons">
 
                                                     {
 
-                                                        item.receipt_no
+                                                        item.status === "Success" && (
 
-                                                    }
+                                                            <button
 
-                                                </td>
+                                                                className="actionBtn download"
 
-                                                <td>
+                                                                onClick={() => {
 
-                                                    {
+                                                                    alert("Receipt download will be available after admin verification.");
 
-                                                        new Date(
+                                                                }}
 
-                                                            item.created_at
+                                                            >
 
-                                                        ).toLocaleDateString(
+                                                                📄
 
-                                                            "en-IN"
+                                                            </button>
 
                                                         )
 
                                                     }
 
-                                                </td>
+                                                    <button
 
-                                                <td>
+                                                        className="actionBtn whatsapp"
 
-                                                    ₹
+                                                        onClick={() => {
 
-                                                    {
+                                                            const msg =
 
-                                                        item.amount
+`🙏 Bal Mitra Ganesh Utsav Mandal
 
-                                                    }
+Receipt : ${item.receipt}
 
-                                                </td>
+Amount : ₹${item.amount}
 
-                                                <td>
+UTR : ${item.utr || "-"}
 
-                                                    <span className="status success">
+Status : ${item.status}
 
-                                                        {
-
-                                                            item.payment_status ||
-
-                                                            "Success"
-
-                                                        }
-
-                                                    </span>
-
-                                                </td>
-
-                                                <td>
-
-                                                    {
-
-                                                        item.payment_id
-
-                                                    }
-
-                                                </td>
-
-                                                <td>
-
-                                                    <div className="actionButtons">
-
-                                                        <button
-
-                                                            className="actionBtn download"
-
-                                                        >
-
-                                                            📄
-
-                                                        </button>
-
-                                                        <button
-
-                                                            className="actionBtn whatsapp"
-
-                                                            onClick={() => {
-
-                                                                const msg =
-
-`🙏 Donation Receipt
-
-Receipt No: ${item.receipt_no}
-
-Amount: ₹${item.amount}
-
-Payment ID: ${item.payment_id}
+Payment Method : ${item.payment_method || "UPI"}
 
 Thank You ❤️`;
 
-                                                                window.open(
+                                                            window.open(
 
-                                                                    `https://wa.me/?text=${encodeURIComponent(msg)}`,
+                                                                `https://wa.me/?text=${encodeURIComponent(msg)}`,
 
-                                                                    "_blank"
+                                                                "_blank"
 
-                                                                );
+                                                            );
 
-                                                            }}
+                                                        }}
 
-                                                        >
+                                                    >
 
-                                                            📱
+                                                        📱
 
-                                                        </button>
+                                                    </button>
 
-                                                    </div>
+                                                </div>
 
-                                                </td>
+                                            </td>
 
-                                            </tr>
+                                        </tr>
 
-                                        )
-
-                                    )
+                                    ))
 
                                 }
 
@@ -464,138 +482,156 @@ Thank You ❤️`;
                 )
 
             }
+                        {/* ================= MOBILE CARDS ================= */}
 
-            {/* ================= MOBILE CARDS ================= */}
+            {
 
-            <section className="mobileDonationCards">
+                !loading && filteredDonations.length > 0 && (
 
-                {
+                    <section className="mobileDonationCards">
 
-                    filteredDonations.map(
+                        {
 
-                        (item) => (
+                            filteredDonations.map((item) => (
 
-                            <div
+                                <div
 
-                                className="donationCard"
+                                    className="donationCard"
 
-                                key={item.id}
+                                    key={item.id}
 
-                            >
+                                >
 
-                                <div className="cardTop">
+                                    <div className="cardTop">
 
-                                    <h3>
+                                        <h3>
+
+                                            {item.receipt}
+
+                                        </h3>
+
+                                        <span
+
+                                            className={`status ${item.status?.toLowerCase()}`}
+
+                                        >
+
+                                            {item.status}
+
+                                        </span>
+
+                                    </div>
+
+                                    <p>
+
+                                        💰 <strong>Amount :</strong> ₹{item.amount}
+
+                                    </p>
+
+                                    <p>
+
+                                        🆔 <strong>UTR :</strong> {item.utr || "-"}
+
+                                    </p>
+
+                                    <p>
+
+                                        💳 <strong>Method :</strong> {item.payment_method || "UPI"}
+
+                                    </p>
+
+                                    <p>
+
+                                        📅 <strong>Date :</strong>{" "}
 
                                         {
 
-                                            item.receipt_no
+                                            new Date(item.createdat)
+
+                                                .toLocaleDateString("en-IN")
 
                                         }
 
-                                    </h3>
+                                    </p>
 
-                                    <span className="status success">
+                                    <div className="mobileActions">
 
-                                        Success
+                                        {
 
-                                    </span>
+                                            item.status === "Success" && (
 
-                                </div>
+                                                <button
 
-                                <p>
+                                                    className="download"
 
-                                    💰 ₹
+                                                    onClick={() => {
 
-                                    {
+                                                        alert("Receipt download will be available after admin verification.");
 
-                                        item.amount
+                                                    }}
 
-                                    }
+                                                >
 
-                                </p>
+                                                    📄 Download
 
-                                <p>
+                                                </button>
 
-                                    💳
+                                            )
 
-                                    {
+                                        }
 
-                                        item.payment_id
+                                        <button
 
-                                    }
+                                            className="whatsapp"
 
-                                </p>
+                                            onClick={() => {
 
-                                <p>
+                                                const msg =
 
-                                    📅
+`🙏 Bal Mitra Ganesh Utsav Mandal
 
-                                    {
+Receipt : ${item.receipt}
 
-                                        new Date(
+Amount : ₹${item.amount}
 
-                                            item.created_at
+UTR : ${item.utr || "-"}
 
-                                        ).toLocaleDateString(
+Status : ${item.status}
 
-                                            "en-IN"
+Payment Method : ${item.payment_method || "UPI"}
 
-                                        )
+Thank You ❤️`;
 
-                                    }
+                                                window.open(
 
-                                </p>
+                                                    `https://wa.me/?text=${encodeURIComponent(msg)}`,
 
-                                <div className="mobileActions">
+                                                    "_blank"
 
-                                    <button className="download">
+                                                );
 
-                                        📄 Download
+                                            }}
 
-                                    </button>
+                                        >
 
-                                    <button
+                                            📱 WhatsApp
 
-                                        className="whatsapp"
+                                        </button>
 
-                                        onClick={() => {
-
-                                            const msg =
-
-`Receipt No: ${item.receipt_no}
-
-Amount: ₹${item.amount}`;
-
-                                            window.open(
-
-                                                `https://wa.me/?text=${encodeURIComponent(msg)}`,
-
-                                                "_blank"
-
-                                            );
-
-                                        }}
-
-                                    >
-
-                                        📱 WhatsApp
-
-                                    </button>
+                                    </div>
 
                                 </div>
 
-                            </div>
+                            ))
 
-                        )
+                        }
 
-                    )
+                    </section>
 
-                }
+                )
 
-            </section>
-
-        </div>
+            }
+                    </div>
 
     );
 

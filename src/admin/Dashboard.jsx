@@ -381,6 +381,16 @@ function Dashboard() {
               <span>देणगी व्यवस्थापन</span>
             </button>
 
+
+<button
+              className="service-item"
+              onClick={() => navigate("/admin/upi-donations")}
+            >
+              <FaMoneyBillWave />
+              <span>💳 UPI Donations</span>
+            </button>
+
+
             <button
               className="service-item"
               onClick={() => navigate("/admin/expenses")}
