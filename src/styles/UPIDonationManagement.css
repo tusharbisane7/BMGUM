@@ -1,854 +1,631 @@
-/*=====================================================
-UPI DONATION MANAGEMENT
-=====================================================*/
+/* ======================================
+   PAGE
+====================================== */
 
 .upiDonationPage{
-
+    width:100%;
     min-height:100vh;
-
-    background:linear-gradient(135deg,#fff7ef,#fffdf9);
-
-    padding-bottom:60px;
-
+    background:#f5f7fb;
+    padding-bottom:40px;
 }
 
-
-
-/*=====================================================
-HERO
-=====================================================*/
+/* ======================================
+   HERO
+====================================== */
 
 .upiHero{
-
-    height:270px;
-
-    background:linear-gradient(135deg,#ff7a00,#ff9800);
-
     position:relative;
-
+    width:100%;
+    height:260px;
     display:flex;
-
     justify-content:center;
-
     align-items:center;
-
     overflow:hidden;
-
+    background:linear-gradient(135deg,#ff7b00,#ffb347);
 }
 
-
-
-.overlay{
-
+.upiHero .overlay{
     position:absolute;
-
     inset:0;
-
-    background:rgba(0,0,0,.18);
-
+    background:rgba(0,0,0,.35);
 }
-
-
 
 .heroContent{
-
     position:relative;
-
     z-index:2;
-
     text-align:center;
-
     color:#fff;
-
+    padding:20px;
 }
-
-
 
 .heroContent h1{
-
-    font-size:42px;
-
-    margin-bottom:10px;
-
+    font-size:38px;
     font-weight:700;
-
+    margin-bottom:12px;
 }
-
-
 
 .heroContent p{
-
     font-size:18px;
-
     opacity:.95;
-
+    line-height:1.6;
 }
 
-
-
-/*=====================================================
-STATS
-=====================================================*/
+/* ======================================
+   STATS GRID
+====================================== */
 
 .statsGrid{
-
-    max-width:1300px;
-
-    margin:-55px auto 40px;
-
+    width:95%;
+    max-width:1400px;
+    margin:-50px auto 30px;
     display:grid;
-
     grid-template-columns:repeat(4,1fr);
-
-    gap:25px;
-
-    padding:0 20px;
-
+    gap:22px;
+    position:relative;
+    z-index:5;
 }
 
-
+/* ======================================
+   STAT CARD
+====================================== */
 
 .statCard{
-
     background:#fff;
-
-    border-radius:22px;
-
-    padding:30px;
-
+    border-radius:18px;
+    padding:28px 20px;
     text-align:center;
-
-    box-shadow:0 15px 40px rgba(0,0,0,.08);
-
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
     transition:.3s;
-
 }
-
-
 
 .statCard:hover{
-
     transform:translateY(-6px);
-
+    box-shadow:0 15px 35px rgba(0,0,0,.15);
 }
-
-
 
 .statCard span{
-
     font-size:42px;
-
+    display:block;
+    margin-bottom:14px;
 }
-
-
 
 .statCard h2{
-
-    margin:15px 0;
-
-    font-size:34px;
-
+    font-size:32px;
     color:#ff6b00;
-
+    margin-bottom:8px;
+    font-weight:700;
 }
-
-
 
 .statCard p{
-
     color:#666;
-
     font-size:15px;
-
+    font-weight:500;
 }
-
-
-
-/*=====================================================
-SEARCH
-=====================================================*/
+/* ======================================
+   TOOLBAR
+====================================== */
 
 .toolbar{
-
-    max-width:1300px;
-
-    margin:auto;
-
+    width:95%;
+    max-width:1400px;
+    margin:25px auto;
     display:flex;
-
-    gap:18px;
-
-    padding:0 20px 35px;
-
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
 }
-
-
 
 .toolbar input{
-
     flex:1;
-
-    height:58px;
-
-    border:none;
-
-    border-radius:18px;
-
-    padding:0 22px;
-
-    font-size:16px;
-
+    min-width:280px;
+    padding:14px 18px;
+    border:1px solid #ddd;
+    border-radius:12px;
+    font-size:15px;
+    outline:none;
+    transition:.3s;
     background:#fff;
-
-    box-shadow:0 10px 25px rgba(0,0,0,.08);
-
 }
-
-
 
 .toolbar input:focus{
-
-    outline:none;
-
-    border:2px solid #ff7a00;
-
+    border-color:#ff6b00;
+    box-shadow:0 0 0 4px rgba(255,107,0,.15);
 }
-
-
 
 .toolbar select{
-
-    width:220px;
-
-    border:none;
-
-    border-radius:18px;
-
-    padding:0 18px;
-
+    width:180px;
+    padding:14px;
+    border-radius:12px;
+    border:1px solid #ddd;
     background:#fff;
-
-    font-size:16px;
-
-    box-shadow:0 10px 25px rgba(0,0,0,.08);
-
+    font-size:15px;
+    cursor:pointer;
+    outline:none;
 }
-
-
 
 .toolbar select:focus{
-
-    outline:none;
-
+    border-color:#ff6b00;
 }
 
-
-
-/*=====================================================
-LOADING
-=====================================================*/
-
-.loadingBox{
-
-    width:260px;
-
-    margin:60px auto;
-
-    background:#fff;
-
-    padding:18px;
-
-    border-radius:18px;
-
-    text-align:center;
-
-    color:#ff6b00;
-
-    font-weight:700;
-
-    box-shadow:0 12px 30px rgba(0,0,0,.08);
-
-}
-
-
-
-/*=====================================================
-EMPTY
-=====================================================*/
-
-.emptyBox{
-
-    max-width:700px;
-
-    margin:70px auto;
-
-    background:#fff;
-
-    border-radius:24px;
-
-    padding:55px;
-
-    text-align:center;
-
-    box-shadow:0 18px 40px rgba(0,0,0,.08);
-
-}
-
-
-
-.emptyBox span{
-
-    font-size:70px;
-
-}
-
-
-
-.emptyBox h2{
-
-    margin:18px 0;
-
-    color:#ff6b00;
-
-}
-
-
-
-.emptyBox p{
-
-    color:#777;
-
-}
-/*=====================================================
-TABLE
-=====================================================*/
+/* ======================================
+   TABLE
+====================================== */
 
 .tableWrapper{
-
-    max-width:1300px;
-
+    width:95%;
+    max-width:1400px;
     margin:auto;
-
-    padding:0 20px;
-
     overflow-x:auto;
-
+    background:#fff;
+    border-radius:18px;
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
 }
-
-
 
 .upiTable{
-
     width:100%;
-
     border-collapse:collapse;
-
-    background:#fff;
-
-    border-radius:22px;
-
-    overflow:hidden;
-
-    box-shadow:0 18px 40px rgba(0,0,0,.08);
-
+    min-width:1100px;
 }
-
-
 
 .upiTable thead{
+    background:#ff6b00;
+}
 
-    background:linear-gradient(90deg,#ff7a00,#ff9800);
-
+.upiTable thead th{
     color:#fff;
-
-}
-
-
-
-.upiTable th{
-
-    padding:20px;
-
-    font-size:15px;
-
-    text-align:left;
-
-    white-space:nowrap;
-
-}
-
-
-
-.upiTable td{
-
     padding:18px;
-
-    border-bottom:1px solid #f2f2f2;
-
-    color:#555;
-
+    text-align:left;
     font-size:15px;
-
-    vertical-align:middle;
-
+    font-weight:600;
+    white-space:nowrap;
 }
-
-
 
 .upiTable tbody tr{
-
-    transition:.25s;
-
+    transition:.3s;
+    border-bottom:1px solid #eee;
 }
-
-
 
 .upiTable tbody tr:hover{
-
-    background:#fff7ef;
-
+    background:#fff8f3;
 }
 
+.upiTable tbody td{
+    padding:16px;
+    font-size:14px;
+    color:#444;
+    vertical-align:middle;
+}
 
+.upiTable tbody tr:last-child{
+    border-bottom:none;
+}
 
-/*=====================================================
-STATUS
-=====================================================*/
+/* ======================================
+   STATUS
+====================================== */
 
 .status{
-
     display:inline-flex;
-
     align-items:center;
-
     justify-content:center;
-
-    min-width:95px;
-
-    padding:8px 14px;
-
-    border-radius:50px;
-
+    padding:7px 14px;
+    border-radius:30px;
     font-size:13px;
-
-    font-weight:700;
-
+    font-weight:600;
+    min-width:95px;
 }
-
-
 
 .status.pending{
-
-    background:#fff4cc;
-
-    color:#b77900;
-
+    background:#fff4d8;
+    color:#d68a00;
 }
-
-
 
 .status.success{
-
-    background:#dff9e7;
-
-    color:#0d8a3f;
-
+    background:#e6f9ea;
+    color:#15803d;
 }
-
-
 
 .status.rejected{
-
-    background:#ffe2e2;
-
-    color:#c62828;
-
+    background:#fde8e8;
+    color:#dc2626;
 }
-
-
-
-/*=====================================================
-ACTION BUTTONS
-=====================================================*/
+/* ======================================
+   ACTION BUTTONS
+====================================== */
 
 .actionButtons{
-
     display:flex;
-
     align-items:center;
-
-    gap:10px;
-
+    gap:8px;
 }
-
-
 
 .actionButtons button{
-
-    width:42px;
-
-    height:42px;
-
+    width:40px;
+    height:40px;
     border:none;
-
-    border-radius:12px;
-
+    border-radius:10px;
     cursor:pointer;
-
     font-size:16px;
-
-    transition:.3s;
-
+    transition:.25s ease;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
-
-
-
-.actionButtons button:hover{
-
-    transform:translateY(-2px) scale(1.08);
-
-}
-
-
 
 .viewBtn{
-
-    background:#1976d2;
-
+    background:#3498db;
     color:#fff;
-
 }
 
-
+.viewBtn:hover{
+    background:#217dbb;
+    transform:translateY(-2px);
+}
 
 .approveBtn{
-
-    background:#1fa74d;
-
+    background:#22c55e;
     color:#fff;
-
 }
 
-
+.approveBtn:hover{
+    background:#16a34a;
+    transform:translateY(-2px);
+}
 
 .rejectBtn{
-
-    background:#e53935;
-
+    background:#ef4444;
     color:#fff;
-
 }
 
-
-
-/*=====================================================
-SCROLLBAR
-=====================================================*/
-
-.tableWrapper::-webkit-scrollbar{
-
-    height:8px;
-
-}
-
-
-
-.tableWrapper::-webkit-scrollbar-thumb{
-
-    background:#ff9800;
-
-    border-radius:20px;
-
-}
-/*=====================================================
-MODAL
-=====================================================*/
-
-.modalOverlay{
-
-    position:fixed;
-
-    inset:0;
-
-    background:rgba(0,0,0,.55);
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    z-index:9999;
-
-    animation:fadeIn .25s ease;
-
-}
-
-
-
-.donationModal{
-
-    width:95%;
-
-    max-width:620px;
-
-    background:#fff;
-
-    border-radius:24px;
-
-    padding:30px;
-
-    box-shadow:0 30px 60px rgba(0,0,0,.25);
-
-    animation:scaleIn .25s ease;
-
-}
-
-
-
-.donationModal h2{
-
-    margin-bottom:25px;
-
-    text-align:center;
-
-    color:#ff6b00;
-
-    font-size:30px;
-
-}
-
-
-
-.modalBody{
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:14px;
-
-}
-
-
-
-.modalBody p{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    padding:14px 16px;
-
-    background:#fff7ef;
-
-    border-radius:14px;
-
-    font-size:15px;
-
-    color:#444;
-
-    word-break:break-word;
-
-}
-
-
-
-.modalBody strong{
-
-    color:#222;
-
-    font-weight:700;
-
-}
-
-
-
-/*=====================================================
-MODAL BUTTONS
-=====================================================*/
-
-.modalButtons{
-
-    display:flex;
-
-    gap:15px;
-
-    margin-top:28px;
-
-}
-
-
-
-.modalButtons button{
-
-    flex:1;
-
-    height:50px;
-
-    border:none;
-
-    border-radius:14px;
-
-    cursor:pointer;
-
-    font-size:15px;
-
-    font-weight:700;
-
-    color:#fff;
-
-    transition:.3s;
-
-}
-
-
-
-.modalButtons button:hover{
-
-    transform:translateY(-2px);
-
-}
-
-
-
-.modalButtons .approveBtn{
-
-    background:#16a34a;
-
-}
-
-
-
-.modalButtons .rejectBtn{
-
+.rejectBtn:hover{
     background:#dc2626;
-
+    transform:translateY(-2px);
 }
-
-
 
 .closeBtn{
-
     background:#6b7280;
-
+    color:#fff;
+    padding:12px 22px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:15px;
+    transition:.25s;
 }
 
+.closeBtn:hover{
+    background:#4b5563;
+}
 
+/* ======================================
+   MOBILE CARDS
+====================================== */
 
-/*=====================================================
-ANIMATION
-=====================================================*/
+.mobileCards{
+    display:none;
+    width:95%;
+    margin:25px auto;
+    gap:18px;
+}
+
+.mobileCard{
+    background:#fff;
+    border-radius:18px;
+    padding:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+.cardHeader{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.cardHeader h3{
+    margin:0;
+    font-size:18px;
+    color:#222;
+}
+
+.mobileCard p{
+    margin:10px 0;
+    color:#555;
+    line-height:1.6;
+    word-break:break-word;
+}
+
+.mobileCard strong{
+    color:#222;
+    margin-right:6px;
+}
+
+.mobileActions{
+    margin-top:18px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.mobileActions button{
+    flex:1;
+    min-width:120px;
+    border:none;
+    border-radius:10px;
+    padding:12px;
+    cursor:pointer;
+    font-size:14px;
+    font-weight:600;
+    transition:.25s;
+}
+
+.mobileActions .viewBtn{
+    background:#3498db;
+    color:#fff;
+}
+
+.mobileActions .approveBtn{
+    background:#22c55e;
+    color:#fff;
+}
+
+.mobileActions .rejectBtn{
+    background:#ef4444;
+    color:#fff;
+}
+
+.mobileActions button:hover{
+    transform:translateY(-2px);
+    opacity:.95;
+}
+/* ======================================
+   LOADING
+====================================== */
+
+.loadingBox{
+    width:95%;
+    max-width:1400px;
+    margin:40px auto;
+    padding:35px;
+    text-align:center;
+    background:#fff;
+    border-radius:18px;
+    font-size:20px;
+    font-weight:600;
+    color:#ff6b00;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+/* ======================================
+   EMPTY STATE
+====================================== */
+
+.emptyBox{
+    width:95%;
+    max-width:1400px;
+    margin:40px auto;
+    padding:50px 25px;
+    text-align:center;
+    background:#fff;
+    border-radius:18px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+.emptyBox span{
+    display:block;
+    font-size:60px;
+    margin-bottom:15px;
+}
+
+.emptyBox h2{
+    margin-bottom:12px;
+    color:#222;
+}
+
+.emptyBox p{
+    color:#666;
+    font-size:16px;
+}
+
+/* ======================================
+   MODAL OVERLAY
+====================================== */
+
+.modalOverlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+    padding:20px;
+    animation:fadeIn .25s ease;
+}
+
+/* ======================================
+   MODAL
+====================================== */
+
+.donationModal{
+    width:100%;
+    max-width:600px;
+    background:#fff;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 20px 50px rgba(0,0,0,.25);
+    animation:popup .25s ease;
+}
+
+.donationModal h2{
+    background:#ff6b00;
+    color:#fff;
+    margin:0;
+    padding:20px;
+    text-align:center;
+    font-size:24px;
+}
+
+.modalBody{
+    padding:25px;
+}
+
+.modalBody p{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 0;
+    border-bottom:1px solid #eee;
+    color:#444;
+    gap:15px;
+    word-break:break-word;
+}
+
+.modalBody p:last-child{
+    border-bottom:none;
+}
+
+.modalBody strong{
+    color:#222;
+    min-width:140px;
+}
+
+/* ======================================
+   MODAL BUTTONS
+====================================== */
+
+.modalButtons{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    justify-content:flex-end;
+    padding:20px 25px;
+    background:#fafafa;
+    border-top:1px solid #eee;
+}
+
+.modalButtons button{
+    border:none;
+    border-radius:10px;
+    padding:12px 22px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:600;
+    transition:.25s ease;
+}
+
+.modalButtons .approveBtn{
+    background:#22c55e;
+    color:#fff;
+}
+
+.modalButtons .approveBtn:hover{
+    background:#16a34a;
+}
+
+.modalButtons .rejectBtn{
+    background:#ef4444;
+    color:#fff;
+}
+
+.modalButtons .rejectBtn:hover{
+    background:#dc2626;
+}
+
+.modalButtons .closeBtn{
+    background:#6b7280;
+    color:#fff;
+}
+
+.modalButtons .closeBtn:hover{
+    background:#4b5563;
+}
+
+/* ======================================
+   ANIMATIONS
+====================================== */
 
 @keyframes fadeIn{
 
     from{
-
         opacity:0;
-
     }
 
     to{
-
         opacity:1;
-
     }
 
 }
 
-
-
-@keyframes scaleIn{
+@keyframes popup{
 
     from{
-
         opacity:0;
-
-        transform:scale(.92);
-
+        transform:scale(.9);
     }
 
     to{
-
         opacity:1;
-
         transform:scale(1);
-
     }
 
 }
+/* ======================================
+   TABLET
+====================================== */
 
+@media (max-width:992px){
 
+    .statsGrid{
 
-/*=====================================================
-GLOBAL SCROLLBAR
-=====================================================*/
+        grid-template-columns:repeat(2,1fr);
 
-::-webkit-scrollbar{
-
-    width:8px;
-
-    height:8px;
-
-}
-
-
-
-::-webkit-scrollbar-thumb{
-
-    background:#ff8a00;
-
-    border-radius:20px;
-
-}
-
-
-
-::-webkit-scrollbar-track{
-
-    background:#f3f3f3;
-
-}
-
-
-
-/*=====================================================
-FINAL RESPONSIVE
-=====================================================*/
-
-@media(max-width:768px){
-
-    .donationModal{
-
-        width:94%;
-
-        padding:22px;
+        gap:18px;
 
     }
 
-    .modalBody p{
+    .heroContent h1{
+
+        font-size:30px;
+
+    }
+
+    .heroContent p{
+
+        font-size:16px;
+
+    }
+
+    .toolbar{
 
         flex-direction:column;
 
-        align-items:flex-start;
-
-        gap:6px;
+        align-items:stretch;
 
     }
 
-    .modalButtons{
+    .toolbar input{
 
-        flex-direction:column;
+        width:100%;
+
+        min-width:unset;
+
+    }
+
+    .toolbar select{
+
+        width:100%;
 
     }
 
 }
 
+/* ======================================
+   MOBILE
+====================================== */
 
-
-@media(max-width:480px){
+@media (max-width:768px){
 
     .upiHero{
 
@@ -858,13 +635,21 @@ FINAL RESPONSIVE
 
     .heroContent h1{
 
-        font-size:24px;
+        font-size:26px;
 
     }
 
     .heroContent p{
 
-        font-size:14px;
+        font-size:15px;
+
+    }
+
+    .statsGrid{
+
+        grid-template-columns:1fr;
+
+        margin-top:-35px;
 
     }
 
@@ -880,31 +665,175 @@ FINAL RESPONSIVE
 
     }
 
+    /* Hide Desktop Table */
+
+    .tableWrapper{
+
+        display:none;
+
+    }
+
+    /* Show Mobile Cards */
+
+    .mobileCards{
+
+        display:flex;
+
+        flex-direction:column;
+
+    }
+
+    .mobileCard{
+
+        border-radius:16px;
+
+        padding:18px;
+
+    }
+
+    .cardHeader{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:10px;
+
+    }
+
+    .cardHeader h3{
+
+        font-size:18px;
+
+    }
+
+    .mobileActions{
+
+        flex-direction:column;
+
+    }
+
+    .mobileActions button{
+
+        width:100%;
+
+    }
+
+    .donationModal{
+
+        max-width:100%;
+
+        border-radius:15px;
+
+    }
+
+    .modalBody{
+
+        padding:20px;
+
+    }
+
+    .modalBody p{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:6px;
+
+        font-size:14px;
+
+    }
+
+    .modalButtons{
+
+        flex-direction:column;
+
+    }
+
+    .modalButtons button{
+
+        width:100%;
+
+    }
+
+}
+
+/* ======================================
+   SMALL MOBILE
+====================================== */
+
+@media (max-width:480px){
+
+    .heroContent h1{
+
+        font-size:22px;
+
+    }
+
+    .heroContent p{
+
+        font-size:14px;
+
+    }
+
+    .statCard span{
+
+        font-size:34px;
+
+    }
+
+    .statCard h2{
+
+        font-size:24px;
+
+    }
+
+    .loadingBox,
+
+    .emptyBox{
+
+        padding:25px;
+
+        font-size:16px;
+
+    }
+
     .toolbar{
+
+        width:94%;
+
+    }
+
+    .toolbar input,
+
+    .toolbar select{
+
+        font-size:14px;
+
+        padding:12px;
+
+    }
+
+    .mobileCard{
 
         padding:15px;
 
     }
 
-    .toolbar input{
+    .mobileCard p{
 
-        height:52px;
-
-        font-size:15px;
+        font-size:14px;
 
     }
 
-    .toolbar select{
+    .status{
 
-        height:52px;
+        min-width:80px;
 
-        font-size:15px;
+        font-size:12px;
 
-    }
-
-    .donationModal h2{
-
-        font-size:24px;
+        padding:6px 12px;
 
     }
 

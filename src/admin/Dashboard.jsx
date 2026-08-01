@@ -383,12 +383,12 @@ function Dashboard() {
 
 
 <button
-              className="service-item"
-              onClick={() => navigate("/admin/upi-donations")}
-            >
-              <FaMoneyBillWave />
-              <span>💳 UPI Donations</span>
-            </button>
+  className="service-item"
+  onClick={() => navigate("/admin/upi-donations")}
+>
+  <FaMoneyBillWave />
+  <span>💳 UPI Donations</span>
+</button>
 
 
             <button

@@ -2,9 +2,12 @@ import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 
 import "../styles/UPIDonationManagement.css";
+
 const API = "https://bmgum.onrender.com/api";
 
 function UPIDonationManagement() {
+
+    const token = localStorage.getItem("token");
 
     const [loading, setLoading] = useState(true);
 
@@ -16,9 +19,9 @@ function UPIDonationManagement() {
 
     const [selectedDonation, setSelectedDonation] = useState(null);
 
-    const token = localStorage.getItem("token");
-
-
+    /* =====================================
+        LOAD DONATIONS
+    ===================================== */
 
     useEffect(() => {
 
@@ -26,10 +29,9 @@ function UPIDonationManagement() {
 
     }, []);
 
-
-
-
     const fetchDonations = async () => {
+
+        setLoading(true);
 
         try {
 
@@ -39,9 +41,9 @@ function UPIDonationManagement() {
 
                 {
 
-                    headers:{
+                    headers: {
 
-                        Authorization:`Bearer ${token}`
+                        Authorization: `Bearer ${token}`
 
                     }
 
@@ -49,34 +51,50 @@ function UPIDonationManagement() {
 
             );
 
-            setDonations(res.data);
+            if (res.data.success) {
+
+                setDonations(res.data.donations);
+
+            }
+
+            else {
+
+                setDonations([]);
+
+            }
 
         }
 
-        catch(err){
+        catch (err) {
 
-            console.log(err);
+            console.error(err);
 
-            alert("Unable to fetch donations.");
+            alert(
+
+                err.response?.data?.message ||
+
+                "Unable to fetch UPI donations."
+
+            );
 
         }
 
-        finally{
+        finally {
 
             setLoading(false);
 
         }
 
     };
+        /* =====================================
+        APPROVE DONATION
+    ===================================== */
 
+    const approveDonation = async (id) => {
 
+        try {
 
-
-    const approveDonation = async(id)=>{
-
-        try{
-
-            await axios.put(
+            const res = await axios.put(
 
                 `${API}/upi-donations/approve/${id}`,
 
@@ -84,9 +102,9 @@ function UPIDonationManagement() {
 
                 {
 
-                    headers:{
+                    headers: {
 
-                        Authorization:`Bearer ${token}`
+                        Authorization: `Bearer ${token}`
 
                     }
 
@@ -94,15 +112,31 @@ function UPIDonationManagement() {
 
             );
 
-            fetchDonations();
+            if (res.data.success) {
+
+                alert("Donation Approved Successfully.");
+
+                fetchDonations();
+
+            } else {
+
+                alert(res.data.message);
+
+            }
 
         }
 
-        catch(err){
+        catch (err) {
 
-            console.log(err);
+            console.error(err);
 
-            alert("Approval failed.");
+            alert(
+
+                err.response?.data?.message ||
+
+                "Approval Failed."
+
+            );
 
         }
 
@@ -110,12 +144,15 @@ function UPIDonationManagement() {
 
 
 
+    /* =====================================
+        REJECT DONATION
+    ===================================== */
 
-    const rejectDonation = async(id)=>{
+    const rejectDonation = async (id) => {
 
-        try{
+        try {
 
-            await axios.put(
+            const res = await axios.put(
 
                 `${API}/upi-donations/reject/${id}`,
 
@@ -123,9 +160,9 @@ function UPIDonationManagement() {
 
                 {
 
-                    headers:{
+                    headers: {
 
-                        Authorization:`Bearer ${token}`
+                        Authorization: `Bearer ${token}`
 
                     }
 
@@ -133,15 +170,31 @@ function UPIDonationManagement() {
 
             );
 
-            fetchDonations();
+            if (res.data.success) {
+
+                alert("Donation Rejected Successfully.");
+
+                fetchDonations();
+
+            } else {
+
+                alert(res.data.message);
+
+            }
 
         }
 
-        catch(err){
+        catch (err) {
 
-            console.log(err);
+            console.error(err);
 
-            alert("Reject failed.");
+            alert(
+
+                err.response?.data?.message ||
+
+                "Reject Failed."
+
+            );
 
         }
 
@@ -149,36 +202,47 @@ function UPIDonationManagement() {
 
 
 
+    /* =====================================
+        FILTER DATA
+    ===================================== */
 
-    const filteredData = useMemo(()=>{
+    const filteredData = useMemo(() => {
 
-        return donations.filter(item=>{
+        return donations.filter((item) => {
 
             const matchesSearch =
 
                 item.donorname
 
-                ?.toLowerCase()
+                    ?.toLowerCase()
 
-                .includes(search.toLowerCase())
+                    .includes(search.toLowerCase())
 
                 ||
 
                 item.utr
 
-                ?.toLowerCase()
+                    ?.toLowerCase()
 
-                .includes(search.toLowerCase());
+                    .includes(search.toLowerCase())
+
+                ||
+
+                item.receipt
+
+                    ?.toLowerCase()
+
+                    .includes(search.toLowerCase());
 
 
 
             const matchesStatus =
 
-                statusFilter==="All"
+                statusFilter === "All"
 
                 ||
 
-                item.status===statusFilter;
+                item.status === statusFilter;
 
 
 
@@ -186,17 +250,27 @@ function UPIDonationManagement() {
 
         });
 
-    },[donations,search,statusFilter]);
+    }, [
+
+        donations,
+
+        search,
+
+        statusFilter
+
+    ]);
 
 
 
-
+    /* =====================================
+        DASHBOARD STATS
+    ===================================== */
 
     const totalAmount = filteredData.reduce(
 
-        (sum,item)=>
+        (sum, item) =>
 
-        sum+Number(item.amount),
+            sum + Number(item.amount),
 
         0
 
@@ -206,7 +280,7 @@ function UPIDonationManagement() {
 
     const pendingCount = filteredData.filter(
 
-        d=>d.status==="Pending"
+        (item) => item.status === "Pending"
 
     ).length;
 
@@ -214,7 +288,7 @@ function UPIDonationManagement() {
 
     const approvedCount = filteredData.filter(
 
-        d=>d.status==="Success"
+        (item) => item.status === "Success"
 
     ).length;
 
@@ -222,15 +296,14 @@ function UPIDonationManagement() {
 
     const rejectedCount = filteredData.filter(
 
-        d=>d.status==="Rejected"
+        (item) => item.status === "Rejected"
 
     ).length;
-
-
-
-    return(
+        return (
 
         <div className="upiDonationPage">
+
+            {/* ================= HERO ================= */}
 
             <div className="upiHero">
 
@@ -240,13 +313,13 @@ function UPIDonationManagement() {
 
                     <h1>
 
-                        UPI Donation Management
+                        💳 UPI Donation Management
 
                     </h1>
 
                     <p>
 
-                        Verify UTR Payments & Approve Donations
+                        Verify UTR Payments & Manage Online Donations
 
                     </p>
 
@@ -254,7 +327,7 @@ function UPIDonationManagement() {
 
             </div>
 
-
+            {/* ================= STATISTICS ================= */}
 
             <div className="statsGrid">
 
@@ -264,15 +337,13 @@ function UPIDonationManagement() {
 
                     <h2>
 
-                        ₹{totalAmount}
+                        ₹{totalAmount.toLocaleString()}
 
                     </h2>
 
                     <p>Total Collection</p>
 
                 </div>
-
-
 
                 <div className="statCard">
 
@@ -288,8 +359,6 @@ function UPIDonationManagement() {
 
                 </div>
 
-
-
                 <div className="statCard">
 
                     <span>✅</span>
@@ -303,8 +372,6 @@ function UPIDonationManagement() {
                     <p>Approved</p>
 
                 </div>
-
-
 
                 <div className="statCard">
 
@@ -322,7 +389,7 @@ function UPIDonationManagement() {
 
             </div>
 
-
+            {/* ================= SEARCH ================= */}
 
             <div className="toolbar">
 
@@ -330,7 +397,7 @@ function UPIDonationManagement() {
 
                     type="text"
 
-                    placeholder="Search by Donor / UTR"
+                    placeholder="Search Donor / Receipt / UTR"
 
                     value={search}
 
@@ -341,8 +408,6 @@ function UPIDonationManagement() {
                     }
 
                 />
-
-
 
                 <select
 
@@ -356,18 +421,37 @@ function UPIDonationManagement() {
 
                 >
 
-                    <option>All</option>
+                    <option value="All">
 
-                    <option>Pending</option>
+                        All
 
-                    <option>Success</option>
+                    </option>
 
-                    <option>Rejected</option>
+                    <option value="Pending">
+
+                        Pending
+
+                    </option>
+
+                    <option value="Success">
+
+                        Success
+
+                    </option>
+
+                    <option value="Rejected">
+
+                        Rejected
+
+                    </option>
 
                 </select>
 
             </div>
-                        {
+
+            {/* ================= CONTENT ================= */}
+
+            {
 
                 loading ?
 
@@ -391,11 +475,15 @@ function UPIDonationManagement() {
 
                         <span>📭</span>
 
-                        <h2>No Donations Found</h2>
+                        <h2>
+
+                            No Donations Found
+
+                        </h2>
 
                         <p>
 
-                            No matching UPI donations available.
+                            No UPI donations available.
 
                         </p>
 
@@ -441,153 +529,143 @@ function UPIDonationManagement() {
 
                                 {
 
-                                    filteredData.map(
+                                    filteredData.map((item,index)=>(
 
-                                        (item,index)=>(
+                                        <tr key={item.id}>
 
-                                            <tr
+                                            <td>
 
-                                                key={item.id}
+                                                {index+1}
 
-                                            >
+                                            </td>
 
-                                                <td>
+                                            <td>
 
-                                                    {index+1}
+                                                {item.receipt}
 
-                                                </td>
+                                            </td>
 
-                                                <td>
+                                            <td>
 
-                                                    {item.receipt}
+                                                {item.donorname}
 
-                                                </td>
+                                            </td>
 
-                                                <td>
+                                            <td>
 
-                                                    {item.donorname}
+                                                {item.mobile}
 
-                                                </td>
+                                            </td>
 
-                                                <td>
+                                            <td>
 
-                                                    {item.mobile}
+                                                ₹{item.amount}
 
-                                                </td>
+                                            </td>
 
-                                                <td>
+                                            <td>
 
-                                                    ₹{item.amount}
+                                                {item.utr}
 
-                                                </td>
+                                            </td>
 
-                                                <td>
+                                            <td>
 
-                                                    {item.utr}
+                                                <span
 
-                                                </td>
+                                                    className={`status ${item.status.toLowerCase()}`}
 
-                                                <td>
+                                                >
 
-                                                    <span
+                                                    {item.status}
 
-                                                        className={`status ${item.status.toLowerCase()}`}
+                                                </span>
 
-                                                    >
+                                            </td>
 
-                                                        {item.status}
+                                            <td>
 
-                                                    </span>
+                                                {
 
-                                                </td>
+                                                    new Date(
 
-                                                <td>
+                                                        item.createdat
 
-                                                    {
+                                                    ).toLocaleDateString("en-IN")
 
-                                                        new Date(
+                                                }
 
-                                                            item.createdat
+                                            </td>
 
-                                                        ).toLocaleString()
+                                            <td>
 
-                                                    }
+                                                <div className="actionButtons">
 
-                                                </td>
+                                                    <button
 
-                                                <td>
+                                                        className="viewBtn"
 
-                                                    <div className="actionButtons">
+                                                        onClick={()=>
 
-                                                        <button
-
-                                                            className="viewBtn"
-
-                                                            onClick={()=>
-
-                                                                setSelectedDonation(item)
-
-                                                            }
-
-                                                        >
-
-                                                            👁
-
-                                                        </button>
-
-                                                        {
-
-                                                            item.status==="Pending"
-
-                                                            &&
-
-                                                            <>
-
-                                                                <button
-
-                                                                    className="approveBtn"
-
-                                                                    onClick={()=>
-
-                                                                        approveDonation(item.id)
-
-                                                                    }
-
-                                                                >
-
-                                                                    ✅
-
-                                                                </button>
-
-                                                                <button
-
-                                                                    className="rejectBtn"
-
-                                                                    onClick={()=>
-
-                                                                        rejectDonation(item.id)
-
-                                                                    }
-
-                                                                >
-
-                                                                    ❌
-
-                                                                </button>
-
-                                                            </>
+                                                            setSelectedDonation(item)
 
                                                         }
 
-                                                    </div>
+                                                    >
 
-                                                </td>
+                                                        👁
 
-                                            </tr>
+                                                    </button>
 
-                                        )
+                                                    {
 
-                                    )
+                                                        item.status==="Pending" &&
+
+                                                        <>
+
+                                                            <button
+
+                                                                className="approveBtn"
+
+                                                                onClick={()=>
+
+                                                                    approveDonation(item.id)
+
+                                                                }
+
+                                                            >
+
+                                                                ✅
+
+                                                            </button>
+
+                                                            <button
+
+                                                                className="rejectBtn"
+
+                                                                onClick={()=>
+
+                                                                    rejectDonation(item.id)
+
+                                                                }
+
+                                                            >
+
+                                                                ❌
+
+                                                            </button>
+
+                                                        </>
+
+                                                    }
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+                                    ))
 
                                 }
 
@@ -608,7 +686,7 @@ function UPIDonationManagement() {
 
                 {
 
-                    filteredData.map((item)=>(
+                    filteredData.map((item) => (
 
                         <div
 
@@ -672,6 +750,14 @@ function UPIDonationManagement() {
 
                             <p>
 
+                                <strong>Payment :</strong>
+
+                                {item.payment_method || "UPI"}
+
+                            </p>
+
+                            <p>
+
                                 <strong>Date :</strong>
 
                                 {
@@ -680,7 +766,7 @@ function UPIDonationManagement() {
 
                                         item.createdat
 
-                                    ).toLocaleDateString()
+                                    ).toLocaleDateString("en-IN")
 
                                 }
 
@@ -692,7 +778,7 @@ function UPIDonationManagement() {
 
                                     className="viewBtn"
 
-                                    onClick={()=>
+                                    onClick={() =>
 
                                         setSelectedDonation(item)
 
@@ -706,9 +792,7 @@ function UPIDonationManagement() {
 
                                 {
 
-                                    item.status==="Pending"
-
-                                    &&
+                                    item.status === "Pending" &&
 
                                     <>
 
@@ -716,7 +800,7 @@ function UPIDonationManagement() {
 
                                             className="approveBtn"
 
-                                            onClick={()=>
+                                            onClick={() =>
 
                                                 approveDonation(item.id)
 
@@ -724,7 +808,7 @@ function UPIDonationManagement() {
 
                                         >
 
-                                            ✅
+                                            ✅ Approve
 
                                         </button>
 
@@ -732,7 +816,7 @@ function UPIDonationManagement() {
 
                                             className="rejectBtn"
 
-                                            onClick={()=>
+                                            onClick={() =>
 
                                                 rejectDonation(item.id)
 
@@ -740,7 +824,7 @@ function UPIDonationManagement() {
 
                                         >
 
-                                            ❌
+                                            ❌ Reject
 
                                         </button>
 
@@ -757,11 +841,8 @@ function UPIDonationManagement() {
                 }
 
             </div>
-
-
-
-            {/* ===============================
-                VIEW DONATION MODAL
+                        {/* ===============================
+                DONATION DETAILS MODAL
             =============================== */}
 
             {
@@ -772,7 +853,7 @@ function UPIDonationManagement() {
 
                     className="modalOverlay"
 
-                    onClick={()=>
+                    onClick={() =>
 
                         setSelectedDonation(null)
 
@@ -784,7 +865,7 @@ function UPIDonationManagement() {
 
                         className="donationModal"
 
-                        onClick={(e)=>
+                        onClick={(e) =>
 
                             e.stopPropagation()
 
@@ -794,7 +875,7 @@ function UPIDonationManagement() {
 
                         <h2>
 
-                            Donation Details
+                            💳 Donation Details
 
                         </h2>
 
@@ -802,11 +883,7 @@ function UPIDonationManagement() {
 
                             <p>
 
-                                <strong>
-
-                                    Receipt
-
-                                </strong>
+                                <strong>Receipt :</strong>
 
                                 {selectedDonation.receipt}
 
@@ -814,11 +891,7 @@ function UPIDonationManagement() {
 
                             <p>
 
-                                <strong>
-
-                                    Donor
-
-                                </strong>
+                                <strong>Donor :</strong>
 
                                 {selectedDonation.donorname}
 
@@ -826,11 +899,7 @@ function UPIDonationManagement() {
 
                             <p>
 
-                                <strong>
-
-                                    Mobile
-
-                                </strong>
+                                <strong>Mobile :</strong>
 
                                 {selectedDonation.mobile}
 
@@ -838,11 +907,7 @@ function UPIDonationManagement() {
 
                             <p>
 
-                                <strong>
-
-                                    Amount
-
-                                </strong>
+                                <strong>Amount :</strong>
 
                                 ₹{selectedDonation.amount}
 
@@ -850,11 +915,7 @@ function UPIDonationManagement() {
 
                             <p>
 
-                                <strong>
-
-                                    UTR
-
-                                </strong>
+                                <strong>UTR :</strong>
 
                                 {selectedDonation.utr}
 
@@ -862,23 +923,31 @@ function UPIDonationManagement() {
 
                             <p>
 
-                                <strong>
+                                <strong>Payment Method :</strong>
 
-                                    Status
-
-                                </strong>
-
-                                {selectedDonation.status}
+                                {selectedDonation.payment_method || "UPI"}
 
                             </p>
 
                             <p>
 
-                                <strong>
+                                <strong>Status :</strong>
 
-                                    Date
+                                <span
 
-                                </strong>
+                                    className={`status ${selectedDonation.status.toLowerCase()}`}
+
+                                >
+
+                                    {selectedDonation.status}
+
+                                </span>
+
+                            </p>
+
+                            <p>
+
+                                <strong>Date :</strong>
 
                                 {
 
@@ -886,7 +955,7 @@ function UPIDonationManagement() {
 
                                         selectedDonation.createdat
 
-                                    ).toLocaleString()
+                                    ).toLocaleString("en-IN")
 
                                 }
 
@@ -898,9 +967,7 @@ function UPIDonationManagement() {
 
                             {
 
-                                selectedDonation.status==="Pending"
-
-                                &&
+                                selectedDonation.status === "Pending" &&
 
                                 <>
 
@@ -908,9 +975,9 @@ function UPIDonationManagement() {
 
                                         className="approveBtn"
 
-                                        onClick={()=>{
+                                        onClick={async () => {
 
-                                            approveDonation(
+                                            await approveDonation(
 
                                                 selectedDonation.id
 
@@ -930,9 +997,9 @@ function UPIDonationManagement() {
 
                                         className="rejectBtn"
 
-                                        onClick={()=>{
+                                        onClick={async () => {
 
-                                            rejectDonation(
+                                            await rejectDonation(
 
                                                 selectedDonation.id
 
@@ -956,7 +1023,7 @@ function UPIDonationManagement() {
 
                                 className="closeBtn"
 
-                                onClick={()=>
+                                onClick={() =>
 
                                     setSelectedDonation(null)
 
@@ -975,7 +1042,9 @@ function UPIDonationManagement() {
                 </div>
 
             }
-                    </div>
+
+        </div>
+
     );
 
 }
