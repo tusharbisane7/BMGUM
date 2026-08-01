@@ -1,12 +1,16 @@
-/* ==========================
+/* ==========================================
    PAGE LOADER
-========================== */
+========================================== */
 
 .page-loader{
 
     position:fixed;
 
     inset:0;
+
+    width:100%;
+
+    height:100vh;
 
     display:flex;
 
@@ -16,15 +20,23 @@
 
     align-items:center;
 
-    background:linear-gradient(135deg,#fffdf8,#fff5e8);
-
     overflow:hidden;
 
     z-index:99999;
 
+    background:
+        linear-gradient(
+            135deg,
+            #fff8ef 0%,
+            #ffffff 45%,
+            #fff2df 100%
+        );
+
 }
 
-/* Background Glow */
+/* ==========================================
+   BACKGROUND GLOW
+========================================== */
 
 .page-loader::before{
 
@@ -38,25 +50,53 @@
 
     border-radius:50%;
 
-    background:rgba(255,152,0,.10);
+    background:#ff9800;
 
-    filter:blur(90px);
+    filter:blur(120px);
 
-    animation:glow 4s ease-in-out infinite;
+    opacity:.18;
+
+    top:-120px;
+
+    left:-120px;
 
 }
 
-/* ==========================
-   CIRCLE
-========================== */
+.page-loader::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:320px;
+
+    height:320px;
+
+    border-radius:50%;
+
+    background:#ff6b00;
+
+    filter:blur(120px);
+
+    opacity:.15;
+
+    right:-100px;
+
+    bottom:-100px;
+
+}
+
+/* ==========================================
+   LOADER CIRCLE
+========================================== */
 
 .loader-circle{
 
     position:relative;
 
-    width:170px;
+    width:190px;
 
-    height:170px;
+    height:190px;
 
     display:flex;
 
@@ -64,9 +104,21 @@
 
     align-items:center;
 
+    border-radius:50%;
+
+    background:rgba(255,255,255,.75);
+
+    backdrop-filter:blur(18px);
+
+    box-shadow:
+
+        0 25px 60px rgba(0,0,0,.12);
+
 }
 
-/* Outer Ring */
+/* ==========================================
+   RING
+========================================== */
 
 .loader-ring{
 
@@ -80,129 +132,11 @@
 
     border-top:6px solid #ff9800;
 
-    animation:spin 1.2s linear infinite;
+    animation:ringRotate 1.2s linear infinite;
 
 }
 
-/* Inner Glow */
-
-.loader-circle::after{
-
-    content:"";
-
-    position:absolute;
-
-    width:120px;
-
-    height:120px;
-
-    border-radius:50%;
-
-    background:rgba(255,152,0,.08);
-
-    animation:pulse 2s ease-in-out infinite;
-
-}
-
-/* ==========================
-   LOGO
-========================== */
-
-.loader-logo{
-
-    position:relative;
-
-    width:90px;
-
-    height:90px;
-
-    object-fit:contain;
-
-    z-index:2;
-
-    animation:float 2s ease-in-out infinite;
-
-}
-
-/* ==========================
-   TITLE
-========================== */
-
-.loader-title{
-
-    margin-top:28px;
-
-    color:#d35400;
-
-    font-size:28px;
-
-    font-weight:700;
-
-    text-align:center;
-
-}
-
-/* ==========================
-   TEXT
-========================== */
-
-.loader-text{
-
-    margin-top:8px;
-
-    color:#666;
-
-    font-size:16px;
-
-    font-weight:500;
-
-}
-
-/* ==========================
-   LOADING DOTS
-========================== */
-
-.loader-loading{
-
-    display:flex;
-
-    gap:8px;
-
-    margin-top:24px;
-
-}
-
-.dot{
-
-    width:12px;
-
-    height:12px;
-
-    border-radius:50%;
-
-    background:#ff9800;
-
-    animation:bounce .8s infinite alternate;
-
-}
-
-.dot:nth-child(2){
-
-    animation-delay:.2s;
-
-}
-
-.dot:nth-child(3){
-
-    animation-delay:.4s;
-
-}
-
-/* ==========================
-   ANIMATIONS
-========================== */
-
-@keyframes spin{
+@keyframes ringRotate{
 
     from{
 
@@ -218,9 +152,27 @@
 
 }
 
-@keyframes float{
+/* ==========================================
+   LOGO
+========================================== */
 
-    0%,100%{
+.loader-logo{
+
+    width:110px;
+
+    height:110px;
+
+    object-fit:contain;
+
+    border-radius:50%;
+
+    animation:logoFloat 2.5s ease-in-out infinite;
+
+}
+
+@keyframes logoFloat{
+
+    0%{
 
         transform:translateY(0);
 
@@ -228,17 +180,78 @@
 
     50%{
 
-        transform:translateY(-8px);
+        transform:translateY(-10px);
+
+    }
+
+    100%{
+
+        transform:translateY(0);
+
+    }
+
+}
+/* ==========================================
+   TITLE
+========================================== */
+
+.loader-title{
+
+    margin-top:35px;
+
+    font-size:2rem;
+
+    font-weight:700;
+
+    color:#ff6b00;
+
+    text-align:center;
+
+    animation:titleFade 1s ease;
+
+}
+
+@keyframes titleFade{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(15px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
 
     }
 
 }
 
-@keyframes pulse{
+/* ==========================================
+   TEXT
+========================================== */
 
-    0%,100%{
+.loader-text{
 
-        transform:scale(1);
+    margin-top:12px;
+
+    color:#666;
+
+    font-size:18px;
+
+    letter-spacing:.5px;
+
+    animation:textBlink 2s infinite;
+
+}
+
+@keyframes textBlink{
+
+    0%{
 
         opacity:.4;
 
@@ -246,67 +259,211 @@
 
     50%{
 
-        transform:scale(1.15);
-
         opacity:1;
+
+    }
+
+    100%{
+
+        opacity:.4;
 
     }
 
 }
 
-@keyframes bounce{
+/* ==========================================
+   LOADING DOTS
+========================================== */
 
-    from{
+.loader-loading{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:10px;
+
+    margin-top:30px;
+
+}
+
+.loader-loading .dot{
+
+    width:14px;
+
+    height:14px;
+
+    border-radius:50%;
+
+    background:#ff9800;
+
+    animation:dotBounce 1.2s infinite;
+
+}
+
+.loader-loading .dot:nth-child(2){
+
+    animation-delay:.2s;
+
+}
+
+.loader-loading .dot:nth-child(3){
+
+    animation-delay:.4s;
+
+}
+
+@keyframes dotBounce{
+
+    0%{
 
         transform:translateY(0);
 
-        opacity:.5;
-
-    }
-
-    to{
-
-        transform:translateY(-10px);
-
-        opacity:1;
-
-    }
-
-}
-
-@keyframes glow{
-
-    0%,100%{
-
-        transform:scale(1);
+        opacity:.4;
 
     }
 
     50%{
 
-        transform:scale(1.2);
+        transform:translateY(-12px);
+
+        opacity:1;
+
+    }
+
+    100%{
+
+        transform:translateY(0);
+
+        opacity:.4;
 
     }
 
 }
 
-/* ==========================
-   MOBILE
-========================== */
+/* ==========================================
+   CARD GLOW
+========================================== */
+
+.loader-circle::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:-18px;
+
+    border-radius:50%;
+
+    background:
+
+        rgba(255,152,0,.15);
+
+    filter:blur(28px);
+
+    z-index:-1;
+
+}
+
+/* ==========================================
+   PREMIUM SHINE
+========================================== */
+
+.loader-circle::after{
+
+    content:"";
+
+    position:absolute;
+
+    top:-50%;
+
+    left:-120%;
+
+    width:60%;
+
+    height:200%;
+
+    background:
+
+        linear-gradient(
+
+            90deg,
+
+            transparent,
+
+            rgba(255,255,255,.45),
+
+            transparent
+
+        );
+
+    transform:rotate(25deg);
+
+    animation:loaderShine 4s linear infinite;
+
+}
+
+@keyframes loaderShine{
+
+    from{
+
+        left:-120%;
+
+    }
+
+    to{
+
+        left:150%;
+
+    }
+
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
 
 @media(max-width:768px){
+
+    .loader-circle{
+
+        width:160px;
+
+        height:160px;
+
+    }
+
+    .loader-logo{
+
+        width:90px;
+
+        height:90px;
+
+    }
+
+    .loader-title{
+
+        font-size:1.6rem;
+
+    }
+
+    .loader-text{
+
+        font-size:16px;
+
+    }
+
+}
+
+@media(max-width:480px){
 
     .loader-circle{
 
         width:140px;
 
         height:140px;
-
-    }
-
-    .loader-ring{
-
-        border-width:5px;
 
     }
 
@@ -320,13 +477,320 @@
 
     .loader-title{
 
-        font-size:22px;
+        font-size:1.3rem;
 
     }
 
     .loader-text{
 
         font-size:14px;
+
+    }
+
+}
+
+/* ==========================================
+   SCROLLBAR
+========================================== */
+
+::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#fff7ef;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#ff9800;
+
+    border-radius:30px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:#ff6b00;
+
+}
+
+/* ==========================================
+   TEXT SELECTION
+========================================== */
+
+::selection{
+
+    background:#ff9800;
+
+    color:#fff;
+
+}
+
+/* ==========================================
+   SMOOTH TRANSITIONS
+========================================== */
+
+*{
+
+    transition:
+
+        background .3s,
+
+        color .3s,
+
+        transform .3s,
+
+        box-shadow .3s;
+
+}
+/* ==========================================
+   FLOATING PARTICLES
+========================================== */
+
+.page-loader .particle{
+
+    position:absolute;
+
+    width:10px;
+
+    height:10px;
+
+    border-radius:50%;
+
+    background:#ff9800;
+
+    opacity:.35;
+
+    animation:particleMove 8s linear infinite;
+
+}
+
+.page-loader .particle:nth-child(1){
+
+    top:20%;
+
+    left:18%;
+
+}
+
+.page-loader .particle:nth-child(2){
+
+    top:70%;
+
+    left:25%;
+
+    animation-delay:2s;
+
+}
+
+.page-loader .particle:nth-child(3){
+
+    top:30%;
+
+    right:18%;
+
+    animation-delay:4s;
+
+}
+
+.page-loader .particle:nth-child(4){
+
+    bottom:18%;
+
+    right:25%;
+
+    animation-delay:6s;
+
+}
+
+@keyframes particleMove{
+
+    0%{
+
+        transform:translateY(0) scale(1);
+
+        opacity:.3;
+
+    }
+
+    50%{
+
+        transform:translateY(-35px) scale(1.4);
+
+        opacity:.8;
+
+    }
+
+    100%{
+
+        transform:translateY(0) scale(1);
+
+        opacity:.3;
+
+    }
+
+}
+
+/* ==========================================
+   LOGO GLOW
+========================================== */
+
+.loader-logo{
+
+    filter:
+
+        drop-shadow(0 0 12px rgba(255,152,0,.45));
+
+}
+
+/* ==========================================
+   RING GLOW
+========================================== */
+
+.loader-ring{
+
+    box-shadow:
+
+        0 0 25px rgba(255,152,0,.35);
+
+}
+
+/* ==========================================
+   FLOATING CIRCLE
+========================================== */
+
+.loader-circle{
+
+    animation:loaderFloat 4s ease-in-out infinite;
+
+}
+
+@keyframes loaderFloat{
+
+    0%{
+
+        transform:translateY(0);
+
+    }
+
+    50%{
+
+        transform:translateY(-8px);
+
+    }
+
+    100%{
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/* ==========================================
+   PULSE EFFECT
+========================================== */
+
+.loader-circle::before{
+
+    animation:pulseGlow 2.5s infinite;
+
+}
+
+@keyframes pulseGlow{
+
+    0%{
+
+        transform:scale(.95);
+
+        opacity:.3;
+
+    }
+
+    50%{
+
+        transform:scale(1.08);
+
+        opacity:.55;
+
+    }
+
+    100%{
+
+        transform:scale(.95);
+
+        opacity:.3;
+
+    }
+
+}
+
+/* ==========================================
+   TITLE GLOW
+========================================== */
+
+.loader-title{
+
+    text-shadow:
+
+        0 0 12px rgba(255,152,0,.35);
+
+}
+
+/* ==========================================
+   DOT GLOW
+========================================== */
+
+.loader-loading .dot{
+
+    box-shadow:
+
+        0 0 12px rgba(255,152,0,.45);
+
+}
+
+/* ==========================================
+   FADE IN PAGE
+========================================== */
+
+.page-loader{
+
+    animation:pageFade .5s ease;
+
+}
+
+@keyframes pageFade{
+
+    from{
+
+        opacity:0;
+
+    }
+
+    to{
+
+        opacity:1;
+
+    }
+
+}
+
+/* ==========================================
+   REDUCE MOTION SUPPORT
+========================================== */
+
+@media (prefers-reduced-motion: reduce){
+
+    *{
+
+        animation:none !important;
+
+        transition:none !important;
 
     }
 

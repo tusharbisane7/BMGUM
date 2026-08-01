@@ -1,32 +1,36 @@
-/* ==========================================================
+/* ==========================================
    PROFILE PAGE
-========================================================== */
+========================================== */
 
 .profile-page{
 
     min-height:100vh;
 
+    padding:120px 20px 60px;
+
     display:flex;
 
     justify-content:center;
 
-    align-items:center;
-
-    padding:50px 20px;
+    align-items:flex-start;
 
     background:
-        radial-gradient(circle at top left,#ffe29f 0%,transparent 40%),
-        radial-gradient(circle at bottom right,#ff719a 0%,transparent 35%),
-        linear-gradient(135deg,#f4f7ff,#eef4ff,#ffffff);
-
-    overflow:hidden;
+        linear-gradient(
+            135deg,
+            #fff8ef,
+            #ffffff,
+            #fff3e3
+        );
 
     position:relative;
 
+    overflow:hidden;
+
 }
 
-
-/* Floating Background */
+/* ==========================================
+   BACKGROUND GLOW
+========================================== */
 
 .profile-page::before{
 
@@ -34,21 +38,19 @@
 
     position:absolute;
 
-    width:450px;
+    width:380px;
 
-    height:450px;
-
-    background:rgba(37,99,235,.08);
+    height:380px;
 
     border-radius:50%;
 
-    top:-180px;
+    background:rgba(255,152,0,.12);
 
-    left:-180px;
+    filter:blur(120px);
 
-    filter:blur(25px);
+    top:-120px;
 
-    animation:floatOne 9s ease-in-out infinite;
+    left:-120px;
 
 }
 
@@ -58,269 +60,143 @@
 
     position:absolute;
 
-    width:350px;
+    width:320px;
 
-    height:350px;
-
-    background:rgba(16,185,129,.08);
+    height:320px;
 
     border-radius:50%;
 
-    bottom:-140px;
+    background:rgba(255,107,0,.10);
 
-    right:-140px;
+    filter:blur(110px);
 
-    filter:blur(25px);
+    bottom:-100px;
 
-    animation:floatTwo 8s ease-in-out infinite;
+    right:-100px;
 
 }
 
-
-/* ==========================================================
-   CARD
-========================================================== */
+/* ==========================================
+   MAIN CARD
+========================================== */
 
 .profile-card{
 
+    position:relative;
+
     width:100%;
 
-    max-width:760px;
+    max-width:900px;
 
-    background:rgba(255,255,255,.72);
+    background:rgba(255,255,255,.88);
 
-    backdrop-filter:blur(18px);
+    backdrop-filter:blur(20px);
 
-    border:1px solid rgba(255,255,255,.35);
+    -webkit-backdrop-filter:blur(20px);
 
-    border-radius:28px;
+    border-radius:30px;
+
+    padding:40px;
 
     overflow:hidden;
 
+    border:1px solid rgba(255,255,255,.4);
+
     box-shadow:
 
-        0 20px 60px rgba(0,0,0,.12),
-
-        0 5px 15px rgba(0,0,0,.08);
-
-    animation:cardAppear .7s ease;
-
-    position:relative;
+        0 25px 70px rgba(0,0,0,.12);
 
     z-index:2;
 
-    transition:.4s;
+}
+
+/* ==========================================
+   CARD BORDER
+========================================== */
+
+.profile-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    border-radius:30px;
+
+    padding:1px;
+
+    background:
+
+        linear-gradient(
+
+            135deg,
+
+            rgba(255,152,0,.35),
+
+            transparent,
+
+            rgba(255,107,0,.35)
+
+        );
+
+    -webkit-mask:
+
+        linear-gradient(#fff 0 0) content-box,
+
+        linear-gradient(#fff 0 0);
+
+    -webkit-mask-composite:xor;
+
+    mask-composite:exclude;
+
+    pointer-events:none;
 
 }
 
-.profile-card:hover{
-
-    transform:translateY(-6px);
-
-    box-shadow:
-
-        0 28px 70px rgba(0,0,0,.18),
-
-        0 12px 25px rgba(37,99,235,.12);
-
-}
-
-
-/* ==========================================================
-   TOP SECTION
-========================================================== */
+/* ==========================================
+   HEADER
+========================================== */
 
 .profile-top{
 
-    padding:40px 35px;
-
     display:flex;
 
     align-items:center;
 
-    gap:28px;
+    gap:25px;
 
-    color:#fff;
-
-    background:linear-gradient(135deg,#2563eb,#4f46e5,#9333ea);
+    margin-bottom:35px;
 
     position:relative;
 
-    overflow:hidden;
+    z-index:2;
 
 }
 
-.profile-top::before{
-
-    content:"";
-
-    position:absolute;
-
-    width:250px;
-
-    height:250px;
-
-    background:rgba(255,255,255,.08);
-
-    border-radius:50%;
-
-    right:-90px;
-
-    top:-80px;
-
-}
-
-.profile-top::after{
-
-    content:"";
-
-    position:absolute;
-
-    width:170px;
-
-    height:170px;
-
-    background:rgba(255,255,255,.05);
-
-    border-radius:50%;
-
-    left:-70px;
-
-    bottom:-60px;
-
-}
-
-
-/* ==========================================================
+/* ==========================================
    AVATAR
-========================================================== */
+========================================== */
 
 .profile-avatar{
 
-    font-size:105px;
+    width:120px;
 
-    color:#fff;
+    height:120px;
 
-    z-index:2;
+    color:#ff9800;
 
-    animation:avatarFloat 4s ease-in-out infinite;
+    background:#fff7ef;
 
-    filter:drop-shadow(0 12px 18px rgba(0,0,0,.2));
+    border-radius:50%;
 
-    transition:.4s;
+    padding:18px;
 
-}
+    box-shadow:
 
-.profile-avatar:hover{
+        0 15px 35px rgba(255,152,0,.22);
 
-    transform:scale(1.08) rotate(-4deg);
-
-}
-
-
-/* ==========================================================
-   HEADER
-========================================================== */
-
-.profile-header-details{
-
-    flex:1;
-
-    z-index:2;
-
-}
-
-.profile-header-details h2{
-
-    margin:0;
-
-    font-size:34px;
-
-    font-weight:700;
-
-    letter-spacing:.4px;
-
-}
-
-.role-badge{
-
-    display:inline-block;
-
-    margin-top:12px;
-
-    padding:9px 18px;
-
-    border-radius:999px;
-
-    background:rgba(255,255,255,.18);
-
-    backdrop-filter:blur(10px);
-
-    border:1px solid rgba(255,255,255,.25);
-
-    font-size:14px;
-
-    font-weight:600;
-
-    transition:.3s;
-
-}
-
-.role-badge:hover{
-
-    transform:translateY(-2px);
-
-    background:rgba(255,255,255,.25);
-
-}
-
-
-/* ==========================================================
-   LOADING
-========================================================== */
-
-.profile-loading{
-
-    min-height:100vh;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    font-size:24px;
-
-    font-weight:700;
-
-    color:#2563eb;
-
-    animation:pulse 1.2s infinite;
-
-}
-
-
-/* ==========================================================
-   ANIMATIONS
-========================================================== */
-
-@keyframes cardAppear{
-
-    from{
-
-        opacity:0;
-
-        transform:translateY(40px) scale(.96);
-
-    }
-
-    to{
-
-        opacity:1;
-
-        transform:translateY(0) scale(1);
-
-    }
+    animation:avatarFloat 3s ease-in-out infinite;
 
 }
 
@@ -334,7 +210,7 @@
 
     50%{
 
-        transform:translateY(-10px);
+        transform:translateY(-8px);
 
     }
 
@@ -346,507 +222,74 @@
 
 }
 
-@keyframes floatOne{
-
-    0%{
-
-        transform:translateY(0);
-
-    }
-
-    50%{
-
-        transform:translateY(35px);
-
-    }
-
-    100%{
-
-        transform:translateY(0);
-
-    }
-
-}
-
-@keyframes floatTwo{
-
-    0%{
-
-        transform:translateY(0);
-
-    }
-
-    50%{
-
-        transform:translateY(-30px);
-
-    }
-
-    100%{
-
-        transform:translateY(0);
-
-    }
-
-}
-
-@keyframes pulse{
-
-    0%{
-
-        opacity:.4;
-
-    }
-
-    50%{
-
-        opacity:1;
-
-    }
-
-    100%{
-
-        opacity:.4;
-
-    }
-
-}
-/* ==========================================================
-   PROFILE BODY
-========================================================== */
-
-.profile-body{
-
-    padding:35px;
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:22px;
-
-    background:#fff;
-
-}
-
-
-/* ==========================================================
-   PROFILE ITEM
-========================================================== */
-
-.profile-item{
-
-    display:flex;
-
-    align-items:flex-start;
-
-    gap:18px;
-
-    padding:20px;
-
-    border-radius:18px;
-
-    background:#ffffff;
-
-    border:1px solid #eef2ff;
-
-    box-shadow:0 8px 20px rgba(15,23,42,.05);
-
-    transition:.35s;
-
-    position:relative;
-
-    overflow:hidden;
-
-}
-
-.profile-item::before{
-
-    content:"";
-
-    position:absolute;
-
-    left:0;
-
-    top:0;
-
-    width:5px;
-
-    height:100%;
-
-    background:linear-gradient(
-
-        to bottom,
-
-        #2563eb,
-
-        #7c3aed
-
-    );
-
-    transform:scaleY(0);
-
-    transform-origin:top;
-
-    transition:.35s;
-
-}
-
-.profile-item:hover{
-
-    transform:translateY(-4px);
-
-    box-shadow:
-
-        0 16px 35px rgba(37,99,235,.12);
-
-}
-
-.profile-item:hover::before{
-
-    transform:scaleY(1);
-
-}
-
-
-/* ==========================================================
-   ICON
-========================================================== */
-
-.icon{
-
-    width:52px;
-
-    height:52px;
-
-    min-width:52px;
-
-    border-radius:14px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    background:linear-gradient(
-
-        135deg,
-
-        #2563eb,
-
-        #4f46e5
-
-    );
-
-    color:#fff;
-
-    font-size:22px;
-
-    padding:15px;
-
-    box-shadow:
-
-        0 10px 20px rgba(37,99,235,.25);
-
-    transition:.35s;
-
-}
-
-.profile-item:hover .icon{
-
-    transform:rotate(-8deg) scale(1.08);
-
-}
-
-
-/* ==========================================================
-   CONTENT
-========================================================== */
-
-.profile-content{
+/* ==========================================
+   HEADER DETAILS
+========================================== */
+
+.profile-header-details{
 
     flex:1;
 
 }
 
-.profile-content h4{
-
-    margin:0 0 8px;
-
-    font-size:15px;
-
-    font-weight:700;
-
-    color:#6b7280;
-
-}
-
-.profile-content p{
+.profile-header-details h2{
 
     margin:0;
 
-    font-size:17px;
+    color:#222;
 
-    font-weight:600;
-
-    color:#111827;
-
-    line-height:1.6;
-
-    word-break:break-word;
-
-}
-
-
-/* ==========================================================
-   INPUTS
-========================================================== */
-
-.profile-input{
-
-    width:100%;
-
-    padding:13px 16px;
-
-    border-radius:12px;
-
-    border:2px solid #e5e7eb;
-
-    outline:none;
-
-    background:#f8fafc;
-
-    font-size:15px;
-
-    transition:.35s;
-
-    font-family:inherit;
-
-    box-sizing:border-box;
-
-}
-
-.profile-input:hover{
-
-    border-color:#93c5fd;
-
-}
-
-.profile-input:focus{
-
-    border-color:#2563eb;
-
-    background:#fff;
-
-    box-shadow:
-
-        0 0 0 4px rgba(37,99,235,.12);
-
-}
-
-
-/* ==========================================================
-   HEADER INPUT
-========================================================== */
-
-.profile-name-input{
-
-    font-size:28px;
+    font-size:2rem;
 
     font-weight:700;
 
-    color:#fff;
-
-    background:rgba(255,255,255,.15);
-
-    border:1px solid rgba(255,255,255,.35);
-
-    color:#fff;
-
 }
 
-.profile-name-input::placeholder{
+.role-badge{
 
-    color:rgba(255,255,255,.75);
-
-}
-
-.profile-name-input:focus{
-
-    border-color:#fff;
-
-    background:rgba(255,255,255,.2);
-
-    box-shadow:
-
-        0 0 0 4px rgba(255,255,255,.18);
-
-}
-
-
-/* ==========================================================
-   TEXTAREA
-========================================================== */
-
-textarea.profile-input{
-
-    min-height:95px;
-
-    resize:vertical;
-
-}
-
-
-/* ==========================================================
-   SCROLLBAR
-========================================================== */
-
-textarea.profile-input::-webkit-scrollbar{
-
-    width:8px;
-
-}
-
-textarea.profile-input::-webkit-scrollbar-thumb{
-
-    background:#2563eb;
-
-    border-radius:20px;
-
-}
-
-
-/* ==========================================================
-   INPUT ANIMATION
-========================================================== */
-
-.profile-input{
-
-    animation:fadeInput .4s ease;
-
-}
-
-@keyframes fadeInput{
-
-    from{
-
-        opacity:0;
-
-        transform:translateY(8px);
-
-    }
-
-    to{
-
-        opacity:1;
-
-        transform:translateY(0);
-
-    }
-
-}
-/* ==========================================================
-   PROFILE BUTTONS
-========================================================== */
-
-.profile-buttons{
-
-    display:flex;
-
-    flex-wrap:wrap;
-
-    justify-content:center;
-
-    gap:18px;
-
-    padding:30px 35px 40px;
-
-    background:#fff;
-
-}
-
-
-/* ==========================================================
-   COMMON BUTTON
-========================================================== */
-
-.profile-buttons button{
-
-    position:relative;
-
-    overflow:hidden;
-
-    display:flex;
+    display:inline-flex;
 
     align-items:center;
 
     justify-content:center;
 
-    gap:10px;
+    margin-top:12px;
 
-    min-width:210px;
+    padding:8px 20px;
 
-    height:55px;
+    border-radius:50px;
 
-    border:none;
+    background:
 
-    outline:none;
-
-    border-radius:14px;
-
-    cursor:pointer;
-
-    font-size:16px;
-
-    font-weight:700;
+        linear-gradient(
+            135deg,
+            #ff9800,
+            #ff6b00
+        );
 
     color:#fff;
 
-    transition:.35s;
+    font-size:14px;
+
+    font-weight:700;
+
+    letter-spacing:.5px;
 
     box-shadow:
 
-        0 12px 25px rgba(0,0,0,.12);
+        0 10px 25px rgba(255,107,0,.25);
 
 }
+/* ==========================================
+   PROFILE BODY
+========================================== */
 
+.profile-body{
 
-/* Ripple */
+    display:grid;
 
-.profile-buttons button::before{
+    grid-template-columns:1fr;
 
-    content:"";
-
-    position:absolute;
-
-    width:0;
-
-    height:0;
-
-    border-radius:50%;
-
-    background:rgba(255,255,255,.25);
-
-    transform:translate(-50%,-50%);
-
-    left:50%;
-
-    top:50%;
-
-    transition:.6s;
-
-}
-
-.profile-buttons button:hover::before{
-
-    width:380px;
-
-    height:380px;
-
-}
-
-.profile-buttons button>*{
+    gap:22px;
 
     position:relative;
 
@@ -854,908 +297,195 @@ textarea.profile-input::-webkit-scrollbar-thumb{
 
 }
 
+/* ==========================================
+   PROFILE ITEM
+========================================== */
 
-/* ==========================================================
-   EDIT
-========================================================== */
+.profile-item{
 
-.edit-btn{
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:20px;
+
+    padding:22px;
+
+    border-radius:22px;
+
+    background:rgba(255,255,255,.85);
+
+    border:1px solid rgba(255,255,255,.35);
+
+    box-shadow:
+
+        0 10px 30px rgba(0,0,0,.08);
+
+    transition:all .35s ease;
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.profile-item:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:
+
+        0 18px 45px rgba(255,107,0,.18);
+
+}
+
+/* ==========================================
+   HOVER GLOW
+========================================== */
+
+.profile-item::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:220px;
+
+    height:220px;
+
+    border-radius:50%;
+
+    background:
+
+        rgba(255,152,0,.10);
+
+    filter:blur(70px);
+
+    top:-120px;
+
+    right:-100px;
+
+    opacity:0;
+
+    transition:.4s;
+
+}
+
+.profile-item:hover::before{
+
+    opacity:1;
+
+}
+
+/* ==========================================
+   ICON
+========================================== */
+
+.profile-item .icon{
+
+    width:58px;
+
+    height:58px;
+
+    min-width:58px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    border-radius:18px;
 
     background:
 
         linear-gradient(
-
             135deg,
-
-            #2563eb,
-
-            #4f46e5
-
+            #ff9800,
+            #ff6b00
         );
 
-}
+    color:#fff;
 
-.edit-btn:hover{
+    font-size:24px;
 
-    transform:
-
-        translateY(-4px)
-
-        scale(1.03);
+    padding:16px;
 
     box-shadow:
 
-        0 20px 35px
-
-        rgba(37,99,235,.35);
-
-}
-
-
-/* ==========================================================
-   SAVE
-========================================================== */
-
-.edit-btn svg{
-
-    font-size:18px;
-
-}
-
-
-/* ==========================================================
-   CANCEL
-========================================================== */
-
-.cancel-btn{
-
-    background:
-
-        linear-gradient(
-
-            135deg,
-
-            #ef4444,
-
-            #dc2626
-
-        );
-
-}
-
-.cancel-btn:hover{
-
-    transform:
-
-        translateY(-4px)
-
-        scale(1.03);
-
-    box-shadow:
-
-        0 18px 35px
-
-        rgba(239,68,68,.35);
-
-}
-
-
-/* ==========================================================
-   PASSWORD
-========================================================== */
-
-.password-btn{
-
-    background:
-
-        linear-gradient(
-
-            135deg,
-
-            #f59e0b,
-
-            #ea580c
-
-        );
-
-}
-
-.password-btn:hover{
-
-    transform:
-
-        translateY(-4px)
-
-        scale(1.03);
-
-    box-shadow:
-
-        0 18px 35px
-
-        rgba(245,158,11,.35);
-
-}
-
-
-/* ==========================================================
-   LOGOUT
-========================================================== */
-
-.logout-btn{
-
-    background:
-
-        linear-gradient(
-
-            135deg,
-
-            #dc2626,
-
-            #991b1b
-
-        );
-
-}
-
-.logout-btn:hover{
-
-    transform:
-
-        translateY(-4px)
-
-        scale(1.03);
-
-    box-shadow:
-
-        0 18px 35px
-
-        rgba(220,38,38,.35);
-
-}
-
-
-/* ==========================================================
-   ICONS
-========================================================== */
-
-.profile-buttons svg{
-
-    font-size:18px;
+        0 12px 25px rgba(255,107,0,.25);
 
     transition:.35s;
 
 }
 
-.profile-buttons button:hover svg{
+.profile-item:hover .icon{
 
     transform:
 
-        rotate(-10deg)
+        rotate(8deg)
 
-        scale(1.18);
-
-}
-
-
-/* ==========================================================
-   CLICK EFFECT
-========================================================== */
-
-.profile-buttons button:active{
-
-    transform:scale(.97);
+        scale(1.08);
 
 }
 
+/* ==========================================
+   CONTENT
+========================================== */
 
-/* ==========================================================
-   FADE IN
-========================================================== */
+.profile-content{
 
-.profile-buttons{
+    flex:1;
 
-    animation:
-
-        fadeButtons
-
-        .7s ease;
+    min-width:0;
 
 }
-
-@keyframes fadeButtons{
-
-    from{
-
-        opacity:0;
-
-        transform:translateY(20px);
-
-    }
-
-    to{
-
-        opacity:1;
-
-        transform:translateY(0);
-
-    }
-
-}
-/* ==========================================================
-   RESPONSIVE
-========================================================== */
-
-@media (max-width:992px){
-
-    .profile-card{
-
-        max-width:95%;
-
-    }
-
-}
-
-@media (max-width:768px){
-
-    .profile-page{
-
-        padding:25px 12px;
-
-    }
-
-    .profile-top{
-
-        flex-direction:column;
-
-        text-align:center;
-
-        padding:30px 20px;
-
-        gap:18px;
-
-    }
-
-    .profile-avatar{
-
-        font-size:85px;
-
-    }
-
-    .profile-header-details h2{
-
-        font-size:28px;
-
-    }
-
-    .profile-body{
-
-        padding:20px;
-
-    }
-
-    .profile-item{
-
-        flex-direction:column;
-
-        align-items:flex-start;
-
-        gap:14px;
-
-        padding:18px;
-
-    }
-
-    .icon{
-
-        width:50px;
-
-        height:50px;
-
-        min-width:50px;
-
-    }
-
-    .profile-buttons{
-
-        padding:20px;
-
-        gap:15px;
-
-    }
-
-    .profile-buttons button{
-
-        width:100%;
-
-        min-width:100%;
-
-    }
-
-}
-
-@media (max-width:480px){
-
-    .profile-header-details h2{
-
-        font-size:22px;
-
-    }
-
-    .profile-avatar{
-
-        font-size:70px;
-
-    }
-
-    .profile-content h4{
-
-        font-size:14px;
-
-    }
-
-    .profile-content p{
-
-        font-size:15px;
-
-    }
-
-    .profile-input{
-
-        font-size:14px;
-
-    }
-
-}
-
-
-/* ==========================================================
-   SCROLLBAR
-========================================================== */
-
-::-webkit-scrollbar{
-
-    width:10px;
-
-}
-
-::-webkit-scrollbar-track{
-
-    background:#eef2ff;
-
-}
-
-::-webkit-scrollbar-thumb{
-
-    background:linear-gradient(
-
-        #2563eb,
-
-        #7c3aed
-
-    );
-
-    border-radius:20px;
-
-}
-
-::-webkit-scrollbar-thumb:hover{
-
-    background:linear-gradient(
-
-        #1d4ed8,
-
-        #6d28d9
-
-    );
-
-}
-
-
-/* ==========================================================
-   TEXT SELECTION
-========================================================== */
-
-::selection{
-
-    background:#2563eb;
-
-    color:#fff;
-
-}
-
-
-/* ==========================================================
-   SMOOTH TRANSITIONS
-========================================================== */
-
-*{
-
-    transition:
-
-        background-color .3s,
-
-        color .3s,
-
-        border-color .3s,
-
-        box-shadow .3s,
-
-        transform .3s;
-
-}
-
-
-/* ==========================================================
-   FLOATING GLOW
-========================================================== */
-
-.profile-card::before{
-
-    content:"";
-
-    position:absolute;
-
-    inset:-2px;
-
-    border-radius:30px;
-
-    background:
-
-        linear-gradient(
-
-            135deg,
-
-            rgba(37,99,235,.18),
-
-            rgba(124,58,237,.15),
-
-            rgba(16,185,129,.18)
-
-        );
-
-    z-index:-1;
-
-    filter:blur(18px);
-
-    opacity:.8;
-
-}
-
-
-/* ==========================================================
-   CARD SHINE
-========================================================== */
-
-.profile-card::after{
-
-    content:"";
-
-    position:absolute;
-
-    top:-150%;
-
-    left:-40%;
-
-    width:60%;
-
-    height:350%;
-
-    background:
-
-        linear-gradient(
-
-            rgba(255,255,255,0),
-
-            rgba(255,255,255,.35),
-
-            rgba(255,255,255,0)
-
-        );
-
-    transform:rotate(25deg);
-
-    animation:shine 8s linear infinite;
-
-    pointer-events:none;
-
-}
-
-@keyframes shine{
-
-    0%{
-
-        left:-60%;
-
-    }
-
-    100%{
-
-        left:150%;
-
-    }
-
-}
-
-
-/* ==========================================================
-   ICON PULSE
-========================================================== */
-
-.profile-item:hover .icon{
-
-    animation:iconPulse .8s;
-
-}
-
-@keyframes iconPulse{
-
-    0%{
-
-        transform:scale(1);
-
-    }
-
-    40%{
-
-        transform:scale(1.18);
-
-    }
-
-    100%{
-
-        transform:scale(1);
-
-    }
-
-}
-
-
-/* ==========================================================
-   BUTTON GLOW
-========================================================== */
-
-.profile-buttons button:hover{
-
-    filter:brightness(1.05);
-
-}
-
-
-/* ==========================================================
-   INPUT PLACEHOLDER
-========================================================== */
-
-.profile-input::placeholder{
-
-    color:#9ca3af;
-
-}
-
-
-/* ==========================================================
-   DISABLED INPUT
-========================================================== */
-
-.profile-input:disabled{
-
-    background:#f3f4f6;
-
-    cursor:not-allowed;
-
-    opacity:.8;
-
-}
-
-
-/* ==========================================================
-   PREMIUM FINISH
-========================================================== */
-
-.profile-card{
-
-    animation:
-
-        cardAppear .7s ease,
-
-        floatCard 7s ease-in-out infinite;
-
-}
-
-@keyframes floatCard{
-
-    0%{
-
-        transform:translateY(0px);
-
-    }
-
-    50%{
-
-        transform:translateY(-6px);
-
-    }
-
-    100%{
-
-        transform:translateY(0px);
-
-    }
-
-}
-/* ==========================================================
-   PREMIUM MICRO ANIMATIONS
-========================================================== */
-
-html{
-
-    scroll-behavior:smooth;
-
-}
-
-body{
-
-    font-family:"Poppins","Segoe UI",sans-serif;
-
-    background:#f4f7fc;
-
-}
-
-
-/* ==========================================================
-   CARD BORDER ANIMATION
-========================================================== */
-
-.profile-card{
-
-    position:relative;
-
-}
-
-.profile-card:hover{
-
-    border-color:rgba(37,99,235,.25);
-
-}
-
-
-/* ==========================================================
-   PROFILE ITEM HOVER GLOW
-========================================================== */
-
-.profile-item:hover{
-
-    background:linear-gradient(
-
-        135deg,
-
-        #ffffff,
-
-        #f8fbff
-
-    );
-
-}
-
-
-/* ==========================================================
-   ICON GRADIENT ANIMATION
-========================================================== */
-
-.icon{
-
-    background-size:200% 200%;
-
-    animation:gradientMove 5s ease infinite;
-
-}
-
-@keyframes gradientMove{
-
-    0%{
-
-        background-position:left;
-
-    }
-
-    50%{
-
-        background-position:right;
-
-    }
-
-    100%{
-
-        background-position:left;
-
-    }
-
-}
-
-
-/* ==========================================================
-   INPUT HOVER
-========================================================== */
-
-.profile-input:hover{
-
-    transform:translateY(-1px);
-
-}
-
-.profile-input:focus{
-
-    transform:translateY(-2px);
-
-}
-
-
-/* ==========================================================
-   BUTTON SHINE
-========================================================== */
-
-.profile-buttons button{
-
-    position:relative;
-
-}
-
-.profile-buttons button::after{
-
-    content:"";
-
-    position:absolute;
-
-    top:-120%;
-
-    left:-40%;
-
-    width:35%;
-
-    height:300%;
-
-    background:rgba(255,255,255,.35);
-
-    transform:rotate(25deg);
-
-    transition:.7s;
-
-}
-
-.profile-buttons button:hover::after{
-
-    left:150%;
-
-}
-
-
-/* ==========================================================
-   BUTTON SHADOW
-========================================================== */
-
-.edit-btn{
-
-    box-shadow:0 15px 35px rgba(37,99,235,.30);
-
-}
-
-.password-btn{
-
-    box-shadow:0 15px 35px rgba(245,158,11,.30);
-
-}
-
-.cancel-btn{
-
-    box-shadow:0 15px 35px rgba(239,68,68,.25);
-
-}
-
-.logout-btn{
-
-    box-shadow:0 15px 35px rgba(220,38,38,.30);
-
-}
-
-
-/* ==========================================================
-   PROFILE NAME
-========================================================== */
-
-.profile-header-details h2{
-
-    text-shadow:
-
-        0 3px 10px rgba(0,0,0,.20);
-
-}
-
-
-/* ==========================================================
-   ROLE BADGE
-========================================================== */
-
-.role-badge{
-
-    letter-spacing:.5px;
-
-    text-transform:uppercase;
-
-}
-
-
-/* ==========================================================
-   INPUT LABEL
-========================================================== */
 
 .profile-content h4{
 
-    text-transform:uppercase;
+    margin:0 0 8px;
 
-    letter-spacing:1px;
+    color:#ff6b00;
 
-}
+    font-size:15px;
 
+    font-weight:700;
 
-/* ==========================================================
-   IMAGE SCALE
-========================================================== */
-
-.profile-avatar{
-
-    cursor:pointer;
+    letter-spacing:.3px;
 
 }
 
-.profile-avatar:active{
+.profile-content p{
 
-    transform:scale(.95);
+    margin:0;
+
+    color:#444;
+
+    font-size:16px;
+
+    line-height:1.7;
+
+    word-break:break-word;
 
 }
 
+/* ==========================================
+   SPECIAL VALUE STYLE
+========================================== */
 
-/* ==========================================================
-   SOFT FADE
-========================================================== */
+.profile-content p strong{
+
+    color:#222;
+
+}
+
+/* ==========================================
+   PROFILE ITEM ANIMATION
+========================================== */
 
 .profile-item{
 
-    animation:itemFade .6s ease both;
-
-}
-
-.profile-item:nth-child(1){
-
-    animation-delay:.05s;
-
-}
-
-.profile-item:nth-child(2){
-
-    animation-delay:.10s;
-
-}
-
-.profile-item:nth-child(3){
-
-    animation-delay:.15s;
-
-}
-
-.profile-item:nth-child(4){
-
-    animation-delay:.20s;
-
-}
-
-.profile-item:nth-child(5){
-
-    animation-delay:.25s;
-
-}
-
-.profile-item:nth-child(6){
-
-    animation-delay:.30s;
+    animation:itemFade .7s ease;
 
 }
 
@@ -1778,116 +508,155 @@ body{
     }
 
 }
+/* ==========================================
+   INPUTS
+========================================== */
 
+.profile-input{
 
-/* ==========================================================
-   GLASS EFFECT
-========================================================== */
+    width:100%;
 
-.profile-body{
+    margin-top:8px;
 
-    backdrop-filter:blur(8px);
+    padding:14px 16px;
 
-}
-
-
-/* ==========================================================
-   PREMIUM FOCUS RING
-========================================================== */
-
-.profile-input:focus{
-
-    outline:none;
-
-    box-shadow:
-
-        0 0 0 5px rgba(37,99,235,.12),
-
-        0 8px 18px rgba(37,99,235,.12);
-
-}
-/* ==========================================================
-   PREMIUM STATUS BADGES
-========================================================== */
-
-.status-chip{
-
-    display:inline-flex;
-
-    align-items:center;
-
-    gap:8px;
-
-    padding:8px 16px;
-
-    border-radius:999px;
-
-    background:linear-gradient(135deg,#10b981,#059669);
-
-    color:#fff;
-
-    font-size:13px;
-
-    font-weight:600;
-
-    box-shadow:0 8px 20px rgba(16,185,129,.25);
-
-    animation:pulseGlow 2s infinite;
-
-}
-
-@keyframes pulseGlow{
-
-    0%{
-
-        box-shadow:0 0 0 0 rgba(16,185,129,.35);
-
-    }
-
-    70%{
-
-        box-shadow:0 0 0 12px rgba(16,185,129,0);
-
-    }
-
-    100%{
-
-        box-shadow:0 0 0 0 rgba(16,185,129,0);
-
-    }
-
-}
-
-
-/* ==========================================================
-   SUCCESS MESSAGE
-========================================================== */
-
-.success-alert{
-
-    background:linear-gradient(135deg,#10b981,#22c55e);
-
-    color:#fff;
-
-    padding:14px 18px;
+    border:2px solid #ececec;
 
     border-radius:14px;
 
-    font-weight:600;
+    outline:none;
 
-    margin-bottom:20px;
+    background:#ffffff;
 
-    animation:slideDown .45s ease;
+    color:#333;
+
+    font-size:15px;
+
+    font-weight:500;
+
+    transition:all .35s ease;
+
+    font-family:inherit;
 
 }
 
-@keyframes slideDown{
+.profile-input::placeholder{
+
+    color:#999;
+
+}
+
+.profile-input:hover{
+
+    border-color:#ffcc80;
+
+}
+
+.profile-input:focus{
+
+    border-color:#ff9800;
+
+    background:#fffdf9;
+
+    box-shadow:
+
+        0 0 0 4px rgba(255,152,0,.12);
+
+}
+
+/* ==========================================
+   NAME INPUT
+========================================== */
+
+.profile-name-input{
+
+    margin-top:0;
+
+    font-size:28px;
+
+    font-weight:700;
+
+    color:#222;
+
+    background:transparent;
+
+    border:none;
+
+    border-bottom:3px solid #ff9800;
+
+    border-radius:0;
+
+    padding:6px 2px;
+
+    box-shadow:none;
+
+}
+
+.profile-name-input:focus{
+
+    background:transparent;
+
+    border-bottom-color:#ff6b00;
+
+    box-shadow:none;
+
+}
+
+/* ==========================================
+   TEXTAREA
+========================================== */
+
+textarea.profile-input{
+
+    resize:vertical;
+
+    min-height:90px;
+
+    max-height:180px;
+
+    line-height:1.7;
+
+}
+
+/* ==========================================
+   NUMBER INPUT
+========================================== */
+
+input[type="number"].profile-input{
+
+    appearance:textfield;
+
+    -moz-appearance:textfield;
+
+}
+
+input[type="number"].profile-input::-webkit-inner-spin-button,
+
+input[type="number"].profile-input::-webkit-outer-spin-button{
+
+    -webkit-appearance:none;
+
+    margin:0;
+
+}
+
+/* ==========================================
+   INPUT ANIMATION
+========================================== */
+
+.profile-input{
+
+    animation:inputFade .4s ease;
+
+}
+
+@keyframes inputFade{
 
     from{
 
         opacity:0;
 
-        transform:translateY(-20px);
+        transform:translateY(8px);
 
     }
 
@@ -1901,225 +670,1166 @@ body{
 
 }
 
+/* ==========================================
+   EDIT MODE CARD
+========================================== */
 
-/* ==========================================================
-   ERROR MESSAGE
-========================================================== */
+.profile-item:has(.profile-input){
 
-.error-alert{
+    border-color:rgba(255,152,0,.25);
 
-    background:linear-gradient(135deg,#ef4444,#dc2626);
-
-    color:#fff;
-
-    padding:14px 18px;
-
-    border-radius:14px;
-
-    font-weight:600;
-
-    margin-bottom:20px;
-
-    animation:shake .45s ease;
+    background:#fffdf8;
 
 }
 
-@keyframes shake{
+/* ==========================================
+   LABEL EMPHASIS
+========================================== */
 
-    0%,100%{
+.profile-item:has(.profile-input) h4{
 
-        transform:translateX(0);
-
-    }
-
-    20%{
-
-        transform:translateX(-6px);
-
-    }
-
-    40%{
-
-        transform:translateX(6px);
-
-    }
-
-    60%{
-
-        transform:translateX(-4px);
-
-    }
-
-    80%{
-
-        transform:translateX(4px);
-
-    }
+    color:#ff6b00;
 
 }
 
+/* ==========================================
+   INPUT DISABLED
+========================================== */
 
-/* ==========================================================
-   SKELETON LOADING
-========================================================== */
+.profile-input:disabled{
 
-.skeleton{
+    background:#f8f8f8;
 
-    width:100%;
+    color:#888;
 
-    height:22px;
-
-    border-radius:10px;
-
-    background:linear-gradient(
-
-        90deg,
-
-        #ececec,
-
-        #f7f7f7,
-
-        #ececec
-
-    );
-
-    background-size:250% 100%;
-
-    animation:skeleton 1.2s linear infinite;
+    cursor:not-allowed;
 
 }
 
-@keyframes skeleton{
+/* ==========================================
+   FOCUS ANIMATION
+========================================== */
+
+.profile-input:focus{
+
+    animation:focusPulse .35s ease;
+
+}
+
+@keyframes focusPulse{
 
     0%{
 
-        background-position:100% 0;
+        transform:scale(.99);
 
     }
 
     100%{
 
-        background-position:-100% 0;
+        transform:scale(1);
 
     }
 
 }
-
-
-/* ==========================================================
-   PROFILE IMAGE RING
-========================================================== */
-
-.profile-avatar{
-
-    border-radius:50%;
-
-    padding:10px;
-
-    border:4px solid rgba(255,255,255,.3);
-
-}
-
-.profile-avatar:hover{
-
-    border-color:#fff;
-
-}
-
-
-/* ==========================================================
-   NOTIFICATION DOT
-========================================================== */
-
-.notification-dot{
-
-    width:12px;
-
-    height:12px;
-
-    background:#ef4444;
-
-    border-radius:50%;
-
-    animation:blinkDot 1.5s infinite;
-
-}
-
-@keyframes blinkDot{
-
-    50%{
-
-        opacity:.35;
-
-    }
-
-}
-
-
-/* ==========================================================
-   SAVE BUTTON LOADING
-========================================================== */
-
-.loading-btn{
-
-    pointer-events:none;
-
-    opacity:.8;
-
-}
-
-.loading-btn::after{
-
-    content:"";
-
-    width:18px;
-
-    height:18px;
-
-    border:3px solid rgba(255,255,255,.4);
-
-    border-top-color:#fff;
-
-    border-radius:50%;
-
-    animation:spin .8s linear infinite;
-
-    margin-left:10px;
-
-}
-
-@keyframes spin{
-
-    to{
-
-        transform:rotate(360deg);
-
-    }
-
-}
-
-
-/* ==========================================================
-   CARD HOVER BORDER
-========================================================== */
-
-.profile-card:hover{
-
-    outline:2px solid rgba(37,99,235,.12);
-
-}
-
-
-/* ==========================================================
-   GLASS FOOTER
-========================================================== */
+/* ==========================================
+   PROFILE BUTTON SECTION
+========================================== */
 
 .profile-buttons{
 
-    border-top:1px solid rgba(0,0,0,.05);
+    display:flex;
 
-    background:rgba(255,255,255,.9);
+    flex-wrap:wrap;
 
-    backdrop-filter:blur(14px);
+    justify-content:center;
+
+    gap:18px;
+
+    margin-top:40px;
+
+}
+
+/* ==========================================
+   COMMON BUTTON
+========================================== */
+
+.profile-buttons button{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:10px;
+
+    padding:15px 26px;
+
+    border:none;
+
+    border-radius:16px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    transition:all .35s ease;
+
+    position:relative;
+
+    overflow:hidden;
+
+    min-width:190px;
+
+}
+
+/* ==========================================
+   BUTTON SHINE
+========================================== */
+
+.profile-buttons button::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:-120%;
+
+    width:60%;
+
+    height:100%;
+
+    background:
+
+        linear-gradient(
+
+            90deg,
+
+            transparent,
+
+            rgba(255,255,255,.45),
+
+            transparent
+
+        );
+
+    transform:skewX(-25deg);
+
+    transition:.7s;
+
+}
+
+.profile-buttons button:hover::before{
+
+    left:150%;
+
+}
+
+/* ==========================================
+   EDIT BUTTON
+========================================== */
+
+.edit-btn{
+
+    background:
+
+        linear-gradient(
+
+            135deg,
+
+            #ff9800,
+
+            #ff6b00
+
+        );
+
+    color:#fff;
+
+    box-shadow:
+
+        0 12px 30px rgba(255,107,0,.25);
+
+}
+
+.edit-btn:hover{
+
+    transform:
+
+        translateY(-4px);
+
+    box-shadow:
+
+        0 20px 40px rgba(255,107,0,.35);
+
+}
+
+/* ==========================================
+   CANCEL BUTTON
+========================================== */
+
+.cancel-btn{
+
+    background:#f3f3f3;
+
+    color:#555;
+
+}
+
+.cancel-btn:hover{
+
+    background:#e8e8e8;
+
+    transform:
+
+        translateY(-4px);
+
+}
+
+/* ==========================================
+   LOGOUT BUTTON
+========================================== */
+
+.logout-btn{
+
+    background:
+
+        linear-gradient(
+
+            135deg,
+
+            #ef5350,
+
+            #d32f2f
+
+        );
+
+    color:#fff;
+
+    box-shadow:
+
+        0 12px 30px rgba(211,47,47,.22);
+
+}
+
+.logout-btn:hover{
+
+    transform:
+
+        translateY(-4px);
+
+    box-shadow:
+
+        0 20px 40px rgba(211,47,47,.35);
+
+}
+
+/* ==========================================
+   BUTTON ICON
+========================================== */
+
+.profile-buttons button svg{
+
+    font-size:18px;
+
+    transition:.3s;
+
+}
+
+.profile-buttons button:hover svg{
+
+    transform:scale(1.15);
+
+}
+
+/* ==========================================
+   BUTTON ACTIVE
+========================================== */
+
+.profile-buttons button:active{
+
+    transform:scale(.97);
+
+}
+
+/* ==========================================
+   DISABLED BUTTON
+========================================== */
+
+.profile-buttons button:disabled{
+
+    opacity:.6;
+
+    cursor:not-allowed;
+
+    transform:none;
+
+    box-shadow:none;
+
+}
+
+/* ==========================================
+   LOADING SCREEN
+========================================== */
+
+.profile-loading{
+
+    min-height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:
+
+        linear-gradient(
+
+            135deg,
+
+            #fff8ef,
+
+            #ffffff,
+
+            #fff3e0
+
+        );
+
+    color:#ff6b00;
+
+    font-size:26px;
+
+    font-weight:700;
+
+    animation:loadingPulse 1.6s infinite;
+
+}
+
+/* ==========================================
+   LOADING ANIMATION
+========================================== */
+
+@keyframes loadingPulse{
+
+    0%{
+
+        opacity:.5;
+
+        transform:scale(.98);
+
+    }
+
+    50%{
+
+        opacity:1;
+
+        transform:scale(1);
+
+    }
+
+    100%{
+
+        opacity:.5;
+
+        transform:scale(.98);
+
+    }
+
+}
+/* ==========================================
+   LARGE DESKTOP
+========================================== */
+
+@media (max-width:1200px){
+
+    .profile-card{
+
+        max-width:850px;
+
+        padding:35px;
+
+    }
+
+    .profile-header-details h2{
+
+        font-size:1.8rem;
+
+    }
+
+}
+
+/* ==========================================
+   LAPTOP
+========================================== */
+
+@media (max-width:992px){
+
+    .profile-page{
+
+        padding:110px 20px 50px;
+
+    }
+
+    .profile-card{
+
+        max-width:760px;
+
+        padding:30px;
+
+        border-radius:25px;
+
+    }
+
+    .profile-top{
+
+        gap:20px;
+
+    }
+
+    .profile-avatar{
+
+        width:105px;
+
+        height:105px;
+
+        padding:16px;
+
+    }
+
+    .profile-header-details h2{
+
+        font-size:1.7rem;
+
+    }
+
+    .role-badge{
+
+        font-size:13px;
+
+        padding:7px 18px;
+
+    }
+
+    .profile-item{
+
+        padding:20px;
+
+    }
+
+    .profile-item .icon{
+
+        width:52px;
+
+        height:52px;
+
+        min-width:52px;
+
+        font-size:22px;
+
+    }
+
+    .profile-content h4{
+
+        font-size:14px;
+
+    }
+
+    .profile-content p{
+
+        font-size:15px;
+
+    }
+
+}
+
+/* ==========================================
+   TABLET
+========================================== */
+
+@media (max-width:768px){
+
+    .profile-page{
+
+        padding:100px 15px 40px;
+
+    }
+
+    .profile-card{
+
+        padding:25px;
+
+        border-radius:22px;
+
+    }
+
+    .profile-top{
+
+        flex-direction:column;
+
+        text-align:center;
+
+        gap:18px;
+
+    }
+
+    .profile-avatar{
+
+        width:95px;
+
+        height:95px;
+
+        padding:14px;
+
+    }
+
+    .profile-header-details{
+
+        width:100%;
+
+    }
+
+    .profile-header-details h2{
+
+        font-size:1.5rem;
+
+    }
+
+    .role-badge{
+
+        margin-top:10px;
+
+    }
+
+    .profile-item{
+
+        flex-direction:column;
+
+        align-items:center;
+
+        text-align:center;
+
+        gap:15px;
+
+    }
+
+    .profile-item .icon{
+
+        width:58px;
+
+        height:58px;
+
+    }
+
+    .profile-content{
+
+        width:100%;
+
+    }
+
+    .profile-content h4{
+
+        margin-bottom:6px;
+
+    }
+
+    .profile-buttons{
+
+        flex-direction:column;
+
+        align-items:center;
+
+    }
+
+    .profile-buttons button{
+
+        width:100%;
+
+        max-width:320px;
+
+    }
+
+    .profile-name-input{
+
+        text-align:center;
+
+        font-size:24px;
+
+    }
+
+}
+/* ==========================================
+   MOBILE RESPONSIVE
+========================================== */
+
+@media (max-width:576px){
+
+    .profile-page{
+
+        padding:90px 12px 30px;
+
+    }
+
+    .profile-card{
+
+        padding:22px 18px;
+
+        border-radius:20px;
+
+    }
+
+    .profile-top{
+
+        gap:15px;
+
+    }
+
+    .profile-avatar{
+
+        width:85px;
+
+        height:85px;
+
+        padding:12px;
+
+    }
+
+    .profile-header-details h2{
+
+        font-size:1.35rem;
+
+        line-height:1.3;
+
+        word-break:break-word;
+
+    }
+
+    .role-badge{
+
+        padding:6px 16px;
+
+        font-size:12px;
+
+    }
+
+    .profile-item{
+
+        padding:18px 15px;
+
+        border-radius:18px;
+
+    }
+
+    .profile-item .icon{
+
+        width:50px;
+
+        height:50px;
+
+        min-width:50px;
+
+        font-size:20px;
+
+        border-radius:14px;
+
+    }
+
+    .profile-content h4{
+
+        font-size:13px;
+
+    }
+
+    .profile-content p{
+
+        font-size:14px;
+
+        line-height:1.6;
+
+    }
+
+    .profile-input{
+
+        font-size:14px;
+
+        padding:12px 14px;
+
+    }
+
+    textarea.profile-input{
+
+        min-height:80px;
+
+    }
+
+    .profile-name-input{
+
+        font-size:21px;
+
+        text-align:center;
+
+    }
+
+    .profile-buttons{
+
+        margin-top:30px;
+
+        gap:14px;
+
+    }
+
+    .profile-buttons button{
+
+        width:100%;
+
+        max-width:100%;
+
+        min-width:unset;
+
+        padding:14px;
+
+        font-size:14px;
+
+        border-radius:14px;
+
+    }
+
+}
+
+/* ==========================================
+   EXTRA SMALL MOBILE
+========================================== */
+
+@media (max-width:400px){
+
+    .profile-page{
+
+        padding:85px 10px 25px;
+
+    }
+
+    .profile-card{
+
+        padding:18px 14px;
+
+    }
+
+    .profile-avatar{
+
+        width:75px;
+
+        height:75px;
+
+        padding:10px;
+
+    }
+
+    .profile-header-details h2{
+
+        font-size:1.15rem;
+
+    }
+
+    .role-badge{
+
+        font-size:11px;
+
+        padding:5px 14px;
+
+    }
+
+    .profile-item{
+
+        padding:15px 12px;
+
+    }
+
+    .profile-item .icon{
+
+        width:45px;
+
+        height:45px;
+
+        min-width:45px;
+
+        font-size:18px;
+
+    }
+
+    .profile-content h4{
+
+        font-size:12px;
+
+    }
+
+    .profile-content p{
+
+        font-size:13px;
+
+    }
+
+    .profile-input{
+
+        font-size:13px;
+
+    }
+
+    .profile-buttons button{
+
+        font-size:13px;
+
+        padding:13px;
+
+    }
+
+}
+
+/* ==========================================
+   LANDSCAPE MOBILE
+========================================== */
+
+@media (max-height:600px){
+
+    .profile-page{
+
+        padding-top:80px;
+
+        padding-bottom:20px;
+
+    }
+
+}
+/* ==========================================
+   CARD FLOAT ANIMATION
+========================================== */
+
+.profile-card{
+
+    animation:cardFloat 5s ease-in-out infinite;
+
+}
+
+@keyframes cardFloat{
+
+    0%{
+
+        transform:translateY(0);
+
+    }
+
+    50%{
+
+        transform:translateY(-8px);
+
+    }
+
+    100%{
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/* ==========================================
+   CARD SHINE EFFECT
+========================================== */
+
+.profile-card::after{
+
+    content:"";
+
+    position:absolute;
+
+    top:-60%;
+
+    left:-120%;
+
+    width:55%;
+
+    height:220%;
+
+    background:
+
+        linear-gradient(
+
+            90deg,
+
+            transparent,
+
+            rgba(255,255,255,.40),
+
+            transparent
+
+        );
+
+    transform:rotate(20deg);
+
+    animation:cardShine 5s linear infinite;
+
+    pointer-events:none;
+
+}
+
+@keyframes cardShine{
+
+    from{
+
+        left:-120%;
+
+    }
+
+    to{
+
+        left:160%;
+
+    }
+
+}
+
+/* ==========================================
+   AVATAR GLOW
+========================================== */
+
+.profile-avatar{
+
+    filter:
+
+        drop-shadow(0 0 15px rgba(255,152,0,.35));
+
+}
+
+/* ==========================================
+   ROLE BADGE ANIMATION
+========================================== */
+
+.role-badge{
+
+    animation:badgePulse 2.5s infinite;
+
+}
+
+@keyframes badgePulse{
+
+    0%{
+
+        transform:scale(1);
+
+    }
+
+    50%{
+
+        transform:scale(1.05);
+
+    }
+
+    100%{
+
+        transform:scale(1);
+
+    }
+
+}
+
+/* ==========================================
+   ICON GLOW
+========================================== */
+
+.profile-item .icon{
+
+    position:relative;
+
+}
+
+.profile-item .icon::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:-8px;
+
+    border-radius:20px;
+
+    background:
+
+        rgba(255,152,0,.15);
+
+    filter:blur(16px);
+
+    z-index:-1;
+
+}
+
+/* ==========================================
+   BUTTON ICON ANIMATION
+========================================== */
+
+.profile-buttons button:hover svg{
+
+    transform:
+
+        rotate(-10deg)
+
+        scale(1.15);
+
+}
+
+/* ==========================================
+   BUTTON RIPPLE
+========================================== */
+
+.profile-buttons button{
+
+    isolation:isolate;
+
+}
+
+.profile-buttons button::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:0;
+
+    height:0;
+
+    left:50%;
+
+    top:50%;
+
+    border-radius:50%;
+
+    background:
+
+        rgba(255,255,255,.25);
+
+    transform:
+
+        translate(-50%,-50%);
+
+    transition:.6s;
+
+    z-index:-1;
+
+}
+
+.profile-buttons button:hover::after{
+
+    width:260px;
+
+    height:260px;
+
+}
+
+/* ==========================================
+   INPUT HOVER
+========================================== */
+
+.profile-input:hover{
+
+    transform:translateY(-2px);
+
+}
+
+/* ==========================================
+   LOADING EFFECT
+========================================== */
+
+.profile-loading{
+
+    letter-spacing:.8px;
+
+    text-shadow:
+
+        0 0 12px rgba(255,152,0,.25);
+
+}
+
+/* ==========================================
+   CUSTOM SCROLLBAR
+========================================== */
+
+::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#fff6ea;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:
+
+        linear-gradient(
+
+            180deg,
+
+            #ff9800,
+
+            #ff6b00
+
+        );
+
+    border-radius:20px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:#ff6b00;
+
+}
+
+/* ==========================================
+   TEXT SELECTION
+========================================== */
+
+::selection{
+
+    background:#ff9800;
+
+    color:#fff;
+
+}
+
+/* ==========================================
+   ACCESSIBILITY
+========================================== */
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible{
+
+    outline:3px solid rgba(255,152,0,.25);
+
+    outline-offset:3px;
+
+}
+
+/* ==========================================
+   REDUCED MOTION
+========================================== */
+
+@media (prefers-reduced-motion: reduce){
+
+    *{
+
+        animation:none !important;
+
+        transition:none !important;
+
+        scroll-behavior:auto !important;
+
+    }
 
 }

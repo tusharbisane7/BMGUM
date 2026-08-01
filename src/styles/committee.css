@@ -1,103 +1,252 @@
-/*==================================================
-                COMMITTEE SECTION
-==================================================*/
+/* ==========================================
+   COMMITTEE SECTION
+========================================== */
 
 .committee-section{
 
     position:relative;
 
-    overflow:hidden;
+    width:100%;
 
-    padding:90px 20px;
+    padding:80px 20px;
+
+    overflow:hidden;
 
     background:
         linear-gradient(
-            180deg,
-            #fffdfb 0%,
-            #fff8f2 50%,
-            #ffffff 100%
+            135deg,
+            #fff8ef,
+            #ffffff,
+            #fff2df
         );
 
 }
 
-.committee-section::before{
+/* ==========================================
+   SECTION TITLE
+========================================== */
 
-    content:"";
+.committee-section .title{
 
-    position:absolute;
+    text-align:center;
 
-    width:420px;
+    font-size:2.6rem;
 
-    height:420px;
+    color:#ff6b00;
 
-    top:-180px;
+    font-weight:700;
 
-    left:-180px;
+    margin-bottom:55px;
 
-    border-radius:50%;
+    position:relative;
 
-    background:
-        radial-gradient(circle,
-        rgba(255,107,0,.10),
-        transparent 70%);
-
-}
-
-.committee-section::after{
-
-    content:"";
-
-    position:absolute;
-
-    width:340px;
-
-    height:340px;
-
-    bottom:-160px;
-
-    right:-160px;
-
-    border-radius:50%;
-
-    background:
-        radial-gradient(circle,
-        rgba(59,130,246,.08),
-        transparent 70%);
+    z-index:2;
 
 }
 
-/*==================================================
-                MEMBER CARD
-==================================================*/
+.committee-section .title::after{
+
+    content:"";
+
+    display:block;
+
+    width:110px;
+
+    height:5px;
+
+    margin:16px auto 0;
+
+    border-radius:30px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #ff9800,
+            #ff6b00
+        );
+
+}
+
+/* ==========================================
+   SWIPER
+========================================== */
+
+.committee-section .swiper{
+
+    width:100%;
+
+    max-width:1100px;
+
+    margin:auto;
+
+    padding:20px 0 70px;
+
+}
+
+.committee-section .swiper-slide{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+/* ==========================================
+   FLOATING PARTICLES
+========================================== */
+
+.committee-particle{
+
+    position:absolute;
+
+    border-radius:50%;
+
+    filter:blur(40px);
+
+    opacity:.28;
+
+    animation:particleFloat 8s ease-in-out infinite;
+
+}
+
+.committee-particle.one{
+
+    width:180px;
+
+    height:180px;
+
+    background:#ff9800;
+
+    top:-60px;
+
+    left:-60px;
+
+}
+
+.committee-particle.two{
+
+    width:220px;
+
+    height:220px;
+
+    background:#ffc107;
+
+    top:60%;
+
+    right:-90px;
+
+    animation-delay:2s;
+
+}
+
+.committee-particle.three{
+
+    width:120px;
+
+    height:120px;
+
+    background:#ff6b00;
+
+    bottom:40px;
+
+    left:18%;
+
+    animation-delay:4s;
+
+}
+
+.committee-particle.four{
+
+    width:150px;
+
+    height:150px;
+
+    background:#ffb347;
+
+    top:18%;
+
+    right:22%;
+
+    animation-delay:6s;
+
+}
+
+@keyframes particleFloat{
+
+    0%{
+
+        transform:translateY(0);
+
+    }
+
+    50%{
+
+        transform:translateY(-30px);
+
+    }
+
+    100%{
+
+        transform:translateY(0);
+
+    }
+
+}
+/* ==========================================
+   MEMBER CARD
+========================================== */
 
 .member-card{
 
     position:relative;
 
-    overflow:hidden;
+    width:100%;
+
+    max-width:360px;
 
     padding:35px 28px;
 
-    text-align:center;
-
     border-radius:30px;
 
-    background:
-        rgba(255,255,255,.88);
+    overflow:hidden;
+
+    text-align:center;
+
+    background:rgba(255,255,255,.88);
 
     backdrop-filter:blur(18px);
 
-    border:1px solid rgba(255,255,255,.7);
+    border:1px solid rgba(255,255,255,.45);
 
     box-shadow:
-        0 20px 55px rgba(0,0,0,.08),
-        0 8px 20px rgba(255,107,0,.08);
 
-    transition:.45s ease;
+        0 20px 60px rgba(0,0,0,.12);
+
+    transition:.4s ease;
+
+    z-index:2;
 
 }
 
-/* Animated Border */
+.member-card:hover{
+
+    transform:
+
+        translateY(-10px)
+
+        scale(1.03);
+
+    box-shadow:
+
+        0 35px 80px rgba(255,107,0,.22);
+
+}
+
+/* ==========================================
+   PREMIUM BORDER
+========================================== */
 
 .member-card::before{
 
@@ -107,34 +256,107 @@
 
     inset:0;
 
-    padding:2px;
-
     border-radius:30px;
 
+    padding:1px;
+
     background:
+
         linear-gradient(
+
             135deg,
-            #ff9800,
-            #ff6b00,
-            #ffd54f,
-            #ff9800
+
+            rgba(255,152,0,.55),
+
+            rgba(255,255,255,.05),
+
+            rgba(255,107,0,.55)
+
         );
 
-    background-size:300%;
-
-    animation:borderMove 8s linear infinite;
-
     -webkit-mask:
+
         linear-gradient(#fff 0 0) content-box,
+
         linear-gradient(#fff 0 0);
 
     -webkit-mask-composite:xor;
 
     mask-composite:exclude;
 
+    pointer-events:none;
+
 }
 
-/* Floating Glow */
+/* ==========================================
+   SHINE EFFECT
+========================================== */
+
+.shine{
+
+    position:absolute;
+
+    inset:0;
+
+    overflow:hidden;
+
+    pointer-events:none;
+
+}
+
+.shine::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:-60%;
+
+    left:-120%;
+
+    width:60%;
+
+    height:220%;
+
+    background:
+
+        linear-gradient(
+
+            90deg,
+
+            transparent,
+
+            rgba(255,255,255,.45),
+
+            transparent
+
+        );
+
+    transform:rotate(25deg);
+
+    animation:committeeShine 6s linear infinite;
+
+}
+
+@keyframes committeeShine{
+
+    from{
+
+        left:-120%;
+
+    }
+
+    to{
+
+        left:160%;
+
+    }
+
+}
+
+/* ==========================================
+   CARD GLOW
+========================================== */
 
 .member-card::after{
 
@@ -142,167 +364,123 @@
 
     position:absolute;
 
-    width:230px;
+    width:220px;
 
-    height:230px;
-
-    right:-120px;
-
-    top:-120px;
-
-    border-radius:50%;
-
-    background:
-        radial-gradient(circle,
-        rgba(255,152,0,.16),
-        transparent 70%);
-
-    animation:floatGlow 8s ease-in-out infinite;
-
-}
-
-.member-card:hover{
-
-    transform:translateY(-12px) scale(1.02);
-
-    box-shadow:
-        0 35px 80px rgba(0,0,0,.12),
-        0 15px 35px rgba(255,107,0,.15);
-
-}
-/*==================================================
-                PROFILE IMAGE
-==================================================*/
-
-.member-image{
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    width:160px;
-
-    height:160px;
-
-    margin:0 auto 25px;
-
-    border-radius:50%;
-
-    position:relative;
-
-}
-
-.member-image img{
-
-    width:150px;
-
-    height:150px;
-
-    object-fit:cover;
-
-    border-radius:50%;
-
-    display:block;
-
-    margin:auto;
-
-}
-
-/* Rotating Ring */
-
-.member-image::before{
-
-    content:"";
-
-    position:absolute;
-
-    inset:-10px;
-
-    border-radius:50%;
-
-    border:2px dashed rgba(255,152,0,.35);
-
-    animation:ringRotate 18s linear infinite;
-
-}
-
-/* Soft Glow */
-
-.member-image::after{
-
-    content:"";
-
-    position:absolute;
-
-    inset:-22px;
+    height:220px;
 
     border-radius:50%;
 
     background:
 
-        radial-gradient(
+        rgba(255,152,0,.10);
 
-            circle,
+    filter:blur(80px);
 
-            rgba(255,152,0,.18),
+    top:-80px;
 
-            transparent 70%
-
-        );
+    right:-80px;
 
     z-index:-1;
 
 }
 
-/* Profile */
+/* ==========================================
+   HOVER GLOW
+========================================== */
 
-.member-image img,
+.member-card:hover::after{
 
-.member-card img{
+    background:
 
-    width:150px;
+        rgba(255,107,0,.18);
 
-    height:150px;
+}
+
+/* ==========================================
+   CARD CONTENT
+========================================== */
+
+.member-card>*{
+
+    position:relative;
+
+    z-index:2;
+
+}
+/* ==========================================
+   MEMBER IMAGE
+========================================== */
+
+.member-image{
+
+    width:170px;
+
+    height:170px;
+
+    margin:0 auto 25px;
+
+    border-radius:50%;
+
+    padding:6px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff9800,
+            #ff6b00,
+            #ffc107
+        );
+
+    box-shadow:
+        0 15px 35px rgba(255,107,0,.30);
+
+    transition:.4s ease;
+
+    overflow:hidden;
+
+}
+
+.member-image img{
+
+    width:100%;
+
+    height:100%;
 
     object-fit:cover;
 
     border-radius:50%;
 
-    border:5px solid #fff;
-
-    box-shadow:
-
-        0 12px 28px rgba(0,0,0,.15);
-
-    transition:.45s;
+    transition:.45s ease;
 
 }
 
-.member-card:hover img{
+.member-card:hover .member-image{
 
-    transform:scale(1.08) rotate(-2deg);
+    transform:
+        rotate(3deg)
+        scale(1.05);
 
 }
 
-/*==================================================
-                NAME
-==================================================*/
+.member-card:hover .member-image img{
+
+    transform:scale(1.12);
+
+}
+
+/* ==========================================
+   MEMBER NAME
+========================================== */
 
 .member-card h3{
 
-    margin:0;
+    margin-top:10px;
 
-    font-size:28px;
+    font-size:1.6rem;
 
     font-weight:700;
 
     color:#222;
-
-    line-height:1.4;
-
-    font-family:"Asar",serif;
 
     transition:.35s;
 
@@ -314,49 +492,41 @@
 
 }
 
-/*==================================================
-            DESIGNATION BADGE
-==================================================*/
+/* ==========================================
+   MEMBER POSITION
+========================================== */
 
 .member-card span{
 
-    display:inline-flex;
+    display:inline-block;
 
-    align-items:center;
+    margin-top:12px;
 
-    justify-content:center;
+    margin-bottom:18px;
 
-    margin-top:15px;
+    padding:8px 18px;
 
-    padding:10px 20px;
-
-    border-radius:50px;
+    border-radius:40px;
 
     background:
-
         linear-gradient(
-
             135deg,
-
-            #fff4e8,
-
-            #ffe3c7
-
+            #ff9800,
+            #ff6b00
         );
 
-    color:#ff6b00;
+    color:#fff;
 
-    font-size:13px;
+    font-size:14px;
 
-    font-weight:700;
+    font-weight:600;
 
-    letter-spacing:.5px;
+    letter-spacing:.6px;
 
-    border:1px solid #ffd2a8;
+    text-transform:uppercase;
 
     box-shadow:
-
-        0 8px 18px rgba(255,152,0,.12);
+        0 8px 20px rgba(255,107,0,.25);
 
     transition:.35s;
 
@@ -364,382 +534,259 @@
 
 .member-card:hover span{
 
-    background:
+    transform:translateY(-2px);
 
-        linear-gradient(
-
-            135deg,
-
-            #ff9800,
-
-            #ff6b00
-
-        );
-
-    color:#fff;
+    box-shadow:
+        0 12px 25px rgba(255,107,0,.35);
 
 }
 
-/*==================================================
-                SHINE EFFECT
-==================================================*/
+/* ==========================================
+   PHONE NUMBER
+========================================== */
 
-.member-card .shine{
+.member-card p{
+
+    margin-top:8px;
+
+    font-size:15px;
+
+    font-weight:500;
+
+    color:#555;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:8px;
+
+    transition:.35s;
+
+}
+
+.member-card:hover p{
+
+    color:#ff6b00;
+
+}
+
+/* ==========================================
+   IMAGE FLOAT ANIMATION
+========================================== */
+
+.member-image{
+
+    animation:imageFloat 4s ease-in-out infinite;
+
+}
+
+@keyframes imageFloat{
+
+    0%{
+
+        transform:translateY(0);
+
+    }
+
+    50%{
+
+        transform:translateY(-8px);
+
+    }
+
+    100%{
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/* ==========================================
+   TEXT ANIMATION
+========================================== */
+
+.member-card h3,
+.member-card span,
+.member-card p{
+
+    animation:fadeUp .8s ease;
+
+}
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(15px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+/* ==========================================
+   SWIPER PAGINATION
+========================================== */
+
+.committee-section .swiper-pagination{
+
+    position:relative;
+
+    margin-top:35px;
+
+}
+
+.committee-section .swiper-pagination-bullet{
+
+    width:12px;
+
+    height:12px;
+
+    opacity:1;
+
+    background:#d8d8d8;
+
+    transition:.35s ease;
+
+    border-radius:50%;
+
+}
+
+.committee-section .swiper-pagination-bullet:hover{
+
+    transform:scale(1.25);
+
+    background:#ffb347;
+
+}
+
+.committee-section .swiper-pagination-bullet-active{
+
+    width:38px;
+
+    border-radius:30px;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #ff9800,
+            #ff6b00
+        );
+
+    box-shadow:
+
+        0 8px 20px rgba(255,107,0,.35);
+
+}
+
+/* ==========================================
+   CARD SHADOW
+========================================== */
+
+.member-card{
+
+    overflow:hidden;
+
+}
+
+.member-card:hover{
+
+    background:
+
+        rgba(255,255,255,.95);
+
+}
+
+/* ==========================================
+   IMAGE GLOW
+========================================== */
+
+.member-image{
+
+    position:relative;
+
+}
+
+.member-image::after{
+
+    content:"";
 
     position:absolute;
 
-    top:-180%;
+    inset:-12px;
 
-    left:-70%;
-
-    width:60%;
-
-    height:340%;
-
-    transform:rotate(25deg);
+    border-radius:50%;
 
     background:
 
-        linear-gradient(
+        rgba(255,152,0,.18);
 
-            transparent,
+    filter:blur(25px);
 
-            rgba(255,255,255,.45),
-
-            transparent
-
-        );
-
-    transition:1.2s;
-
-    pointer-events:none;
+    z-index:-1;
 
 }
 
-.member-card:hover .shine{
+/* ==========================================
+   POSITION BADGE ANIMATION
+========================================== */
+
+.member-card span{
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.member-card span::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:-120%;
+
+    width:60%;
+
+    height:100%;
+
+    background:
+
+        rgba(255,255,255,.35);
+
+    transform:skewX(-25deg);
+
+    transition:.7s;
+
+}
+
+.member-card:hover span::before{
 
     left:150%;
 
 }
 
-/*==================================================
-                ANIMATIONS
-==================================================*/
-
-@keyframes ringRotate{
-
-from{
-
-transform:rotate(0deg);
-
-}
-
-to{
-
-transform:rotate(360deg);
-
-}
-
-}
-
-@keyframes floatGlow{
-
-0%,100%{
-
-transform:translateY(0);
-
-}
-
-50%{
-
-transform:translateY(16px);
-
-}
-
-}
-
-@keyframes borderMove{
-
-0%{
-
-background-position:0 0;
-
-}
-
-100%{
-
-background-position:300% 0;
-
-}
-
-}
-/*==================================================
-                DESCRIPTION
-==================================================*/
+/* ==========================================
+   PHONE HOVER
+========================================== */
 
 .member-card p{
-
-    margin-top:18px;
-
-    color:#666;
-
-    font-size:15px;
-
-    line-height:1.9;
-
-    text-align:center;
-
-}
-
-/*==================================================
-                SOCIAL ICONS
-==================================================*/
-
-.member-social{
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    gap:14px;
-
-    margin-top:22px;
-
-}
-
-.member-social a{
-
-    width:46px;
-
-    height:46px;
-
-    border-radius:50%;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    background:#fff;
-
-    color:#ff6b00;
-
-    border:1px solid #ececec;
-
-    box-shadow:
-        0 8px 18px rgba(0,0,0,.08);
-
-    transition:.35s;
-
-    text-decoration:none;
-
-    font-size:18px;
-
-}
-
-.member-social a:hover{
-
-    transform:translateY(-6px);
-
-    background:linear-gradient(
-        135deg,
-        #ff9800,
-        #ff6b00
-    );
-
-    color:#fff;
-
-    box-shadow:
-        0 15px 28px rgba(255,107,0,.25);
-
-}
-
-/*==================================================
-                SWIPER
-==================================================*/
-
-.swiper{
-
-    padding:20px 12px 70px;
-
-}
-
-.swiper-slide{
-
-    height:auto;
-
-    display:flex;
-
-}
-
-/*==================================================
-            NAVIGATION BUTTONS
-==================================================*/
-
-
-/*==================================================
-                PAGINATION
-==================================================*/
-
-.swiper-pagination{
-
-    bottom:5px !important;
-
-}
-
-.swiper-pagination-bullet{
-
-    width:12px;
-
-    height:12px;
-
-    background:#d8d8d8 !important;
-
-    opacity:1;
-
-    transition:.35s;
-
-}
-
-.swiper-pagination-bullet-active{
-
-    width:34px;
-
-    border-radius:50px;
-
-    background:linear-gradient(
-
-        90deg,
-
-        #ff9800,
-
-        #ff6b00
-
-    ) !important;
-
-}
-
-/*==================================================
-            CARD ENTRY ANIMATION
-==================================================*/
-
-.swiper-slide-active .member-card{
-
-    animation:memberEntry .7s ease;
-
-}
-
-@keyframes memberEntry{
-
-0%{
-
-opacity:0;
-
-transform:translateY(35px) scale(.95);
-
-}
-
-100%{
-
-opacity:1;
-
-transform:translateY(0) scale(1);
-
-}
-
-}
-
-/*==================================================
-            IMAGE HOVER EFFECT
-==================================================*/
-
-.member-card:hover .member-image::after{
-
-    transform:scale(1.2);
-
-    transition:.4s;
-
-}
-
-.member-card:hover .member-image::before{
-
-    animation-duration:6s;
-
-}
-/*==================================================
-            FLOATING PARTICLES
-==================================================*/
-
-.committee-particle{
-
-    position:absolute;
-
-    border-radius:50%;
-
-    background:#ff9800;
-
-    opacity:.15;
-
-    pointer-events:none;
-
-}
-
-.committee-particle.one{
-
-    width:14px;
-    height:14px;
-
-    top:10%;
-    left:8%;
-
-    animation:floatOne 7s ease-in-out infinite;
-
-}
-
-.committee-particle.two{
-
-    width:10px;
-    height:10px;
-
-    right:10%;
-    top:30%;
-
-    animation:floatTwo 8s ease-in-out infinite;
-
-}
-
-.committee-particle.three{
-
-    width:18px;
-    height:18px;
-
-    left:15%;
-    bottom:15%;
-
-    animation:floatThree 9s ease-in-out infinite;
-
-}
-
-.committee-particle.four{
-
-    width:12px;
-    height:12px;
-
-    right:18%;
-    bottom:12%;
-
-    animation:floatFour 7s ease-in-out infinite;
-
-}
-
-/*==================================================
-            HOVER EFFECTS
-==================================================*/
-
-.member-card:hover{
 
     cursor:pointer;
 
@@ -747,321 +794,526 @@ transform:translateY(0) scale(1);
 
 .member-card:hover p{
 
-    color:#444;
+    letter-spacing:.4px;
 
 }
 
-.member-card:hover{
+/* ==========================================
+   CARD BORDER ANIMATION
+========================================== */
 
-    border-color:#ffd3aa;
+.member-card::before{
 
-}
-
-.member-card:hover::after{
-
-    transform:scale(1.25);
-
-    transition:.5s;
+    animation:borderGlow 4s linear infinite;
 
 }
 
-.member-card:hover .member-image{
+@keyframes borderGlow{
 
-    transform:translateY(-6px);
+    0%{
 
-    transition:.4s;
+        filter:hue-rotate(0deg);
+
+    }
+
+    100%{
+
+        filter:hue-rotate(25deg);
+
+    }
+
+}
+
+/* ==========================================
+   CARD SCALE ON ACTIVE
+========================================== */
+
+.swiper-slide-active .member-card{
+
+    transform:scale(1.02);
 
 }
 
-/*==================================================
-                TABLET
-==================================================*/
+/* ==========================================
+   CARD TRANSITION
+========================================== */
 
-@media(max-width:992px){
+.member-card,
+.member-image,
+.member-card h3,
+.member-card span,
+.member-card p{
 
-.committee-section{
-
-padding:70px 18px;
+    transition:all .35s ease;
 
 }
+/* ==========================================
+   LARGE LAPTOP
+========================================== */
+
+@media (max-width:1200px){
+
+    .committee-section{
+
+        padding:70px 20px;
+
+    }
+
+    .committee-section .swiper{
+
+        max-width:950px;
+
+    }
+
+    .member-card{
+
+        max-width:340px;
+
+    }
+
+    .member-image{
+
+        width:155px;
+
+        height:155px;
+
+    }
+
+}
+
+/* ==========================================
+   TABLET
+========================================== */
+
+@media (max-width:992px){
+
+    .committee-section{
+
+        padding:60px 15px;
+
+    }
+
+    .committee-section .title{
+
+        font-size:2.2rem;
+
+        margin-bottom:40px;
+
+    }
+
+    .committee-section .swiper{
+
+        max-width:700px;
+
+    }
+
+    .member-card{
+
+        max-width:330px;
+
+        padding:28px 24px;
+
+        border-radius:24px;
+
+    }
+
+    .member-image{
+
+        width:145px;
+
+        height:145px;
+
+    }
+
+    .member-card h3{
+
+        font-size:1.45rem;
+
+    }
+
+}
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width:768px){
+
+    .committee-section{
+
+        padding:50px 15px;
+
+    }
+
+    .committee-section .title{
+
+        font-size:1.9rem;
+
+        margin-bottom:35px;
+
+    }
+
+    .committee-section .title::after{
+
+        width:80px;
+
+        height:4px;
+
+    }
+
+    .committee-section .swiper{
+
+        padding-bottom:60px;
+
+    }
+
+    .member-card{
+
+        max-width:100%;
+
+        padding:24px 20px;
+
+        border-radius:20px;
+
+    }
+
+    .member-image{
+
+        width:125px;
+
+        height:125px;
+
+        margin-bottom:20px;
+
+    }
+
+    .member-card h3{
+
+        font-size:1.3rem;
+
+    }
+
+    .member-card span{
+
+        font-size:13px;
+
+        padding:7px 16px;
+
+    }
+
+    .member-card p{
+
+        font-size:14px;
+
+    }
+
+    .committee-particle{
+
+        display:none;
+
+    }
+
+}
+
+/* ==========================================
+   SMALL MOBILE
+========================================== */
+
+@media (max-width:480px){
+
+    .committee-section{
+
+        padding:40px 10px;
+
+    }
+
+    .committee-section .title{
+
+        font-size:1.6rem;
+
+    }
+
+    .member-card{
+
+        padding:20px 16px;
+
+        border-radius:18px;
+
+    }
+
+    .member-image{
+
+        width:105px;
+
+        height:105px;
+
+    }
+
+    .member-card h3{
+
+        font-size:1.15rem;
+
+    }
+
+    .member-card span{
+
+        font-size:12px;
+
+        padding:6px 14px;
+
+    }
+
+    .member-card p{
+
+        font-size:13px;
+
+    }
+
+    .committee-section .swiper-pagination-bullet{
+
+        width:10px;
+
+        height:10px;
+
+    }
+
+    .committee-section .swiper-pagination-bullet-active{
+
+        width:28px;
+
+    }
+
+}
+/* ==========================================
+   FLOATING CARD ANIMATION
+========================================== */
 
 .member-card{
 
-padding:30px 22px;
-
-border-radius:24px;
+    animation:cardFloat 5s ease-in-out infinite;
 
 }
+
+@keyframes cardFloat{
+
+    0%{
+
+        transform:translateY(0px);
+
+    }
+
+    50%{
+
+        transform:translateY(-8px);
+
+    }
+
+    100%{
+
+        transform:translateY(0px);
+
+    }
+
+}
+
+/* ==========================================
+   IMAGE GLOW EFFECT
+========================================== */
 
 .member-image{
 
-width:130px;
-
-height:130px;
+    position:relative;
 
 }
 
-.member-image img{
+.member-image::before{
 
-width:130px;
+    content:"";
 
-height:130px;
+    position:absolute;
+
+    inset:-12px;
+
+    border-radius:50%;
+
+    background:
+
+        rgba(255,152,0,.18);
+
+    filter:blur(25px);
+
+    z-index:-1;
 
 }
 
-.member-card h3{
+/* ==========================================
+   SHINE ANIMATION
+========================================== */
 
-font-size:24px;
+.shine::before{
+
+    animation-duration:5s;
 
 }
+
+/* ==========================================
+   PARTICLE GLOW
+========================================== */
+
+.committee-particle{
+
+    box-shadow:
+
+        0 0 35px rgba(255,152,0,.45);
+
+}
+
+/* ==========================================
+   TITLE ANIMATION
+========================================== */
+
+.committee-section .title{
+
+    animation:titleFade .8s ease;
+
+}
+
+@keyframes titleFade{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(-20px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/* ==========================================
+   IMAGE HOVER
+========================================== */
+
+.member-card:hover .member-image img{
+
+    filter:
+
+        brightness(1.05)
+
+        saturate(1.15);
+
+}
+
+/* ==========================================
+   NAME HOVER
+========================================== */
+
+.member-card:hover h3{
+
+    letter-spacing:.5px;
+
+}
+
+/* ==========================================
+   PHONE ICON EFFECT
+========================================== */
 
 .member-card p{
 
-font-size:14px;
+    user-select:none;
 
 }
 
+.member-card:hover p{
 
-
-}
-
-
-
-/*==================================================
-                MOBILE
-==================================================*/
-
-@media(max-width:768px){
-
-.committee-section{
-
-padding:55px 15px;
+    transform:translateY(-2px);
 
 }
 
-.member-card{
+/* ==========================================
+   SWIPER ACTIVE CARD
+========================================== */
 
-padding:24px 18px;
+.swiper-slide-active .member-card{
 
-border-radius:20px;
-
-}
-
-.member-image{
-
-width:110px;
-
-height:110px;
-
-margin-bottom:18px;
+    border:1px solid rgba(255,152,0,.35);
 
 }
 
-.member-image img{
+/* ==========================================
+   SMOOTH TRANSITIONS
+========================================== */
 
-width:110px;
+.member-card,
+.member-image,
+.member-image img,
+.member-card h3,
+.member-card span,
+.member-card p,
+.committee-section .swiper-pagination-bullet{
 
-height:110px;
-
-}
-
-.member-card h3{
-
-font-size:21px;
-
-}
-
-.member-card span{
-
-font-size:12px;
-
-padding:8px 16px;
+    transition:all .35s ease;
 
 }
 
-.member-card p{
+/* ==========================================
+   SCROLLBAR
+========================================== */
 
-font-size:14px;
+::-webkit-scrollbar{
 
-line-height:1.7;
-
-}
-
-.member-social{
-
-gap:10px;
+    width:8px;
 
 }
 
-.member-social a{
+::-webkit-scrollbar-track{
 
-width:40px;
-
-height:40px;
-
-font-size:16px;
+    background:#fff6ea;
 
 }
 
-.swiper{
+::-webkit-scrollbar-thumb{
 
-padding-bottom:60px;
+    background:#ff9800;
 
-}
-
-
-}
-
-/*==================================================
-            SMALL MOBILE
-==================================================*/
-
-@media(max-width:480px){
-
-.committee-section{
-
-padding:45px 12px;
+    border-radius:30px;
 
 }
 
-.member-card{
+::-webkit-scrollbar-thumb:hover{
 
-padding:20px 15px;
-
-}
-
-.member-image{
-
-width:90px;
-
-height:90px;
+    background:#ff6b00;
 
 }
 
-.member-image img{
+/* ==========================================
+   TEXT SELECTION
+========================================== */
 
-width:90px;
+::selection{
 
-height:90px;
+    background:#ff9800;
 
-}
-
-.member-card h3{
-
-font-size:18px;
+    color:#ffffff;
 
 }
 
-.member-card span{
+/* ==========================================
+   ACCESSIBILITY
+========================================== */
 
-font-size:11px;
+.member-card:focus-within{
 
-padding:7px 14px;
+    outline:3px solid rgba(255,152,0,.25);
 
-}
-
-.member-card p{
-
-font-size:13px;
-
-}
-
-.member-social a{
-
-width:36px;
-
-height:36px;
-
-font-size:15px;
-
-}
-
-}
-
-/*==================================================
-            REDUCED MOTION
-==================================================*/
-
-@media(prefers-reduced-motion:reduce){
-
-*{
-
-animation:none !important;
-
-transition:none !important;
-
-}
-
-}
-
-/*==================================================
-                ANIMATIONS
-==================================================*/
-
-@keyframes floatOne{
-
-0%,100%{
-
-transform:translateY(0);
-
-opacity:.15;
-
-}
-
-50%{
-
-transform:translateY(-25px);
-
-opacity:.35;
-
-}
-
-}
-
-@keyframes floatTwo{
-
-0%,100%{
-
-transform:translate(0,0);
-
-}
-
-50%{
-
-transform:translate(-20px,-18px);
-
-}
-
-}
-
-@keyframes floatThree{
-
-0%,100%{
-
-transform:translateY(0);
-
-}
-
-50%{
-
-transform:translateY(18px);
-
-}
-
-}
-
-@keyframes floatFour{
-
-0%,100%{
-
-transform:translateX(0);
-
-}
-
-50%{
-
-transform:translateX(16px);
-
-}
+    outline-offset:4px;
 
 }

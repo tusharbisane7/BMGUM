@@ -146,23 +146,7 @@ const LoginPopup = ({
 
                             </button>
 
-                            <button
-
-                                className="register-btn"
-
-                                onClick={onRegister}
-
-                            >
-
-                                <FaUserPlus />
-
-                                <span>
-
-                                    नवीन नोंदणी
-
-                                </span>
-
-                            </button>
+        
 
                         </div>
 

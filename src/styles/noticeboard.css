@@ -1,59 +1,104 @@
-/* ==========================================================
-   BMGM NOTICE BOARD
-   PART 1
-========================================================== */
+/* ==========================================
+   NOTICE SECTION
+========================================== */
 
 .notice-section{
 
-    position:relative;
+    width:100%;
 
-    margin:90px 0;
-
-    padding:20px;
-
-}
-
-/* ==========================================================
-   WRAPPER
-========================================================== */
-
-.notice-wrapper{
-
-    max-width:980px;
-
-    margin:auto;
-
-}
-
-/* ==========================================================
-   NOTICE CARD
-========================================================== */
-
-.notice-card{
+    padding:70px 20px;
 
     position:relative;
 
     overflow:hidden;
 
+    background:
+        linear-gradient(
+            135deg,
+            #fff8ef,
+            #ffffff,
+            #fff2df
+        );
+
+}
+
+/* ==========================================
+   TITLE
+========================================== */
+
+.notice-section .title{
+
+    text-align:center;
+
+    font-size:2.4rem;
+
+    color:#ff6b00;
+
+    font-weight:700;
+
+    margin-bottom:40px;
+
+}
+
+/* ==========================================
+   WRAPPER
+========================================== */
+
+.notice-wrapper{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+/* ==========================================
+   NOTICE CARD
+========================================== */
+
+.notice-card{
+
+    position:relative;
+
+    width:100%;
+
+    max-width:900px;
+
+    overflow:hidden;
+
     border-radius:28px;
 
-    background:rgba(255,255,255,.92);
+    padding:35px;
+
+    background:rgba(255,255,255,.90);
 
     backdrop-filter:blur(18px);
 
     border:1px solid rgba(255,255,255,.45);
 
-    padding:35px;
-
     box-shadow:
 
-        0 15px 40px rgba(0,0,0,.12);
+        0 25px 70px rgba(0,0,0,.12);
+
+    transition:.35s ease;
 
 }
 
-/* ==========================================================
-   ORANGE GLOW
-========================================================== */
+.notice-card:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:
+
+        0 35px 80px rgba(255,107,0,.18);
+
+}
+
+/* ==========================================
+   SHINE EFFECT
+========================================== */
 
 .notice-card::before{
 
@@ -61,853 +106,13 @@
 
     position:absolute;
 
-    inset:0;
-
-    background:
-
-        radial-gradient(circle at top right,
-
-        rgba(255,152,0,.12),
-
-        transparent 40%);
-
-    pointer-events:none;
-
-}
-
-/* ==========================================================
-   LEFT BORDER
-========================================================== */
-
-.notice-card::after{
-
-    content:"";
-
-    position:absolute;
-
-    top:0;
-
-    left:0;
-
-    width:8px;
-
-    height:100%;
-
-    background:
-
-        linear-gradient(
-
-            to bottom,
-
-            #ff9800,
-
-            #ff5722
-
-        );
-
-}
-
-/* ==========================================================
-   HEADER
-========================================================== */
-
-.notice-top{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    flex-wrap:wrap;
-
-    gap:15px;
-
-    margin-bottom:25px;
-
-}
-
-/* ==========================================================
-   LIVE BADGE
-========================================================== */
-
-.notice-badge{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:10px;
-
-    background:
-
-        linear-gradient(135deg,#ff9800,#ff6b00);
-
-    color:#fff;
-
-    padding:10px 22px;
-
-    border-radius:50px;
-
-    font-size:14px;
-
-    font-weight:700;
-
-    letter-spacing:.4px;
-
-    box-shadow:
-
-        0 8px 20px rgba(255,107,0,.30);
-
-}
-
-/* ==========================================================
-   LIVE DOT
-========================================================== */
-
-.notice-badge::before{
-
-    content:"";
-
-    width:12px;
-
-    height:12px;
-
-    border-radius:50%;
-
-    background:#fff;
-
-    animation:liveBlink 1s infinite;
-
-}
-
-/* ==========================================================
-   DATE
-========================================================== */
-
-.notice-date{
-
-    background:#fff4e6;
-
-    color:#ff6b00;
-
-    padding:10px 18px;
-
-    border-radius:50px;
-
-    font-size:14px;
-
-    font-weight:700;
-
-}
-
-/* ==========================================================
-   NEW RIBBON
-========================================================== */
-
-.notice-new{
-
-    position:absolute;
-
-    top:18px;
-
-    right:-38px;
-
-    width:140px;
-
-    text-align:center;
-
-    background:#e53935;
-
-    color:#fff;
-
-    font-size:12px;
-
-    font-weight:700;
-
-    padding:8px 0;
-
-    transform:rotate(45deg);
-
-    box-shadow:
-
-        0 8px 20px rgba(229,57,53,.30);
-
-}
-
-/* ==========================================================
-   TITLE
-========================================================== */
-
-.notice-card h3{
-
-    font-size:32px;
-
-    color:#222;
-
-    margin-bottom:20px;
-
-    font-weight:700;
-
-    line-height:1.3;
-
-}
-
-/* ==========================================================
-   DESCRIPTION
-========================================================== */
-
-.notice-card p{
-
-    color:#555;
-
-    font-size:18px;
-
-    line-height:1.9;
-
-}
-
-/* ==========================================================
-   BELL
-========================================================== */
-
-.notice-icon{
-
-    position:absolute;
-
-    right:28px;
-
-    bottom:20px;
-
-    font-size:90px;
-
-    opacity:.05;
-
-}
-
-/* ==========================================================
-   LIVE BLINK
-========================================================== */
-
-@keyframes liveBlink{
-
-0%,100%{
-
-opacity:1;
-
-box-shadow:
-
-0 0 0 rgba(255,255,255,.6);
-
-}
-
-50%{
-
-opacity:.3;
-
-box-shadow:
-
-0 0 18px rgba(255,255,255,.8);
-
-}
-
-}
-/* ==========================================================
-   BMGM NOTICE BOARD
-   PART 2
-========================================================== */
-
-/* ===========================
-   NOTICE BODY
-=========================== */
-
-.notice-body{
-
-    position:relative;
-
-    overflow:hidden;
-
-}
-
-/* ===========================
-   NOTICE META
-=========================== */
-
-.notice-meta{
-
-    display:flex;
-
-    flex-wrap:wrap;
-
-    gap:18px;
-
-    margin-top:22px;
-
-    margin-bottom:25px;
-
-}
-
-.notice-meta span{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:8px;
-
-    background:#fff8ef;
-
-    color:#ff6b00;
-
-    padding:10px 18px;
-
-    border-radius:30px;
-
-    font-size:14px;
-
-    font-weight:600;
-
-}
-
-/* ===========================
-   PINNED NOTICE
-=========================== */
-
-.notice-pinned{
-
-    display:inline-flex;
-
-    align-items:center;
-
-    gap:8px;
-
-    background:#fff3cd;
-
-    color:#8a6d3b;
-
-    padding:8px 18px;
-
-    border-radius:30px;
-
-    font-size:13px;
-
-    font-weight:700;
-
-    margin-bottom:18px;
-
-}
-
-/* ===========================
-   IMPORTANT NOTICE
-=========================== */
-
-.notice-important{
-
-    border:2px solid #ff9800;
-
-    box-shadow:
-
-        0 0 25px rgba(255,152,0,.18);
-
-}
-
-/* ===========================
-   LIVE TIMER
-=========================== */
-
-.notice-time{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:8px;
-
-    color:#888;
-
-    font-size:14px;
-
-    margin-top:15px;
-
-}
-
-/* ===========================
-   PROGRESS BAR
-=========================== */
-
-.progress-bar{
-
-    width:100%;
-
-    height:8px;
-
-    background:#ececec;
-
-    border-radius:50px;
-
-    overflow:hidden;
-
-    margin-top:28px;
-
-}
-
-.progress-fill{
-
-    width:100%;
-
-    height:100%;
-
-    background:
-
-        linear-gradient(
-
-            90deg,
-
-            #ff9800,
-
-            #ff5722
-
-        );
-
-    animation:noticeProgress 5s linear infinite;
-
-}
-
-/* Pause animation on hover */
-
-.notice-card:hover .progress-fill{
-
-    animation-play-state:paused;
-
-}
-
-/* ===========================
-   NAVIGATION
-=========================== */
-
-.notice-navigation{
-
-    margin-top:30px;
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    gap:15px;
-
-}
-
-.notice-btn{
-
-    border:none;
-
-    background:#ff9800;
-
-    color:#fff;
-
-    padding:12px 24px;
-
-    border-radius:12px;
-
-    cursor:pointer;
-
-    font-size:15px;
-
-    font-weight:600;
-
-}
-
-.notice-btn:hover{
-
-    background:#e68900;
-
-}
-
-/* ===========================
-   SLIDER DOTS
-=========================== */
-
-.notice-dots{
-
-    display:flex;
-
-    justify-content:center;
-
-    gap:10px;
-
-}
-
-.notice-dot{
-
-    width:12px;
-
-    height:12px;
-
-    border-radius:50%;
-
-    background:#ddd;
-
-    cursor:pointer;
-
-}
-
-.notice-dot.active{
-
-    background:#ff9800;
-
-}
-
-/* ===========================
-   ATTACHMENT BADGE
-=========================== */
-
-.notice-attachment{
-
-    display:inline-flex;
-
-    align-items:center;
-
-    gap:8px;
-
-    margin-top:18px;
-
-    padding:10px 18px;
-
-    border-radius:30px;
-
-    background:#eef7ff;
-
-    color:#1565c0;
-
-    font-size:14px;
-
-    font-weight:600;
-
-}
-
-/* ===========================
-   AUTO SLIDE
-=========================== */
-
-.notice-slide{
-
-    animation:noticeFade 0.6s ease;
-
-}
-
-@keyframes noticeFade{
-
-0%{
-
-opacity:0;
-
-transform:translateY(15px);
-
-}
-
-100%{
-
-opacity:1;
-
-transform:translateY(0);
-
-}
-
-}
-
-/* ===========================
-   PROGRESS
-=========================== */
-
-@keyframes noticeProgress{
-
-0%{
-
-width:100%;
-
-}
-
-100%{
-
-width:0%;
-
-}
-
-}
-/* ==========================================================
-   BMGM NOTICE BOARD
-   PART 3
-========================================================== */
-
-/* ===============================
-   CATEGORY BADGES
-================================ */
-
-.notice-category{
-
-    display:inline-flex;
-
-    align-items:center;
-
-    gap:8px;
-
-    padding:8px 18px;
-
-    border-radius:30px;
-
-    font-size:13px;
-
-    font-weight:700;
-
-    margin-bottom:20px;
-
-}
-
-/* Emergency */
-
-.notice-category.emergency{
-
-    background:#ffebee;
-
-    color:#d32f2f;
-
-}
-
-/* Festival */
-
-.notice-category.festival{
-
-    background:#fff3e0;
-
-    color:#ef6c00;
-
-}
-
-/* Meeting */
-
-.notice-category.meeting{
-
-    background:#e3f2fd;
-
-    color:#1565c0;
-
-}
-
-/* Donation */
-
-.notice-category.donation{
-
-    background:#e8f5e9;
-
-    color:#2e7d32;
-
-}
-
-/* Volunteer */
-
-.notice-category.volunteer{
-
-    background:#ede7f6;
-
-    color:#6a1b9a;
-
-}
-
-/* ===============================
-   GLOW EFFECT
-================================ */
-
-.notice-card:hover{
-
-    box-shadow:
-
-        0 18px 45px rgba(255,107,0,.20),
-
-        0 0 25px rgba(255,152,0,.15);
-
-}
-
-/* ===============================
-   SHINE EFFECT
-================================ */
-
-.notice-card::after{
-
-    content:"";
-
-    position:absolute;
-
-    top:-150%;
-
-    left:-60%;
-
-    width:60%;
-
-    height:300%;
-
-    background:
-
-        linear-gradient(
-
-            rgba(255,255,255,0),
-
-            rgba(255,255,255,.45),
-
-            rgba(255,255,255,0)
-
-        );
-
-    transform:rotate(25deg);
-
-    transition:1.2s;
-
-}
-
-.notice-card:hover::after{
-
-    left:140%;
-
-}
-
-/* ===============================
-   ICON ANIMATION
-================================ */
-
-.notice-icon{
-
-    animation:ringBell 2.5s infinite;
-
-}
-
-@keyframes ringBell{
-
-0%{
-
-transform:rotate(0deg);
-
-}
-
-5%{
-
-transform:rotate(12deg);
-
-}
-
-10%{
-
-transform:rotate(-12deg);
-
-}
-
-15%{
-
-transform:rotate(10deg);
-
-}
-
-20%{
-
-transform:rotate(-10deg);
-
-}
-
-25%{
-
-transform:rotate(0deg);
-
-}
-
-100%{
-
-transform:rotate(0deg);
-
-}
-
-}
-
-/* ===============================
-   TITLE
-================================ */
-
-.notice-card h3{
-
-    transition:.35s;
-
-}
-
-.notice-card:hover h3{
-
-    color:#ff6b00;
-
-}
-
-/* ===============================
-   DESCRIPTION
-================================ */
-
-.notice-card p{
-
-    transition:.35s;
-
-}
-
-.notice-card:hover p{
-
-    color:#333;
-
-}
-
-/* ===============================
-   BADGES HOVER
-================================ */
-
-.notice-badge,
-
-.notice-date,
-
-.notice-category{
-
-    transition:.3s;
-
-}
-
-.notice-badge:hover,
-
-.notice-date:hover,
-
-.notice-category:hover{
-
-    transform:translateY(-3px);
-
-}
-
-/* ===============================
-   BUTTON
-================================ */
-
-.notice-btn{
-
-    position:relative;
-
-    overflow:hidden;
-
-}
-
-.notice-btn::before{
-
-    content:"";
-
-    position:absolute;
-
-    top:0;
+    top:-60%;
 
     left:-120%;
 
     width:60%;
 
-    height:100%;
+    height:220%;
 
     background:
 
@@ -923,73 +128,76 @@ transform:rotate(0deg);
 
         );
 
-}
+    transform:rotate(20deg);
 
-.notice-btn:hover::before{
-
-    left:150%;
-
-    transition:1s;
+    animation:noticeShine 6s linear infinite;
 
 }
 
-/* ===============================
-   PULSE IMPORTANT
-================================ */
+@keyframes noticeShine{
 
-.notice-important{
+    from{
 
-    animation:importantPulse 2s infinite;
+        left:-120%;
 
-}
+    }
 
-@keyframes importantPulse{
+    to{
 
-0%,100%{
+        left:160%;
 
-box-shadow:
-
-0 0 0 rgba(255,107,0,.25);
+    }
 
 }
 
-50%{
+/* ==========================================
+   PREMIUM BORDER
+========================================== */
 
-box-shadow:
+.notice-card::after{
 
-0 0 25px rgba(255,107,0,.35);
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    border-radius:28px;
+
+    padding:1px;
+
+    background:
+
+        linear-gradient(
+
+            135deg,
+
+            rgba(255,152,0,.4),
+
+            rgba(255,255,255,.05),
+
+            rgba(255,107,0,.4)
+
+        );
+
+    -webkit-mask:
+
+        linear-gradient(#fff 0 0) content-box,
+
+        linear-gradient(#fff 0 0);
+
+    -webkit-mask-composite:xor;
+
+    mask-composite:exclude;
+
+    pointer-events:none;
 
 }
+/* ==========================================
+   NOTICE DATE
+========================================== */
 
-}
-
-/* ===============================
-   COUNTER
-================================ */
-
-.notice-counter{
-
-    display:flex;
-
-    justify-content:flex-end;
-
-    margin-top:15px;
-
-    color:#999;
-
-    font-size:13px;
-
-    font-weight:600;
-
-}
-
-/* ===============================
-   READ MORE
-================================ */
-
-.notice-read{
-
-    margin-top:25px;
+.notice-date{
 
     display:inline-flex;
 
@@ -997,332 +205,736 @@ box-shadow:
 
     gap:8px;
 
-    color:#ff6b00;
-
-    font-weight:700;
-
-    cursor:pointer;
-
-    transition:.3s;
-
-}
-
-.notice-read:hover{
-
-    gap:14px;
-
-}
-/* ==========================================================
-   BMGM NOTICE BOARD
-   PART 4
-========================================================== */
-
-/* ===============================
-   SEARCH BAR
-================================ */
-
-.notice-search{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:12px;
-
-    margin-bottom:25px;
-
-}
-
-.notice-search input{
-
-    width:100%;
-
-    padding:14px 18px;
-
-    border:none;
-
-    outline:none;
-
-    border-radius:14px;
-
-    background:#f8f8f8;
-
-    font-size:15px;
-
-    transition:.3s;
-
-}
-
-.notice-search input:focus{
-
-    background:#fff;
-
-    box-shadow:0 0 0 3px rgba(255,152,0,.18);
-
-}
-
-/* ===============================
-   FILTERS
-================================ */
-
-.notice-filters{
-
-    display:flex;
-
-    flex-wrap:wrap;
-
-    gap:10px;
-
-    margin-bottom:25px;
-
-}
-
-.notice-filter{
-
-    padding:8px 16px;
+    padding:8px 18px;
 
     border-radius:30px;
 
-    border:none;
+    background:linear-gradient(
+        135deg,
+        #ff9800,
+        #ff6b00
+    );
 
-    cursor:pointer;
+    color:#fff;
 
-    background:#f4f4f4;
-
-    transition:.3s;
+    font-size:14px;
 
     font-weight:600;
 
-}
+    margin-bottom:20px;
 
-.notice-filter:hover,
-
-.notice-filter.active{
-
-    background:#ff9800;
-
-    color:#fff;
+    box-shadow:
+        0 10px 25px rgba(255,107,0,.28);
 
 }
 
-/* ===============================
-   SHARE BUTTONS
-================================ */
+.notice-date::before{
 
-.notice-actions{
-
-    display:flex;
-
-    gap:12px;
-
-    margin-top:25px;
-
-    flex-wrap:wrap;
+    content:"📅";
 
 }
 
-.notice-action{
+/* ==========================================
+   NOTICE TITLE
+========================================== */
 
-    width:42px;
+.notice-card h3{
 
-    height:42px;
+    font-size:2rem;
 
-    border-radius:50%;
+    color:#222;
 
-    border:none;
+    font-weight:700;
 
-    background:#f5f5f5;
+    line-height:1.4;
 
-    cursor:pointer;
+    margin-bottom:18px;
 
-    font-size:18px;
+}
+
+/* ==========================================
+   NOTICE DESCRIPTION
+========================================== */
+
+.notice-card p{
+
+    color:#666;
+
+    font-size:1.08rem;
+
+    line-height:1.9;
+
+    margin-bottom:28px;
+
+}
+
+/* ==========================================
+   NOTICE TYPE
+========================================== */
+
+.notice-type{
+
+    display:inline-block;
+
+    padding:9px 20px;
+
+    border-radius:30px;
+
+    background:#fff5e8;
+
+    border:2px solid #ffd3a8;
+
+    color:#ff6b00;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    letter-spacing:.5px;
+
+    text-transform:uppercase;
 
     transition:.3s;
 
 }
 
-.notice-action:hover{
+.notice-type:hover{
 
-    transform:translateY(-4px);
-
-    background:#ff9800;
+    background:#ff6b00;
 
     color:#fff;
 
+    transform:translateY(-2px);
+
 }
 
-/* ===============================
-   IMAGE
-================================ */
+/* ==========================================
+   EMPTY NOTICE
+========================================== */
 
-.notice-image{
+.notice-card h3:only-child{
+
+    text-align:center;
+
+    color:#ff6b00;
+
+    margin:40px 0;
+
+    font-size:1.8rem;
+
+}
+/* ==========================================
+   PROGRESS BAR
+========================================== */
+
+.progress-bar{
 
     width:100%;
 
-    margin-top:25px;
+    height:8px;
 
-    border-radius:18px;
+    margin-top:30px;
+
+    background:#f2f2f2;
+
+    border-radius:50px;
 
     overflow:hidden;
 
+    box-shadow:
+        inset 0 2px 5px rgba(0,0,0,.08);
+
 }
 
-.notice-image img{
+.progress-fill{
 
     width:100%;
 
-    display:block;
+    height:100%;
 
-    transition:.5s;
+    border-radius:50px;
+
+    background:linear-gradient(
+        90deg,
+        #ff9800,
+        #ff6b00,
+        #ff9800
+    );
+
+    background-size:300% 100%;
+
+    animation:
+        progressAnimation 5s linear infinite,
+        gradientMove 3s linear infinite;
+
+    box-shadow:
+        0 0 15px rgba(255,107,0,.35);
 
 }
 
-.notice-image:hover img{
+@keyframes progressAnimation{
+
+    from{
+
+        width:0;
+
+    }
+
+    to{
+
+        width:100%;
+
+    }
+
+}
+
+@keyframes gradientMove{
+
+    0%{
+
+        background-position:0%;
+
+    }
+
+    100%{
+
+        background-position:100%;
+
+    }
+
+}
+
+/* ==========================================
+   HOVER EFFECTS
+========================================== */
+
+.notice-card:hover h3{
+
+    color:#ff6b00;
+
+}
+
+.notice-card:hover .notice-date{
+
+    transform:translateY(-3px);
+
+}
+
+.notice-card:hover .notice-type{
+
+    box-shadow:
+        0 10px 25px rgba(255,107,0,.20);
+
+}
+
+/* ==========================================
+   DECORATIVE GLOW
+========================================== */
+
+.notice-card{
+
+    position:relative;
+
+}
+
+.notice-card .glow{
+
+    position:absolute;
+
+    width:250px;
+
+    height:250px;
+
+    border-radius:50%;
+
+    background:rgba(255,152,0,.12);
+
+    filter:blur(90px);
+
+    top:-100px;
+
+    right:-80px;
+
+    pointer-events:none;
+
+}
+
+/* ==========================================
+   FLOATING BACKGROUND CIRCLE
+========================================== */
+
+.notice-section::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:260px;
+
+    height:260px;
+
+    border-radius:50%;
+
+    background:rgba(255,152,0,.08);
+
+    filter:blur(90px);
+
+    top:-100px;
+
+    left:-100px;
+
+}
+
+.notice-section::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:220px;
+
+    height:220px;
+
+    border-radius:50%;
+
+    background:rgba(255,193,7,.10);
+
+    filter:blur(80px);
+
+    bottom:-80px;
+
+    right:-60px;
+
+}
+/* ==========================================
+   LARGE DESKTOP
+========================================== */
+
+@media (max-width:1200px){
+
+    .notice-card{
+
+        max-width:800px;
+
+        padding:30px;
+
+    }
+
+    .notice-section .title{
+
+        font-size:2.2rem;
+
+    }
+
+    .notice-card h3{
+
+        font-size:1.8rem;
+
+    }
+
+}
+
+/* ==========================================
+   TABLET
+========================================== */
+
+@media (max-width:992px){
+
+    .notice-section{
+
+        padding:50px 15px;
+
+    }
+
+    .notice-card{
+
+        padding:28px;
+
+        border-radius:22px;
+
+    }
+
+    .notice-section .title{
+
+        font-size:2rem;
+
+        margin-bottom:30px;
+
+    }
+
+    .notice-card h3{
+
+        font-size:1.6rem;
+
+    }
+
+    .notice-card p{
+
+        font-size:1rem;
+
+        line-height:1.8;
+
+    }
+
+    .notice-date{
+
+        font-size:13px;
+
+        padding:8px 16px;
+
+    }
+
+    .notice-type{
+
+        font-size:13px;
+
+        padding:8px 18px;
+
+    }
+
+}
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width:768px){
+
+    .notice-section{
+
+        padding:40px 12px;
+
+    }
+
+    .notice-card{
+
+        padding:22px;
+
+        border-radius:18px;
+
+    }
+
+    .notice-section .title{
+
+        font-size:1.8rem;
+
+        margin-bottom:25px;
+
+    }
+
+    .notice-card h3{
+
+        font-size:1.35rem;
+
+        line-height:1.5;
+
+    }
+
+    .notice-card p{
+
+        font-size:.95rem;
+
+        line-height:1.7;
+
+        margin-bottom:20px;
+
+    }
+
+    .notice-date{
+
+        font-size:12px;
+
+        padding:7px 14px;
+
+        margin-bottom:16px;
+
+    }
+
+    .notice-type{
+
+        width:100%;
+
+        text-align:center;
+
+        font-size:13px;
+
+    }
+
+    .progress-bar{
+
+        margin-top:22px;
+
+        height:7px;
+
+    }
+
+}
+
+/* ==========================================
+   SMALL MOBILE
+========================================== */
+
+@media (max-width:480px){
+
+    .notice-section{
+
+        padding:30px 10px;
+
+    }
+
+    .notice-card{
+
+        padding:18px;
+
+    }
+
+    .notice-section .title{
+
+        font-size:1.5rem;
+
+    }
+
+    .notice-card h3{
+
+        font-size:1.15rem;
+
+    }
+
+    .notice-card p{
+
+        font-size:.9rem;
+
+    }
+
+    .notice-date{
+
+        font-size:11px;
+
+        padding:6px 12px;
+
+    }
+
+    .notice-type{
+
+        font-size:12px;
+
+        padding:8px 12px;
+
+    }
+
+    .progress-bar{
+
+        height:6px;
+
+    }
+
+}
+/* ==========================================
+   FLOATING CARD
+========================================== */
+
+.notice-card{
+
+    animation:cardFloat 5s ease-in-out infinite;
+
+}
+
+@keyframes cardFloat{
+
+    0%{
+
+        transform:translateY(0);
+
+    }
+
+    50%{
+
+        transform:translateY(-6px);
+
+    }
+
+    100%{
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/* ==========================================
+   CARD GLOW
+========================================== */
+
+.notice-card:hover{
+
+    box-shadow:
+        0 25px 70px rgba(255,107,0,.22);
+
+}
+
+/* ==========================================
+   TITLE ANIMATION
+========================================== */
+
+.notice-section .title{
+
+    animation:titleFade .8s ease;
+
+}
+
+@keyframes titleFade{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(-20px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/* ==========================================
+   NOTICE CONTENT
+========================================== */
+
+.notice-card h3{
+
+    transition:.35s;
+
+}
+
+.notice-card p{
+
+    transition:.35s;
+
+}
+
+.notice-card:hover p{
+
+    color:#444;
+
+}
+
+/* ==========================================
+   DATE BADGE
+========================================== */
+
+.notice-date{
+
+    transition:.35s;
+
+}
+
+.notice-date:hover{
 
     transform:scale(1.05);
 
 }
 
-/* ===============================
-   PDF
-================================ */
+/* ==========================================
+   TYPE BADGE
+========================================== */
 
-.notice-file{
+.notice-type{
 
-    margin-top:20px;
+    cursor:default;
 
-    display:inline-flex;
-
-    align-items:center;
-
-    gap:10px;
-
-    padding:12px 18px;
-
-    border-radius:14px;
-
-    background:#f8f8f8;
-
-    font-weight:600;
+    user-select:none;
 
 }
 
-/* ===============================
-   MOBILE
-================================ */
+/* ==========================================
+   PROGRESS BAR GLOW
+========================================== */
 
-@media(max-width:768px){
+.progress-fill{
 
-.notice-card{
-
-padding:22px;
-
-border-radius:20px;
+    position:relative;
 
 }
 
-.notice-top{
+.progress-fill::after{
 
-flex-direction:column;
+    content:"";
 
-align-items:flex-start;
+    position:absolute;
 
-}
+    top:0;
 
-.notice-navigation{
+    right:0;
 
-flex-direction:column;
+    width:30px;
 
-}
+    height:100%;
 
-.notice-btn{
+    background:rgba(255,255,255,.45);
 
-width:100%;
-
-}
-
-.notice-meta{
-
-flex-direction:column;
-
-gap:12px;
+    filter:blur(5px);
 
 }
 
-.notice-actions{
+/* ==========================================
+   SCROLLBAR
+========================================== */
 
-justify-content:center;
+::-webkit-scrollbar{
 
-}
-
-.notice-search{
-
-flex-direction:column;
+    width:8px;
 
 }
 
-.notice-search input{
+::-webkit-scrollbar-track{
 
-width:100%;
-
-}
-
-.notice-filters{
-
-justify-content:center;
+    background:#fff5ea;
 
 }
 
-.notice-card h3{
+::-webkit-scrollbar-thumb{
 
-font-size:24px;
+    background:#ff9800;
+
+    border-radius:20px;
 
 }
 
+::-webkit-scrollbar-thumb:hover{
+
+    background:#ff6b00;
+
+}
+
+/* ==========================================
+   TEXT SELECTION
+========================================== */
+
+::selection{
+
+    background:#ff9800;
+
+    color:#fff;
+
+}
+
+/* ==========================================
+   SMOOTH TRANSITIONS
+========================================== */
+
+.notice-card,
+.notice-date,
+.notice-type,
+.progress-fill,
+.notice-card h3,
 .notice-card p{
 
-font-size:16px;
-
-line-height:1.8;
-
-}
-
-.notice-icon{
-
-font-size:60px;
-
-}
-
-}
-
-/* ===============================
-   LARGE SCREEN
-================================ */
-
-@media(min-width:1400px){
-
-.notice-wrapper{
-
-max-width:1100px;
-
-}
-
-.notice-card{
-
-padding:45px;
-
-}
-
-.notice-card h3{
-
-font-size:36px;
-
-}
-
-.notice-card p{
-
-font-size:19px;
-
-}
+    transition:all .3s ease;
 
 }

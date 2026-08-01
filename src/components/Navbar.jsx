@@ -299,7 +299,7 @@ function Navbar() {
 
                                     <h2>
 
-                                        बाल मित्र गणेश उत्सव मंडळ
+                                        बालमित्र गणेश उत्सव मंडळ
 
                                     </h2>
 
@@ -782,11 +782,7 @@ function Navbar() {
 
         <div className="sidebar-footer">
 
-          <img
-            src={GanpatiLogo}
-            alt="Ganpati"
-            className="footer-logo"
-          />
+        
 
           <h4>
             बाल मित्र गणेश उत्सव मंडळ
