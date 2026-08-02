@@ -1,28 +1,31 @@
-/*==================================================
-                AARTI PAGE
-==================================================*/
+/* ==========================================
+   AARTI PAGE
+========================================== */
 
 .aarti-page{
 
+    min-height:100vh;
+
+    padding:120px 20px 60px;
+
     position:relative;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #fff8ef,
+            #ffffff,
+            #fff4e6
+        );
 
     overflow:hidden;
 
-    min-height:100vh;
-
-    padding:90px 20px;
-
-    background:
-        linear-gradient(
-            180deg,
-            #fffdfb 0%,
-            #fff8f2 45%,
-            #ffffff 100%
-        );
-
 }
 
-/* Background Glow */
+/* ==========================================
+   BACKGROUND GLOW
+========================================== */
 
 .aarti-page::before{
 
@@ -30,22 +33,19 @@
 
     position:absolute;
 
-    width:450px;
+    width:420px;
 
-    height:450px;
-
-    top:-180px;
-
-    right:-180px;
+    height:420px;
 
     border-radius:50%;
 
-    background:
-        radial-gradient(
-            circle,
-            rgba(255,152,0,.10),
-            transparent 70%
-        );
+    background:rgba(255,152,0,.10);
+
+    filter:blur(120px);
+
+    top:-180px;
+
+    left:-150px;
 
 }
 
@@ -55,46 +55,43 @@
 
     position:absolute;
 
-    width:350px;
+    width:320px;
 
-    height:350px;
-
-    bottom:-150px;
-
-    left:-150px;
+    height:320px;
 
     border-radius:50%;
 
-    background:
-        radial-gradient(
-            circle,
-            rgba(255,87,34,.08),
-            transparent 70%
-        );
+    background:rgba(255,107,0,.08);
+
+    filter:blur(100px);
+
+    right:-120px;
+
+    bottom:-120px;
 
 }
 
-/*==================================================
-                    TITLE
-==================================================*/
+/* ==========================================
+   TITLE
+========================================== */
 
 .aarti-page .title{
 
-    position:relative;
-
-    z-index:5;
-
     text-align:center;
 
-    font-size:46px;
+    font-size:2.7rem;
 
-    font-family:"Asar",serif;
+    font-weight:700;
 
-    color:#222;
+    color:#d35400;
 
-    margin-bottom:55px;
+    margin-bottom:45px;
 
-    letter-spacing:.5px;
+    position:relative;
+
+    z-index:2;
+
+    animation:titleFade .8s ease;
 
 }
 
@@ -104,683 +101,51 @@
 
     display:block;
 
-    width:120px;
+    width:110px;
 
     height:5px;
 
     margin:18px auto 0;
 
-    border-radius:50px;
-
-    background:
-
-        linear-gradient(
-
-            90deg,
-
-            #ff9800,
-
-            #ff5722
-
-        );
-
-}
-
-/*==================================================
-                TABLE WRAPPER
-==================================================*/
-
-.table-wrapper{
-
-    position:relative;
-
-    z-index:2;
-
-    overflow-x:auto;
-
-    border-radius:30px;
-
-    background:
-
-        rgba(255,255,255,.92);
-
-    backdrop-filter:blur(18px);
-
-    border:1px solid rgba(255,255,255,.7);
-
-    box-shadow:
-
-        0 20px 55px rgba(0,0,0,.08),
-
-        0 10px 25px rgba(255,107,0,.08);
-
-    transition:.45s ease;
-
-}
-
-/* Hover */
-
-.table-wrapper:hover{
-
-    transform:translateY(-5px);
-
-    box-shadow:
-
-        0 35px 75px rgba(0,0,0,.12),
-
-        0 15px 35px rgba(255,107,0,.15);
-
-}
-
-/* Animated Border */
-
-.table-wrapper::before{
-
-    content:"";
-
-    position:absolute;
-
-    inset:0;
-
-    padding:2px;
-
     border-radius:30px;
 
     background:
 
         linear-gradient(
-
-            135deg,
-
-            #ff9800,
-
-            #ff6b00,
-
-            #ffd54f,
-
-            #ff9800
-
-        );
-
-    background-size:300%;
-
-    animation:borderMove 8s linear infinite;
-
-    -webkit-mask:
-
-        linear-gradient(#fff 0 0) content-box,
-
-        linear-gradient(#fff 0 0);
-
-    -webkit-mask-composite:xor;
-
-    mask-composite:exclude;
-
-}
-
-/* Corner Glow */
-
-.table-wrapper::after{
-
-    content:"";
-
-    position:absolute;
-
-    width:260px;
-
-    height:260px;
-
-    top:-120px;
-
-    right:-120px;
-
-    border-radius:50%;
-
-    background:
-
-        radial-gradient(
-
-            circle,
-
-            rgba(255,152,0,.15),
-
-            transparent 70%
-
-        );
-
-    animation:floatGlow 8s ease-in-out infinite;
-
-}
-
-/*==================================================
-                TABLE
-==================================================*/
-
-.aarti-table{
-
-    position:relative;
-
-    width:100%;
-
-    min-width:1050px;
-
-    border-collapse:separate;
-
-    border-spacing:0;
-
-    z-index:2;
-
-}
-
-/*==================================================
-                ANIMATIONS
-==================================================*/
-
-@keyframes borderMove{
-
-0%{
-
-background-position:0 0;
-
-}
-
-100%{
-
-background-position:300% 0;
-
-}
-
-}
-
-@keyframes floatGlow{
-
-0%,100%{
-
-transform:translateY(0);
-
-}
-
-50%{
-
-transform:translateY(18px);
-
-}
-
-}
-/*==================================================
-                TABLE HEADER
-==================================================*/
-
-.aarti-table thead{
-
-    position:relative;
-
-    background:
-        linear-gradient(
-            135deg,
-            #ff6b00,
-            #ff9800
-        );
-
-}
-
-.aarti-table thead::after{
-
-    content:"";
-
-    position:absolute;
-
-    inset:0;
-
-    background:
-
-        linear-gradient(
             90deg,
-            transparent,
-            rgba(255,255,255,.15),
-            transparent
-        );
-
-    animation:headerShine 5s linear infinite;
-
-}
-
-.aarti-table th{
-
-    position:relative;
-
-    padding:20px 18px;
-
-    text-align:center;
-
-    color:#fff;
-
-    font-size:15px;
-
-    font-weight:700;
-
-    white-space:nowrap;
-
-    letter-spacing:.4px;
-
-    z-index:2;
-
-}
-
-.aarti-table th:first-child{
-
-    border-top-left-radius:28px;
-
-}
-
-.aarti-table th:last-child{
-
-    border-top-right-radius:28px;
-
-}
-
-/*==================================================
-                TABLE BODY
-==================================================*/
-
-.aarti-table tbody tr{
-
-    position:relative;
-
-    transition:.35s;
-
-}
-
-.aarti-table tbody tr:nth-child(even){
-
-    background:#fffdfb;
-
-}
-
-.aarti-table tbody tr:hover{
-
-    background:#fff7ef;
-
-    transform:scale(1.01);
-
-    box-shadow:
-        inset 4px 0 #ff9800;
-
-}
-
-/*==================================================
-            TODAY LIVE ROW
-==================================================*/
-
-.aarti-table tbody tr.live-row{
-
-    background:
-
-        linear-gradient(
-            90deg,
-            rgba(255,152,0,.10),
-            rgba(255,255,255,.95)
-        );
-
-    animation:liveRowGlow 2s ease-in-out infinite;
-
-}
-
-.aarti-table tbody tr.live-row::before{
-
-    content:"";
-
-    position:absolute;
-
-    left:0;
-
-    top:0;
-
-    bottom:0;
-
-    width:6px;
-
-    background:
-
-        linear-gradient(
-            180deg,
-            #ff6b00,
-            #ff9800
-        );
-
-}
-
-/*==================================================
-                TABLE CELL
-==================================================*/
-
-.aarti-table td{
-
-    padding:18px 16px;
-
-    text-align:center;
-
-    border-bottom:1px solid #f2f2f2;
-
-    color:#555;
-
-    font-size:15px;
-
-    transition:.35s;
-
-}
-
-/*==================================================
-            COLUMN STYLING
-==================================================*/
-
-.aarti-table td:nth-child(1){
-
-    width:70px;
-
-    font-weight:700;
-
-    color:#222;
-
-}
-
-.aarti-table td:nth-child(2){
-
-    min-width:220px;
-
-    font-weight:700;
-
-    color:#ff6b00;
-
-    font-size:16px;
-
-}
-
-.aarti-table td:nth-child(3),
-
-.aarti-table td:nth-child(4),
-
-.aarti-table td:nth-child(5){
-
-    font-weight:600;
-
-    color:#374151;
-
-}
-
-.aarti-table td:nth-child(6){
-
-    min-width:180px;
-
-}
-
-.aarti-table td:nth-child(7){
-
-    min-width:140px;
-
-}
-
-/*==================================================
-            HOVER EFFECT
-==================================================*/
-
-.aarti-table tbody tr:hover td{
-
-    color:#222;
-
-}
-
-.aarti-table tbody tr:hover td:nth-child(2){
-
-    color:#e65100;
-
-}
-
-/*==================================================
-            HEADER SHINE
-==================================================*/
-
-@keyframes headerShine{
-
-0%{
-
-transform:translateX(-100%);
-
-}
-
-100%{
-
-transform:translateX(100%);
-
-}
-
-}
-
-/*==================================================
-            LIVE ROW GLOW
-==================================================*/
-
-@keyframes liveRowGlow{
-
-0%,100%{
-
-box-shadow:
-    inset 0 0 0 rgba(255,152,0,0);
-
-}
-
-50%{
-
-box-shadow:
-    inset 0 0 18px rgba(255,152,0,.18);
-
-}
-
-}
-/*==================================================
-                AARTI TYPE
-==================================================*/
-
-.type{
-
-    display:inline-flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    gap:8px;
-
-    padding:8px 18px;
-
-    border-radius:50px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #fff4e8,
-            #ffe3c7
-        );
-
-    color:#ff6b00;
-
-    font-size:13px;
-
-    font-weight:700;
-
-    border:1px solid #ffd3a8;
-
-    box-shadow:
-        0 8px 18px rgba(255,152,0,.12);
-
-    transition:.35s;
-
-}
-
-.type:hover{
-
-    transform:translateY(-2px);
-
-    background:
-        linear-gradient(
-            135deg,
             #ff9800,
             #ff6b00
         );
 
-    color:#fff;
+}
+
+@keyframes titleFade{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(-20px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
 
 }
 
-/*==================================================
-                LIVE STATUS
-==================================================*/
-
-.live-status{
-
-    display:inline-flex;
-
-    align-items:center;
-
-    gap:8px;
-
-    padding:8px 18px;
-
-    border-radius:50px;
-
-    background:#fff1f2;
-
-    color:#dc2626;
-
-    font-size:13px;
-
-    font-weight:700;
-
-    border:1px solid #fecaca;
-
-    box-shadow:
-        0 8px 18px rgba(239,68,68,.12);
-
-}
-
-.live-dot{
-
-    width:10px;
-
-    height:10px;
-
-    border-radius:50%;
-
-    background:#ef4444;
-
-    animation:liveBlink 1s infinite;
-
-    box-shadow:
-        0 0 12px rgba(239,68,68,.45);
-
-}
-
-/*==================================================
-            UPCOMING STATUS
-==================================================*/
-
-.upcoming-status{
-
-    display:inline-flex;
-
-    align-items:center;
-
-    gap:8px;
-
-    padding:8px 18px;
-
-    border-radius:50px;
-
-    background:#fff7ed;
-
-    color:#ea580c;
-
-    border:1px solid #fed7aa;
-
-    font-size:13px;
-
-    font-weight:700;
-
-}
-
-/*==================================================
-            COMPLETED STATUS
-==================================================*/
-
-.completed-status{
-
-    display:inline-flex;
-
-    align-items:center;
-
-    gap:8px;
-
-    padding:8px 18px;
-
-    border-radius:50px;
-
-    background:#ecfdf5;
-
-    color:#16a34a;
-
-    border:1px solid #bbf7d0;
-
-    font-size:13px;
-
-    font-weight:700;
-
-}
-
-/*==================================================
-                EMPTY STATE
-==================================================*/
-
-.no-data{
-
-    padding:90px 20px;
-
-    text-align:center;
-
-    color:#6b7280;
-
-}
-
-.no-data h3{
-
-    margin:20px 0 10px;
-
-    font-size:28px;
-
-    color:#374151;
-
-}
-
-.no-data p{
-
-    font-size:16px;
-
-    line-height:1.8;
-
-}
-
-.no-data .emoji{
-
-    font-size:70px;
-
-    animation:floatEmoji 3s ease-in-out infinite;
-
-}
-
-/*==================================================
-                LOADING
-==================================================*/
+/* ==========================================
+   LOADING BOX
+========================================== */
 
 .loading-box{
+
+    min-height:100vh;
 
     display:flex;
 
@@ -790,466 +155,1431 @@ box-shadow:
 
     align-items:center;
 
-    gap:20px;
+    background:
 
-    padding:100px 20px;
+        linear-gradient(
+            135deg,
+            #fff8ef,
+            #ffffff
+        );
 
 }
+
+/* ==========================================
+   LOADER
+========================================== */
 
 .loader{
 
-    width:60px;
+    width:80px;
 
-    height:60px;
+    height:80px;
 
     border-radius:50%;
 
-    border:5px solid #ffe0c7;
+    border:6px solid rgba(255,152,0,.20);
 
-    border-top-color:#ff6b00;
+    border-top:6px solid #ff9800;
 
-    animation:loaderRotate .8s linear infinite;
+    animation:spin 1s linear infinite;
+
+    margin-bottom:25px;
+
+    box-shadow:
+
+        0 0 35px rgba(255,152,0,.18);
 
 }
 
-.loading-box span{
+@keyframes spin{
 
-    color:#ff6b00;
+    from{
+
+        transform:rotate(0deg);
+
+    }
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+
+/* ==========================================
+   LOADING TEXT
+========================================== */
+
+.loading-box span{
 
     font-size:22px;
 
     font-weight:700;
 
-}
+    color:#ff6b00;
 
-/*==================================================
-                SCROLLBAR
-==================================================*/
-
-.table-wrapper::-webkit-scrollbar{
-
-    height:12px;
+    animation:pulse 1.5s infinite;
 
 }
 
-.table-wrapper::-webkit-scrollbar-track{
+@keyframes pulse{
 
-    background:#f5f5f5;
+    0%{
 
-    border-radius:30px;
+        opacity:.4;
+
+    }
+
+    50%{
+
+        opacity:1;
+
+    }
+
+    100%{
+
+        opacity:.4;
+
+    }
+
+}
+/* ==========================================
+   TABLE WRAPPER
+========================================== */
+
+.table-wrapper{
+
+    position:relative;
+
+    z-index:2;
+
+    overflow-x:auto;
+
+    border-radius:28px;
+
+    background:rgba(255,255,255,.88);
+
+    backdrop-filter:blur(20px);
+
+    -webkit-backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,.35);
+
+    box-shadow:
+
+        0 25px 70px rgba(0,0,0,.10);
+
+    animation:tableFade .8s ease;
 
 }
 
-.table-wrapper::-webkit-scrollbar-thumb{
+/* ==========================================
+   TABLE
+========================================== */
 
-    border-radius:30px;
+.aarti-table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    min-width:1100px;
+
+    background:transparent;
+
+}
+
+/* ==========================================
+   TABLE HEADER
+========================================== */
+
+.aarti-table thead{
 
     background:
 
         linear-gradient(
+
             135deg,
+
             #ff9800,
+
             #ff6b00
+
         );
 
 }
 
-.table-wrapper::-webkit-scrollbar-thumb:hover{
+.aarti-table thead th{
+
+    padding:18px 20px;
+
+    color:#fff;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    text-align:center;
+
+    white-space:nowrap;
+
+    letter-spacing:.4px;
+
+    border:none;
+
+}
+
+/* ==========================================
+   TABLE BODY
+========================================== */
+
+.aarti-table tbody tr{
+
+    transition:all .35s ease;
+
+    border-bottom:1px solid rgba(0,0,0,.06);
+
+    background:#fff;
+
+}
+
+.aarti-table tbody tr:nth-child(even){
+
+    background:#fffaf5;
+
+}
+
+.aarti-table tbody tr:hover{
+
+    background:#fff3e4;
+
+    transform:scale(1.01);
+
+    box-shadow:
+
+        inset 0 0 0 9999px rgba(255,152,0,.05);
+
+}
+
+/* ==========================================
+   TABLE CELLS
+========================================== */
+
+.aarti-table tbody td{
+
+    padding:18px 16px;
+
+    text-align:center;
+
+    color:#444;
+
+    font-size:15px;
+
+    vertical-align:middle;
+
+    line-height:1.5;
+
+}
+
+/* ==========================================
+   FIRST COLUMN
+========================================== */
+
+.aarti-table tbody td:first-child{
+
+    font-weight:700;
+
+    color:#ff6b00;
+
+}
+
+/* ==========================================
+   AARTI NAME
+========================================== */
+
+.aarti-table tbody td:nth-child(2){
+
+    font-weight:700;
+
+    color:#222;
+
+}
+
+/* ==========================================
+   DATE & TIME
+========================================== */
+
+.aarti-table tbody td:nth-child(4),
+
+.aarti-table tbody td:nth-child(5){
+
+    white-space:nowrap;
+
+    color:#666;
+
+}
+
+/* ==========================================
+   PERFORMER
+========================================== */
+
+.aarti-table tbody td:nth-child(6){
+
+    font-weight:600;
+
+    color:#333;
+
+}
+
+/* ==========================================
+   TABLE ANIMATION
+========================================== */
+
+@keyframes tableFade{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(25px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+/* ==========================================
+   TYPE BADGE
+========================================== */
+
+.type{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:6px;
+
+    padding:8px 16px;
+
+    border-radius:50px;
 
     background:
 
         linear-gradient(
             135deg,
-            #ff6b00,
-            #e65100
+            #fff3e0,
+            #ffe0b2
         );
 
-}
-
-/*==================================================
-                ANIMATIONS
-==================================================*/
-
-@keyframes liveBlink{
-
-0%,100%{
-
-opacity:1;
-
-transform:scale(1);
-
-}
-
-50%{
-
-opacity:.35;
-
-transform:scale(1.5);
-
-}
-
-}
-
-@keyframes loaderRotate{
-
-to{
-
-transform:rotate(360deg);
-
-}
-
-}
-
-@keyframes floatEmoji{
-
-0%,100%{
-
-transform:translateY(0);
-
-}
-
-50%{
-
-transform:translateY(-12px);
-
-}
-
-}
-/*==================================================
-                TABLET
-==================================================*/
-
-@media (max-width:992px){
-
-.aarti-page{
-
-    padding:70px 15px;
-
-}
-
-.aarti-page .title{
-
-    font-size:38px;
-
-    margin-bottom:40px;
-
-}
-
-.table-wrapper{
-
-    border-radius:24px;
-
-}
-
-.aarti-table{
-
-    min-width:950px;
-
-}
-
-.aarti-table th{
-
-    padding:16px;
-
-    font-size:14px;
-
-}
-
-.aarti-table td{
-
-    padding:16px;
-
-    font-size:14px;
-
-}
-
-.type,
-.live-status,
-.upcoming-status,
-.completed-status{
-
-    font-size:12px;
-
-    padding:7px 15px;
-
-}
-
-}
-
-/*==================================================
-                MOBILE
-==================================================*/
-
-@media (max-width:768px){
-
-.aarti-page{
-
-    padding:55px 12px;
-
-}
-
-.aarti-page .title{
-
-    font-size:30px;
-
-    margin-bottom:28px;
-
-}
-
-.aarti-page .title::after{
-
-    width:90px;
-
-}
-
-.table-wrapper{
-
-    border-radius:18px;
-
-}
-
-.aarti-table{
-
-    min-width:850px;
-
-}
-
-.aarti-table th{
-
-    padding:14px;
+    color:#e65100;
 
     font-size:13px;
 
+    font-weight:700;
+
+    box-shadow:
+
+        0 8px 20px rgba(255,152,0,.18);
+
+    transition:.35s;
+
 }
 
-.aarti-table td{
+.type:hover{
 
-    padding:14px 12px;
+    transform:translateY(-2px);
+
+}
+
+/* ==========================================
+   LIVE ROW
+========================================== */
+
+.live-row{
+
+    background:
+
+        linear-gradient(
+            90deg,
+            rgba(255,235,205,.85),
+            rgba(255,248,235,.95)
+        ) !important;
+
+    animation:liveGlow 2s infinite;
+
+}
+
+@keyframes liveGlow{
+
+    0%{
+
+        box-shadow:
+
+            inset 0 0 0 rgba(255,152,0,.15);
+
+    }
+
+    50%{
+
+        box-shadow:
+
+            inset 0 0 40px rgba(255,152,0,.18);
+
+    }
+
+    100%{
+
+        box-shadow:
+
+            inset 0 0 0 rgba(255,152,0,.15);
+
+    }
+
+}
+
+/* ==========================================
+   LIVE STATUS
+========================================== */
+
+.live-status{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:8px;
+
+    padding:9px 18px;
+
+    border-radius:50px;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #ff5722,
+            #ff9800
+        );
+
+    color:#fff;
 
     font-size:13px;
 
-}
+    font-weight:700;
 
-.type,
-.live-status,
-.upcoming-status,
-.completed-status{
+    box-shadow:
 
-    padding:6px 12px;
-
-    font-size:11px;
+        0 10px 25px rgba(255,87,34,.28);
 
 }
+
+/* ==========================================
+   LIVE DOT
+========================================== */
 
 .live-dot{
 
-    width:8px;
+    width:10px;
 
-    height:8px;
+    height:10px;
+
+    border-radius:50%;
+
+    background:#fff;
+
+    animation:livePulse 1.2s infinite;
 
 }
 
-.loading-box{
+@keyframes livePulse{
 
-    padding:80px 20px;
+    0%{
+
+        transform:scale(1);
+
+        opacity:1;
+
+    }
+
+    50%{
+
+        transform:scale(1.7);
+
+        opacity:.45;
+
+    }
+
+    100%{
+
+        transform:scale(1);
+
+        opacity:1;
+
+    }
 
 }
 
-.loader{
+/* ==========================================
+   COMPLETED STATUS
+========================================== */
 
-    width:50px;
+.completed-status{
 
-    height:50px;
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:9px 18px;
+
+    border-radius:50px;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #43a047,
+            #2e7d32
+        );
+
+    color:#fff;
+
+    font-size:13px;
+
+    font-weight:700;
+
+    box-shadow:
+
+        0 10px 22px rgba(67,160,71,.25);
+
+}
+
+/* ==========================================
+   UPCOMING STATUS
+========================================== */
+
+.upcoming-status{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:9px 18px;
+
+    border-radius:50px;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #ffd54f,
+            #ffb300
+        );
+
+    color:#4e342e;
+
+    font-size:13px;
+
+    font-weight:700;
+
+    box-shadow:
+
+        0 10px 22px rgba(255,193,7,.25);
+
+}
+
+/* ==========================================
+   STATUS HOVER
+========================================== */
+
+.live-status:hover,
+.completed-status:hover,
+.upcoming-status:hover{
+
+    transform:translateY(-2px);
+
+    transition:.35s;
+
+}
+/* ==========================================
+   NO DATA
+========================================== */
+
+.no-data{
+
+    padding:70px 20px;
+
+    text-align:center;
+
+    animation:fadeUp .8s ease;
 
 }
 
 .no-data .emoji{
 
-    font-size:56px;
+    font-size:70px;
+
+    margin-bottom:18px;
+
+    animation:floatEmoji 3s ease-in-out infinite;
 
 }
 
 .no-data h3{
 
-    font-size:22px;
+    margin-bottom:12px;
+
+    color:#d35400;
+
+    font-size:30px;
+
+    font-weight:700;
 
 }
 
-}
+.no-data p{
 
-/*==================================================
-            SMALL MOBILE
-==================================================*/
+    color:#666;
 
-@media (max-width:480px){
+    font-size:17px;
 
-.aarti-page{
-
-    padding:40px 10px;
+    line-height:1.8;
 
 }
 
-.aarti-page .title{
+/* ==========================================
+   FLOAT EMOJI
+========================================== */
 
-    font-size:24px;
+@keyframes floatEmoji{
 
-}
+    0%{
 
-.table-wrapper{
+        transform:translateY(0);
 
-    border-radius:16px;
+    }
 
-}
+    50%{
 
-.aarti-table{
+        transform:translateY(-12px);
 
-    min-width:760px;
+    }
 
-}
+    100%{
 
-.aarti-table th{
+        transform:translateY(0);
 
-    padding:12px;
-
-    font-size:12px;
-
-}
-
-.aarti-table td{
-
-    padding:12px 10px;
-
-    font-size:12px;
+    }
 
 }
 
-.type,
-.live-status,
-.upcoming-status,
-.completed-status{
+/* ==========================================
+   TABLE HOVER EFFECT
+========================================== */
 
-    font-size:10px;
+.aarti-table tbody tr{
 
-    padding:5px 10px;
-
-}
-
-.live-dot{
-
-    width:7px;
-
-    height:7px;
-
-}
-
-}
-
-/*==================================================
-            SMOOTH TRANSITIONS
-==================================================*/
-
-.aarti-table th,
-.aarti-table td,
-.type,
-.live-status,
-.upcoming-status,
-.completed-status,
-.table-wrapper{
-
-    transition:all .35s ease;
-
-}
-
-/*==================================================
-            FOCUS STATE
-==================================================*/
-
-.table-wrapper:focus-within{
-
-    outline:3px solid rgba(255,152,0,.18);
-
-    outline-offset:4px;
-
-}
-
-/*==================================================
-            REDUCED MOTION
-==================================================*/
-
-@media (prefers-reduced-motion:reduce){
-
-*,
-*::before,
-*::after{
-
-    animation:none !important;
-
-    transition:none !important;
-
-}
-
-}
-
-/*==================================================
-                PRINT
-==================================================*/
-
-@media print{
-
-body{
-
-    background:#fff;
-
-}
-
-.aarti-page{
-
-    padding:0;
-
-    background:#fff;
-
-}
-
-.table-wrapper{
-
-    box-shadow:none;
-
-    border:1px solid #ccc;
-
-}
-
-}
-
-/*==================================================
-                PREMIUM FINISH
-==================================================*/
-
-.aarti-table{
+    position:relative;
 
     overflow:hidden;
 
 }
 
-.aarti-table tbody tr:last-child td:first-child{
+.aarti-table tbody tr::after{
 
-    border-bottom-left-radius:24px;
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:-120%;
+
+    width:45%;
+
+    height:100%;
+
+    background:
+
+        linear-gradient(
+
+            90deg,
+
+            transparent,
+
+            rgba(255,255,255,.40),
+
+            transparent
+
+        );
+
+    transform:skewX(-25deg);
+
+    transition:.8s;
 
 }
 
-.aarti-table tbody tr:last-child td:last-child{
+.aarti-table tbody tr:hover::after{
 
-    border-bottom-right-radius:24px;
+    left:150%;
 
 }
+
+/* ==========================================
+   TABLE CELL ANIMATION
+========================================== */
+
+.aarti-table tbody td{
+
+    transition:
+
+        color .35s,
+
+        transform .35s;
+
+}
+
+.aarti-table tbody tr:hover td{
+
+    color:#222;
+
+}
+
+.aarti-table tbody tr:hover td:first-child{
+
+    transform:scale(1.08);
+
+    color:#ff6b00;
+
+}
+
+/* ==========================================
+   TYPE BADGE HOVER
+========================================== */
+
+.type{
+
+    transition:all .35s ease;
+
+}
+
+.type:hover{
+
+    transform:
+
+        translateY(-2px)
+
+        scale(1.05);
+
+    box-shadow:
+
+        0 12px 25px rgba(255,152,0,.28);
+
+}
+
+/* ==========================================
+   STATUS BADGE HOVER
+========================================== */
+
+.live-status:hover,
+
+.completed-status:hover,
+
+.upcoming-status:hover{
+
+    transform:
+
+        translateY(-2px)
+
+        scale(1.05);
+
+}
+
+/* ==========================================
+   ROW FADE ANIMATION
+========================================== */
 
 .aarti-table tbody tr{
 
-    will-change:transform;
+    animation:rowFade .5s ease;
 
 }
 
+@keyframes rowFade{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(15px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/* ==========================================
+   GENERAL FADE
+========================================== */
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(20px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+/* ==========================================
+   LARGE LAPTOP
+========================================== */
+
+@media (max-width:1200px){
+
+    .aarti-page{
+
+        padding:110px 20px 50px;
+
+    }
+
+    .aarti-page .title{
+
+        font-size:2.4rem;
+
+    }
+
+    .aarti-table{
+
+        min-width:1000px;
+
+    }
+
+}
+
+/* ==========================================
+   TABLET
+========================================== */
+
+@media (max-width:992px){
+
+    .aarti-page{
+
+        padding:100px 15px 45px;
+
+    }
+
+    .aarti-page .title{
+
+        font-size:2.1rem;
+
+        margin-bottom:35px;
+
+    }
+
+    .table-wrapper{
+
+        border-radius:22px;
+
+    }
+
+    .aarti-table{
+
+        min-width:900px;
+
+    }
+
+    .aarti-table thead th{
+
+        padding:15px;
+
+        font-size:14px;
+
+    }
+
+    .aarti-table tbody td{
+
+        padding:15px 12px;
+
+        font-size:14px;
+
+    }
+
+    .type,
+
+    .live-status,
+
+    .completed-status,
+
+    .upcoming-status{
+
+        font-size:12px;
+
+        padding:8px 14px;
+
+    }
+
+}
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width:768px){
+
+    .aarti-page{
+
+        padding:90px 10px 30px;
+
+    }
+
+    .aarti-page .title{
+
+        font-size:1.8rem;
+
+        margin-bottom:25px;
+
+    }
+
+    .aarti-page .title::after{
+
+        width:80px;
+
+        height:4px;
+
+    }
+
+    .table-wrapper{
+
+        border-radius:18px;
+
+    }
+
+    .aarti-table{
+
+        min-width:850px;
+
+    }
+
+    .aarti-table thead th{
+
+        padding:14px 10px;
+
+        font-size:13px;
+
+    }
+
+    .aarti-table tbody td{
+
+        padding:14px 10px;
+
+        font-size:13px;
+
+    }
+
+    .type,
+
+    .live-status,
+
+    .completed-status,
+
+    .upcoming-status{
+
+        font-size:11px;
+
+        padding:7px 12px;
+
+    }
+
+    .loading-box span{
+
+        font-size:18px;
+
+        text-align:center;
+
+        padding:0 15px;
+
+    }
+
+    .loader{
+
+        width:65px;
+
+        height:65px;
+
+    }
+
+    .no-data{
+
+        padding:50px 15px;
+
+    }
+
+    .no-data .emoji{
+
+        font-size:55px;
+
+    }
+
+    .no-data h3{
+
+        font-size:24px;
+
+    }
+
+    .no-data p{
+
+        font-size:15px;
+
+    }
+
+}
+
+/* ==========================================
+   SMALL MOBILE
+========================================== */
+
+@media (max-width:480px){
+
+    .aarti-page{
+
+        padding:85px 8px 25px;
+
+    }
+
+    .aarti-page .title{
+
+        font-size:1.5rem;
+
+    }
+
+    .table-wrapper{
+
+        border-radius:15px;
+
+    }
+
+    .aarti-table{
+
+        min-width:780px;
+
+    }
+
+    .aarti-table thead th{
+
+        font-size:12px;
+
+        padding:12px 8px;
+
+    }
+
+    .aarti-table tbody td{
+
+        font-size:12px;
+
+        padding:12px 8px;
+
+    }
+
+    .type,
+
+    .live-status,
+
+    .completed-status,
+
+    .upcoming-status{
+
+        font-size:10px;
+
+        padding:6px 10px;
+
+    }
+
+    .loading-box span{
+
+        font-size:16px;
+
+    }
+
+    .loader{
+
+        width:55px;
+
+        height:55px;
+
+    }
+
+}
+/* ==========================================
+   PREMIUM TABLE GLOW
+========================================== */
+
 .table-wrapper{
 
-    isolation:isolate;
+    position:relative;
+
+}
+
+.table-wrapper::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:-2px;
+
+    border-radius:28px;
+
+    background:
+
+        linear-gradient(
+
+            135deg,
+
+            rgba(255,152,0,.25),
+
+            transparent,
+
+            rgba(255,107,0,.25)
+
+        );
+
+    z-index:-1;
+
+    filter:blur(20px);
+
+}
+
+/* ==========================================
+   GLASS SHINE
+========================================== */
+
+.table-wrapper::after{
+
+    content:"";
+
+    position:absolute;
+
+    top:-60%;
+
+    left:-120%;
+
+    width:45%;
+
+    height:220%;
+
+    background:
+
+        linear-gradient(
+
+            90deg,
+
+            transparent,
+
+            rgba(255,255,255,.35),
+
+            transparent
+
+        );
+
+    transform:rotate(20deg);
+
+    animation:tableShine 6s linear infinite;
+
+    pointer-events:none;
+
+}
+
+@keyframes tableShine{
+
+    from{
+
+        left:-120%;
+
+    }
+
+    to{
+
+        left:150%;
+
+    }
+
+}
+
+/* ==========================================
+   FLOATING TITLE
+========================================== */
+
+.aarti-page .title{
+
+    animation:titleFloat 4s ease-in-out infinite;
+
+}
+
+@keyframes titleFloat{
+
+    0%{
+
+        transform:translateY(0);
+
+    }
+
+    50%{
+
+        transform:translateY(-4px);
+
+    }
+
+    100%{
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/* ==========================================
+   TABLE HEADER GLOW
+========================================== */
+
+.aarti-table thead{
+
+    box-shadow:
+
+        0 10px 30px rgba(255,107,0,.25);
+
+}
+
+/* ==========================================
+   ROW HOVER
+========================================== */
+
+.aarti-table tbody tr:hover{
+
+    cursor:pointer;
+
+}
+
+/* ==========================================
+   LIVE ROW BORDER
+========================================== */
+
+.live-row{
+
+    border-left:6px solid #ff6b00;
+
+}
+
+/* ==========================================
+   STATUS ANIMATION
+========================================== */
+
+.live-status,
+
+.completed-status,
+
+.upcoming-status{
+
+    transition:
+
+        transform .35s,
+
+        box-shadow .35s;
+
+}
+
+.live-status:hover,
+
+.completed-status:hover,
+
+.upcoming-status:hover{
+
+    box-shadow:
+
+        0 15px 30px rgba(255,152,0,.30);
+
+}
+
+/* ==========================================
+   TYPE BADGE GLOW
+========================================== */
+
+.type{
+
+    position:relative;
+
+}
+
+.type::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:-6px;
+
+    border-radius:50px;
+
+    background:
+
+        rgba(255,152,0,.15);
+
+    filter:blur(12px);
+
+    z-index:-1;
+
+}
+
+/* ==========================================
+   LOADER GLOW
+========================================== */
+
+.loader{
+
+    filter:
+
+        drop-shadow(0 0 18px rgba(255,152,0,.35));
+
+}
+
+/* ==========================================
+   SCROLLBAR
+========================================== */
+
+.table-wrapper::-webkit-scrollbar{
+
+    height:8px;
+
+}
+
+.table-wrapper::-webkit-scrollbar-track{
+
+    background:#fff5eb;
+
+    border-radius:20px;
+
+}
+
+.table-wrapper::-webkit-scrollbar-thumb{
+
+    background:
+
+        linear-gradient(
+
+            90deg,
+
+            #ff9800,
+
+            #ff6b00
+
+        );
+
+    border-radius:20px;
+
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover{
+
+    background:#ff6b00;
+
+}
+
+/* ==========================================
+   TEXT SELECTION
+========================================== */
+
+::selection{
+
+    background:#ff9800;
+
+    color:#fff;
+
+}
+
+/* ==========================================
+   SMOOTH TRANSITIONS
+========================================== */
+
+.aarti-table,
+
+.aarti-table tbody tr,
+
+.aarti-table td,
+
+.aarti-table th,
+
+.type,
+
+.live-status,
+
+.completed-status,
+
+.upcoming-status{
+
+    transition:all .35s ease;
+
+}
+
+/* ==========================================
+   ACCESSIBILITY
+========================================== */
+
+button:focus-visible,
+
+a:focus-visible{
+
+    outline:3px solid rgba(255,152,0,.25);
+
+    outline-offset:3px;
+
+}
+
+/* ==========================================
+   REDUCED MOTION
+========================================== */
+
+@media (prefers-reduced-motion: reduce){
+
+    *{
+
+        animation:none !important;
+
+        transition:none !important;
+
+        scroll-behavior:auto !important;
+
+    }
 
 }

@@ -794,7 +794,7 @@ function Navbar() {
 
           <small>
 
-            © {new Date().getFullYear()} All Rights Reserved
+            © {new Date().getFullYear()} Tushar Bisane
 
           </small>
 
