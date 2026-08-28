@@ -9,13 +9,38 @@ import {
   FaUndo,
   FaEdit,
   FaSearch,
+  FaPrint,
 } from "react-icons/fa";
 
 import "../styles/admin/expense.css";
 
+
+// ============================================================
+// API
+// ============================================================
+
 const API = "https://bmgum.onrender.com";
 
+
+// ============================================================
+// MANDAL INFORMATION
+// ============================================================
+
+const MANDAL_NAME = "बाल मित्र गणेश उत्सव मंडळ";
+
+const MANDAL_ADDRESS =
+  "महाजनपूर, महाराष्ट्र, भारत";
+
+
+// ============================================================
+// EXPENSE MANAGEMENT
+// ============================================================
+
 function ExpenseManagement() {
+
+  // ==========================================================
+  // EXPENSE STATE
+  // ==========================================================
 
   const [expenses, setExpenses] = useState([]);
 
@@ -27,7 +52,17 @@ function ExpenseManagement() {
 
   const [loading, setLoading] = useState(false);
 
+
+  // ==========================================================
+  // CURRENT DATE / TIME
+  // ==========================================================
+
   const now = new Date();
+
+
+  // ==========================================================
+  // FORM DATA
+  // ==========================================================
 
   const [formData, setFormData] = useState({
 
@@ -43,11 +78,14 @@ function ExpenseManagement() {
 
     time: now.toLocaleTimeString(),
 
-    bill: null
+    bill: null,
 
   });
 
-  // ================= LOAD =================
+
+  // ==========================================================
+  // LOAD EXPENSES
+  // ==========================================================
 
   const loadExpenses = async () => {
 
@@ -56,19 +94,13 @@ function ExpenseManagement() {
       setLoading(true);
 
       const res = await axios.get(
-
         `${API}/api/expenses`
-
       );
 
       setExpenses(
-
         Array.isArray(res.data)
-
           ? res.data
-
           : []
-
       );
 
     }
@@ -89,13 +121,21 @@ function ExpenseManagement() {
 
   };
 
+
+  // ==========================================================
+  // INITIAL LOAD
+  // ==========================================================
+
   useEffect(() => {
 
     loadExpenses();
 
   }, []);
 
-  // ================= CHANGE =================
+
+  // ==========================================================
+  // HANDLE INPUT CHANGE
+  // ==========================================================
 
   const handleChange = (e) => {
 
@@ -103,13 +143,16 @@ function ExpenseManagement() {
 
       ...formData,
 
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
 
     });
 
   };
 
-  // ================= IMAGE =================
+
+  // ==========================================================
+  // HANDLE BILL IMAGE
+  // ==========================================================
 
   const handleImage = (e) => {
 
@@ -121,19 +164,20 @@ function ExpenseManagement() {
 
       ...formData,
 
-      bill: file
+      bill: file,
 
     });
 
     setPreview(
-
       URL.createObjectURL(file)
-
     );
 
   };
 
-  // ================= CLEAR =================
+
+  // ==========================================================
+  // CLEAR FORM
+  // ==========================================================
 
   const clearForm = () => {
 
@@ -153,17 +197,23 @@ function ExpenseManagement() {
 
       description: "",
 
-      date: d.toISOString().substring(0, 10),
+      date: d
+        .toISOString()
+        .substring(0, 10),
 
-      time: d.toLocaleTimeString(),
+      time:
+        d.toLocaleTimeString(),
 
-      bill: null
+      bill: null,
 
     });
 
   };
 
-  // ================= SAVE =================
+
+  // ==========================================================
+  // SAVE / UPDATE EXPENSE
+  // ==========================================================
 
   const handleSubmit = async (e) => {
 
@@ -171,23 +221,45 @@ function ExpenseManagement() {
 
     const data = new FormData();
 
-    data.append("title", formData.title);
+    data.append(
+      "title",
+      formData.title
+    );
 
-    data.append("amount", formData.amount);
+    data.append(
+      "amount",
+      formData.amount
+    );
 
-    data.append("category", formData.category);
+    data.append(
+      "category",
+      formData.category
+    );
 
-    data.append("description", formData.description);
+    data.append(
+      "description",
+      formData.description
+    );
 
-    data.append("date", formData.date);
+    data.append(
+      "date",
+      formData.date
+    );
 
-    data.append("time", formData.time);
+    data.append(
+      "time",
+      formData.time
+    );
 
     if (formData.bill) {
 
-      data.append("bill", formData.bill);
+      data.append(
+        "bill",
+        formData.bill
+      );
 
     }
+
 
     try {
 
@@ -201,7 +273,9 @@ function ExpenseManagement() {
 
         );
 
-        alert("Expense Updated Successfully");
+        alert(
+          "Expense Updated Successfully"
+        );
 
       }
 
@@ -215,7 +289,9 @@ function ExpenseManagement() {
 
         );
 
-        alert("Expense Added Successfully");
+        alert(
+          "Expense Added Successfully"
+        );
 
       }
 
@@ -240,658 +316,2623 @@ function ExpenseManagement() {
     }
 
   };
-  return (
 
-<div className="expense-page">
 
-  {/* ================= TITLE ================= */}
+  // ==========================================================
+  // ESCAPE HTML
+  // Prevent special characters from breaking print HTML
+  // ==========================================================
 
-  <div className="page-title">
+  const escapeHTML = (value) => {
 
-    <FaMoneyBillWave className="title-icon" />
+    if (
+      value === null ||
+      value === undefined
+    ) {
 
-    <div>
+      return "-";
 
-      <h1>Expense Management</h1>
+    }
 
-      <p>Add, Edit & Manage Expenses</p>
+    return String(value)
 
-    </div>
+      .replace(
+        /&/g,
+        "&amp;"
+      )
 
-  </div>
+      .replace(
+        /</g,
+        "&lt;"
+      )
 
-  {/* ================= FORM ================= */}
+      .replace(
+        />/g,
+        "&gt;"
+      )
 
-  <div className="expense-card">
+      .replace(
+        /"/g,
+        "&quot;"
+      )
 
-    <form
+      .replace(
+        /'/g,
+        "&#039;"
+      );
 
-      className="expense-form"
+  };
 
-      onSubmit={handleSubmit}
 
-      encType="multipart/form-data"
+  // ==========================================================
+  // FORMAT DATE
+  // ==========================================================
 
-    >
+  const formatPrintDate = (date) => {
 
-      {/* Expense Name */}
+    if (!date) return "-";
 
-      <div className="form-group">
+    const parsedDate =
+      new Date(date);
 
-        <label>खर्चाचे नाव *</label>
+    if (
+      Number.isNaN(
+        parsedDate.getTime()
+      )
+    ) {
 
-        <input
+      return escapeHTML(date);
 
-          type="text"
+    }
 
-          name="title"
+    return parsedDate.toLocaleDateString(
+      "mr-IN",
+      {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      }
+    );
 
-          value={formData.title}
+  };
 
-          onChange={handleChange}
 
-          placeholder="Enter Expense Name"
+  // ==========================================================
+  // FORMAT CURRENCY
+  // ==========================================================
 
-          required
+  const formatCurrency = (amount) => {
 
-        />
+    return `₹${Number(
+      amount || 0
+    ).toLocaleString(
+      "en-IN",
+      {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }
+    )}`;
 
-      </div>
+  };
 
-      {/* Amount */}
 
-      <div className="form-group">
+  // ==========================================================
+  // PRINT EXPENSE REPORT
+  // ==========================================================
 
-        <label>रक्कम *</label>
+  const printExpenseReport = () => {
 
-        <input
+    // --------------------------------------------------------
+    // CHECK DATA
+    // --------------------------------------------------------
 
-          type="number"
+    if (
+      !expenses ||
+      expenses.length === 0
+    ) {
 
-          name="amount"
+      alert(
+        "प्रिंट करण्यासाठी कोणताही खर्च उपलब्ध नाही."
+      );
 
-          value={formData.amount}
+      return;
 
-          onChange={handleChange}
+    }
 
-          placeholder="Enter Amount"
 
-          required
+    // --------------------------------------------------------
+    // OPEN PRINT WINDOW
+    // --------------------------------------------------------
 
-        />
+    const printWindow =
+      window.open(
+        "",
+        "_blank",
+        "width=1500,height=950"
+      );
 
-      </div>
 
-      {/* Category */}
+    if (!printWindow) {
 
-      <div className="form-group">
+      alert(
+        "Print window उघडता आली नाही. कृपया browser popup allow करा."
+      );
 
-        <label>Category</label>
+      return;
 
-        <select
+    }
 
-          name="category"
 
-          value={formData.category}
+    // --------------------------------------------------------
+    // ADMIN NAME
+    // --------------------------------------------------------
 
-          onChange={handleChange}
+    const adminName =
 
-        >
+      localStorage.getItem(
+        "adminName"
+      ) ||
 
-          <option>Decoration</option>
+      localStorage.getItem(
+        "admin_name"
+      ) ||
 
-          <option>Food</option>
+      localStorage.getItem(
+        "userName"
+      ) ||
 
-          <option>Sound</option>
+      localStorage.getItem(
+        "username"
+      ) ||
 
-          <option>Electricity</option>
+      localStorage.getItem(
+        "name"
+      ) ||
 
-          <option>Prize</option>
+      "प्रशासक";
 
-          <option>Advertisement</option>
 
-          <option>Other</option>
+    // --------------------------------------------------------
+    // GENERATION DATE / TIME
+    // --------------------------------------------------------
 
-        </select>
+    const generatedAt =
+      new Date();
 
-      </div>
 
-      {/* Description */}
-
-      <div className="form-group">
-
-        <label>Description</label>
-
-        <textarea
-
-          rows="4"
-
-          name="description"
-
-          value={formData.description}
-
-          onChange={handleChange}
-
-          placeholder="Expense Description"
-
-        />
-
-      </div>
-
-      {/* Date */}
-
-      <div className="form-group">
-
-        <label>दिनांक</label>
-
-        <input
-
-          type="date"
-
-          value={formData.date}
-
-          readOnly
-
-        />
-
-      </div>
-
-      {/* Time */}
-
-      <div className="form-group">
-
-        <label>वेळ</label>
-
-        <input
-
-          type="text"
-
-          value={formData.time}
-
-          readOnly
-
-        />
-
-      </div>
-
-      {/* Upload Bill */}
-
-      <div className="form-group">
-
-        <label>
-
-          <FaImage />
-
-          Upload Bill / Proof
-
-        </label>
-
-        <input
-
-          type="file"
-
-          accept="image/*"
-
-          onChange={handleImage}
-
-        />
-
-      </div>
-
-      {/* Preview */}
-
-      {preview && (
-
-        <div className="preview-box">
-
-          <img
-
-            src={preview}
-
-            alt="Bill Preview"
-
-            style={{
-
-              maxWidth: "220px",
-
-              borderRadius: "8px"
-
-            }}
-
-          />
-
-        </div>
-
-      )}
-
-      {/* Buttons */}
-
-      <div className="button-group">
-
-        <button
-
-          type="submit"
-
-          className="save-btn"
-
-        >
-
-          <FaSave />
-
-          {
-
-            editingId
-
-              ? " Update Expense"
-
-              : " Save Expense"
-
-          }
-
-        </button>
-
-        <button
-
-          type="button"
-
-          className="clear-btn"
-
-          onClick={clearForm}
-
-        >
-
-          <FaUndo />
-
-          Clear
-
-        </button>
-
-      </div>
-
-    </form>
-
-  </div>
-
-  {/* ================= SUMMARY ================= */}
-
-  <div className="summary-card">
-
-    <div className="summary-box">
-
-      <h3>Total Expenses</h3>
-
-      <h2>{expenses.length}</h2>
-
-    </div>
-
-    <div className="summary-box">
-
-      <h3>Total Amount</h3>
-
-      <h2>
-
-        ₹
-
+    const generatedDate =
+      generatedAt.toLocaleDateString(
+        "mr-IN",
         {
-
-          expenses.reduce(
-
-            (sum, item) =>
-
-              sum + Number(item.amount || 0),
-
-            0
-
-          )
-
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
         }
+      );
 
-      </h2>
 
-    </div>
+    const generatedTime =
+      generatedAt.toLocaleTimeString(
+        "mr-IN",
+        {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: true,
+        }
+      );
 
-  </div>
 
-  {/* ================= SEARCH ================= */}
+    // --------------------------------------------------------
+    // TOTAL EXPENSE
+    // --------------------------------------------------------
 
-  <div className="search-box">
+    const totalAmount =
+      expenses.reduce(
 
-    <FaSearch />
+        (sum, expense) =>
 
-    <input
+          sum +
+          Number(
+            expense.amount || 0
+          ),
 
-      type="text"
+        0
 
-      placeholder="Search Expense..."
+      );
 
-      value={search}
 
-      onChange={(e)=>setSearch(e.target.value)}
+    // --------------------------------------------------------
+    // TOTAL PROOFS
+    // --------------------------------------------------------
 
-    />
+    const totalProofs =
+      expenses.filter(
+        (expense) =>
+          Boolean(expense.bill)
+      ).length;
 
-  </div>
-    {/* ================= TABLE ================= */}
 
-  <div className="table-card">
+    // --------------------------------------------------------
+    // TABLE ROWS
+    // IMPORTANT:
+    // PRINTS ALL EXPENSES
+    // SEARCH FILTER IS NOT USED
+    // --------------------------------------------------------
 
-    <div className="table-header">
+    const rows =
+      expenses
+        .map(
+          (expense, index) => {
 
-      <h2>Expense Records</h2>
+            const proofURL =
+              expense.bill
+                ? `${API}/uploads/bills/${encodeURIComponent(
+                    expense.bill
+                  )}`
+                : "";
 
-    </div>
 
-    {loading ? (
-
-      <div className="loading">
-
-        Loading Expenses...
-
-      </div>
-
-    ) : (
-
-      <table className="expense-table">
-
-        <thead>
-
-          <tr>
-
-            <th>ID</th>
-
-            <th>Expense</th>
-
-            <th>Category</th>
-
-            <th>Amount</th>
-
-            <th>Description</th>
-
-            <th>Date</th>
-
-            <th>Time</th>
-
-            <th>Proof</th>
-
-            <th>Action</th>
-
-          </tr>
-
-        </thead>
-
-        <tbody>
-
-          {
-
-            expenses
-
-            .filter(item =>
-
-              (item.title || "")
-
-              .toLowerCase()
-
-              .includes(search.toLowerCase())
-
-            )
-
-            .length === 0
-
-            ? (
+            return `
 
               <tr>
 
-                <td
+                <td class="serial">
+                  ${index + 1}
+                </td>
 
-                  colSpan="9"
+                <td>
+                  ${escapeHTML(
+                    expense.id
+                  )}
+                </td>
 
-                  className="no-data"
+                <td class="expense-name">
+                  ${escapeHTML(
+                    expense.title
+                  )}
+                </td>
 
-                >
+                <td>
+                  ${escapeHTML(
+                    expense.category
+                  )}
+                </td>
 
-                  No Expense Found
+                <td class="amount">
+                  ${formatCurrency(
+                    expense.amount
+                  )}
+                </td>
+
+                <td class="description">
+                  ${escapeHTML(
+                    expense.description ||
+                    "-"
+                  )}
+                </td>
+
+                <td>
+                  ${formatPrintDate(
+                    expense.date
+                  )}
+                </td>
+
+                <td>
+                  ${escapeHTML(
+                    expense.time ||
+                    "-"
+                  )}
+                </td>
+
+                <td>
+
+                  ${
+                    expense.bill
+
+                      ? `
+
+                        <span class="proof available">
+                          उपलब्ध
+                        </span>
+
+                        <div class="proof-file">
+                          ${escapeHTML(
+                            expense.bill
+                          )}
+                        </div>
+
+                        <a
+                          href="${proofURL}"
+                          target="_blank"
+                          class="proof-link"
+                        >
+                          पुरावा पहा
+                        </a>
+
+                      `
+
+                      : `
+
+                        <span class="proof unavailable">
+                          उपलब्ध नाही
+                        </span>
+
+                      `
+                  }
 
                 </td>
 
               </tr>
 
-            )
+            `;
 
-            : (
+          }
+        )
+        .join("");
 
-              expenses
 
-              .filter(item =>
+    // --------------------------------------------------------
+    // PRINT DOCUMENT
+    // --------------------------------------------------------
 
-                (item.title || "")
+    printWindow.document.write(`
 
-                .toLowerCase()
+      <!DOCTYPE html>
 
-                .includes(search.toLowerCase())
+      <html lang="mr">
 
+      <head>
+
+        <meta charset="UTF-8">
+
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0"
+        >
+
+        <title>
+          ${escapeHTML(
+            MANDAL_NAME
+          )}
+          - खर्च अहवाल
+        </title>
+
+
+        <style>
+
+          /* ==================================================
+             FONT
+             ================================================== */
+
+          @import url(
+            'https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap'
+          );
+
+
+          /* ==================================================
+             RESET
+             ================================================== */
+
+          * {
+
+            box-sizing:
+              border-box;
+
+          }
+
+
+          html,
+          body {
+
+            margin:
+              0;
+
+            padding:
+              0;
+
+            background:
+              #ffffff;
+
+          }
+
+
+          body {
+
+            color:
+              #222;
+
+            font-family:
+              "Noto Sans Devanagari",
+              "Nirmala UI",
+              "Mangal",
+              Arial,
+              sans-serif;
+
+            font-size:
+              11px;
+
+            line-height:
+              1.5;
+
+          }
+
+
+          /* ==================================================
+             MAIN REPORT
+             ================================================== */
+
+          .report {
+
+            width:
+              100%;
+
+          }
+
+
+          /* ==================================================
+             HEADER
+             ================================================== */
+
+          .report-header {
+
+            position:
+              relative;
+
+            text-align:
+              center;
+
+            padding:
+              8px 0 12px;
+
+            margin-bottom:
+              12px;
+
+            border-bottom:
+              3px solid #8b4513;
+
+          }
+
+
+          .mandal-name {
+
+            margin:
+              0;
+
+            font-size:
+              27px;
+
+            font-weight:
+              800;
+
+            color:
+              #8b4513;
+
+            letter-spacing:
+              0.3px;
+
+          }
+
+
+          .mandal-address {
+
+            margin:
+              3px 0 0;
+
+            font-size:
+              13px;
+
+            color:
+              #555;
+
+          }
+
+
+          .report-title {
+
+            margin:
+              7px 0 0;
+
+            font-size:
+              19px;
+
+            font-weight:
+              800;
+
+            color:
+              #333;
+
+          }
+
+
+          .report-subtitle {
+
+            margin:
+              2px 0 0;
+
+            font-size:
+              10px;
+
+            color:
+              #777;
+
+          }
+
+
+          /* ==================================================
+             META INFORMATION
+             ================================================== */
+
+          .meta-grid {
+
+            display:
+              grid;
+
+            grid-template-columns:
+              repeat(3, 1fr);
+
+            gap:
+              8px;
+
+            margin-bottom:
+              12px;
+
+          }
+
+
+          .meta-box {
+
+            border:
+              1px solid #ddd;
+
+            border-radius:
+              7px;
+
+            padding:
+              7px 9px;
+
+            background:
+              #fafafa;
+
+          }
+
+
+          .meta-label {
+
+            display:
+              block;
+
+            font-size:
+              9px;
+
+            color:
+              #777;
+
+            margin-bottom:
+              2px;
+
+          }
+
+
+          .meta-value {
+
+            display:
+              block;
+
+            font-size:
+              11px;
+
+            font-weight:
+              700;
+
+            color:
+              #333;
+
+          }
+
+
+          /* ==================================================
+             SUMMARY CARDS
+             ================================================== */
+
+          .summary-grid {
+
+            display:
+              grid;
+
+            grid-template-columns:
+              repeat(3, 1fr);
+
+            gap:
+              10px;
+
+            margin-bottom:
+              14px;
+
+          }
+
+
+          .summary-card {
+
+            border:
+              1px solid #d6d6d6;
+
+            border-radius:
+              8px;
+
+            padding:
+              9px;
+
+            text-align:
+              center;
+
+            background:
+              #ffffff;
+
+          }
+
+
+          .summary-label {
+
+            display:
+              block;
+
+            font-size:
+              10px;
+
+            color:
+              #666;
+
+            margin-bottom:
+              3px;
+
+          }
+
+
+          .summary-value {
+
+            display:
+              block;
+
+            font-size:
+              18px;
+
+            font-weight:
+              800;
+
+            color:
+              #8b4513;
+
+          }
+
+
+          /* ==================================================
+             TABLE
+             ================================================== */
+
+          .expense-table {
+
+            width:
+              100%;
+
+            border-collapse:
+              collapse;
+
+            table-layout:
+              fixed;
+
+            font-size:
+              9px;
+
+          }
+
+
+          .expense-table thead {
+
+            display:
+              table-header-group;
+
+          }
+
+
+          .expense-table tfoot {
+
+            display:
+              table-footer-group;
+
+          }
+
+
+          .expense-table th {
+
+            background:
+              #8b4513;
+
+            color:
+              #ffffff;
+
+            border:
+              1px solid #6f3510;
+
+            padding:
+              7px 4px;
+
+            text-align:
+              center;
+
+            vertical-align:
+              middle;
+
+            font-size:
+              9px;
+
+            font-weight:
+              800;
+
+          }
+
+
+          .expense-table td {
+
+            border:
+              1px solid #bdbdbd;
+
+            padding:
+              6px 4px;
+
+            text-align:
+              center;
+
+            vertical-align:
+              middle;
+
+            word-wrap:
+              break-word;
+
+            overflow-wrap:
+              anywhere;
+
+          }
+
+
+          .expense-table tbody tr:nth-child(even) {
+
+            background:
+              #fcf9f6;
+
+          }
+
+
+          .expense-table tbody tr {
+
+            page-break-inside:
+              avoid;
+
+          }
+
+
+          /* ==================================================
+             COLUMN WIDTHS
+             ================================================== */
+
+          .expense-table th:nth-child(1),
+          .expense-table td:nth-child(1) {
+
+            width:
+              4%;
+
+          }
+
+
+          .expense-table th:nth-child(2),
+          .expense-table td:nth-child(2) {
+
+            width:
+              7%;
+
+          }
+
+
+          .expense-table th:nth-child(3),
+          .expense-table td:nth-child(3) {
+
+            width:
+              12%;
+
+          }
+
+
+          .expense-table th:nth-child(4),
+          .expense-table td:nth-child(4) {
+
+            width:
+              9%;
+
+          }
+
+
+          .expense-table th:nth-child(5),
+          .expense-table td:nth-child(5) {
+
+            width:
+              10%;
+
+          }
+
+
+          .expense-table th:nth-child(6),
+          .expense-table td:nth-child(6) {
+
+            width:
+              23%;
+
+          }
+
+
+          .expense-table th:nth-child(7),
+          .expense-table td:nth-child(7) {
+
+            width:
+              9%;
+
+          }
+
+
+          .expense-table th:nth-child(8),
+          .expense-table td:nth-child(8) {
+
+            width:
+              9%;
+
+          }
+
+
+          .expense-table th:nth-child(9),
+          .expense-table td:nth-child(9) {
+
+            width:
+              17%;
+
+          }
+
+
+          /* ==================================================
+             SPECIAL CELLS
+             ================================================== */
+
+          .serial {
+
+            font-weight:
+              700;
+
+          }
+
+
+          .expense-name {
+
+            font-weight:
+              700;
+
+            text-align:
+              left !important;
+
+          }
+
+
+          .amount {
+
+            font-weight:
+              800;
+
+            text-align:
+              right !important;
+
+            white-space:
+              nowrap;
+
+          }
+
+
+          .description {
+
+            text-align:
+              left !important;
+
+          }
+
+
+          /* ==================================================
+             PROOF
+             ================================================== */
+
+          .proof {
+
+            display:
+              inline-block;
+
+            padding:
+              2px 6px;
+
+            border-radius:
+              10px;
+
+            font-size:
+              8px;
+
+            font-weight:
+              700;
+
+          }
+
+
+          .available {
+
+            background:
+              #e1f5e8;
+
+            color:
+              #16723a;
+
+          }
+
+
+          .unavailable {
+
+            background:
+              #eeeeee;
+
+            color:
+              #666;
+
+          }
+
+
+          .proof-file {
+
+            margin-top:
+              3px;
+
+            font-size:
+              7px;
+
+            color:
+              #666;
+
+            word-break:
+              break-all;
+
+          }
+
+
+          .proof-link {
+
+            display:
+              block;
+
+            margin-top:
+              2px;
+
+            color:
+              #8b4513;
+
+            font-size:
+              7px;
+
+            text-decoration:
+              none;
+
+          }
+
+
+          /* ==================================================
+             TOTAL
+             ================================================== */
+
+          .total-box {
+
+            margin-top:
+              12px;
+
+            padding:
+              10px 14px;
+
+            border:
+              2px solid #8b4513;
+
+            border-radius:
+              7px;
+
+            text-align:
+              right;
+
+            background:
+              #fffaf5;
+
+            font-size:
+              14px;
+
+            font-weight:
+              800;
+
+          }
+
+
+          .total-box strong {
+
+            color:
+              #8b4513;
+
+            font-size:
+              17px;
+
+          }
+
+
+          /* ==================================================
+             FOOTER
+             ================================================== */
+
+          .report-footer {
+
+            margin-top:
+              20px;
+
+            padding-top:
+              10px;
+
+            border-top:
+              1px solid #aaa;
+
+            display:
+              flex;
+
+            justify-content:
+              space-between;
+
+            align-items:
+              flex-end;
+
+            gap:
+              20px;
+
+            font-size:
+              9px;
+
+            color:
+              #555;
+
+          }
+
+
+          .generated-by {
+
+            text-align:
+              left;
+
+          }
+
+
+          .admin-name {
+
+            margin-top:
+              3px;
+
+            font-weight:
+              800;
+
+            color:
+              #222;
+
+          }
+
+
+          .footer-right {
+
+            text-align:
+              right;
+
+          }
+
+
+          /* ==================================================
+             PRINT SETTINGS
+             ================================================== */
+
+          @page {
+
+            size:
+              A4 landscape;
+
+            margin:
+              10mm;
+
+          }
+
+
+          @media print {
+
+            html,
+            body {
+
+              width:
+                100%;
+
+              background:
+                #ffffff;
+
+            }
+
+
+            body {
+
+              padding:
+                0;
+
+            }
+
+
+            .report {
+
+              width:
+                100%;
+
+            }
+
+
+            .expense-table {
+
+              page-break-inside:
+                auto;
+
+            }
+
+
+            .expense-table tr {
+
+              page-break-inside:
+                avoid;
+
+              page-break-after:
+                auto;
+
+            }
+
+
+            .expense-table thead {
+
+              display:
+                table-header-group;
+
+            }
+
+
+            .report-header {
+
+              break-inside:
+                avoid;
+
+            }
+
+
+            .summary-grid {
+
+              break-inside:
+                avoid;
+
+            }
+
+
+            .total-box {
+
+              break-inside:
+                avoid;
+
+            }
+
+
+            .report-footer {
+
+              break-inside:
+                avoid;
+
+            }
+
+
+            a {
+
+              color:
+                inherit;
+
+              text-decoration:
+                none;
+
+            }
+
+          }
+
+        </style>
+
+      </head>
+
+
+      <body>
+
+
+        <div class="report">
+
+
+          <!-- ============================================
+               HEADER
+          ============================================= -->
+
+          <div class="report-header">
+
+            <h1 class="mandal-name">
+
+              ${escapeHTML(
+                MANDAL_NAME
+              )}
+
+            </h1>
+
+
+            <div class="mandal-address">
+
+              ${escapeHTML(
+                MANDAL_ADDRESS
+              )}
+
+            </div>
+
+
+            <h2 class="report-title">
+
+              खर्चाचा संपूर्ण अहवाल
+
+            </h2>
+
+
+            <div class="report-subtitle">
+
+              गणेशोत्सव मंडळ खर्च व्यवस्थापन अहवाल
+
+            </div>
+
+          </div>
+
+
+          <!-- ============================================
+               META INFORMATION
+          ============================================= -->
+
+          <div class="meta-grid">
+
+
+            <div class="meta-box">
+
+              <span class="meta-label">
+
+                अहवाल तयार करण्याची तारीख
+
+              </span>
+
+
+              <span class="meta-value">
+
+                ${generatedDate}
+
+              </span>
+
+            </div>
+
+
+            <div class="meta-box">
+
+              <span class="meta-label">
+
+                अहवाल तयार करण्याची वेळ
+
+              </span>
+
+
+              <span class="meta-value">
+
+                ${generatedTime}
+
+              </span>
+
+            </div>
+
+
+            <div class="meta-box">
+
+              <span class="meta-label">
+
+                अहवाल तयार करणारे
+
+              </span>
+
+
+              <span class="meta-value">
+
+                ${escapeHTML(
+                  adminName
+                )}
+
+              </span>
+
+            </div>
+
+
+          </div>
+
+
+          <!-- ============================================
+               SUMMARY
+          ============================================= -->
+
+          <div class="summary-grid">
+
+
+            <div class="summary-card">
+
+              <span class="summary-label">
+
+                एकूण खर्चाच्या नोंदी
+
+              </span>
+
+
+              <span class="summary-value">
+
+                ${expenses.length}
+
+              </span>
+
+            </div>
+
+
+            <div class="summary-card">
+
+              <span class="summary-label">
+
+                एकूण खर्चाची रक्कम
+
+              </span>
+
+
+              <span class="summary-value">
+
+                ${formatCurrency(
+                  totalAmount
+                )}
+
+              </span>
+
+            </div>
+
+
+            <div class="summary-card">
+
+              <span class="summary-label">
+
+                बिल / पुरावा असलेल्या नोंदी
+
+              </span>
+
+
+              <span class="summary-value">
+
+                ${totalProofs}
+
+              </span>
+
+            </div>
+
+
+          </div>
+
+
+          <!-- ============================================
+               EXPENSE TABLE
+          ============================================= -->
+
+          <table class="expense-table">
+
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  क्र.
+                </th>
+
+                <th>
+                  खर्च ID
+                </th>
+
+                <th>
+                  खर्चाचे नाव
+                </th>
+
+                <th>
+                  श्रेणी
+                </th>
+
+                <th>
+                  रक्कम
+                </th>
+
+                <th>
+                  वर्णन
+                </th>
+
+                <th>
+                  दिनांक
+                </th>
+
+                <th>
+                  वेळ
+                </th>
+
+                <th>
+                  बिल / पुरावा
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              ${rows}
+
+            </tbody>
+
+
+            <tfoot>
+
+              <tr>
+
+                <td
+                  colspan="4"
+                  style="
+                    text-align:right;
+                    font-weight:800;
+                  "
+                >
+
+                  एकूण
+
+                </td>
+
+
+                <td
+                  style="
+                    text-align:right;
+                    font-weight:800;
+                    white-space:nowrap;
+                  "
+                >
+
+                  ${formatCurrency(
+                    totalAmount
+                  )}
+
+                </td>
+
+
+                <td
+                  colspan="4"
+                >
+
+                </td>
+
+              </tr>
+
+            </tfoot>
+
+
+          </table>
+
+
+          <!-- ============================================
+               TOTAL
+          ============================================= -->
+
+          <div class="total-box">
+
+            एकूण खर्च :
+
+            <strong>
+
+              ${formatCurrency(
+                totalAmount
+              )}
+
+            </strong>
+
+          </div>
+
+
+          <!-- ============================================
+               FOOTER
+          ============================================= -->
+
+          <div class="report-footer">
+
+
+            <div class="generated-by">
+
+              <div>
+
+                अहवाल तयार करणारे :
+
+              </div>
+
+
+              <div class="admin-name">
+
+                ${escapeHTML(
+                  adminName
+                )}
+
+              </div>
+
+            </div>
+
+
+            <div class="footer-right">
+
+              <div>
+
+                एकूण नोंदी :
+                <strong>
+                  ${expenses.length}
+                </strong>
+
+              </div>
+
+
+              <div>
+
+                हा अहवाल मंडळाच्या
+                खर्च नोंदींवर आधारित आहे.
+
+              </div>
+
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+
+        <!-- ==============================================
+             PRINT SCRIPT
+        =============================================== -->
+
+        <script>
+
+          window.onload = function() {
+
+            setTimeout(
+              function() {
+
+                window.print();
+
+              },
+              700
+            );
+
+          };
+
+
+          window.onafterprint = function() {
+
+            setTimeout(
+              function() {
+
+                window.close();
+
+              },
+              400
+            );
+
+          };
+
+        </script>
+
+
+      </body>
+
+      </html>
+
+    `);
+
+
+    printWindow.document.close();
+
+  };
+
+
+  // ==========================================================
+  // FILTERED EXPENSES FOR SCREEN
+  // ==========================================================
+
+  const filteredExpenses =
+    expenses.filter(
+      (item) =>
+
+        (item.title || "")
+          .toLowerCase()
+          .includes(
+            search.toLowerCase()
+          )
+
+    );
+
+
+  // ==========================================================
+  // TOTAL AMOUNT
+  // ==========================================================
+
+  const totalAmount =
+    expenses.reduce(
+
+      (sum, item) =>
+
+        sum +
+        Number(
+          item.amount || 0
+        ),
+
+      0
+
+    );
+
+
+  // ==========================================================
+  // RENDER
+  // ==========================================================
+
+  return (
+
+    <div className="expense-page">
+
+
+      {/* =====================================================
+          TITLE
+      ====================================================== */}
+
+      <div className="page-title">
+
+        <FaMoneyBillWave
+          className="title-icon"
+        />
+
+        <div>
+
+          <h1>
+            Expense Management
+          </h1>
+
+          <p>
+            Add, Edit & Manage Expenses
+          </p>
+
+        </div>
+
+      </div>
+
+
+      {/* =====================================================
+          FORM
+      ====================================================== */}
+
+      <div className="expense-card">
+
+        <form
+
+          className="expense-form"
+
+          onSubmit={
+            handleSubmit
+          }
+
+          encType="multipart/form-data"
+
+        >
+
+
+          {/* =================================================
+              EXPENSE NAME
+          ================================================== */}
+
+          <div className="form-group">
+
+            <label>
+              खर्चाचे नाव *
+            </label>
+
+            <input
+
+              type="text"
+
+              name="title"
+
+              value={
+                formData.title
+              }
+
+              onChange={
+                handleChange
+              }
+
+              placeholder="Enter Expense Name"
+
+              required
+
+            />
+
+          </div>
+
+
+          {/* =================================================
+              AMOUNT
+          ================================================== */}
+
+          <div className="form-group">
+
+            <label>
+              रक्कम *
+            </label>
+
+            <input
+
+              type="number"
+
+              name="amount"
+
+              value={
+                formData.amount
+              }
+
+              onChange={
+                handleChange
+              }
+
+              placeholder="Enter Amount"
+
+              required
+
+            />
+
+          </div>
+
+
+          {/* =================================================
+              CATEGORY
+          ================================================== */}
+
+          <div className="form-group">
+
+            <label>
+              Category
+            </label>
+
+            <select
+
+              name="category"
+
+              value={
+                formData.category
+              }
+
+              onChange={
+                handleChange
+              }
+
+            >
+
+              <option>
+                Decoration
+              </option>
+
+              <option>
+                Food
+              </option>
+
+              <option>
+                Sound
+              </option>
+
+              <option>
+                Electricity
+              </option>
+
+              <option>
+                Prize
+              </option>
+
+              <option>
+                Advertisement
+              </option>
+
+              <option>
+                Other
+              </option>
+
+            </select>
+
+          </div>
+
+
+          {/* =================================================
+              DESCRIPTION
+          ================================================== */}
+
+          <div className="form-group">
+
+            <label>
+              Description
+            </label>
+
+            <textarea
+
+              rows="4"
+
+              name="description"
+
+              value={
+                formData.description
+              }
+
+              onChange={
+                handleChange
+              }
+
+              placeholder="Expense Description"
+
+            />
+
+          </div>
+
+
+          {/* =================================================
+              DATE
+          ================================================== */}
+
+          <div className="form-group">
+
+            <label>
+              दिनांक
+            </label>
+
+            <input
+
+              type="date"
+
+              value={
+                formData.date
+              }
+
+              readOnly
+
+            />
+
+          </div>
+
+
+          {/* =================================================
+              TIME
+          ================================================== */}
+
+          <div className="form-group">
+
+            <label>
+              वेळ
+            </label>
+
+            <input
+
+              type="text"
+
+              value={
+                formData.time
+              }
+
+              readOnly
+
+            />
+
+          </div>
+
+
+          {/* =================================================
+              BILL UPLOAD
+          ================================================== */}
+
+          <div className="form-group">
+
+            <label>
+
+              <FaImage />
+
+              Upload Bill / Proof
+
+            </label>
+
+            <input
+
+              type="file"
+
+              accept="image/*"
+
+              onChange={
+                handleImage
+              }
+
+            />
+
+          </div>
+
+
+          {/* =================================================
+              PREVIEW
+          ================================================== */}
+
+          {preview && (
+
+            <div className="preview-box">
+
+              <img
+
+                src={preview}
+
+                alt="Bill Preview"
+
+                style={{
+                  maxWidth:
+                    "220px",
+
+                  borderRadius:
+                    "8px",
+                }}
+
+              />
+
+            </div>
+
+          )}
+
+
+          {/* =================================================
+              FORM BUTTONS
+          ================================================== */}
+
+          <div className="button-group">
+
+
+            <button
+
+              type="submit"
+
+              className="save-btn"
+
+            >
+
+              <FaSave />
+
+              {
+
+                editingId
+
+                  ? " Update Expense"
+
+                  : " Save Expense"
+
+              }
+
+            </button>
+
+
+            <button
+
+              type="button"
+
+              className="clear-btn"
+
+              onClick={
+                clearForm
+              }
+
+            >
+
+              <FaUndo />
+
+              Clear
+
+            </button>
+
+
+          </div>
+
+
+        </form>
+
+      </div>
+
+
+      {/* =====================================================
+          SUMMARY
+      ====================================================== */}
+
+      <div className="summary-card">
+
+
+        <div className="summary-box">
+
+          <h3>
+            Total Expenses
+          </h3>
+
+          <h2>
+            {expenses.length}
+          </h2>
+
+        </div>
+
+
+        <div className="summary-box">
+
+          <h3>
+            Total Amount
+          </h3>
+
+          <h2>
+
+            ₹
+            {totalAmount.toLocaleString(
+              "en-IN"
+            )}
+
+          </h2>
+
+        </div>
+
+
+      </div>
+
+
+      {/* =====================================================
+          SEARCH
+      ====================================================== */}
+
+      <div className="search-box">
+
+        <FaSearch />
+
+        <input
+
+          type="text"
+
+          placeholder="Search Expense..."
+
+          value={search}
+
+          onChange={
+            (e) =>
+              setSearch(
+                e.target.value
               )
+          }
 
-              .map((expense) => (
+        />
 
-                <tr key={expense.id}>
+      </div>
 
-                  <td>{expense.id}</td>
 
-                  <td>{expense.title}</td>
+      {/* =====================================================
+          TABLE
+      ====================================================== */}
 
-                  <td>{expense.category}</td>
+      <div className="table-card">
 
-                  <td>
 
-                    ₹{expense.amount}
+        <div className="table-header">
 
-                  </td>
 
-                  <td>
+          <h2>
+            Expense Records
+          </h2>
 
-                    {expense.description || "-"}
 
-                  </td>
+          {/* =================================================
+              PRINT BUTTON
+          ================================================== */}
 
-                  <td>
+          <button
 
-                    {
+            type="button"
 
-                      expense.date
+            className="print-expense-btn"
 
-                        ?
+            onClick={
+              printExpenseReport
+            }
 
-                        new Date(expense.date)
+            disabled={
+              loading ||
+              expenses.length === 0
+            }
 
-                        .toISOString()
+            title="Print all expense records"
 
-                        .split("T")[0]
+          >
 
-                        :
+            <FaPrint />
 
-                        "-"
+            Print Expense Report
 
-                    }
+          </button>
 
-                  </td>
 
-                  <td>{expense.time}</td>
+        </div>
 
-                  <td>
 
-                    {
+        {/* ===================================================
+            LOADING
+        ==================================================== */}
 
-                      expense.bill
+        {loading ? (
 
-                      ?
+          <div className="loading">
 
-                      <a
+            Loading Expenses...
 
-                        href={`https://bmgum.onrender.com/uploads/bills/${expense.bill}`}
+          </div>
 
-                        target="_blank"
+        ) : (
 
-                        rel="noreferrer"
+          <table className="expense-table">
 
-                      >
 
-                        View Proof
+            <thead>
 
-                      </a>
+              <tr>
 
-                      :
+                <th>
+                  ID
+                </th>
 
-                      "-"
+                <th>
+                  Expense
+                </th>
 
-                    }
+                <th>
+                  Category
+                </th>
 
-                  </td>
+                <th>
+                  Amount
+                </th>
 
-                  <td>
+                <th>
+                  Description
+                </th>
 
-                    <div className="action-buttons">
+                <th>
+                  Date
+                </th>
 
-                      <button
+                <th>
+                  Time
+                </th>
 
-                        className="edit-btn"
+                <th>
+                  Proof
+                </th>
 
-                        onClick={() => {
+                <th>
+                  Action
+                </th>
 
-                          setEditingId(expense.id);
+              </tr>
 
-                          setFormData({
+            </thead>
 
-                            title: expense.title || "",
 
-                            amount: expense.amount || "",
+            <tbody>
 
-                            category: expense.category || "Decoration",
 
-                            description: expense.description || "",
+              {/* =================================================
+                  NO DATA
+              ================================================== */}
 
-                            date: expense.date
+              {filteredExpenses.length === 0 ? (
 
-                              ? new Date(expense.date)
+                <tr>
 
-                                  .toISOString()
+                  <td
 
-                                  .split("T")[0]
+                    colSpan="9"
 
-                              : "",
+                    className="no-data"
 
-                            time: expense.time || "",
+                  >
 
-                            bill: null
-
-                          });
-
-                          if (expense.bill) {
-
-                            setPreview(
-
-                              `https://bmgum.onrender.com/uploads/bills/${expense.bill}`
-
-                            );
-
-                          } else {
-
-                            setPreview(null);
-
-                          }
-
-                          window.scrollTo({
-
-                            top: 0,
-
-                            behavior: "smooth"
-
-                          });
-
-                        }}
-
-                      >
-
-                        <FaEdit />
-
-                      </button>
-
-                      <button
-
-                        className="delete-btn"
-
-                        onClick={async () => {
-
-                          if (
-
-                            !window.confirm(
-
-                              "Delete this expense?"
-
-                            )
-
-                          ) return;
-
-                          try {
-
-                            await axios.delete(
-
-                              `https://bmgum.onrender.com/api/expenses/${expense.id}`
-
-                            );
-
-                            alert(
-
-                              "Expense Deleted"
-
-                            );
-
-                            loadExpenses();
-
-                          }
-
-                          catch(err){
-
-                            console.log(err);
-
-                            alert(
-
-                              "Delete Failed"
-
-                            );
-
-                          }
-
-                        }}
-
-                      >
-
-                        <FaTrash />
-
-                      </button>
-
-                    </div>
+                    No Expense Found
 
                   </td>
 
                 </tr>
 
-              ))
+              ) : (
 
-            )
 
-          }
+                /* ===============================================
+                   EXPENSE ROWS
+                ================================================ */
 
-        </tbody>
+                filteredExpenses.map(
+                  (expense) => (
 
-      </table>
+                    <tr
+                      key={
+                        expense.id
+                      }
+                    >
 
-    )}
 
-  </div>
-  </div>
+                      {/* ID */}
 
-);
+                      <td>
+
+                        {
+                          expense.id
+                        }
+
+                      </td>
+
+
+                      {/* EXPENSE */}
+
+                      <td>
+
+                        {
+                          expense.title
+                        }
+
+                      </td>
+
+
+                      {/* CATEGORY */}
+
+                      <td>
+
+                        {
+                          expense.category
+                        }
+
+                      </td>
+
+
+                      {/* AMOUNT */}
+
+                      <td>
+
+                        ₹
+                        {
+                          expense.amount
+                        }
+
+                      </td>
+
+
+                      {/* DESCRIPTION */}
+
+                      <td>
+
+                        {
+                          expense.description ||
+                          "-"
+                        }
+
+                      </td>
+
+
+                      {/* DATE */}
+
+                      <td>
+
+                        {
+
+                          expense.date
+
+                            ?
+
+                            new Date(
+                              expense.date
+                            )
+                              .toISOString()
+                              .split(
+                                "T"
+                              )[0]
+
+                            :
+
+                            "-"
+
+                        }
+
+                      </td>
+
+
+                      {/* TIME */}
+
+                      <td>
+
+                        {
+                          expense.time
+                        }
+
+                      </td>
+
+
+                      {/* PROOF */}
+
+                      <td>
+
+                        {
+
+                          expense.bill
+
+                            ?
+
+                            (
+
+                              <a
+
+                                href={
+
+                                  `${API}/uploads/bills/${expense.bill}`
+
+                                }
+
+                                target="_blank"
+
+                                rel="noreferrer"
+
+                              >
+
+                                View Proof
+
+                              </a>
+
+                            )
+
+                            :
+
+                            "-"
+
+                        }
+
+                      </td>
+
+
+                      {/* ACTION */}
+
+                      <td>
+
+
+                        <div className="action-buttons">
+
+
+                          {/* ==================================
+                              EDIT
+                          =================================== */}
+
+                          <button
+
+                            className="edit-btn"
+
+                            onClick={() => {
+
+                              setEditingId(
+                                expense.id
+                              );
+
+
+                              setFormData({
+
+                                title:
+                                  expense.title ||
+                                  "",
+
+                                amount:
+                                  expense.amount ||
+                                  "",
+
+                                category:
+                                  expense.category ||
+                                  "Decoration",
+
+                                description:
+                                  expense.description ||
+                                  "",
+
+                                date:
+
+                                  expense.date
+
+                                    ?
+
+                                    new Date(
+                                      expense.date
+                                    )
+                                      .toISOString()
+                                      .split(
+                                        "T"
+                                      )[0]
+
+                                    :
+
+                                    "",
+
+                                time:
+                                  expense.time ||
+                                  "",
+
+                                bill:
+                                  null,
+
+                              });
+
+
+                              if (
+                                expense.bill
+                              ) {
+
+                                setPreview(
+
+                                  `${API}/uploads/bills/${expense.bill}`
+
+                                );
+
+                              }
+
+                              else {
+
+                                setPreview(
+                                  null
+                                );
+
+                              }
+
+
+                              window.scrollTo({
+
+                                top: 0,
+
+                                behavior:
+                                  "smooth",
+
+                              });
+
+                            }}
+
+                          >
+
+                            <FaEdit />
+
+                          </button>
+
+
+                          {/* ==================================
+                              DELETE
+                          =================================== */}
+
+                          <button
+
+                            className="delete-btn"
+
+                            onClick={
+
+                              async () => {
+
+                                if (
+
+                                  !window.confirm(
+
+                                    "Delete this expense?"
+
+                                  )
+
+                                ) {
+
+                                  return;
+
+                                }
+
+
+                                try {
+
+                                  await axios.delete(
+
+                                    `${API}/api/expenses/${expense.id}`
+
+                                  );
+
+
+                                  alert(
+                                    "Expense Deleted"
+                                  );
+
+
+                                  loadExpenses();
+
+                                }
+
+                                catch (err) {
+
+                                  console.log(
+                                    err
+                                  );
+
+
+                                  alert(
+                                    "Delete Failed"
+                                  );
+
+                                }
+
+                              }
+
+                            }
+
+                          >
+
+                            <FaTrash />
+
+                          </button>
+
+
+                        </div>
+
+
+                      </td>
+
+
+                    </tr>
+
+                  )
+
+                )
+
+              )}
+
+
+            </tbody>
+
+
+          </table>
+
+        )}
+
+
+      </div>
+
+
+    </div>
+
+  );
 
 }
+
 
 export default ExpenseManagement;

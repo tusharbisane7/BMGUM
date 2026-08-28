@@ -5,29 +5,60 @@ import "../styles/UPIDonationManagement.css";
 
 const API = "https://bmgum.onrender.com/api";
 
+// ============================================================
+// MANDAL INFORMATION
+// ============================================================
+
+const MANDAL_NAME = "बाल मित्र गणेश उत्सव मंडळ";
+
+const MANDAL_ADDRESS =
+    "खिरणीबागपुरा , अचलपुर , भारत";
+
+
+// ============================================================
+// COMPONENT
+// ============================================================
+
 function UPIDonationManagement() {
 
-    const token = localStorage.getItem("token");
+    // ========================================================
+    // AUTH
+    // ========================================================
 
-    const [loading, setLoading] = useState(true);
+    const token =
+        localStorage.getItem("token");
 
-    const [donations, setDonations] = useState([]);
 
-    const [search, setSearch] = useState("");
+    // ========================================================
+    // STATES
+    // ========================================================
 
-    const [statusFilter, setStatusFilter] = useState("All");
+    const [loading, setLoading] =
+        useState(true);
 
-    const [selectedDonation, setSelectedDonation] = useState(null);
+    const [donations, setDonations] =
+        useState([]);
 
-    /* =====================================
-        LOAD DONATIONS
-    ===================================== */
+    const [search, setSearch] =
+        useState("");
+
+    const [statusFilter, setStatusFilter] =
+        useState("All");
+
+    const [selectedDonation, setSelectedDonation] =
+        useState(null);
+
+
+    // ========================================================
+    // LOAD DONATIONS
+    // ========================================================
 
     useEffect(() => {
 
         fetchDonations();
 
     }, []);
+
 
     const fetchDonations = async () => {
 
@@ -40,20 +71,20 @@ function UPIDonationManagement() {
                 `${API}/upi-donations`,
 
                 {
-
                     headers: {
-
-                        Authorization: `Bearer ${token}`
-
+                        Authorization:
+                            `Bearer ${token}`
                     }
-
                 }
 
             );
 
+
             if (res.data.success) {
 
-                setDonations(res.data.donations);
+                setDonations(
+                    res.data.donations || []
+                );
 
             }
 
@@ -70,11 +101,8 @@ function UPIDonationManagement() {
             console.error(err);
 
             alert(
-
                 err.response?.data?.message ||
-
                 "Unable to fetch UPI donations."
-
             );
 
         }
@@ -86,9 +114,11 @@ function UPIDonationManagement() {
         }
 
     };
-        /* =====================================
-        APPROVE DONATION
-    ===================================== */
+
+
+    // ========================================================
+    // APPROVE DONATION
+    // ========================================================
 
     const approveDonation = async (id) => {
 
@@ -101,26 +131,30 @@ function UPIDonationManagement() {
                 {},
 
                 {
-
                     headers: {
-
-                        Authorization: `Bearer ${token}`
-
+                        Authorization:
+                            `Bearer ${token}`
                     }
-
                 }
 
             );
 
+
             if (res.data.success) {
 
-                alert("Donation Approved Successfully.");
+                alert(
+                    "Donation Approved Successfully."
+                );
 
                 fetchDonations();
 
-            } else {
+            }
 
-                alert(res.data.message);
+            else {
+
+                alert(
+                    res.data.message
+                );
 
             }
 
@@ -131,11 +165,8 @@ function UPIDonationManagement() {
             console.error(err);
 
             alert(
-
                 err.response?.data?.message ||
-
                 "Approval Failed."
-
             );
 
         }
@@ -143,10 +174,9 @@ function UPIDonationManagement() {
     };
 
 
-
-    /* =====================================
-        REJECT DONATION
-    ===================================== */
+    // ========================================================
+    // REJECT DONATION
+    // ========================================================
 
     const rejectDonation = async (id) => {
 
@@ -159,26 +189,30 @@ function UPIDonationManagement() {
                 {},
 
                 {
-
                     headers: {
-
-                        Authorization: `Bearer ${token}`
-
+                        Authorization:
+                            `Bearer ${token}`
                     }
-
                 }
 
             );
 
+
             if (res.data.success) {
 
-                alert("Donation Rejected Successfully.");
+                alert(
+                    "Donation Rejected Successfully."
+                );
 
                 fetchDonations();
 
-            } else {
+            }
 
-                alert(res.data.message);
+            else {
+
+                alert(
+                    res.data.message
+                );
 
             }
 
@@ -189,11 +223,8 @@ function UPIDonationManagement() {
             console.error(err);
 
             alert(
-
                 err.response?.data?.message ||
-
                 "Reject Failed."
-
             );
 
         }
@@ -201,10 +232,9 @@ function UPIDonationManagement() {
     };
 
 
-
-    /* =====================================
-        FILTER DATA
-    ===================================== */
+    // ========================================================
+    // FILTER DATA
+    // ========================================================
 
     const filteredData = useMemo(() => {
 
@@ -213,27 +243,26 @@ function UPIDonationManagement() {
             const matchesSearch =
 
                 item.donorname
-
                     ?.toLowerCase()
-
-                    .includes(search.toLowerCase())
+                    .includes(
+                        search.toLowerCase()
+                    )
 
                 ||
 
                 item.utr
-
                     ?.toLowerCase()
-
-                    .includes(search.toLowerCase())
+                    .includes(
+                        search.toLowerCase()
+                    )
 
                 ||
 
                 item.receipt
-
                     ?.toLowerCase()
-
-                    .includes(search.toLowerCase());
-
+                    .includes(
+                        search.toLowerCase()
+                    );
 
 
             const matchesStatus =
@@ -245,65 +274,1237 @@ function UPIDonationManagement() {
                 item.status === statusFilter;
 
 
-
-            return matchesSearch && matchesStatus;
+            return (
+                matchesSearch &&
+                matchesStatus
+            );
 
         });
 
     }, [
-
         donations,
-
         search,
-
         statusFilter
-
     ]);
 
 
+    // ========================================================
+    // DASHBOARD STATS
+    // ========================================================
 
-    /* =====================================
-        DASHBOARD STATS
-    ===================================== */
+    const totalAmount =
+        filteredData.reduce(
 
-    const totalAmount = filteredData.reduce(
+            (sum, item) =>
 
-        (sum, item) =>
+                sum +
+                Number(
+                    item.amount || 0
+                ),
 
-            sum + Number(item.amount),
+            0
 
-        0
-
-    );
-
-
-
-    const pendingCount = filteredData.filter(
-
-        (item) => item.status === "Pending"
-
-    ).length;
+        );
 
 
-
-    const approvedCount = filteredData.filter(
-
-        (item) => item.status === "Success"
-
-    ).length;
-
+    const pendingCount =
+        filteredData.filter(
+            (item) =>
+                item.status === "Pending"
+        ).length;
 
 
-    const rejectedCount = filteredData.filter(
+    const approvedCount =
+        filteredData.filter(
+            (item) =>
+                item.status === "Success"
+        ).length;
 
-        (item) => item.status === "Rejected"
 
-    ).length;
+    const rejectedCount =
+        filteredData.filter(
+            (item) =>
+                item.status === "Rejected"
+        ).length;
+
+
+    // ========================================================
+    // PRINT HELPERS
+    // ========================================================
+
+    const formatAmount = (amount) => {
+
+        return `₹${Number(
+            amount || 0
+        ).toLocaleString("en-IN")}`;
+
+    };
+
+
+    const formatDate = (date) => {
+
+        if (!date) {
+            return "-";
+        }
+
+        const parsedDate =
+            new Date(date);
+
+        if (
+            Number.isNaN(
+                parsedDate.getTime()
+            )
+        ) {
+
+            return "-";
+
+        }
+
+        return parsedDate.toLocaleDateString(
+            "mr-IN",
+            {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric"
+            }
+        );
+
+    };
+
+
+    const formatTime = (date) => {
+
+        if (!date) {
+            return "-";
+        }
+
+        const parsedDate =
+            new Date(date);
+
+        if (
+            Number.isNaN(
+                parsedDate.getTime()
+            )
+        ) {
+
+            return "-";
+
+        }
+
+        return parsedDate.toLocaleTimeString(
+            "mr-IN",
+            {
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: true
+            }
+        );
+
+    };
+
+
+    // ========================================================
+    // GET ADMIN NAME
+    // ========================================================
+
+    const getAdminName = () => {
+
         return (
+
+            localStorage.getItem(
+                "adminName"
+            )
+
+            ||
+
+            localStorage.getItem(
+                "admin_name"
+            )
+
+            ||
+
+            localStorage.getItem(
+                "userName"
+            )
+
+            ||
+
+            localStorage.getItem(
+                "username"
+            )
+
+            ||
+
+            localStorage.getItem(
+                "name"
+            )
+
+            ||
+
+            "प्रशासक"
+
+        );
+
+    };
+
+
+    // ========================================================
+    // PRINT ALL UPI DONATIONS
+    // ========================================================
+
+    const printAllDonations = () => {
+
+        // ----------------------------------------------------
+        // CHECK DATA
+        // ----------------------------------------------------
+
+        if (
+            !donations ||
+            donations.length === 0
+        ) {
+
+            alert(
+                "प्रिंट करण्यासाठी कोणतीही UPI देणगी उपलब्ध नाही."
+            );
+
+            return;
+
+        }
+
+
+        // ----------------------------------------------------
+        // OPEN PRINT WINDOW
+        // ----------------------------------------------------
+
+        const printWindow =
+            window.open(
+                "",
+                "_blank",
+                "width=1400,height=900"
+            );
+
+
+        if (!printWindow) {
+
+            alert(
+                "Print window उघडता आली नाही. कृपया browser popup allow करा."
+            );
+
+            return;
+
+        }
+
+
+        // ----------------------------------------------------
+        // ADMIN
+        // ----------------------------------------------------
+
+        const adminName =
+            getAdminName();
+
+
+        // ----------------------------------------------------
+        // GENERATION DATE / TIME
+        // ----------------------------------------------------
+
+        const now =
+            new Date();
+
+
+        const generatedDate =
+            now.toLocaleDateString(
+                "mr-IN",
+                {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric"
+                }
+            );
+
+
+        const generatedTime =
+            now.toLocaleTimeString(
+                "mr-IN",
+                {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    hour12: true
+                }
+            );
+
+
+        // ----------------------------------------------------
+        // ALL DATA STATISTICS
+        // ----------------------------------------------------
+
+        const printTotalAmount =
+            donations.reduce(
+
+                (sum, item) =>
+
+                    sum +
+                    Number(
+                        item.amount || 0
+                    ),
+
+                0
+
+            );
+
+
+        const printApprovedAmount =
+            donations
+                .filter(
+                    (item) =>
+                        item.status === "Success"
+                )
+                .reduce(
+
+                    (sum, item) =>
+
+                        sum +
+                        Number(
+                            item.amount || 0
+                        ),
+
+                    0
+
+                );
+
+
+        const printPendingAmount =
+            donations
+                .filter(
+                    (item) =>
+                        item.status === "Pending"
+                )
+                .reduce(
+
+                    (sum, item) =>
+
+                        sum +
+                        Number(
+                            item.amount || 0
+                        ),
+
+                    0
+
+                );
+
+
+        const printRejectedAmount =
+            donations
+                .filter(
+                    (item) =>
+                        item.status === "Rejected"
+                )
+                .reduce(
+
+                    (sum, item) =>
+
+                        sum +
+                        Number(
+                            item.amount || 0
+                        ),
+
+                    0
+
+                );
+
+
+        // ----------------------------------------------------
+        // TABLE ROWS
+        // ----------------------------------------------------
+
+        const rows = donations
+            .map(
+                (item, index) => {
+
+                    const statusClass =
+                        item.status === "Success"
+                            ? "success"
+                            : item.status === "Pending"
+                                ? "pending"
+                                : item.status === "Rejected"
+                                    ? "rejected"
+                                    : "";
+
+
+                    return `
+
+                        <tr>
+
+                            <td>
+                                ${index + 1}
+                            </td>
+
+                            <td>
+                                ${item.id ?? "-"}
+                            </td>
+
+                            <td>
+                                ${item.receipt || "-"}
+                            </td>
+
+                            <td>
+                                ${item.donorname || "-"}
+                            </td>
+
+                            <td>
+                                ${item.mobile || "-"}
+                            </td>
+
+                            <td class="amount">
+                                ${formatAmount(
+                                    item.amount
+                                )}
+                            </td>
+
+                            <td class="utr">
+                                ${item.utr || "-"}
+                            </td>
+
+                            <td>
+                                ${
+                                    item.payment_method ||
+                                    "UPI"
+                                }
+                            </td>
+
+                            <td>
+
+                                <span
+                                    class="status ${statusClass}"
+                                >
+                                    ${item.status || "-"}
+                                </span>
+
+                            </td>
+
+                            <td>
+                                ${formatDate(
+                                    item.createdat
+                                )}
+                            </td>
+
+                            <td>
+                                ${formatTime(
+                                    item.createdat
+                                )}
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                }
+            )
+            .join("");
+
+
+        // ----------------------------------------------------
+        // PRINT DOCUMENT
+        // ----------------------------------------------------
+
+        printWindow.document.write(`
+
+            <!DOCTYPE html>
+
+            <html lang="mr">
+
+            <head>
+
+                <meta charset="UTF-8">
+
+                <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1.0"
+                >
+
+                <title>
+                    UPI देणगी अहवाल
+                </title>
+
+
+                <style>
+
+                    /* ========================================
+                       FONT
+                    ======================================== */
+
+                    @font-face {
+
+                        font-family:
+                            "Sahitya";
+
+                        src:
+                            url("/fonts/Sahitya-Regular.ttf")
+                            format("truetype");
+
+                        font-weight:
+                            normal;
+
+                        font-style:
+                            normal;
+
+                    }
+
+
+                    /* ========================================
+                       RESET
+                    ======================================== */
+
+                    * {
+
+                        box-sizing:
+                            border-box;
+
+                    }
+
+
+                    body {
+
+                        margin:
+                            0;
+
+                        padding:
+                            20px;
+
+                        background:
+                            #ffffff;
+
+                        color:
+                            #222;
+
+                        font-family:
+                            "Sahitya",
+                            "Noto Sans Devanagari",
+                            Arial,
+                            sans-serif;
+
+                    }
+
+
+                    /* ========================================
+                       HEADER
+                    ======================================== */
+
+                    .header {
+
+                        text-align:
+                            center;
+
+                        padding:
+                            0 0 14px;
+
+                        margin-bottom:
+                            15px;
+
+                        border-bottom:
+                            2px solid #8b4513;
+
+                    }
+
+
+                    .mandal-name {
+
+                        margin:
+                            0;
+
+                        color:
+                            #8b4513;
+
+                        font-size:
+                            28px;
+
+                        font-weight:
+                            700;
+
+                    }
+
+
+                    .mandal-address {
+
+                        margin:
+                            4px 0;
+
+                        font-size:
+                            14px;
+
+                        color:
+                            #444;
+
+                    }
+
+
+                    .report-title {
+
+                        margin:
+                            7px 0 2px;
+
+                        font-size:
+                            21px;
+
+                        font-weight:
+                            700;
+
+                        color:
+                            #8b4513;
+
+                    }
+
+
+                    /* ========================================
+                       META
+                    ======================================== */
+
+                    .meta {
+
+                        display:
+                            flex;
+
+                        justify-content:
+                            space-between;
+
+                        gap:
+                            20px;
+
+                        margin-bottom:
+                            15px;
+
+                        font-size:
+                            12px;
+
+                    }
+
+
+                    /* ========================================
+                       SUMMARY
+                    ======================================== */
+
+                    .summary {
+
+                        display:
+                            grid;
+
+                        grid-template-columns:
+                            repeat(4, 1fr);
+
+                        gap:
+                            10px;
+
+                        margin-bottom:
+                            18px;
+
+                    }
+
+
+                    .summary-box {
+
+                        border:
+                            1px solid #aaa;
+
+                        border-radius:
+                            7px;
+
+                        padding:
+                            10px;
+
+                        text-align:
+                            center;
+
+                    }
+
+
+                    .summary-label {
+
+                        display:
+                            block;
+
+                        font-size:
+                            11px;
+
+                        margin-bottom:
+                            5px;
+
+                    }
+
+
+                    .summary-value {
+
+                        display:
+                            block;
+
+                        font-size:
+                            17px;
+
+                        font-weight:
+                            700;
+
+                    }
+
+
+                    /* ========================================
+                       TABLE
+                    ======================================== */
+
+                    table {
+
+                        width:
+                            100%;
+
+                        border-collapse:
+                            collapse;
+
+                        font-size:
+                            9px;
+
+                    }
+
+
+                    thead {
+
+                        display:
+                            table-header-group;
+
+                    }
+
+
+                    th {
+
+                        background:
+                            #8b4513;
+
+                        color:
+                            #ffffff;
+
+                        padding:
+                            7px 5px;
+
+                        border:
+                            1px solid #555;
+
+                        text-align:
+                            center;
+
+                        font-weight:
+                            700;
+
+                        white-space:
+                            nowrap;
+
+                    }
+
+
+                    td {
+
+                        padding:
+                            6px 5px;
+
+                        border:
+                            1px solid #777;
+
+                        text-align:
+                            center;
+
+                        vertical-align:
+                            middle;
+
+                    }
+
+
+                    tbody tr:nth-child(even) {
+
+                        background:
+                            #faf7f2;
+
+                    }
+
+
+                    .amount {
+
+                        text-align:
+                            right;
+
+                        font-weight:
+                            700;
+
+                        white-space:
+                            nowrap;
+
+                    }
+
+
+                    .utr {
+
+                        font-family:
+                            Arial,
+                            sans-serif;
+
+                        font-size:
+                            8px;
+
+                    }
+
+
+                    /* ========================================
+                       STATUS
+                    ======================================== */
+
+                    .status {
+
+                        display:
+                            inline-block;
+
+                        padding:
+                            3px 7px;
+
+                        border-radius:
+                            12px;
+
+                        font-size:
+                            8px;
+
+                        font-weight:
+                            700;
+
+                    }
+
+
+                    .status.success {
+
+                        background:
+                            #d9f4df;
+
+                        color:
+                            #16733b;
+
+                    }
+
+
+                    .status.pending {
+
+                        background:
+                            #fff1c7;
+
+                        color:
+                            #9a6b00;
+
+                    }
+
+
+                    .status.rejected {
+
+                        background:
+                            #ffdede;
+
+                        color:
+                            #a32121;
+
+                    }
+
+
+                    /* ========================================
+                       FOOTER
+                    ======================================== */
+
+                    .footer {
+
+                        margin-top:
+                            25px;
+
+                        padding-top:
+                            10px;
+
+                        border-top:
+                            1px solid #999;
+
+                        display:
+                            flex;
+
+                        justify-content:
+                            space-between;
+
+                        font-size:
+                            11px;
+
+                    }
+
+
+                    .footer-admin {
+
+                        font-weight:
+                            700;
+
+                    }
+
+
+                    /* ========================================
+                       PRINT
+                    ======================================== */
+
+                    @page {
+
+                        size:
+                            A4 landscape;
+
+                        margin:
+                            10mm;
+
+                    }
+
+
+                    @media print {
+
+                        body {
+
+                            padding:
+                                0;
+
+                        }
+
+
+                        tr {
+
+                            page-break-inside:
+                                avoid;
+
+                        }
+
+
+                        .summary-box {
+
+                            break-inside:
+                                avoid;
+
+                        }
+
+                    }
+
+                </style>
+
+            </head>
+
+
+            <body>
+
+
+                <!-- =========================================
+                     HEADER
+                ========================================== -->
+
+                <div class="header">
+
+                    <h1 class="mandal-name">
+
+                        ${MANDAL_NAME}
+
+                    </h1>
+
+
+                    <p class="mandal-address">
+
+                        ${MANDAL_ADDRESS}
+
+                    </p>
+
+
+                    <h2 class="report-title">
+
+                        UPI देणगी अहवाल
+
+                    </h2>
+
+                </div>
+
+
+                <!-- =========================================
+                     META
+                ========================================== -->
+
+                <div class="meta">
+
+                    <span>
+
+                        अहवाल तयार करण्याची तारीख :
+                        ${generatedDate}
+
+                    </span>
+
+
+                    <span>
+
+                        अहवाल तयार करण्याची वेळ :
+                        ${generatedTime}
+
+                    </span>
+
+                </div>
+
+
+                <!-- =========================================
+                     SUMMARY
+                ========================================== -->
+
+                <div class="summary">
+
+
+                    <div class="summary-box">
+
+                        <span class="summary-label">
+
+                            एकूण UPI देणगी नोंदी
+
+                        </span>
+
+                        <span class="summary-value">
+
+                            ${donations.length}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="summary-box">
+
+                        <span class="summary-label">
+
+                            एकूण जमा रक्कम
+
+                        </span>
+
+                        <span class="summary-value">
+
+                            ${formatAmount(
+                                printTotalAmount
+                            )}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="summary-box">
+
+                        <span class="summary-label">
+
+                            मंजूर रक्कम
+
+                        </span>
+
+                        <span class="summary-value">
+
+                            ${formatAmount(
+                                printApprovedAmount
+                            )}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="summary-box">
+
+                        <span class="summary-label">
+
+                            प्रलंबित रक्कम
+
+                        </span>
+
+                        <span class="summary-value">
+
+                            ${formatAmount(
+                                printPendingAmount
+                            )}
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     TABLE
+                ========================================== -->
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                क्र.
+                            </th>
+
+                            <th>
+                                ID
+                            </th>
+
+                            <th>
+                                पावती
+                            </th>
+
+                            <th>
+                                देणगीदाराचे नाव
+                            </th>
+
+                            <th>
+                                मोबाईल
+                            </th>
+
+                            <th>
+                                रक्कम
+                            </th>
+
+                            <th>
+                                UTR क्रमांक
+                            </th>
+
+                            <th>
+                                पेमेंट पद्धत
+                            </th>
+
+                            <th>
+                                स्थिती
+                            </th>
+
+                            <th>
+                                दिनांक
+                            </th>
+
+                            <th>
+                                वेळ
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        ${rows}
+
+                    </tbody>
+
+                </table>
+
+
+                <!-- =========================================
+                     REJECTED SUMMARY
+                ========================================== -->
+
+                <div
+                    style="
+                        margin-top:15px;
+                        font-size:11px;
+                    "
+                >
+
+                    <strong>
+                        नाकारलेली रक्कम :
+                    </strong>
+
+                    ${formatAmount(
+                        printRejectedAmount
+                    )}
+
+                </div>
+
+
+                <!-- =========================================
+                     FOOTER
+                ========================================== -->
+
+                <div class="footer">
+
+                    <div>
+
+                        अहवाल तयार करणारे :
+                        <span class="footer-admin">
+
+                            ${adminName}
+
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        एकूण नोंदी :
+                        ${donations.length}
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     PRINT SCRIPT
+                ========================================== -->
+
+                <script>
+
+                    window.onload = function() {
+
+                        setTimeout(
+                            function() {
+
+                                window.print();
+
+                            },
+                            500
+                        );
+
+                    };
+
+
+                    window.onafterprint = function() {
+
+                        setTimeout(
+                            function() {
+
+                                window.close();
+
+                            },
+                            300
+                        );
+
+                    };
+
+                </script>
+
+
+            </body>
+
+            </html>
+
+        `);
+
+
+        printWindow.document.close();
+
+    };
+
+
+    // ========================================================
+    // RETURN
+    // ========================================================
+
+    return (
 
         <div className="upiDonationPage">
 
-            {/* ================= HERO ================= */}
+
+            {/* ==================================================
+                HERO
+            ================================================== */}
 
             <div className="upiHero">
 
@@ -327,27 +1528,39 @@ function UPIDonationManagement() {
 
             </div>
 
-            {/* ================= STATISTICS ================= */}
+
+            {/* ==================================================
+                STATISTICS
+            ================================================== */}
 
             <div className="statsGrid">
 
+
                 <div className="statCard">
 
-                    <span>💰</span>
+                    <span>
+                        💰
+                    </span>
 
                     <h2>
 
-                        ₹{totalAmount.toLocaleString()}
+                        ₹
+                        {totalAmount.toLocaleString()}
 
                     </h2>
 
-                    <p>Total Collection</p>
+                    <p>
+                        Total Collection
+                    </p>
 
                 </div>
 
+
                 <div className="statCard">
 
-                    <span>🟡</span>
+                    <span>
+                        🟡
+                    </span>
 
                     <h2>
 
@@ -355,13 +1568,18 @@ function UPIDonationManagement() {
 
                     </h2>
 
-                    <p>Pending</p>
+                    <p>
+                        Pending
+                    </p>
 
                 </div>
 
+
                 <div className="statCard">
 
-                    <span>✅</span>
+                    <span>
+                        ✅
+                    </span>
 
                     <h2>
 
@@ -369,13 +1587,18 @@ function UPIDonationManagement() {
 
                     </h2>
 
-                    <p>Approved</p>
+                    <p>
+                        Approved
+                    </p>
 
                 </div>
 
+
                 <div className="statCard">
 
-                    <span>❌</span>
+                    <span>
+                        ❌
+                    </span>
 
                     <h2>
 
@@ -383,15 +1606,21 @@ function UPIDonationManagement() {
 
                     </h2>
 
-                    <p>Rejected</p>
+                    <p>
+                        Rejected
+                    </p>
 
                 </div>
 
             </div>
 
-            {/* ================= SEARCH ================= */}
+
+            {/* ==================================================
+                SEARCH / FILTER / PRINT
+            ================================================== */}
 
             <div className="toolbar">
+
 
                 <input
 
@@ -401,22 +1630,23 @@ function UPIDonationManagement() {
 
                     value={search}
 
-                    onChange={(e)=>
-
-                        setSearch(e.target.value)
-
+                    onChange={(e) =>
+                        setSearch(
+                            e.target.value
+                        )
                     }
 
                 />
+
 
                 <select
 
                     value={statusFilter}
 
-                    onChange={(e)=>
-
-                        setStatusFilter(e.target.value)
-
+                    onChange={(e) =>
+                        setStatusFilter(
+                            e.target.value
+                        )
                     }
 
                 >
@@ -427,17 +1657,20 @@ function UPIDonationManagement() {
 
                     </option>
 
+
                     <option value="Pending">
 
                         Pending
 
                     </option>
 
+
                     <option value="Success">
 
                         Success
 
                     </option>
+
 
                     <option value="Rejected">
 
@@ -447,403 +1680,557 @@ function UPIDonationManagement() {
 
                 </select>
 
+
+                {/* ==============================================
+                    PRINT ALL
+                =============================================== */}
+
+                <button
+
+                    type="button"
+
+                    className="printAllBtn"
+
+                    onClick={
+                        printAllDonations
+                    }
+
+                    disabled={
+                        loading ||
+                        donations.length === 0
+                    }
+
+                >
+
+                    🖨️ Print All Donations
+
+                </button>
+
             </div>
 
-            {/* ================= CONTENT ================= */}
+
+            {/* ==================================================
+                CONTENT
+            ================================================== */}
 
             {
 
-                loading ?
+                loading
 
-                (
+                    ?
 
-                    <div className="loadingBox">
+                    (
 
-                        Loading Donations...
+                        <div className="loadingBox">
 
-                    </div>
+                            Loading Donations...
 
-                )
+                        </div>
 
-                :
+                    )
 
-                filteredData.length===0 ?
+                    :
 
-                (
+                    filteredData.length === 0
 
-                    <div className="emptyBox">
+                        ?
 
-                        <span>📭</span>
+                        (
 
-                        <h2>
+                            <div className="emptyBox">
 
-                            No Donations Found
+                                <span>
+                                    📭
+                                </span>
 
-                        </h2>
+                                <h2>
 
-                        <p>
+                                    No Donations Found
 
-                            No UPI donations available.
+                                </h2>
 
-                        </p>
+                                <p>
 
-                    </div>
+                                    No UPI donations available.
 
-                )
+                                </p>
 
-                :
+                            </div>
 
-                (
+                        )
 
-                    <div className="tableWrapper">
+                        :
 
-                        <table className="upiTable">
+                        (
 
-                            <thead>
+                            <div className="tableWrapper">
 
-                                <tr>
+                                <table
+                                    className="upiTable"
+                                >
 
-                                    <th>#</th>
+                                    <thead>
 
-                                    <th>Receipt</th>
+                                        <tr>
 
-                                    <th>Donor</th>
+                                            <th>
+                                                #
+                                            </th>
 
-                                    <th>Mobile</th>
+                                            <th>
+                                                Receipt
+                                            </th>
 
-                                    <th>Amount</th>
+                                            <th>
+                                                Donor
+                                            </th>
 
-                                    <th>UTR</th>
+                                            <th>
+                                                Mobile
+                                            </th>
 
-                                    <th>Status</th>
+                                            <th>
+                                                Amount
+                                            </th>
 
-                                    <th>Date</th>
+                                            <th>
+                                                UTR
+                                            </th>
 
-                                    <th>Action</th>
+                                            <th>
+                                                Status
+                                            </th>
 
-                                </tr>
+                                            <th>
+                                                Date
+                                            </th>
 
-                            </thead>
-
-                            <tbody>
-
-                                {
-
-                                    filteredData.map((item,index)=>(
-
-                                        <tr key={item.id}>
-
-                                            <td>
-
-                                                {index+1}
-
-                                            </td>
-
-                                            <td>
-
-                                                {item.receipt}
-
-                                            </td>
-
-                                            <td>
-
-                                                {item.donorname}
-
-                                            </td>
-
-                                            <td>
-
-                                                {item.mobile}
-
-                                            </td>
-
-                                            <td>
-
-                                                ₹{item.amount}
-
-                                            </td>
-
-                                            <td>
-
-                                                {item.utr}
-
-                                            </td>
-
-                                            <td>
-
-                                                <span
-
-                                                    className={`status ${item.status.toLowerCase()}`}
-
-                                                >
-
-                                                    {item.status}
-
-                                                </span>
-
-                                            </td>
-
-                                            <td>
-
-                                                {
-
-                                                    new Date(
-
-                                                        item.createdat
-
-                                                    ).toLocaleDateString("en-IN")
-
-                                                }
-
-                                            </td>
-
-                                            <td>
-
-                                                <div className="actionButtons">
-
-                                                    <button
-
-                                                        className="viewBtn"
-
-                                                        onClick={()=>
-
-                                                            setSelectedDonation(item)
-
-                                                        }
-
-                                                    >
-
-                                                        👁
-
-                                                    </button>
-
-                                                    {
-
-                                                        item.status==="Pending" &&
-
-                                                        <>
-
-                                                            <button
-
-                                                                className="approveBtn"
-
-                                                                onClick={()=>
-
-                                                                    approveDonation(item.id)
-
-                                                                }
-
-                                                            >
-
-                                                                ✅
-
-                                                            </button>
-
-                                                            <button
-
-                                                                className="rejectBtn"
-
-                                                                onClick={()=>
-
-                                                                    rejectDonation(item.id)
-
-                                                                }
-
-                                                            >
-
-                                                                ❌
-
-                                                            </button>
-
-                                                        </>
-
-                                                    }
-
-                                                </div>
-
-                                            </td>
+                                            <th>
+                                                Action
+                                            </th>
 
                                         </tr>
 
-                                    ))
+                                    </thead>
 
-                                }
 
-                            </tbody>
+                                    <tbody>
 
-                        </table>
+                                        {
 
-                    </div>
+                                            filteredData.map(
+                                                (
+                                                    item,
+                                                    index
+                                                ) => (
 
-                )
+                                                    <tr
+                                                        key={
+                                                            item.id
+                                                        }
+                                                    >
+
+                                                        <td>
+
+                                                            {
+                                                                index + 1
+                                                            }
+
+                                                        </td>
+
+
+                                                        <td>
+
+                                                            {
+                                                                item.receipt
+                                                            }
+
+                                                        </td>
+
+
+                                                        <td>
+
+                                                            {
+                                                                item.donorname
+                                                            }
+
+                                                        </td>
+
+
+                                                        <td>
+
+                                                            {
+                                                                item.mobile
+                                                            }
+
+                                                        </td>
+
+
+                                                        <td>
+
+                                                            ₹
+                                                            {
+                                                                item.amount
+                                                            }
+
+                                                        </td>
+
+
+                                                        <td>
+
+                                                            {
+                                                                item.utr
+                                                            }
+
+                                                        </td>
+
+
+                                                        <td>
+
+                                                            <span
+
+                                                                className={
+                                                                    `status ${
+                                                                        item.status
+                                                                            .toLowerCase()
+                                                                    }`
+                                                                }
+
+                                                            >
+
+                                                                {
+                                                                    item.status
+                                                                }
+
+                                                            </span>
+
+                                                        </td>
+
+
+                                                        <td>
+
+                                                            {
+
+                                                                new Date(
+                                                                    item.createdat
+                                                                ).toLocaleDateString(
+                                                                    "en-IN"
+                                                                )
+
+                                                            }
+
+                                                        </td>
+
+
+                                                        <td>
+
+                                                            <div
+                                                                className="actionButtons"
+                                                            >
+
+                                                                <button
+
+                                                                    className="viewBtn"
+
+                                                                    onClick={() =>
+                                                                        setSelectedDonation(
+                                                                            item
+                                                                        )
+                                                                    }
+
+                                                                >
+
+                                                                    👁
+
+                                                                </button>
+
+
+                                                                {
+
+                                                                    item.status ===
+                                                                        "Pending"
+
+                                                                        &&
+
+                                                                        <>
+
+                                                                            <button
+
+                                                                                className="approveBtn"
+
+                                                                                onClick={() =>
+                                                                                    approveDonation(
+                                                                                        item.id
+                                                                                    )
+                                                                                }
+
+                                                                            >
+
+                                                                                ✅
+
+                                                                            </button>
+
+
+                                                                            <button
+
+                                                                                className="rejectBtn"
+
+                                                                                onClick={() =>
+                                                                                    rejectDonation(
+                                                                                        item.id
+                                                                                    )
+                                                                                }
+
+                                                                            >
+
+                                                                                ❌
+
+                                                                            </button>
+
+                                                                        </>
+
+                                                                }
+
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                )
+                                            )
+
+                                        }
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+                        )
 
             }
-                        {/* ===============================
+
+
+            {/* ==================================================
                 MOBILE CARDS
-            =============================== */}
+            ================================================== */}
 
             <div className="mobileCards">
 
                 {
 
-                    filteredData.map((item) => (
+                    filteredData.map(
+                        (item) => (
 
-                        <div
+                            <div
 
-                            className="mobileCard"
+                                className="mobileCard"
 
-                            key={item.id}
-
-                        >
-
-                            <div className="cardHeader">
-
-                                <h3>
-
-                                    {item.donorname}
-
-                                </h3>
-
-                                <span
-
-                                    className={`status ${item.status.toLowerCase()}`}
-
-                                >
-
-                                    {item.status}
-
-                                </span>
-
-                            </div>
-
-                            <p>
-
-                                <strong>Receipt :</strong>
-
-                                {item.receipt}
-
-                            </p>
-
-                            <p>
-
-                                <strong>Amount :</strong>
-
-                                ₹{item.amount}
-
-                            </p>
-
-                            <p>
-
-                                <strong>UTR :</strong>
-
-                                {item.utr}
-
-                            </p>
-
-                            <p>
-
-                                <strong>Mobile :</strong>
-
-                                {item.mobile}
-
-                            </p>
-
-                            <p>
-
-                                <strong>Payment :</strong>
-
-                                {item.payment_method || "UPI"}
-
-                            </p>
-
-                            <p>
-
-                                <strong>Date :</strong>
-
-                                {
-
-                                    new Date(
-
-                                        item.createdat
-
-                                    ).toLocaleDateString("en-IN")
-
+                                key={
+                                    item.id
                                 }
 
-                            </p>
+                            >
 
-                            <div className="mobileActions">
+                                <div className="cardHeader">
 
-                                <button
+                                    <h3>
 
-                                    className="viewBtn"
+                                        {
+                                            item.donorname
+                                        }
 
-                                    onClick={() =>
+                                    </h3>
 
-                                        setSelectedDonation(item)
+
+                                    <span
+
+                                        className={
+                                            `status ${
+                                                item.status.toLowerCase()
+                                            }`
+                                        }
+
+                                    >
+
+                                        {
+                                            item.status
+                                        }
+
+                                    </span>
+
+                                </div>
+
+
+                                <p>
+
+                                    <strong>
+                                        Receipt :
+                                    </strong>
+
+                                    {
+                                        item.receipt
+                                    }
+
+                                </p>
+
+
+                                <p>
+
+                                    <strong>
+                                        Amount :
+                                    </strong>
+
+                                    ₹
+                                    {
+                                        item.amount
+                                    }
+
+                                </p>
+
+
+                                <p>
+
+                                    <strong>
+                                        UTR :
+                                    </strong>
+
+                                    {
+                                        item.utr
+                                    }
+
+                                </p>
+
+
+                                <p>
+
+                                    <strong>
+                                        Mobile :
+                                    </strong>
+
+                                    {
+                                        item.mobile
+                                    }
+
+                                </p>
+
+
+                                <p>
+
+                                    <strong>
+                                        Payment :
+                                    </strong>
+
+                                    {
+                                        item.payment_method ||
+                                        "UPI"
+                                    }
+
+                                </p>
+
+
+                                <p>
+
+                                    <strong>
+                                        Date :
+                                    </strong>
+
+                                    {
+
+                                        new Date(
+                                            item.createdat
+                                        ).toLocaleDateString(
+                                            "en-IN"
+                                        )
 
                                     }
 
-                                >
+                                </p>
 
-                                    👁 View
 
-                                </button>
+                                <div className="mobileActions">
 
-                                {
 
-                                    item.status === "Pending" &&
+                                    <button
 
-                                    <>
+                                        className="viewBtn"
 
-                                        <button
+                                        onClick={() =>
+                                            setSelectedDonation(
+                                                item
+                                            )
+                                        }
 
-                                            className="approveBtn"
+                                    >
 
-                                            onClick={() =>
+                                        👁 View
 
-                                                approveDonation(item.id)
+                                    </button>
 
-                                            }
 
-                                        >
+                                    {
 
-                                            ✅ Approve
+                                        item.status ===
+                                            "Pending"
 
-                                        </button>
+                                            &&
 
-                                        <button
+                                            <>
 
-                                            className="rejectBtn"
+                                                <button
 
-                                            onClick={() =>
+                                                    className="approveBtn"
 
-                                                rejectDonation(item.id)
+                                                    onClick={() =>
+                                                        approveDonation(
+                                                            item.id
+                                                        )
+                                                    }
 
-                                            }
+                                                >
 
-                                        >
+                                                    ✅ Approve
 
-                                            ❌ Reject
+                                                </button>
 
-                                        </button>
 
-                                    </>
+                                                <button
 
-                                }
+                                                    className="rejectBtn"
+
+                                                    onClick={() =>
+                                                        rejectDonation(
+                                                            item.id
+                                                        )
+                                                    }
+
+                                                >
+
+                                                    ❌ Reject
+
+                                                </button>
+
+                                            </>
+
+                                    }
+
+                                </div>
 
                             </div>
 
-                        </div>
-
-                    ))
+                        )
+                    )
 
                 }
 
             </div>
-                        {/* ===============================
+
+
+            {/* ==================================================
                 DONATION DETAILS MODAL
-            =============================== */}
+            ================================================== */}
 
             {
 
@@ -854,9 +2241,9 @@ function UPIDonationManagement() {
                     className="modalOverlay"
 
                     onClick={() =>
-
-                        setSelectedDonation(null)
-
+                        setSelectedDonation(
+                            null
+                        )
                     }
 
                 >
@@ -866,9 +2253,7 @@ function UPIDonationManagement() {
                         className="donationModal"
 
                         onClick={(e) =>
-
                             e.stopPropagation()
-
                         }
 
                     >
@@ -879,83 +2264,129 @@ function UPIDonationManagement() {
 
                         </h2>
 
+
                         <div className="modalBody">
 
+
                             <p>
 
-                                <strong>Receipt :</strong>
+                                <strong>
+                                    Receipt :
+                                </strong>
 
-                                {selectedDonation.receipt}
+                                {
+                                    selectedDonation.receipt
+                                }
 
                             </p>
 
+
                             <p>
 
-                                <strong>Donor :</strong>
+                                <strong>
+                                    Donor :
+                                </strong>
 
-                                {selectedDonation.donorname}
+                                {
+                                    selectedDonation.donorname
+                                }
 
                             </p>
 
+
                             <p>
 
-                                <strong>Mobile :</strong>
+                                <strong>
+                                    Mobile :
+                                </strong>
 
-                                {selectedDonation.mobile}
+                                {
+                                    selectedDonation.mobile
+                                }
 
                             </p>
 
+
                             <p>
 
-                                <strong>Amount :</strong>
+                                <strong>
+                                    Amount :
+                                </strong>
 
-                                ₹{selectedDonation.amount}
+                                ₹
+                                {
+                                    selectedDonation.amount
+                                }
 
                             </p>
 
+
                             <p>
 
-                                <strong>UTR :</strong>
+                                <strong>
+                                    UTR :
+                                </strong>
 
-                                {selectedDonation.utr}
+                                {
+                                    selectedDonation.utr
+                                }
 
                             </p>
 
+
                             <p>
 
-                                <strong>Payment Method :</strong>
+                                <strong>
+                                    Payment Method :
+                                </strong>
 
-                                {selectedDonation.payment_method || "UPI"}
+                                {
+                                    selectedDonation.payment_method ||
+                                    "UPI"
+                                }
 
                             </p>
 
+
                             <p>
 
-                                <strong>Status :</strong>
+                                <strong>
+                                    Status :
+                                </strong>
+
 
                                 <span
 
-                                    className={`status ${selectedDonation.status.toLowerCase()}`}
+                                    className={
+                                        `status ${
+                                            selectedDonation.status.toLowerCase()
+                                        }`
+                                    }
 
                                 >
 
-                                    {selectedDonation.status}
+                                    {
+                                        selectedDonation.status
+                                    }
 
                                 </span>
 
                             </p>
 
+
                             <p>
 
-                                <strong>Date :</strong>
+                                <strong>
+                                    Date :
+                                </strong>
 
                                 {
 
                                     new Date(
-
                                         selectedDonation.createdat
-
-                                    ).toLocaleString("en-IN")
+                                    ).toLocaleString(
+                                        "en-IN"
+                                    )
 
                                 }
 
@@ -963,70 +2394,77 @@ function UPIDonationManagement() {
 
                         </div>
 
+
                         <div className="modalButtons">
+
 
                             {
 
-                                selectedDonation.status === "Pending" &&
+                                selectedDonation.status ===
+                                    "Pending"
 
-                                <>
+                                    &&
 
-                                    <button
+                                    <>
 
-                                        className="approveBtn"
+                                        <button
 
-                                        onClick={async () => {
+                                            className="approveBtn"
 
-                                            await approveDonation(
+                                            onClick={async () => {
 
-                                                selectedDonation.id
+                                                await approveDonation(
+                                                    selectedDonation.id
+                                                );
 
-                                            );
+                                                setSelectedDonation(
+                                                    null
+                                                );
 
-                                            setSelectedDonation(null);
+                                            }}
 
-                                        }}
+                                        >
 
-                                    >
+                                            ✅ Approve
 
-                                        ✅ Approve
+                                        </button>
 
-                                    </button>
 
-                                    <button
+                                        <button
 
-                                        className="rejectBtn"
+                                            className="rejectBtn"
 
-                                        onClick={async () => {
+                                            onClick={async () => {
 
-                                            await rejectDonation(
+                                                await rejectDonation(
+                                                    selectedDonation.id
+                                                );
 
-                                                selectedDonation.id
+                                                setSelectedDonation(
+                                                    null
+                                                );
 
-                                            );
+                                            }}
 
-                                            setSelectedDonation(null);
+                                        >
 
-                                        }}
+                                            ❌ Reject
 
-                                    >
+                                        </button>
 
-                                        ❌ Reject
-
-                                    </button>
-
-                                </>
+                                    </>
 
                             }
+
 
                             <button
 
                                 className="closeBtn"
 
                                 onClick={() =>
-
-                                    setSelectedDonation(null)
-
+                                    setSelectedDonation(
+                                        null
+                                    )
                                 }
 
                             >
@@ -1048,5 +2486,6 @@ function UPIDonationManagement() {
     );
 
 }
+
 
 export default UPIDonationManagement;

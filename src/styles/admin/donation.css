@@ -428,3 +428,314 @@
     }
 
 }
+/* ============================================================
+   PRINT SYSTEM
+   ============================================================ */
+
+.print-only-header,
+.print-summary,
+.print-only-footer {
+  display: none;
+}
+
+
+/* ============================================================
+   PRINT BUTTONS
+   ============================================================ */
+
+.pdf-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.print-btn,
+.pdf-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  padding: 11px 18px;
+
+  border-radius: 10px;
+
+  font-family: "Poppins", sans-serif;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  transition: all 0.3s ease;
+}
+
+.print-btn {
+  background: #333;
+  color: #fff;
+}
+
+.print-btn:hover {
+  background: #111;
+  transform: translateY(-2px);
+}
+
+.pdf-btn {
+  background: #b33a2f;
+  color: #fff;
+}
+
+.pdf-btn:hover {
+  background: #8f2c23;
+  transform: translateY(-2px);
+}
+
+.print-btn:disabled,
+.pdf-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+
+/* ============================================================
+   PRINT MEDIA
+   ============================================================ */
+
+@media print {
+
+  /* Hide website controls */
+
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .donation-page {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+
+  .page-title,
+  .donation-card,
+  .summary-card,
+  .search-box,
+  .table-header,
+  .no-print,
+  button,
+  input,
+  .preview-box {
+    display: none !important;
+  }
+
+
+  /* Show print header */
+
+  .print-only-header {
+    display: block !important;
+
+    text-align: center;
+
+    margin-bottom: 18px;
+
+    padding-bottom: 12px;
+
+    border-bottom:
+      2px solid #333;
+  }
+
+  .print-only-header h1 {
+    font-family:
+      "Sahitya",
+      serif;
+
+    font-size: 24px;
+
+    margin: 0 0 5px;
+  }
+
+  .print-only-header h3 {
+    font-family:
+      "Sahitya",
+      serif;
+
+    font-size: 14px;
+
+    margin: 0 0 5px;
+  }
+
+  .print-only-header h2 {
+    font-family:
+      "Sahitya",
+      serif;
+
+    font-size: 20px;
+
+    margin: 8px 0;
+  }
+
+  .print-only-header p {
+    font-family:
+      "Sahitya",
+      serif;
+
+    font-size: 11px;
+
+    margin: 2px 0;
+  }
+
+
+  /* ========================================================
+     PRINT SUMMARY
+     ======================================================== */
+
+  .print-summary {
+    display: grid !important;
+
+    grid-template-columns:
+      repeat(4, 1fr);
+
+    gap: 10px;
+
+    margin-bottom: 15px;
+  }
+
+  .print-summary > div {
+    border:
+      1px solid #999;
+
+    padding: 8px;
+
+    text-align: center;
+
+    border-radius: 5px;
+  }
+
+  .print-summary strong,
+  .print-summary span {
+    display: block;
+
+    font-family:
+      "Sahitya",
+      serif;
+  }
+
+  .print-summary strong {
+    font-size: 11px;
+
+    margin-bottom: 4px;
+  }
+
+  .print-summary span {
+    font-size: 14px;
+
+    font-weight: 700;
+  }
+
+
+  /* ========================================================
+     TABLE
+     ======================================================== */
+
+  .table-card {
+    width: 100% !important;
+
+    padding: 0 !important;
+
+    margin: 0 !important;
+
+    box-shadow: none !important;
+
+    border: none !important;
+  }
+
+  .donation-table {
+    width: 100% !important;
+
+    border-collapse:
+      collapse !important;
+
+    font-family:
+      "Sahitya",
+      serif !important;
+
+    font-size: 10px !important;
+  }
+
+  .donation-table th {
+    background: #eee !important;
+
+    color: #000 !important;
+
+    border:
+      1px solid #555 !important;
+
+    padding: 7px !important;
+
+    font-family:
+      "Sahitya",
+      serif !important;
+
+    font-weight: 700 !important;
+  }
+
+  .donation-table td {
+    border:
+      1px solid #777 !important;
+
+    padding: 6px !important;
+
+    font-family:
+      "Sahitya",
+      serif !important;
+
+    color: #000 !important;
+  }
+
+
+  /* ========================================================
+     FOOTER
+     ======================================================== */
+
+  .print-only-footer {
+    display: flex !important;
+
+    justify-content:
+      space-between;
+
+    margin-top: 20px;
+
+    padding-top: 8px;
+
+    border-top:
+      1px solid #999;
+
+    font-family:
+      "Sahitya",
+      serif;
+
+    font-size: 10px;
+  }
+
+
+  /* ========================================================
+     PAGE SETTINGS
+     ======================================================== */
+
+  @page {
+    size: A4 landscape;
+
+    margin: 10mm;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tr {
+    page-break-inside:
+      avoid;
+  }
+
+}

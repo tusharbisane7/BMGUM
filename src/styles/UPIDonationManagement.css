@@ -838,3 +838,85 @@
     }
 
 }
+
+/* ============================================================
+   PRINT ALL DONATIONS BUTTON
+   ============================================================ */
+
+.printAllBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    min-height: 46px;
+    padding: 0 20px;
+
+    border: none;
+    border-radius: 12px;
+
+    background: linear-gradient(
+        135deg,
+        #8b4513,
+        #c46a22
+    );
+
+    color: #ffffff;
+
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 20px rgba(139, 69, 19, 0.22);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        opacity 0.25s ease;
+}
+
+.printAllBtn:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 28px rgba(139, 69, 19, 0.30);
+}
+
+.printAllBtn:active {
+    transform: translateY(0);
+}
+
+.printAllBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+
+/* ============================================================
+   PRINT BUTTON RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 900px) {
+
+    .printAllBtn {
+        min-height: 44px;
+        padding: 0 16px;
+        font-size: 13px;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .printAllBtn {
+        width: 100%;
+        min-height: 46px;
+    }
+
+}

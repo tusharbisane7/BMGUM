@@ -24,6 +24,7 @@
     "framer-motion": "^12.42.2",
     "html2canvas": "^1.4.1",
     "jspdf": "^4.2.1",
+    "jspdf-autotable": "^5.0.8",
     "lucide-react": "^1.24.0",
     "pdfkit": "^0.19.1",
     "razorpay": "^2.9.8",
