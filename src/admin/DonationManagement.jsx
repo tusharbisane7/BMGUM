@@ -12,11 +12,6 @@ import {
   FaFilePdf,
 } from "react-icons/fa";
 
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
-
-import sahityaFontUrl from "../assets/Sahitya-Regular.ttf?url";
-
 import "../styles/admin/donation.css";
 
 // ============================================================
@@ -565,839 +560,827 @@ function DonationManagement() {
 
   };
 
-  // ==========================================================
-  // LOAD SAHITYA FONT INTO jsPDF
-  // ==========================================================
-
-  const loadSahityaFont =
-    async (doc) => {
-
-      const response =
-        await fetch(
-          sahityaFontUrl
-        );
-
-      if (!response.ok) {
-
-        throw new Error(
-          "Sahitya-Regular.ttf could not be loaded."
-        );
-
-      }
-
-      const arrayBuffer =
-        await response.arrayBuffer();
-
-      const uint8Array =
-        new Uint8Array(
-          arrayBuffer
-        );
-
-      let binary = "";
-
-      const chunkSize =
-        0x8000;
-
-      for (
-        let i = 0;
-        i < uint8Array.length;
-        i += chunkSize
-      ) {
-
-        binary +=
-          String.fromCharCode(
-            ...uint8Array.subarray(
-              i,
-              Math.min(
-                i + chunkSize,
-                uint8Array.length
-              )
-            )
-          );
-
-      }
-
-      const base64Font =
-        btoa(binary);
-
-      doc.addFileToVFS(
-        "Sahitya-Regular.ttf",
-        base64Font
-      );
-
-      doc.addFont(
-        "Sahitya-Regular.ttf",
-        "Sahitya",
-        "normal"
-      );
-
-      doc.setFont(
-        "Sahitya",
-        "normal"
-      );
-
-    };
 
   // ==========================================================
-  // ADD PDF FOOTER TO ALL PAGES
+  // ESCAPE HTML FOR PRINT REPORT
   // ==========================================================
 
-  const addPDFFooter = (
-    doc,
-    adminName
-  ) => {
+  const escapeHTML = (value) => {
 
-    const pageCount =
-      doc.internal.getNumberOfPages();
-
-    const pageWidth =
-      doc.internal.pageSize.getWidth();
-
-    const pageHeight =
-      doc.internal.pageSize.getHeight();
-
-    for (
-      let page = 1;
-      page <= pageCount;
-      page++
+    if (
+      value === null ||
+      value === undefined
     ) {
 
-      doc.setPage(page);
+      return "-";
 
-      doc.setDrawColor(
-        210,
-        210,
-        210
+    }
+
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  };
+
+  // ==========================================================
+  // PRINT DATE
+  // ==========================================================
+
+  const formatPrintDate = (date) => {
+
+    if (!date) return "-";
+
+    const parsedDate = new Date(date);
+
+    if (
+      Number.isNaN(
+        parsedDate.getTime()
+      )
+    ) {
+
+      return escapeHTML(date);
+
+    }
+
+    return parsedDate.toLocaleDateString(
+      "mr-IN",
+      {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      }
+    );
+
+  };
+
+  // ==========================================================
+  // PRINT DONATION REPORT - SAME APPROACH AS EXPENSE MANAGEMENT
+  // Browser Print -> Save as PDF
+  // Noto Sans Devanagari + Nirmala UI + Mangal fallbacks
+  // ==========================================================
+
+  const generateDonationPDF = () => {
+
+    if (
+      !donations ||
+      donations.length === 0
+    ) {
+
+      alert(
+        "छापण्यासाठी देणगीची कोणतीही नोंद उपलब्ध नाही."
       );
 
-      doc.line(
-        10,
-        pageHeight - 14,
-        pageWidth - 10,
-        pageHeight - 14
+      return;
+
+    }
+
+    const printWindow = window.open(
+      "",
+      "_blank",
+      "width=1500,height=950"
+    );
+
+    if (!printWindow) {
+
+      alert(
+        "Print window उघडता आली नाही. कृपया browser popup allow करा."
       );
 
-      doc.setFont(
-        "Sahitya",
-        "normal"
+      return;
+
+    }
+
+    try {
+
+      setPdfLoading(true);
+
+      const adminName = getAdminName();
+      const generatedAt = new Date();
+
+      const generatedDate =
+        generatedAt.toLocaleDateString(
+          "mr-IN",
+          {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+          }
+        );
+
+      const generatedTime =
+        generatedAt.toLocaleTimeString(
+          "mr-IN",
+          {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: true,
+          }
+        );
+
+      const fileDate =
+        generatedAt
+          .toISOString()
+          .split("T")[0];
+
+      const rows = donations
+        .map(
+          (donation, index) => {
+
+            const receiptURL = donation.receipt
+              ? `${API}/uploads/receipts/${encodeURIComponent(
+                  donation.receipt
+                )}`
+              : "";
+
+            return `
+              <tr>
+                <td class="serial">
+                  ${index + 1}
+                </td>
+
+                <td>
+                  ${escapeHTML(
+                    donation.id ?? "-"
+                  )}
+                </td>
+
+                <td class="donor-name">
+                  ${escapeHTML(
+                    donation.donorName || "-"
+                  )}
+                </td>
+
+                <td class="amount collected">
+                  ${formatCurrency(
+                    donation.amount
+                  )}
+                </td>
+
+                <td class="amount pending">
+                  ${formatCurrency(
+                    donation.pendingAmount
+                  )}
+                </td>
+
+                <td>
+                  ${formatPrintDate(
+                    donation.date
+                  )}
+                </td>
+
+                <td>
+                  ${escapeHTML(
+                    donation.time || "-"
+                  )}
+                </td>
+
+                <td>
+                  ${
+                    donation.receipt
+                      ? `
+                        <span class="receipt available">
+                          उपलब्ध
+                        </span>
+
+                        <div class="receipt-file">
+                          ${escapeHTML(
+                            donation.receipt
+                          )}
+                        </div>
+
+                        <a
+                          href="${receiptURL}"
+                          target="_blank"
+                          class="receipt-link"
+                          rel="noreferrer"
+                        >
+                          पावती पहा
+                        </a>
+                      `
+                      : `
+                        <span class="receipt unavailable">
+                          उपलब्ध नाही
+                        </span>
+                      `
+                  }
+                </td>
+              </tr>
+            `;
+
+          }
+        )
+        .join("");
+
+      printWindow.document.open();
+
+      printWindow.document.write(`
+        <!DOCTYPE html>
+        <html lang="mr">
+
+        <head>
+          <meta charset="UTF-8" />
+
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+          />
+
+          <title>
+            ${escapeHTML(
+              `देणगी_अहवाल_${fileDate}`
+            )}
+          </title>
+
+          <style>
+            @import url(
+              'https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap'
+            );
+
+            * {
+              box-sizing: border-box;
+            }
+
+            html,
+            body {
+              margin: 0;
+              padding: 0;
+              background: #ffffff;
+            }
+
+            body {
+              color: #222;
+              font-family:
+                "Noto Sans Devanagari",
+                "Nirmala UI",
+                "Mangal",
+                Arial,
+                sans-serif;
+              font-size: 11px;
+              line-height: 1.5;
+            }
+
+            .report {
+              width: 100%;
+            }
+
+            .report-header {
+              position: relative;
+              text-align: center;
+              padding: 8px 0 12px;
+              margin-bottom: 12px;
+              border-bottom: 3px solid #8b4513;
+            }
+
+            .mandal-name {
+              margin: 0;
+              font-size: 27px;
+              font-weight: 800;
+              color: #8b4513;
+              letter-spacing: 0.3px;
+            }
+
+            .mandal-address {
+              margin: 3px 0 0;
+              font-size: 13px;
+              color: #555;
+            }
+
+            .report-title {
+              margin: 7px 0 0;
+              font-size: 19px;
+              font-weight: 800;
+              color: #333;
+            }
+
+            .report-subtitle {
+              margin: 2px 0 0;
+              font-size: 10px;
+              color: #777;
+            }
+
+            .meta-grid {
+              display: grid;
+              grid-template-columns: repeat(3, 1fr);
+              gap: 8px;
+              margin-bottom: 12px;
+            }
+
+            .meta-box {
+              border: 1px solid #ddd;
+              border-radius: 7px;
+              padding: 7px 9px;
+              background: #fafafa;
+            }
+
+            .meta-label {
+              display: block;
+              font-size: 9px;
+              color: #777;
+              margin-bottom: 2px;
+            }
+
+            .meta-value {
+              display: block;
+              font-size: 11px;
+              font-weight: 700;
+              color: #333;
+            }
+
+            .summary-grid {
+              display: grid;
+              grid-template-columns: repeat(4, 1fr);
+              gap: 10px;
+              margin-bottom: 14px;
+            }
+
+            .summary-card {
+              border: 1px solid #d6d6d6;
+              border-radius: 8px;
+              padding: 9px;
+              text-align: center;
+              background: #ffffff;
+            }
+
+            .summary-label {
+              display: block;
+              font-size: 10px;
+              color: #666;
+              margin-bottom: 3px;
+            }
+
+            .summary-value {
+              display: block;
+              font-size: 18px;
+              font-weight: 800;
+              color: #8b4513;
+            }
+
+            .donation-table {
+              width: 100%;
+              border-collapse: collapse;
+              table-layout: fixed;
+              font-size: 9px;
+            }
+
+            .donation-table thead {
+              display: table-header-group;
+            }
+
+            .donation-table tfoot {
+              display: table-footer-group;
+            }
+
+            .donation-table th {
+              background: #8b4513;
+              color: #ffffff;
+              border: 1px solid #6f3510;
+              padding: 7px 4px;
+              text-align: center;
+              vertical-align: middle;
+              font-size: 9px;
+              font-weight: 800;
+            }
+
+            .donation-table td {
+              border: 1px solid #bdbdbd;
+              padding: 6px 4px;
+              text-align: center;
+              vertical-align: middle;
+              word-wrap: break-word;
+              overflow-wrap: anywhere;
+            }
+
+            .donation-table tbody tr:nth-child(even) {
+              background: #fcf9f6;
+            }
+
+            .donation-table tbody tr {
+              page-break-inside: avoid;
+            }
+
+            .donation-table th:nth-child(1),
+            .donation-table td:nth-child(1) {
+              width: 5%;
+            }
+
+            .donation-table th:nth-child(2),
+            .donation-table td:nth-child(2) {
+              width: 9%;
+            }
+
+            .donation-table th:nth-child(3),
+            .donation-table td:nth-child(3) {
+              width: 19%;
+            }
+
+            .donation-table th:nth-child(4),
+            .donation-table td:nth-child(4) {
+              width: 13%;
+            }
+
+            .donation-table th:nth-child(5),
+            .donation-table td:nth-child(5) {
+              width: 13%;
+            }
+
+            .donation-table th:nth-child(6),
+            .donation-table td:nth-child(6) {
+              width: 11%;
+            }
+
+            .donation-table th:nth-child(7),
+            .donation-table td:nth-child(7) {
+              width: 12%;
+            }
+
+            .donation-table th:nth-child(8),
+            .donation-table td:nth-child(8) {
+              width: 18%;
+            }
+
+            .serial {
+              font-weight: 700;
+            }
+
+            .donor-name {
+              font-weight: 700;
+              text-align: left !important;
+            }
+
+            .amount {
+              font-weight: 800;
+              text-align: right !important;
+              white-space: nowrap;
+            }
+
+            .collected {
+              color: #16723a;
+            }
+
+            .pending {
+              color: #9a5b00;
+            }
+
+            .receipt {
+              display: inline-block;
+              padding: 2px 6px;
+              border-radius: 10px;
+              font-size: 8px;
+              font-weight: 700;
+            }
+
+            .available {
+              background: #e1f5e8;
+              color: #16723a;
+            }
+
+            .unavailable {
+              background: #eeeeee;
+              color: #666;
+            }
+
+            .receipt-file {
+              margin-top: 3px;
+              font-size: 7px;
+              color: #666;
+              word-break: break-all;
+            }
+
+            .receipt-link {
+              display: block;
+              margin-top: 2px;
+              color: #8b4513;
+              font-size: 7px;
+              text-decoration: none;
+            }
+
+            .total-box {
+              margin-top: 12px;
+              padding: 10px 14px;
+              border: 2px solid #8b4513;
+              border-radius: 7px;
+              text-align: right;
+              background: #fffaf5;
+              font-size: 14px;
+              font-weight: 800;
+            }
+
+            .total-box strong {
+              color: #8b4513;
+              font-size: 17px;
+            }
+
+            .report-footer {
+              margin-top: 20px;
+              padding-top: 10px;
+              border-top: 1px solid #aaa;
+              display: flex;
+              justify-content: space-between;
+              align-items: flex-end;
+              gap: 20px;
+              font-size: 9px;
+              color: #555;
+            }
+
+            .generated-by {
+              text-align: left;
+            }
+
+            .admin-name {
+              margin-top: 3px;
+              font-weight: 800;
+              color: #222;
+            }
+
+            .footer-right {
+              text-align: right;
+            }
+
+            @page {
+              size: A4 landscape;
+              margin: 10mm;
+            }
+
+            @media print {
+
+              html,
+              body {
+                width: 100%;
+                background: #ffffff;
+              }
+
+              body {
+                padding: 0;
+              }
+
+              .report {
+                width: 100%;
+              }
+
+              .donation-table {
+                page-break-inside: auto;
+              }
+
+              .donation-table tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+              }
+
+              .donation-table thead {
+                display: table-header-group;
+              }
+
+              .report-header,
+              .meta-grid,
+              .summary-grid,
+              .total-box,
+              .report-footer {
+                break-inside: avoid;
+              }
+
+              a {
+                color: inherit;
+                text-decoration: none;
+              }
+            }
+          </style>
+        </head>
+
+        <body>
+          <div class="report">
+
+            <div class="report-header">
+              <h1 class="mandal-name">
+                ${escapeHTML(MANDAL_NAME)}
+              </h1>
+
+              <div class="mandal-address">
+                ${escapeHTML(MANDAL_ADDRESS)}
+              </div>
+
+              <h2 class="report-title">
+                देणगीचा संपूर्ण अहवाल
+              </h2>
+
+              <div class="report-subtitle">
+                गणेशोत्सव मंडळ देणगी व्यवस्थापन अहवाल
+              </div>
+            </div>
+
+            <div class="meta-grid">
+              <div class="meta-box">
+                <span class="meta-label">
+                  अहवाल तयार करण्याची तारीख
+                </span>
+                <span class="meta-value">
+                  ${generatedDate}
+                </span>
+              </div>
+
+              <div class="meta-box">
+                <span class="meta-label">
+                  अहवाल तयार करण्याची वेळ
+                </span>
+                <span class="meta-value">
+                  ${generatedTime}
+                </span>
+              </div>
+
+              <div class="meta-box">
+                <span class="meta-label">
+                  अहवाल तयार करणारे
+                </span>
+                <span class="meta-value">
+                  ${escapeHTML(adminName)}
+                </span>
+              </div>
+            </div>
+
+            <div class="summary-grid">
+              <div class="summary-card">
+                <span class="summary-label">
+                  एकूण देणगी नोंदी
+                </span>
+                <span class="summary-value">
+                  ${donations.length}
+                </span>
+              </div>
+
+              <div class="summary-card">
+                <span class="summary-label">
+                  आजपर्यंत जमा झालेली एकूण देणगी
+                </span>
+                <span class="summary-value">
+                  ${formatCurrency(totalCollected)}
+                </span>
+              </div>
+
+              <div class="summary-card">
+                <span class="summary-label">
+                  एकूण प्रलंबित रक्कम
+                </span>
+                <span class="summary-value">
+                  ${formatCurrency(totalPending)}
+                </span>
+              </div>
+
+              <div class="summary-card">
+                <span class="summary-label">
+                  एकूण देणगी
+                </span>
+                <span class="summary-value">
+                  ${formatCurrency(totalDonation)}
+                </span>
+              </div>
+            </div>
+
+            <table class="donation-table">
+              <thead>
+                <tr>
+                  <th>क्र.</th>
+                  <th>देणगी ID</th>
+                  <th>देणगीदाराचे नाव</th>
+                  <th>जमा देणगी</th>
+                  <th>प्रलंबित रक्कम</th>
+                  <th>दिनांक</th>
+                  <th>वेळ</th>
+                  <th>पावती / पुरावा</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                ${rows}
+              </tbody>
+
+              <tfoot>
+                <tr>
+                  <td
+                    colspan="3"
+                    style="text-align:right;font-weight:800;"
+                  >
+                    एकूण
+                  </td>
+
+                  <td
+                    style="text-align:right;font-weight:800;white-space:nowrap;"
+                  >
+                    ${formatCurrency(totalCollected)}
+                  </td>
+
+                  <td
+                    style="text-align:right;font-weight:800;white-space:nowrap;"
+                  >
+                    ${formatCurrency(totalPending)}
+                  </td>
+
+                  <td colspan="3"></td>
+                </tr>
+              </tfoot>
+            </table>
+
+            <div class="total-box">
+              एकूण देणगी :
+              <strong>
+                ${formatCurrency(totalDonation)}
+              </strong>
+            </div>
+
+            <div class="report-footer">
+              <div class="generated-by">
+                <div>
+                  अहवाल तयार करणारे :
+                </div>
+
+                <div class="admin-name">
+                  ${escapeHTML(adminName)}
+                </div>
+              </div>
+
+              <div class="footer-right">
+                <div>
+                  एकूण नोंदी :
+                  <strong>${donations.length}</strong>
+                </div>
+
+                <div>
+                  हा अहवाल मंडळाच्या देणगी नोंदींवर आधारित आहे.
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <script>
+            (function () {
+              let printed = false;
+
+              function doPrint() {
+                if (printed) return;
+                printed = true;
+                window.print();
+              }
+
+              window.addEventListener("load", function () {
+
+                if (document.fonts && document.fonts.ready) {
+                  document.fonts.ready
+                    .then(function () {
+                      setTimeout(doPrint, 250);
+                    })
+                    .catch(function () {
+                      setTimeout(doPrint, 700);
+                    });
+                } else {
+                  setTimeout(doPrint, 700);
+                }
+
+              });
+
+              window.onafterprint = function () {
+                setTimeout(function () {
+                  window.close();
+                }, 400);
+              };
+            })();
+          </script>
+        </body>
+        </html>
+      `);
+
+      printWindow.document.close();
+
+      setTimeout(() => {
+        setPdfLoading(false);
+      }, 1500);
+
+    }
+
+    catch (error) {
+
+      console.error(
+        "Donation report print error:",
+        error
       );
 
-      doc.setFontSize(8);
+      setPdfLoading(false);
 
-      doc.setTextColor(
-        90,
-        90,
-        90
-      );
+      try {
+        printWindow.close();
+      } catch {
+        // Ignore print window close errors.
+      }
 
-      doc.text(
-        `अहवाल तयार करणारे admin  : ${adminName}`,
-        10,
-        pageHeight - 7
-      );
-
-      doc.text(
-        `पृष्ठ ${page} / ${pageCount}`,
-        pageWidth - 10,
-        pageHeight - 7,
-        {
-          align: "right",
-        }
+      alert(
+        "देणगी अहवाल तयार करताना त्रुटी आली."
       );
 
     }
 
   };
-
-  // ==========================================================
-  // GENERATE DONATION PDF
-  // ==========================================================
-
-  const generateDonationPDF =
-    async () => {
-
-      if (
-        !donations ||
-        donations.length === 0
-      ) {
-
-        alert(
-          "छापण्यासाठी देणगीची कोणतीही नोंद उपलब्ध नाही."
-        );
-
-        return;
-
-      }
-
-      try {
-
-        setPdfLoading(true);
-
-        // ====================================================
-        // CREATE PDF
-        // ====================================================
-
-        const doc =
-          new jsPDF({
-            orientation:
-              "landscape",
-            unit: "mm",
-            format: "a4",
-          });
-
-        // ====================================================
-        // LOAD MARATHI FONT
-        // ====================================================
-
-        await loadSahityaFont(
-          doc
-        );
-
-        doc.setFont(
-          "Sahitya",
-          "normal"
-        );
-
-        // ====================================================
-        // PAGE SIZE
-        // ====================================================
-
-        const pageWidth =
-          doc.internal.pageSize.getWidth();
-
-        const pageHeight =
-          doc.internal.pageSize.getHeight();
-
-        // ====================================================
-        // CURRENT DATE / TIME
-        // ====================================================
-
-        const now =
-          new Date();
-
-        const generatedDate =
-          now.toLocaleDateString(
-            "mr-IN",
-            {
-              day: "2-digit",
-              month: "2-digit",
-              year: "numeric",
-            }
-          );
-
-        const generatedTime =
-          now.toLocaleTimeString(
-            "mr-IN",
-            {
-              hour: "2-digit",
-              minute: "2-digit",
-              second: "2-digit",
-              hour12: true,
-            }
-          );
-
-        // ====================================================
-        // ADMIN
-        // ====================================================
-
-        const adminName =
-          getAdminName();
-
-        // ====================================================
-        // HEADER BACKGROUND
-        // ====================================================
-
-        doc.setFillColor(
-          255,
-          248,
-          238
-        );
-
-        doc.rect(
-          0,
-          0,
-          pageWidth,
-          42,
-          "F"
-        );
-
-        // ====================================================
-        // HEADER BORDER
-        // ====================================================
-
-        doc.setDrawColor(
-          220,
-          120,
-          40
-        );
-
-        doc.setLineWidth(
-          0.5
-        );
-
-        doc.line(
-          10,
-          42,
-          pageWidth - 10,
-          42
-        );
-
-        // ====================================================
-        // MANDAL NAME
-        // ====================================================
-
-        doc.setFont(
-          "Sahitya",
-          "normal"
-        );
-
-        doc.setFontSize(
-          19
-        );
-
-        doc.setTextColor(
-          120,
-          55,
-          10
-        );
-
-        doc.text(
-          MANDAL_NAME,
-          pageWidth / 2,
-          11,
-          {
-            align: "center",
-          }
-        );
-
-        // ====================================================
-        // ADDRESS
-        // ====================================================
-
-        doc.setFontSize(
-          10
-        );
-
-        doc.setTextColor(
-          70,
-          70,
-          70
-        );
-
-        doc.text(
-          MANDAL_ADDRESS,
-          pageWidth / 2,
-          18,
-          {
-            align: "center",
-          }
-        );
-
-        // ====================================================
-        // REPORT TITLE
-        // ====================================================
-
-        doc.setFontSize(
-          15
-        );
-
-        doc.setTextColor(
-          120,
-          55,
-          10
-        );
-
-        doc.text(
-          "देणगी अहवाल",
-          pageWidth / 2,
-          27,
-          {
-            align: "center",
-          }
-        );
-
-        // ====================================================
-        // GENERATED DATE
-        // ====================================================
-
-        doc.setFontSize(
-          8
-        );
-
-        doc.setTextColor(
-          80,
-          80,
-          80
-        );
-
-        doc.text(
-          `अहवाल तयार करण्याची तारीख : ${generatedDate}`,
-          10,
-          36
-        );
-
-        // ====================================================
-        // GENERATED TIME
-        // ====================================================
-
-        doc.text(
-          `अहवाल तयार करण्याची वेळ : ${generatedTime}`,
-          pageWidth - 10,
-          36,
-          {
-            align: "right",
-          }
-        );
-
-        // ====================================================
-        // SUMMARY
-        // ====================================================
-
-        doc.setFont(
-          "Sahitya",
-          "normal"
-        );
-
-        doc.setFontSize(
-          9
-        );
-
-        doc.setTextColor(
-          45,
-          45,
-          45
-        );
-
-        doc.text(
-          `एकूण देणगी नोंदी : ${donations.length}`,
-          10,
-          49
-        );
-
-        doc.text(
-          `आजपर्यंत जमा झालेली एकूण देणगी : ${formatCurrency(
-            totalCollected
-          )}`,
-          75,
-          49
-        );
-
-        doc.text(
-          `एकूण प्रलंबित रक्कम : ${formatCurrency(
-            totalPending
-          )}`,
-          180,
-          49
-        );
-
-        doc.text(
-          `एकूण देणगी : ${formatCurrency(
-            totalDonation
-          )}`,
-          pageWidth - 10,
-          49,
-          {
-            align: "right",
-          }
-        );
-
-        // ====================================================
-        // TABLE DATA
-        // ====================================================
-
-        const tableData =
-          donations.map(
-            (
-              donation,
-              index
-            ) => {
-
-              return [
-
-                String(
-                  donation.id ??
-                  index + 1
-                ),
-
-                donation.donorName ||
-                  "-",
-
-                formatCurrency(
-                  donation.amount
-                ),
-
-                formatCurrency(
-                  donation.pendingAmount
-                ),
-
-                formatDate(
-                  donation.date
-                ),
-
-                donation.time ||
-                  "-",
-
-                donation.receipt
-                  ? donation.receipt
-                  : "नाही",
-
-              ];
-
-            }
-          );
-
-        // ====================================================
-        // DONATION TABLE
-        // ====================================================
-
-        autoTable(
-          doc,
-          {
-
-            startY: 55,
-
-            head: [[
-
-              "आयडी",
-
-              "देणगीदाराचे नाव",
-
-              "जमा देणगी",
-
-              "प्रलंबित रक्कम",
-
-              "दिनांक",
-
-              "वेळ",
-
-              "पावती",
-
-            ]],
-
-            body:
-              tableData,
-
-            theme:
-              "grid",
-
-            styles: {
-
-              font:
-                "Sahitya",
-
-              fontStyle:
-                "normal",
-
-              fontSize: 8,
-
-              cellPadding: 3,
-
-              valign:
-                "middle",
-
-              textColor: [
-                45,
-                45,
-                45,
-              ],
-
-              overflow:
-                "linebreak",
-
-            },
-
-            headStyles: {
-
-              font:
-                "Sahitya",
-
-              fontStyle:
-                "normal",
-
-              fontSize: 9,
-
-              fillColor: [
-                120,
-                55,
-                10,
-              ],
-
-              textColor: [
-                255,
-                255,
-                255,
-              ],
-
-              halign:
-                "center",
-
-              valign:
-                "middle",
-
-            },
-
-            bodyStyles: {
-
-              font:
-                "Sahitya",
-
-              fontStyle:
-                "normal",
-
-            },
-
-            alternateRowStyles: {
-
-              fillColor: [
-                250,
-                247,
-                242,
-              ],
-
-            },
-
-            columnStyles: {
-
-              0: {
-
-                halign:
-                  "center",
-
-                cellWidth:
-                  20,
-
-              },
-
-              1: {
-
-                cellWidth:
-                  62,
-
-              },
-
-              2: {
-
-                halign:
-                  "right",
-
-                cellWidth:
-                  38,
-
-              },
-
-              3: {
-
-                halign:
-                  "right",
-
-                cellWidth:
-                  43,
-
-              },
-
-              4: {
-
-                halign:
-                  "center",
-
-                cellWidth:
-                  32,
-
-              },
-
-              5: {
-
-                halign:
-                  "center",
-
-                cellWidth:
-                  32,
-
-              },
-
-              6: {
-
-                cellWidth:
-                  48,
-
-              },
-
-            },
-
-            margin: {
-
-              left: 10,
-
-              right: 10,
-
-              bottom: 22,
-
-            },
-
-            didParseCell:
-              (data) => {
-
-                if (
-                  data.section ===
-                  "head"
-                ) {
-
-                  data.cell.styles.font =
-                    "Sahitya";
-
-                  data.cell.styles.fontStyle =
-                    "normal";
-
-                }
-
-                if (
-                  data.section ===
-                  "body"
-                ) {
-
-                  data.cell.styles.font =
-                    "Sahitya";
-
-                  data.cell.styles.fontStyle =
-                    "normal";
-
-                }
-
-              },
-
-          }
-        );
-
-        // ====================================================
-        // FINAL SUMMARY
-        // ====================================================
-
-        let finalY =
-          doc.lastAutoTable?.finalY ||
-          55;
-
-        finalY += 9;
-
-        if (
-          finalY >
-          pageHeight - 25
-        ) {
-
-          doc.addPage();
-
-          finalY = 20;
-
-        }
-
-        // ====================================================
-        // FINAL SUMMARY TITLE
-        // ====================================================
-
-        doc.setFont(
-          "Sahitya",
-          "normal"
-        );
-
-        doc.setFontSize(
-          11
-        );
-
-        doc.setTextColor(
-          120,
-          55,
-          10
-        );
-
-        doc.text(
-          "देणगीचा एकूण आर्थिक सारांश",
-          10,
-          finalY
-        );
-
-        finalY += 7;
-
-        // ====================================================
-        // FINAL TOTALS
-        // ====================================================
-
-        doc.setFontSize(
-          9
-        );
-
-        doc.setTextColor(
-          55,
-          55,
-          55
-        );
-
-        doc.text(
-          `आजपर्यंत जमा झालेली एकूण देणगी : ${formatCurrency(
-            totalCollected
-          )}`,
-          10,
-          finalY
-        );
-
-        doc.text(
-          `एकूण प्रलंबित रक्कम : ${formatCurrency(
-            totalPending
-          )}`,
-          105,
-          finalY
-        );
-
-        doc.text(
-          `एकूण देणगी : ${formatCurrency(
-            totalDonation
-          )}`,
-          205,
-          finalY
-        );
-
-        // ====================================================
-        // FOOTER ON ALL PAGES
-        // ====================================================
-
-        addPDFFooter(
-          doc,
-          adminName
-        );
-
-        // ====================================================
-        // FILE NAME
-        // ====================================================
-
-        const fileDate =
-          now
-            .toISOString()
-            .split("T")[0];
-
-        doc.save(
-          `देणगी_अहवाल_${fileDate}.pdf`
-        );
-
-      }
-
-      catch (error) {
-
-        console.error(
-          "PDF generation error:",
-          error
-        );
-
-        alert(
-          "PDF तयार करताना त्रुटी आली. कृपया Browser Console तपासा."
-        );
-
-      }
-
-      finally {
-
-        setPdfLoading(false);
-
-      }
-
-    };
 
   // ==========================================================
   // UI
@@ -1768,8 +1751,8 @@ function DonationManagement() {
 
             {
               pdfLoading
-                ? " Generating PDF..."
-                : " Print as PDF"
+                ? " Opening Print..."
+                : " Print Donation Report"
             }
 
           </button>
