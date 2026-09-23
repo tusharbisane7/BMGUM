@@ -11,6 +11,7 @@ const {
     addDonation,
     updateDonation,
     deleteDonation,
+    deleteAllDonations,
 } = require("../controllers/donationController");
 
 // ================= MULTER STORAGE =================
@@ -35,16 +36,20 @@ router.get("/", getDonations);
 // Donation Summary
 router.get("/summary", getDonationSummary);
 
+// Recent Donations
+router.get("/recent", getRecentDonations);
+
 // Add Donation
 router.post("/", upload.single("receipt"), addDonation);
 
 // Update Donation
 router.put("/:id", upload.single("receipt"), updateDonation);
 
-// Delete Donation
-router.delete("/:id", deleteDonation);
+// Delete ALL Donations
+// IMPORTANT: Keep this before /:id
+router.delete("/all", deleteAllDonations);
 
-// recent donations
-router.get("/recent", getRecentDonations);
+// Delete Single Donation
+router.delete("/:id", deleteDonation);
 
 module.exports = router;
