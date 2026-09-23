@@ -27,7 +27,7 @@ const API = "https://bmgum.onrender.com";
 const MANDAL_NAME = "बाल मित्र गणेश उत्सव मंडळ";
 
 const MANDAL_ADDRESS =
-  "खिरणीबागपुरा , अचलपुर , महाराष्ट्र ";
+  "खिरणीबागपुरा , अचलपुर , महाराष्ट्र";
 
 // ============================================================
 // DONATION MANAGEMENT
@@ -56,6 +56,9 @@ function DonationManagement() {
   const [loading, setLoading] = useState(false);
 
   const [pdfLoading, setPdfLoading] = useState(false);
+
+  const [deleteAllLoading, setDeleteAllLoading] =
+    useState(false);
 
   // ==========================================================
   // FORM DATA
@@ -95,10 +98,9 @@ function DonationManagement() {
 
       setLoading(true);
 
-      const res =
-        await axios.get(
-          `${API}/api/donations`
-        );
+      const res = await axios.get(
+        `${API}/api/donations`
+      );
 
       setDonations(
         Array.isArray(res.data)
@@ -106,9 +108,7 @@ function DonationManagement() {
           : []
       );
 
-    }
-
-    catch (err) {
+    } catch (err) {
 
       console.error(
         "Donation loading error:",
@@ -117,9 +117,7 @@ function DonationManagement() {
 
       setDonations([]);
 
-    }
-
-    finally {
+    } finally {
 
       setLoading(false);
 
@@ -187,8 +185,7 @@ function DonationManagement() {
 
   const clearForm = () => {
 
-    const now =
-      new Date();
+    const now = new Date();
 
     setEditingId(null);
 
@@ -228,8 +225,7 @@ function DonationManagement() {
 
     e.preventDefault();
 
-    const data =
-      new FormData();
+    const data = new FormData();
 
     data.append(
       "donorName",
@@ -307,9 +303,7 @@ function DonationManagement() {
 
       await loadDonations();
 
-    }
-
-    catch (err) {
+    } catch (err) {
 
       console.error(
         "Donation save error:",
@@ -326,7 +320,7 @@ function DonationManagement() {
   };
 
   // ==========================================================
-  // DELETE DONATION
+  // DELETE SINGLE DONATION
   // ==========================================================
 
   const deleteDonation = async (id) => {
@@ -353,9 +347,7 @@ function DonationManagement() {
 
       await loadDonations();
 
-    }
-
-    catch (err) {
+    } catch (err) {
 
       console.error(
         "Delete error:",
@@ -363,8 +355,90 @@ function DonationManagement() {
       );
 
       alert(
+        err.response?.data?.message ||
         "Delete Failed"
       );
+
+    }
+
+  };
+
+  // ==========================================================
+  // DELETE ALL DONATIONS
+  // ==========================================================
+
+  const deleteAllDonations = async () => {
+
+    if (!donations || donations.length === 0) {
+
+      alert(
+        "No donations available to delete."
+      );
+
+      return;
+
+    }
+
+    const confirmed = window.confirm(
+      `Are you sure you want to delete ALL ${donations.length} donations?\n\nThis action cannot be undone.`
+    );
+
+    if (!confirmed) {
+
+      return;
+
+    }
+
+    try {
+
+      setDeleteAllLoading(true);
+
+      const res = await axios.delete(
+        `${API}/api/donations/all`
+      );
+
+      if (res.data?.success) {
+
+        const deletedCount =
+          res.data.deletedCount ??
+          donations.length;
+
+        setDonations([]);
+
+        setEditingId(null);
+
+        setPreview(null);
+
+        clearForm();
+
+        alert(
+          `${deletedCount} donation(s) deleted successfully.`
+        );
+
+      } else {
+
+        alert(
+          res.data?.message ||
+          "Failed to delete all donations."
+        );
+
+      }
+
+    } catch (err) {
+
+      console.error(
+        "Delete all donations error:",
+        err
+      );
+
+      alert(
+        err.response?.data?.message ||
+        "Failed to delete all donations."
+      );
+
+    } finally {
+
+      setDeleteAllLoading(false);
 
     }
 
@@ -411,9 +485,7 @@ function DonationManagement() {
         `${API}/uploads/receipts/${donation.receipt}`
       );
 
-    }
-
-    else {
+    } else {
 
       setPreview(null);
 
@@ -560,7 +632,6 @@ function DonationManagement() {
 
   };
 
-
   // ==========================================================
   // ESCAPE HTML FOR PRINT REPORT
   // ==========================================================
@@ -617,9 +688,11 @@ function DonationManagement() {
   };
 
   // ==========================================================
-  // PRINT DONATION REPORT - SAME APPROACH AS EXPENSE MANAGEMENT
+  // PRINT DONATION REPORT
+  // SAME APPROACH AS EXPENSE MANAGEMENT
+  //
   // Browser Print -> Save as PDF
-  // Noto Sans Devanagari + Nirmala UI + Mangal fallbacks
+  // Noto Sans Devanagari
   // ==========================================================
 
   const generateDonationPDF = () => {
@@ -658,7 +731,9 @@ function DonationManagement() {
       setPdfLoading(true);
 
       const adminName = getAdminName();
-      const generatedAt = new Date();
+
+      const generatedAt =
+        new Date();
 
       const generatedDate =
         generatedAt.toLocaleDateString(
@@ -690,14 +765,16 @@ function DonationManagement() {
         .map(
           (donation, index) => {
 
-            const receiptURL = donation.receipt
-              ? `${API}/uploads/receipts/${encodeURIComponent(
-                  donation.receipt
-                )}`
-              : "";
+            const receiptURL =
+              donation.receipt
+                ? `${API}/uploads/receipts/${encodeURIComponent(
+                    donation.receipt
+                  )}`
+                : "";
 
             return `
               <tr>
+
                 <td class="serial">
                   ${index + 1}
                 </td>
@@ -739,6 +816,7 @@ function DonationManagement() {
                 </td>
 
                 <td>
+
                   ${
                     donation.receipt
                       ? `
@@ -767,7 +845,9 @@ function DonationManagement() {
                         </span>
                       `
                   }
+
                 </td>
+
               </tr>
             `;
 
@@ -779,9 +859,11 @@ function DonationManagement() {
 
       printWindow.document.write(`
         <!DOCTYPE html>
+
         <html lang="mr">
 
         <head>
+
           <meta charset="UTF-8" />
 
           <meta
@@ -796,6 +878,7 @@ function DonationManagement() {
           </title>
 
           <style>
+
             @import url(
               'https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap'
             );
@@ -812,15 +895,20 @@ function DonationManagement() {
             }
 
             body {
+
               color: #222;
+
               font-family:
                 "Noto Sans Devanagari",
                 "Nirmala UI",
                 "Mangal",
                 Arial,
                 sans-serif;
+
               font-size: 11px;
+
               line-height: 1.5;
+
             }
 
             .report {
@@ -828,310 +916,506 @@ function DonationManagement() {
             }
 
             .report-header {
+
               position: relative;
+
               text-align: center;
+
               padding: 8px 0 12px;
+
               margin-bottom: 12px;
+
               border-bottom: 3px solid #8b4513;
+
             }
 
             .mandal-name {
+
               margin: 0;
+
               font-size: 27px;
+
               font-weight: 800;
+
               color: #8b4513;
+
               letter-spacing: 0.3px;
+
             }
 
             .mandal-address {
+
               margin: 3px 0 0;
+
               font-size: 13px;
+
               color: #555;
+
             }
 
             .report-title {
+
               margin: 7px 0 0;
+
               font-size: 19px;
+
               font-weight: 800;
+
               color: #333;
+
             }
 
             .report-subtitle {
+
               margin: 2px 0 0;
+
               font-size: 10px;
+
               color: #777;
+
             }
 
             .meta-grid {
+
               display: grid;
-              grid-template-columns: repeat(3, 1fr);
+
+              grid-template-columns:
+                repeat(3, 1fr);
+
               gap: 8px;
+
               margin-bottom: 12px;
+
             }
 
             .meta-box {
+
               border: 1px solid #ddd;
+
               border-radius: 7px;
+
               padding: 7px 9px;
+
               background: #fafafa;
+
             }
 
             .meta-label {
+
               display: block;
+
               font-size: 9px;
+
               color: #777;
+
               margin-bottom: 2px;
+
             }
 
             .meta-value {
+
               display: block;
+
               font-size: 11px;
+
               font-weight: 700;
+
               color: #333;
+
             }
 
             .summary-grid {
+
               display: grid;
-              grid-template-columns: repeat(4, 1fr);
+
+              grid-template-columns:
+                repeat(4, 1fr);
+
               gap: 10px;
+
               margin-bottom: 14px;
+
             }
 
             .summary-card {
+
               border: 1px solid #d6d6d6;
+
               border-radius: 8px;
+
               padding: 9px;
+
               text-align: center;
+
               background: #ffffff;
+
             }
 
             .summary-label {
+
               display: block;
+
               font-size: 10px;
+
               color: #666;
+
               margin-bottom: 3px;
+
             }
 
             .summary-value {
+
               display: block;
+
               font-size: 18px;
+
               font-weight: 800;
+
               color: #8b4513;
+
             }
 
             .donation-table {
+
               width: 100%;
+
               border-collapse: collapse;
+
               table-layout: fixed;
+
               font-size: 9px;
+
             }
 
             .donation-table thead {
+
               display: table-header-group;
+
             }
 
             .donation-table tfoot {
+
               display: table-footer-group;
+
             }
 
             .donation-table th {
+
               background: #8b4513;
+
               color: #ffffff;
+
               border: 1px solid #6f3510;
+
               padding: 7px 4px;
+
               text-align: center;
+
               vertical-align: middle;
+
               font-size: 9px;
+
               font-weight: 800;
+
             }
 
             .donation-table td {
+
               border: 1px solid #bdbdbd;
+
               padding: 6px 4px;
+
               text-align: center;
+
               vertical-align: middle;
+
               word-wrap: break-word;
+
               overflow-wrap: anywhere;
+
             }
 
             .donation-table tbody tr:nth-child(even) {
+
               background: #fcf9f6;
+
             }
 
             .donation-table tbody tr {
+
               page-break-inside: avoid;
+
             }
 
             .donation-table th:nth-child(1),
             .donation-table td:nth-child(1) {
+
               width: 5%;
+
             }
 
             .donation-table th:nth-child(2),
             .donation-table td:nth-child(2) {
+
               width: 9%;
+
             }
 
             .donation-table th:nth-child(3),
             .donation-table td:nth-child(3) {
+
               width: 19%;
+
             }
 
             .donation-table th:nth-child(4),
             .donation-table td:nth-child(4) {
+
               width: 13%;
+
             }
 
             .donation-table th:nth-child(5),
             .donation-table td:nth-child(5) {
+
               width: 13%;
+
             }
 
             .donation-table th:nth-child(6),
             .donation-table td:nth-child(6) {
+
               width: 11%;
+
             }
 
             .donation-table th:nth-child(7),
             .donation-table td:nth-child(7) {
+
               width: 12%;
+
             }
 
             .donation-table th:nth-child(8),
             .donation-table td:nth-child(8) {
+
               width: 18%;
+
             }
 
             .serial {
+
               font-weight: 700;
+
             }
 
             .donor-name {
+
               font-weight: 700;
+
               text-align: left !important;
+
             }
 
             .amount {
+
               font-weight: 800;
+
               text-align: right !important;
+
               white-space: nowrap;
+
             }
 
             .collected {
+
               color: #16723a;
+
             }
 
             .pending {
+
               color: #9a5b00;
+
             }
 
             .receipt {
+
               display: inline-block;
+
               padding: 2px 6px;
+
               border-radius: 10px;
+
               font-size: 8px;
+
               font-weight: 700;
+
             }
 
             .available {
+
               background: #e1f5e8;
+
               color: #16723a;
+
             }
 
             .unavailable {
+
               background: #eeeeee;
+
               color: #666;
+
             }
 
             .receipt-file {
+
               margin-top: 3px;
+
               font-size: 7px;
+
               color: #666;
+
               word-break: break-all;
+
             }
 
             .receipt-link {
+
               display: block;
+
               margin-top: 2px;
+
               color: #8b4513;
+
               font-size: 7px;
+
               text-decoration: none;
+
             }
 
             .total-box {
+
               margin-top: 12px;
+
               padding: 10px 14px;
+
               border: 2px solid #8b4513;
+
               border-radius: 7px;
+
               text-align: right;
+
               background: #fffaf5;
+
               font-size: 14px;
+
               font-weight: 800;
+
             }
 
             .total-box strong {
+
               color: #8b4513;
+
               font-size: 17px;
+
             }
 
             .report-footer {
+
               margin-top: 20px;
+
               padding-top: 10px;
+
               border-top: 1px solid #aaa;
+
               display: flex;
+
               justify-content: space-between;
+
               align-items: flex-end;
+
               gap: 20px;
+
               font-size: 9px;
+
               color: #555;
+
             }
 
             .generated-by {
+
               text-align: left;
+
             }
 
             .admin-name {
+
               margin-top: 3px;
+
               font-weight: 800;
+
               color: #222;
+
             }
 
             .footer-right {
+
               text-align: right;
+
             }
 
             @page {
+
               size: A4 landscape;
+
               margin: 10mm;
+
             }
 
             @media print {
 
               html,
               body {
+
                 width: 100%;
+
                 background: #ffffff;
+
               }
 
               body {
+
                 padding: 0;
+
               }
 
               .report {
+
                 width: 100%;
+
               }
 
               .donation-table {
+
                 page-break-inside: auto;
+
               }
 
               .donation-table tr {
+
                 page-break-inside: avoid;
+
                 page-break-after: auto;
+
               }
 
               .donation-table thead {
+
                 display: table-header-group;
+
               }
 
               .report-header,
@@ -1139,227 +1423,432 @@ function DonationManagement() {
               .summary-grid,
               .total-box,
               .report-footer {
+
                 break-inside: avoid;
+
               }
 
               a {
+
                 color: inherit;
+
                 text-decoration: none;
+
               }
+
             }
+
           </style>
+
         </head>
 
         <body>
+
           <div class="report">
 
+            <!-- HEADER -->
+
             <div class="report-header">
+
               <h1 class="mandal-name">
-                ${escapeHTML(MANDAL_NAME)}
+
+                ${escapeHTML(
+                  MANDAL_NAME
+                )}
+
               </h1>
 
               <div class="mandal-address">
-                ${escapeHTML(MANDAL_ADDRESS)}
+
+                ${escapeHTML(
+                  MANDAL_ADDRESS
+                )}
+
               </div>
 
               <h2 class="report-title">
+
                 देणगीचा संपूर्ण अहवाल
+
               </h2>
 
               <div class="report-subtitle">
+
                 गणेशोत्सव मंडळ देणगी व्यवस्थापन अहवाल
+
               </div>
+
             </div>
+
+            <!-- META -->
 
             <div class="meta-grid">
+
               <div class="meta-box">
+
                 <span class="meta-label">
+
                   अहवाल तयार करण्याची तारीख
+
                 </span>
+
                 <span class="meta-value">
+
                   ${generatedDate}
+
                 </span>
+
               </div>
 
               <div class="meta-box">
+
                 <span class="meta-label">
+
                   अहवाल तयार करण्याची वेळ
+
                 </span>
+
                 <span class="meta-value">
+
                   ${generatedTime}
+
                 </span>
+
               </div>
 
               <div class="meta-box">
+
                 <span class="meta-label">
+
                   अहवाल तयार करणारे
+
                 </span>
+
                 <span class="meta-value">
-                  ${escapeHTML(adminName)}
+
+                  ${escapeHTML(
+                    adminName
+                  )}
+
                 </span>
+
               </div>
+
             </div>
+
+            <!-- SUMMARY -->
 
             <div class="summary-grid">
+
               <div class="summary-card">
+
                 <span class="summary-label">
+
                   एकूण देणगी नोंदी
+
                 </span>
+
                 <span class="summary-value">
+
                   ${donations.length}
+
                 </span>
+
               </div>
 
               <div class="summary-card">
+
                 <span class="summary-label">
+
                   आजपर्यंत जमा झालेली एकूण देणगी
+
                 </span>
+
                 <span class="summary-value">
-                  ${formatCurrency(totalCollected)}
+
+                  ${formatCurrency(
+                    totalCollected
+                  )}
+
                 </span>
+
               </div>
 
               <div class="summary-card">
+
                 <span class="summary-label">
+
                   एकूण प्रलंबित रक्कम
+
                 </span>
+
                 <span class="summary-value">
-                  ${formatCurrency(totalPending)}
+
+                  ${formatCurrency(
+                    totalPending
+                  )}
+
                 </span>
+
               </div>
 
               <div class="summary-card">
+
                 <span class="summary-label">
+
                   एकूण देणगी
+
                 </span>
+
                 <span class="summary-value">
-                  ${formatCurrency(totalDonation)}
+
+                  ${formatCurrency(
+                    totalDonation
+                  )}
+
                 </span>
+
               </div>
+
             </div>
 
+            <!-- TABLE -->
+
             <table class="donation-table">
+
               <thead>
+
                 <tr>
+
                   <th>क्र.</th>
+
                   <th>देणगी ID</th>
+
                   <th>देणगीदाराचे नाव</th>
+
                   <th>जमा देणगी</th>
+
                   <th>प्रलंबित रक्कम</th>
+
                   <th>दिनांक</th>
+
                   <th>वेळ</th>
+
                   <th>पावती / पुरावा</th>
+
                 </tr>
+
               </thead>
 
               <tbody>
+
                 ${rows}
+
               </tbody>
 
               <tfoot>
+
                 <tr>
+
                   <td
                     colspan="3"
-                    style="text-align:right;font-weight:800;"
+                    style="
+                      text-align:right;
+                      font-weight:800;
+                    "
                   >
+
                     एकूण
+
                   </td>
 
                   <td
-                    style="text-align:right;font-weight:800;white-space:nowrap;"
+                    style="
+                      text-align:right;
+                      font-weight:800;
+                      white-space:nowrap;
+                    "
                   >
-                    ${formatCurrency(totalCollected)}
+
+                    ${formatCurrency(
+                      totalCollected
+                    )}
+
                   </td>
 
                   <td
-                    style="text-align:right;font-weight:800;white-space:nowrap;"
+                    style="
+                      text-align:right;
+                      font-weight:800;
+                      white-space:nowrap;
+                    "
                   >
-                    ${formatCurrency(totalPending)}
+
+                    ${formatCurrency(
+                      totalPending
+                    )}
+
                   </td>
 
                   <td colspan="3"></td>
+
                 </tr>
+
               </tfoot>
+
             </table>
 
+            <!-- TOTAL -->
+
             <div class="total-box">
+
               एकूण देणगी :
+
               <strong>
-                ${formatCurrency(totalDonation)}
+
+                ${formatCurrency(
+                  totalDonation
+                )}
+
               </strong>
+
             </div>
 
+            <!-- FOOTER -->
+
             <div class="report-footer">
+
               <div class="generated-by">
+
                 <div>
+
                   अहवाल तयार करणारे :
+
                 </div>
 
                 <div class="admin-name">
-                  ${escapeHTML(adminName)}
+
+                  ${escapeHTML(
+                    adminName
+                  )}
+
                 </div>
+
               </div>
 
               <div class="footer-right">
+
                 <div>
+
                   एकूण नोंदी :
-                  <strong>${donations.length}</strong>
+
+                  <strong>
+
+                    ${donations.length}
+
+                  </strong>
+
                 </div>
 
                 <div>
+
                   हा अहवाल मंडळाच्या देणगी नोंदींवर आधारित आहे.
+
                 </div>
+
               </div>
+
             </div>
 
           </div>
 
           <script>
+
             (function () {
+
               let printed = false;
 
               function doPrint() {
+
                 if (printed) return;
+
                 printed = true;
+
                 window.print();
+
               }
 
-              window.addEventListener("load", function () {
+              window.addEventListener(
+                "load",
+                function () {
 
-                if (document.fonts && document.fonts.ready) {
-                  document.fonts.ready
-                    .then(function () {
-                      setTimeout(doPrint, 250);
-                    })
-                    .catch(function () {
-                      setTimeout(doPrint, 700);
-                    });
-                } else {
-                  setTimeout(doPrint, 700);
+                  if (
+                    document.fonts &&
+                    document.fonts.ready
+                  ) {
+
+                    document.fonts.ready
+                      .then(function () {
+
+                        setTimeout(
+                          doPrint,
+                          250
+                        );
+
+                      })
+                      .catch(function () {
+
+                        setTimeout(
+                          doPrint,
+                          700
+                        );
+
+                      });
+
+                  } else {
+
+                    setTimeout(
+                      doPrint,
+                      700
+                    );
+
+                  }
+
                 }
+              );
 
-              });
+              window.onafterprint =
+                function () {
 
-              window.onafterprint = function () {
-                setTimeout(function () {
-                  window.close();
-                }, 400);
-              };
+                  setTimeout(
+                    function () {
+
+                      window.close();
+
+                    },
+                    400
+                  );
+
+                };
+
             })();
+
           </script>
+
         </body>
+
         </html>
       `);
 
       printWindow.document.close();
 
       setTimeout(() => {
+
         setPdfLoading(false);
+
       }, 1500);
 
-    }
-
-    catch (error) {
+    } catch (error) {
 
       console.error(
         "Donation report print error:",
@@ -1369,7 +1858,9 @@ function DonationManagement() {
       setPdfLoading(false);
 
       try {
+
         printWindow.close();
+
       } catch {
         // Ignore print window close errors.
       }
@@ -1414,7 +1905,6 @@ function DonationManagement() {
 
       </div>
 
-
       {/* ======================================================
           FORM
       ====================================================== */}
@@ -1450,7 +1940,6 @@ function DonationManagement() {
 
           </div>
 
-
           {/* ================= AMOUNT ================= */}
 
           <div className="form-group">
@@ -1474,7 +1963,6 @@ function DonationManagement() {
 
           </div>
 
-
           {/* ================= PENDING ================= */}
 
           <div className="form-group">
@@ -1496,7 +1984,6 @@ function DonationManagement() {
 
           </div>
 
-
           {/* ================= DATE ================= */}
 
           <div className="form-group">
@@ -1515,7 +2002,6 @@ function DonationManagement() {
 
           </div>
 
-
           {/* ================= TIME ================= */}
 
           <div className="form-group">
@@ -1533,7 +2019,6 @@ function DonationManagement() {
             />
 
           </div>
-
 
           {/* ================= RECEIPT ================= */}
 
@@ -1557,7 +2042,6 @@ function DonationManagement() {
 
           </div>
 
-
           {/* ================= PREVIEW ================= */}
 
           {preview && (
@@ -1580,7 +2064,6 @@ function DonationManagement() {
 
           )}
 
-
           {/* ================= BUTTONS ================= */}
 
           <div className="button-group">
@@ -1599,7 +2082,6 @@ function DonationManagement() {
               }
 
             </button>
-
 
             <button
               type="button"
@@ -1621,7 +2103,6 @@ function DonationManagement() {
 
       </div>
 
-
       {/* ======================================================
           SUMMARY
       ====================================================== */}
@@ -1640,7 +2121,6 @@ function DonationManagement() {
 
         </div>
 
-
         <div className="summary-box">
 
           <h3>
@@ -1655,7 +2135,6 @@ function DonationManagement() {
 
         </div>
 
-
         <div className="summary-box">
 
           <h3>
@@ -1669,7 +2148,6 @@ function DonationManagement() {
           </h2>
 
         </div>
-
 
         <div className="summary-box">
 
@@ -1686,7 +2164,6 @@ function DonationManagement() {
         </div>
 
       </div>
-
 
       {/* ======================================================
           SEARCH
@@ -1710,7 +2187,6 @@ function DonationManagement() {
 
       </div>
 
-
       {/* ======================================================
           TABLE
       ====================================================== */}
@@ -1733,39 +2209,77 @@ function DonationManagement() {
 
           </div>
 
-
-          <button
-            type="button"
-            className="pdf-btn"
-            onClick={
-              generateDonationPDF
-            }
-            disabled={
-              pdfLoading ||
-              loading ||
-              donations.length === 0
-            }
+          <div
+            className="table-header-actions"
+            style={{
+              display: "flex",
+              gap: "10px",
+              alignItems: "center",
+              flexWrap: "wrap",
+            }}
           >
 
-            <FaFilePdf />
+            {/* ================= DELETE ALL ================= */}
 
-            {
-              pdfLoading
-                ? " Opening Print..."
-                : " Print Donation Report"
-            }
+            <button
+              type="button"
+              className="delete-all-btn"
+              onClick={
+                deleteAllDonations
+              }
+              disabled={
+                deleteAllLoading ||
+                loading ||
+                donations.length === 0
+              }
+              title="Delete all donation records"
+            >
 
-          </button>
+              <FaTrash />
+
+              {
+                deleteAllLoading
+                  ? " Deleting All..."
+                  : " Delete All Donations"
+              }
+
+            </button>
+
+            {/* ================= PRINT REPORT ================= */}
+
+            <button
+              type="button"
+              className="pdf-btn"
+              onClick={
+                generateDonationPDF
+              }
+              disabled={
+                pdfLoading ||
+                loading ||
+                deleteAllLoading ||
+                donations.length === 0
+              }
+            >
+
+              <FaFilePdf />
+
+              {
+                pdfLoading
+                  ? " Opening Print..."
+                  : " Print Donation Report"
+              }
+
+            </button>
+
+          </div>
 
         </div>
-
 
         {/* ==================================================
             TABLE CONTENT
         ================================================== */}
 
         {
-
           loading
 
             ?
@@ -1828,11 +2342,9 @@ function DonationManagement() {
 
                 </thead>
 
-
                 <tbody>
 
                   {
-
                     filteredDonations.length ===
                     0
 
@@ -1846,7 +2358,9 @@ function DonationManagement() {
                             colSpan="8"
                             className="no-data"
                           >
+
                             No Donation Found
+
                           </td>
 
                         </tr>
@@ -1874,7 +2388,6 @@ function DonationManagement() {
 
                               </td>
 
-
                               <td>
 
                                 {
@@ -1882,7 +2395,6 @@ function DonationManagement() {
                                 }
 
                               </td>
-
 
                               <td>
 
@@ -1894,7 +2406,6 @@ function DonationManagement() {
 
                               </td>
 
-
                               <td>
 
                                 {
@@ -1905,11 +2416,9 @@ function DonationManagement() {
 
                               </td>
 
-
                               <td>
 
                                 {
-
                                   donation.date
 
                                     ?
@@ -1925,11 +2434,9 @@ function DonationManagement() {
                                     :
 
                                     "-"
-
                                 }
 
                               </td>
-
 
                               <td>
 
@@ -1939,11 +2446,9 @@ function DonationManagement() {
 
                               </td>
 
-
                               <td>
 
                                 {
-
                                   donation.receipt
 
                                     ?
@@ -1951,7 +2456,9 @@ function DonationManagement() {
                                     (
 
                                       <a
-                                        href={`${API}/uploads/receipts/${donation.receipt}`}
+                                        href={
+                                          `${API}/uploads/receipts/${donation.receipt}`
+                                        }
                                         target="_blank"
                                         rel="noreferrer"
                                       >
@@ -1970,7 +2477,6 @@ function DonationManagement() {
 
                               </td>
 
-
                               <td>
 
                                 <div className="action-buttons">
@@ -1983,12 +2489,14 @@ function DonationManagement() {
                                         donation
                                       )
                                     }
+                                    disabled={
+                                      deleteAllLoading
+                                    }
                                   >
 
                                     <FaEdit />
 
                                   </button>
-
 
                                   <button
                                     className="delete-btn"
@@ -1997,6 +2505,9 @@ function DonationManagement() {
                                       deleteDonation(
                                         donation.id
                                       )
+                                    }
+                                    disabled={
+                                      deleteAllLoading
                                     }
                                   >
 
